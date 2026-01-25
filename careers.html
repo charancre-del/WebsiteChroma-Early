@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers | Chroma Early Start</title>
+    <meta name="description" content="Join the Chroma team. We are hiring compassionate BCBAs, RBTs, and therapists. Competitive pay, free supervision, and a culture of excellence.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        },
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            800: '#292524',
+                            900: '#1c1917',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-rose-100 selection:text-rose-900 font-sans flex flex-col min-h-screen">
+
+    <!-- NAVIGATION -->
+    <header class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-stone-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="relative w-10 h-10 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-rose-100 rounded-full opacity-80"></div>
+                        <i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
+                            Chroma Early Start
+                        </span>
+                        <span class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
+                            Pediatric Therapy & Early Intervention
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden xl:flex space-x-1 items-center">
+                    <a href="index.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Home</a>
+                    <a href="about.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">About Us</a>
+                    <a href="services.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Services</a>
+                    <a href="families.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">For Families</a>
+                    <a href="careers.html" class="px-3 py-2 text-rose-600 bg-rose-50 font-medium transition-colors text-sm tracking-wide rounded-lg">Careers</a>
+                    
+                    <div class="pl-4">
+                        <a href="index.html#contact" class="bg-stone-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-rose-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm inline-block">
+                            Get Started
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="xl:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-stone-600 hover:text-rose-600 p-2">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden fixed top-20 left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 flex-col space-y-4 xl:hidden h-screen overflow-y-auto pb-32">
+            <a href="index.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">Home</a>
+            <a href="about.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">About Us</a>
+            <a href="careers.html" class="block w-full text-left text-lg font-medium text-rose-600 py-3 border-b border-stone-50">Careers</a>
+            <a href="index.html#contact" class="block w-full text-center bg-stone-900 text-white px-6 py-4 rounded-xl font-bold mt-4">Get Started</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-20">
+        
+        <!-- Hero Section -->
+        <section class="relative bg-white pt-24 pb-20 lg:pt-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <span class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6 animate-fade-in-up">Join Our Team</span>
+                <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight animate-fade-in-up delay-100">
+                    Do Your Best Work<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">With Us.</span>
+                </h1>
+                <p class="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed animate-fade-in-up delay-200">
+                    We are building a workplace that prioritizes clinician burnout prevention, professional growth, and assent-based care. If you love kids but hate "the grind," you belong here.
+                </p>
+                <div class="mt-10 animate-fade-in-up delay-300">
+                    <a href="#openings" class="bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-stone-800 transition-all shadow-lg inline-flex items-center">
+                        View Open Positions <i data-lucide="arrow-down" class="ml-2 w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits & Culture -->
+        <section class="py-24 bg-stone-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-stone-900 mb-4">Why Clinicians Choose Chroma</h2>
+                    <p class="text-stone-600">We take care of our team so they can take care of our families.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Benefit 1 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
+                        <div class="w-14 h-14 bg-rose-100 rounded-2xl flex items-center justify-center mb-6 text-rose-600">
+                            <i data-lucide="scale" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-stone-900 mb-3">Manageable Caseloads</h3>
+                        <p class="text-stone-600 leading-relaxed">
+                            We cap our BCBA caseloads below industry standards to ensure you have time for quality supervision, parent training, and your own life.
+                        </p>
+                    </div>
+                    <!-- Benefit 2 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
+                        <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center mb-6 text-orange-600">
+                            <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-stone-900 mb-3">Free Supervision</h3>
+                        <p class="text-stone-600 leading-relaxed">
+                            For RBTs pursuing their BCBA, we offer free, high-quality restricted and unrestricted supervision hours with mentorship.
+                        </p>
+                    </div>
+                    <!-- Benefit 3 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
+                        <div class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center mb-6 text-amber-600">
+                            <i data-lucide="heart-handshake" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-stone-900 mb-3">Full Benefits</h3>
+                        <p class="text-stone-600 leading-relaxed">
+                            Competitive salary, health/dental/vision insurance, 401k matching, and generous paid time off for full-time staff.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current Openings -->
+        <section id="openings" class="py-24 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-end mb-12">
+                    <div>
+                        <span class="text-rose-600 font-bold tracking-widest text-sm uppercase mb-2 block">We're Hiring</span>
+                        <h2 class="text-3xl font-bold text-stone-900">Current Opportunities</h2>
+                    </div>
+                    <div class="hidden md:block">
+                        <span class="text-sm text-stone-500">Therapy City & Metro Locations</span>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    
+                    <!-- Job Card 1 -->
+                    <div class="border border-stone-200 rounded-3xl p-8 hover:shadow-lg transition-shadow bg-stone-50/50">
+                        <div class="md:flex justify-between items-start">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-2xl font-bold text-stone-900">Board Certified Behavior Analyst (BCBA)</h3>
+                                    <span class="bg-rose-100 text-rose-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Full Time</span>
+                                </div>
+                                <p class="text-stone-600 mb-4 max-w-2xl">
+                                    Lead clinical programming for a small caseload of early learners. Conduct assessments (VB-MAPP/ABLLS), supervise RBTs, and provide parent coaching.
+                                </p>
+                                <div class="flex gap-4 text-sm text-stone-500 font-medium">
+                                    <span class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Therapy City Clinic</span>
+                                    <span class="flex items-center"><i data-lucide="dollar-sign" class="w-4 h-4 mr-2"></i> Competitive Salary + Bonus</span>
+                                </div>
+                            </div>
+                            <button onclick="document.getElementById('apply-modal').classList.remove('hidden')" class="mt-6 md:mt-0 bg-stone-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-rose-600 transition-colors">
+                                Apply Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Job Card 2 -->
+                    <div class="border border-stone-200 rounded-3xl p-8 hover:shadow-lg transition-shadow bg-stone-50/50">
+                        <div class="md:flex justify-between items-start">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-2xl font-bold text-stone-900">Registered Behavior Technician (RBT)</h3>
+                                    <span class="bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Full & Part Time</span>
+                                </div>
+                                <p class="text-stone-600 mb-4 max-w-2xl">
+                                    Implement 1:1 play-based therapy. Collect data and support clients in acquiring functional skills. Active RBT certification required.
+                                </p>
+                                <div class="flex gap-4 text-sm text-stone-500 font-medium">
+                                    <span class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Multiple Locations</span>
+                                    <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-2"></i> Flexible Shifts</span>
+                                </div>
+                            </div>
+                            <button onclick="document.getElementById('apply-modal').classList.remove('hidden')" class="mt-6 md:mt-0 bg-stone-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-rose-600 transition-colors">
+                                Apply Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Job Card 3 -->
+                    <div class="border border-stone-200 rounded-3xl p-8 hover:shadow-lg transition-shadow bg-stone-50/50">
+                        <div class="md:flex justify-between items-start">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-2xl font-bold text-stone-900">Speech-Language Pathologist (SLP)</h3>
+                                    <span class="bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Contract / PT</span>
+                                </div>
+                                <p class="text-stone-600 mb-4 max-w-2xl">
+                                    Provide speech evaluations and therapy sessions. Collaborative role working alongside ABA teams for holistic care. CCC-SLP required.
+                                </p>
+                                <div class="flex gap-4 text-sm text-stone-500 font-medium">
+                                    <span class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Therapy City Clinic</span>
+                                    <span class="flex items-center"><i data-lucide="briefcase" class="w-4 h-4 mr-2"></i> Flexible Schedule</span>
+                                </div>
+                            </div>
+                            <button onclick="document.getElementById('apply-modal').classList.remove('hidden')" class="mt-6 md:mt-0 bg-stone-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-rose-600 transition-colors">
+                                Apply Now
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- No Certification? Train with Us -->
+        <section class="py-24 bg-rose-600 text-white relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <i data-lucide="sparkles" class="w-12 h-12 text-amber-300 mx-auto mb-6"></i>
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">New to the field? We'll train you.</h2>
+                <p class="text-rose-100 text-lg mb-10 max-w-2xl mx-auto">
+                    We offer a paid <strong>RBT Training Program</strong> for compassionate individuals looking to start a career in behavioral health. We cover your 40-hour coursework and exam fees.
+                </p>
+                <button onclick="document.getElementById('apply-modal').classList.remove('hidden')" class="bg-white text-rose-600 px-10 py-4 rounded-full font-bold hover:bg-rose-50 transition-colors shadow-lg">
+                    Apply for Training Program
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Simple Application Modal -->
+    <div id="apply-modal" class="hidden fixed inset-0 bg-stone-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] p-8 max-w-lg w-full relative shadow-2xl">
+            <button onclick="document.getElementById('apply-modal').classList.add('hidden')" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h3 class="text-2xl font-bold text-stone-900 mb-2">Apply to Chroma</h3>
+            <p class="text-stone-600 mb-6">Send us your info and we'll be in touch.</p>
+            <form class="space-y-4" onsubmit="event.preventDefault(); alert('Application Sent!'); document.getElementById('apply-modal').classList.add('hidden');">
+                <input type="text" placeholder="Full Name" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-rose-500 outline-none" required>
+                <input type="email" placeholder="Email Address" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-rose-500 outline-none" required>
+                <input type="tel" placeholder="Phone Number" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-rose-500 outline-none" required>
+                <select class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-rose-500 outline-none bg-white text-stone-600">
+                    <option>BCBA</option>
+                    <option>RBT</option>
+                    <option>Speech/OT</option>
+                    <option>Administrative</option>
+                    <option>RBT Trainee (Entry Level)</option>
+                </select>
+                <div class="border border-dashed border-stone-300 rounded-xl p-6 text-center text-stone-500 cursor-pointer hover:bg-stone-50">
+                    Upload Resume (PDF)
+                </div>
+                <button class="w-full bg-stone-900 text-white py-3 rounded-xl font-bold hover:bg-rose-600 transition-colors">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-16 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 lg:gap-8">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <i data-lucide="puzzle" class="w-8 h-8 text-rose-500"></i>
+                        <span class="text-2xl font-bold text-white tracking-tight">Chroma</span>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-6 text-stone-400">
+                        Empowering children and families through compassionate, evidence-based therapy. Ages 18mo - 12yrs.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Quick Links</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="about.html" class="hover:text-rose-400 transition-colors">About Us</a></li>
+                        <li><a href="approach.html" class="hover:text-rose-400 transition-colors">Our Approach</a></li>
+                        <li><a href="index.html#team" class="hover:text-rose-400 transition-colors">Clinical Team</a></li>
+                        <li><a href="blog.html" class="hover:text-rose-400 transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Services</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="aba.html" class="hover:text-rose-400 transition-colors">ABA Therapy</a></li>
+                        <li><a href="speech.html" class="hover:text-rose-400 transition-colors">Speech Therapy</a></li>
+                        <li><a href="ot.html" class="hover:text-rose-400 transition-colors">Occupational Therapy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Contact</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-2"></i> (555) 123-4567</li>
+                        <li class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-2"></i> hello@chromaearlystart.com</li>
+                        <li class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> 123 Wellness Blvd, Therapy City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 mt-16 pt-8 text-center text-xs text-stone-500">
+                <p>&copy; 2026 Chroma Early Start LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

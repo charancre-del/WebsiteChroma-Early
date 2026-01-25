@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Chroma Early Start</title>
+    <meta name="description" content="Get started with Chroma Early Start. Contact our admissions team for ABA, Speech, and OT inquiries. Serving Therapy City and surrounding areas.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        },
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            800: '#292524',
+                            900: '#1c1917',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-rose-100 selection:text-rose-900 font-sans flex flex-col min-h-screen">
+
+    <!-- NAVIGATION -->
+    <header class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-stone-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="relative w-10 h-10 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-rose-100 rounded-full opacity-80"></div>
+                        <i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
+                            Chroma Early Start
+                        </span>
+                        <span class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
+                            Pediatric Therapy & Early Intervention
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden xl:flex space-x-1 items-center">
+                    <a href="index.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Home</a>
+                    <a href="about.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">About Us</a>
+                    <a href="approach.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Our Approach</a>
+                    <a href="services.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Services</a>
+                    <a href="families.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">For Families</a>
+                    <a href="index.html#team" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Clinical Team</a>
+                    
+                    <div class="pl-4">
+                        <a href="contact.html" class="bg-stone-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-rose-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm inline-block">
+                            Get Started
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="xl:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-stone-600 hover:text-rose-600 p-2">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden fixed top-20 left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 flex-col space-y-4 xl:hidden h-screen overflow-y-auto pb-32">
+            <a href="index.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">Home</a>
+            <a href="about.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">About Us</a>
+            <a href="services.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">Services</a>
+            <a href="contact.html" class="block w-full text-center bg-stone-900 text-white px-6 py-4 rounded-xl font-bold mt-4">Get Started</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-20">
+        
+        <!-- Hero / Contact Layout -->
+        <div class="min-h-[calc(100vh-80px)] bg-stone-50 pt-16 pb-24 lg:pt-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-12 gap-16">
+                    
+                    <!-- Left Column: Info & Map -->
+                    <div class="lg:col-span-5 space-y-12">
+                        <div class="animate-fade-in-up">
+                            <span class="text-rose-600 font-bold tracking-widest text-sm uppercase mb-4 block">Get In Touch</span>
+                            <h1 class="text-4xl md:text-5xl font-bold text-stone-900 mb-6">Let's start the conversation.</h1>
+                            <p class="text-lg text-stone-600 leading-relaxed">
+                                Whether you're ready to enroll or just have questions about early intervention, our team is here to help. We typically respond within 24 hours.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 animate-fade-in-up delay-100">
+                            <div class="space-y-8">
+                                <div class="flex items-start">
+                                    <div class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center mr-5 shrink-0">
+                                        <i data-lucide="phone" class="w-6 h-6 text-rose-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-stone-900 text-lg">Call Us</h4>
+                                        <p class="text-stone-600 mt-1">(555) 123-4567</p>
+                                        <p class="text-xs text-stone-400 mt-1">Mon-Fri, 8am-6pm</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center mr-5 shrink-0">
+                                        <i data-lucide="mail" class="w-6 h-6 text-rose-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-stone-900 text-lg">Email Us</h4>
+                                        <p class="text-stone-600 mt-1">hello@chromaearlystart.com</p>
+                                        <p class="text-xs text-stone-400 mt-1">For admissions & general inquiries</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center mr-5 shrink-0">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-rose-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-stone-900 text-lg">Main Clinic</h4>
+                                        <p class="text-stone-600 mt-1">123 Wellness Blvd, Suite 200<br>Therapy City, ST 12345</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Map Placeholder -->
+                        <div class="h-64 bg-stone-200 rounded-[2rem] flex items-center justify-center relative overflow-hidden animate-fade-in-up delay-200">
+                            <i data-lucide="map" class="w-12 h-12 text-stone-400 mb-2"></i>
+                            <span class="absolute bottom-6 font-bold text-stone-500 text-sm tracking-widest uppercase">Interactive Map Coming Soon</span>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Form -->
+                    <div class="lg:col-span-7">
+                        <div class="bg-white p-8 md:p-12 rounded-[3rem] shadow-xl border border-stone-100 animate-fade-in-up delay-100">
+                            <h3 class="text-2xl font-bold text-stone-900 mb-8">Admissions Inquiry</h3>
+                            <form class="space-y-6" onsubmit="event.preventDefault(); alert('Thank you! We will be in touch shortly.');">
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-bold text-stone-700 mb-2">Parent First Name</label>
+                                        <input type="text" class="w-full px-4 py-3 rounded-xl border-2 border-stone-100 focus:border-rose-500 focus:ring-0 outline-none transition-colors bg-stone-50 focus:bg-white" placeholder="Jane" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-stone-700 mb-2">Parent Last Name</label>
+                                        <input type="text" class="w-full px-4 py-3 rounded-xl border-2 border-stone-100 focus:border-rose-500 focus:ring-0 outline-none transition-colors bg-stone-50 focus:bg-white" placeholder="Doe" required>
+                                    </div>
+                                </div>
+
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-bold text-stone-700 mb-2">Email Address</label>
+                                        <input type="email" class="w-full px-4 py-3 rounded-xl border-2 border-stone-100 focus:border-rose-500 focus:ring-0 outline-none transition-colors bg-stone-50 focus:bg-white" placeholder="jane@example.com" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-stone-700 mb-2">Phone Number</label>
+                                        <input type="tel" class="w-full px-4 py-3 rounded-xl border-2 border-stone-100 focus:border-rose-500 focus:ring-0 outline-none transition-colors bg-stone-50 focus:bg-white" placeholder="(555) 555-5555" required>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-bold text-stone-700 mb-2">Service(s) of Interest</label>
+                                    <select class="w-full px-4 py-3 rounded-xl border-2 border-stone-100 focus:border-rose-500 focus:ring-0 outline-none transition-colors bg-stone-50 focus:bg-white text-stone-600">
+                                        <option>ABA Therapy</option>
+                                        <option>Speech Therapy</option>
+                                        <option>Occupational Therapy</option>
+                                        <option>Multiple Services</option>
+                                        <option>School Readiness Program</option>
+                                    </select>
+                                </div>
+
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-bold text-stone-700 mb-2">Child's Age</label>
+                                        <input type="text" class="w-full px-4 py-3 rounded-xl border-2 border-stone-100 focus:border-rose-500 focus:ring-0 outline-none transition-colors bg-stone-50 focus:bg-white" placeholder="e.g. 4 years">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-stone-700 mb-2">Payment Preference</label>
+                                        <select class="w-full px-4 py-3 rounded-xl border-2 border-stone-100 focus:border-rose-500 focus:ring-0 outline-none transition-colors bg-stone-50 focus:bg-white text-stone-600">
+                                            <option>Using Insurance</option>
+                                            <option>Private Pay</option>
+                                            <option>Unsure / Need Guidance</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-bold text-stone-700 mb-2">How can we help?</label>
+                                    <textarea rows="4" class="w-full px-4 py-3 rounded-xl border-2 border-stone-100 focus:border-rose-500 focus:ring-0 outline-none transition-colors bg-stone-50 focus:bg-white resize-none" placeholder="Tell us a little about your child's needs, diagnosis (if any), and goals..."></textarea>
+                                </div>
+
+                                <button class="w-full bg-stone-900 text-white font-bold py-4 rounded-xl hover:bg-rose-600 transition-all shadow-lg transform hover:-translate-y-1">
+                                    Request Free Consultation
+                                </button>
+                                <p class="text-xs text-stone-400 text-center mt-4">By submitting this form, you agree to our privacy policy. Your data is secure and HIPAA compliant.</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-16 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 lg:gap-8">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <i data-lucide="puzzle" class="w-8 h-8 text-rose-500"></i>
+                        <span class="text-2xl font-bold text-white tracking-tight">Chroma</span>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-6 text-stone-400">
+                        Empowering children and families through compassionate, evidence-based therapy. Ages 18mo - 12yrs.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Quick Links</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="about.html" class="hover:text-rose-400 transition-colors">About Us</a></li>
+                        <li><a href="approach.html" class="hover:text-rose-400 transition-colors">Our Approach</a></li>
+                        <li><a href="index.html#team" class="hover:text-rose-400 transition-colors">Clinical Team</a></li>
+                        <li><a href="index.html#faq" class="hover:text-rose-400 transition-colors">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Services</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="aba.html" class="hover:text-rose-400 transition-colors">ABA Therapy</a></li>
+                        <li><a href="speech.html" class="hover:text-rose-400 transition-colors">Speech Therapy</a></li>
+                        <li><a href="ot.html" class="hover:text-rose-400 transition-colors">Occupational Therapy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Contact</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-2"></i> (555) 123-4567</li>
+                        <li class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-2"></i> hello@chromaearlystart.com</li>
+                        <li class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> 123 Wellness Blvd, Therapy City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 mt-16 pt-8 text-center text-xs text-stone-500">
+                <p>&copy; 2026 Chroma Early Start LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

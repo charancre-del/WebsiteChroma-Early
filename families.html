@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Readiness (Bridge Program) | Chroma Early Start</title>
+    <meta name="description" content="The Chroma Bridge Program prepares children with autism for the classroom. Mock preschool environments, group instruction, and social skills training.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        },
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            800: '#292524',
+                            900: '#1c1917',
+                        },
+                        blue: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-blue-100 selection:text-blue-900 font-sans flex flex-col min-h-screen">
+
+    <!-- NAVIGATION -->
+    <header class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-stone-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="relative w-10 h-10 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-rose-100 rounded-full opacity-80"></div>
+                        <i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
+                            Chroma Early Start
+                        </span>
+                        <span class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
+                            Pediatric Therapy & Early Intervention
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden xl:flex space-x-1 items-center">
+                    <a href="index.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Home</a>
+                    <a href="about.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">About Us</a>
+                    <a href="approach.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Our Approach</a>
+                    <a href="services.html" class="px-3 py-2 text-rose-600 bg-rose-50 font-medium transition-colors text-sm tracking-wide rounded-lg">Services</a>
+                    <a href="families.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">For Families</a>
+                    <a href="index.html#team" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Clinical Team</a>
+                    
+                    <div class="pl-4">
+                        <a href="contact.html" class="bg-stone-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-rose-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm inline-block">
+                            Get Started
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="xl:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-stone-600 hover:text-rose-600 p-2">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden fixed top-20 left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 flex-col space-y-4 xl:hidden h-screen overflow-y-auto pb-32">
+            <a href="index.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">Home</a>
+            <a href="about.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">About Us</a>
+            <a href="services.html" class="block w-full text-left text-lg font-medium text-rose-600 py-3 border-b border-stone-50">Services</a>
+            <a href="contact.html" class="block w-full text-center bg-stone-900 text-white px-6 py-4 rounded-xl font-bold mt-4">Get Started</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-20">
+        
+        <!-- Hero Section -->
+        <section class="relative bg-white pt-24 pb-20 lg:pt-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="text-left">
+                        <div class="inline-flex items-center space-x-2 mb-6 animate-fade-in-up">
+                            <span class="w-8 h-1 bg-blue-500 rounded-full"></span>
+                            <span class="text-blue-600 font-bold tracking-widest text-sm uppercase">Signature Program</span>
+                        </div>
+                        <h1 class="text-5xl md:text-6xl font-bold text-stone-900 mb-6 leading-tight animate-fade-in-up delay-100">
+                            The Chroma<br><span class="text-blue-600">Bridge Program.</span>
+                        </h1>
+                        <p class="text-xl text-stone-600 mb-8 leading-relaxed animate-fade-in-up delay-200">
+                            Preparing early learners for the transition from 1:1 therapy to a general education classroom. We simulate the preschool experience with clinical support.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-200">
+                            <a href="#curriculum" class="bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:bg-blue-500 transition-all shadow-lg flex items-center justify-center">
+                                View Curriculum <i data-lucide="arrow-down" class="ml-2 w-5 h-5"></i>
+                            </a>
+                            <a href="contact.html" class="bg-white text-stone-900 border border-stone-200 px-8 py-4 rounded-full font-bold hover:border-blue-200 hover:text-blue-600 transition-all shadow-sm flex items-center justify-center">
+                                Schedule Observation
+                            </a>
+                        </div>
+                    </div>
+                    <div class="relative animate-fade-in-up delay-200">
+                        <!-- Abstract Visual -->
+                        <div class="absolute inset-0 bg-blue-100 rounded-[3rem] transform -rotate-3"></div>
+                        <div class="relative bg-white rounded-[3rem] h-[500px] overflow-hidden shadow-2xl border border-stone-100 flex items-center justify-center">
+                            <div class="text-center p-10">
+                                <div class="bg-blue-50 w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <i data-lucide="school" class="w-16 h-16 text-blue-500"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-stone-900">School Ready</h3>
+                                <div class="flex justify-center space-x-2 mt-4">
+                                    <span class="w-2 h-2 rounded-full bg-blue-300"></span>
+                                    <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                                    <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Problem & Solution -->
+        <section class="py-24 bg-stone-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-stone-900 mb-4">Bridging the Gap</h2>
+                    <p class="text-stone-600 max-w-2xl mx-auto">Moving from a quiet clinic room to a noisy kindergarten classroom is a huge leap. Our Bridge Program is the stepping stone.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 relative group hover:shadow-lg transition-all">
+                        <div class="absolute -top-6 left-8 bg-stone-900 text-white px-4 py-2 rounded-lg font-bold text-xs uppercase">Step 1</div>
+                        <h3 class="text-lg font-bold text-stone-900 mb-3 mt-4">Clinical 1:1</h3>
+                        <p class="text-stone-600 text-sm mb-4">Intensive, individualized instruction to build foundational skills.</p>
+                        <div class="w-full bg-stone-100 h-2 rounded-full overflow-hidden">
+                            <div class="w-full h-full bg-stone-300"></div>
+                        </div>
+                    </div>
+                    <!-- Step 2 (Bridge) -->
+                    <div class="bg-blue-600 p-8 rounded-[2rem] shadow-xl border border-blue-500 relative transform scale-105 z-10 text-white">
+                        <div class="absolute -top-6 left-8 bg-white text-blue-600 px-4 py-2 rounded-lg font-bold text-xs uppercase shadow-sm">We Are Here</div>
+                        <h3 class="text-xl font-bold mb-3 mt-4">The Bridge</h3>
+                        <p class="text-blue-100 text-sm mb-4">Small groups (1:3 ratio). Mock classroom routines. Peer play focus.</p>
+                        <div class="w-full bg-blue-800 h-2 rounded-full overflow-hidden">
+                            <div class="w-2/3 h-full bg-white animate-pulse"></div>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 relative group hover:shadow-lg transition-all">
+                        <div class="absolute -top-6 left-8 bg-stone-900 text-white px-4 py-2 rounded-lg font-bold text-xs uppercase">Step 3</div>
+                        <h3 class="text-lg font-bold text-stone-900 mb-3 mt-4">The Classroom</h3>
+                        <p class="text-stone-600 text-sm mb-4">General education or inclusion setting with minimal support.</p>
+                        <div class="w-full bg-stone-100 h-2 rounded-full overflow-hidden">
+                            <div class="w-0 h-full bg-stone-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Curriculum / Focus Areas -->
+        <section id="curriculum" class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <span class="text-blue-600 font-bold tracking-widest text-sm uppercase mb-4 block">Curriculum</span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-8">What We Practice</h2>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mr-6 text-blue-600 shrink-0">
+                                    <i data-lucide="users" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-stone-900 mb-2">Group Instruction</h4>
+                                    <p class="text-stone-600 text-sm leading-relaxed">
+                                        Learning to learn in a group. Sitting for circle time, raising hands, and following choral responses.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mr-6 text-blue-600 shrink-0">
+                                    <i data-lucide="clock" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-stone-900 mb-2">Transitions</h4>
+                                    <p class="text-stone-600 text-sm leading-relaxed">
+                                        Moving from high-preference activities (recess) to work (table time) without maladaptive behavior.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mr-6 text-blue-600 shrink-0">
+                                    <i data-lucide="smile" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-stone-900 mb-2">Social Navigation</h4>
+                                    <p class="text-stone-600 text-sm leading-relaxed">
+                                        Sharing materials, asking a peer to play, and understanding personal space boundaries.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mr-6 text-blue-600 shrink-0">
+                                    <i data-lucide="check-circle" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-stone-900 mb-2">Functional Independence</h4>
+                                    <p class="text-stone-600 text-sm leading-relaxed">
+                                        Managing a backpack, opening lunch containers, toileting, and hand-washing independently.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-stone-100 rounded-[3rem] transform rotate-3"></div>
+                        <!-- Daily Schedule Card -->
+                        <div class="relative bg-white p-10 rounded-[3rem] shadow-xl border border-stone-100">
+                            <h3 class="text-xl font-bold text-stone-900 mb-6 text-center border-b border-stone-100 pb-4">A Day in Bridge</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center text-sm">
+                                    <span class="w-20 font-bold text-blue-600">9:00 AM</span>
+                                    <span class="text-stone-600">Arrival & Unpack (Independence)</span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="w-20 font-bold text-blue-600">9:30 AM</span>
+                                    <span class="text-stone-600">Morning Circle (Group Skills)</span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="w-20 font-bold text-blue-600">10:00 AM</span>
+                                    <span class="text-stone-600">Centers / Table Time (Academics)</span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="w-20 font-bold text-blue-600">11:00 AM</span>
+                                    <span class="text-stone-600">Structured Recess (Peer Play)</span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="w-20 font-bold text-blue-600">12:00 PM</span>
+                                    <span class="text-stone-600">Lunch (Social & Self-Help)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Readiness Checklist -->
+        <section class="py-24 bg-blue-600 text-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold mb-8">Is Your Child Ready for Bridge?</h2>
+                <p class="text-blue-100 mb-12 max-w-2xl mx-auto">
+                    The Bridge Program is typically for children ages 3-6 who have mastered foundational 1:1 skills and are preparing for a less restrictive environment.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6 text-left">
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                        <h4 class="font-bold mb-2 flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2"></i> Prerequisite Skills</h4>
+                        <ul class="text-sm text-blue-100 space-y-2 list-disc pl-5">
+                            <li>Minimal aggressive/disruptive behavior</li>
+                            <li>Can sit for 2-3 minutes with reinforcement</li>
+                            <li>Basic functional communication (vocal or AAC)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                        <h4 class="font-bold mb-2 flex items-center"><i data-lucide="target" class="w-5 h-5 mr-2"></i> Targeted Outcomes</h4>
+                        <ul class="text-sm text-blue-100 space-y-2 list-disc pl-5">
+                            <li>Follows group instructions without 1:1 prompts</li>
+                            <li>Engages in sustained peer play</li>
+                            <li>Independently transitions between activities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-24 bg-white text-center">
+            <div class="max-w-4xl mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-6">See the classroom in action.</h2>
+                <p class="text-xl text-stone-600 mb-10">
+                    Schedule a tour of our Bridge environment at the Therapy City clinic.
+                </p>
+                <a href="contact.html" class="bg-stone-900 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-blue-600 transition-colors shadow-lg inline-block">
+                    Request a Tour
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-16 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 lg:gap-8">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <i data-lucide="puzzle" class="w-8 h-8 text-rose-500"></i>
+                        <span class="text-2xl font-bold text-white tracking-tight">Chroma</span>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-6 text-stone-400">
+                        Empowering children and families through compassionate, evidence-based therapy. Ages 18mo - 12yrs.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Quick Links</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="about.html" class="hover:text-rose-400 transition-colors">About Us</a></li>
+                        <li><a href="approach.html" class="hover:text-rose-400 transition-colors">Our Approach</a></li>
+                        <li><a href="index.html#team" class="hover:text-rose-400 transition-colors">Clinical Team</a></li>
+                        <li><a href="index.html#faq" class="hover:text-rose-400 transition-colors">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Services</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="aba.html" class="hover:text-rose-400 transition-colors">ABA Therapy</a></li>
+                        <li><a href="speech.html" class="hover:text-rose-400 transition-colors">Speech Therapy</a></li>
+                        <li><a href="ot.html" class="hover:text-rose-400 transition-colors">Occupational Therapy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Contact</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-2"></i> (555) 123-4567</li>
+                        <li class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-2"></i> hello@chromaearlystart.com</li>
+                        <li class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> 123 Wellness Blvd, Therapy City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 mt-16 pt-8 text-center text-xs text-stone-500">
+                <p>&copy; 2026 Chroma Early Start LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

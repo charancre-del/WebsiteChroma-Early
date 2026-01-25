@@ -1,0 +1,293 @@
+<?php
+/**
+ * Master Seed Content Script
+ * Automatically creates core pages, programs, locations, and populates ALL meta boxes.
+ * 
+ * @package EarlyStart_Early_Start
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+/**
+ * Seed Core Content
+ */
+function earlystart_seed_core_content()
+{
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    // 1. Seed Global Brand Settings (ACF Options Page)
+    if (function_exists('update_field')) {
+        update_field('field_global_phone', '(555) 123-4567', 'options');
+        update_field('field_global_email', 'hello@chromaearlystart.com', 'options');
+        update_field('field_global_address', "123 Wellness Blvd\nTherapy City, ST 12345", 'options');
+
+        $social_links = array(
+            array('platform' => 'facebook', 'url' => 'https://facebook.com/chromaearlystart'),
+            array('platform' => 'instagram', 'url' => 'https://instagram.com/chromaearlystart'),
+        );
+        update_field('field_global_social_links', $social_links, 'options');
+    }
+
+    // 2. Prepare JSON data for sections that use it
+    $home_services = array(
+        array(
+            'id' => 'aba',
+            'title' => 'ABA Therapy',
+            'subtitle' => 'Applied Behavior Analysis',
+            'icon' => 'puzzle',
+            'heading' => 'Individualized Behavioral Growth',
+            'description' => 'Our ABA therapy focuses on increasing helpful behaviors and decreasing harmful ones to improve learning and social skills.',
+            'image' => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&fit=crop',
+            'bullets' => array('One-on-one sessions', 'Data-driven progress tracking', 'Positive reinforcement focus')
+        ),
+        array(
+            'id' => 'speech',
+            'title' => 'Speech Therapy',
+            'subtitle' => 'Communication Skills',
+            'icon' => 'message-circle',
+            'heading' => 'Unlocking Every Voice',
+            'description' => 'Specialized support for articulation, language comprehension, and social communication milestones.',
+            'image' => 'https://images.unsplash.com/photo-1544717305-27a734ef202e?w=800&fit=crop',
+            'bullets' => array('Articulation support', 'Social language skills', 'Early intervention focus')
+        ),
+        array(
+            'id' => 'ot',
+            'title' => 'Occupational Therapy',
+            'subtitle' => 'Daily Living Skills',
+            'icon' => 'hand',
+            'heading' => 'Developing Independence',
+            'description' => 'Helping children build the fine motor, sensory, and cognitive skills needed for daily life and play.',
+            'image' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&fit=crop',
+            'bullets' => array('Fine motor development', 'Sensory integration', 'Self-regulation tools')
+        ),
+    );
+
+    // 3. Create Core Pages
+    $pages = array(
+        'home' => array(
+            'title' => 'Home',
+            'template' => 'front-page.php',
+            'meta' => array(
+                'home_hero_heading' => 'Compassionate <span class="bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-600 italic">Therapy</span> for Growing Minds',
+                'home_hero_subheading' => 'Specialized ABA, Speech, and Occupational Therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
+                'home_hero_cta_label' => 'Start Your Journey',
+                'home_hero_secondary_label' => 'Explore Services',
+                'home_prismpath_eyebrow' => 'Proven Methodology',
+                'home_prismpath_heading' => 'Grounded in <span class="italic text-rose-400">Expertise</span>, Built on Love.',
+                'home_prismpath_subheading' => 'We combine clinical precision with compassionate care. Our evidence-based approach ensures every child receives the specific support they need to thrive.',
+                'home_prismpath_cta_label' => 'Our Methodology',
+                'home_prismpath_readiness_heading' => 'Pediatric Excellence',
+                'home_prismpath_readiness_desc' => 'Integrating speech, OT, and ABA for holistic outcomes.',
+                'home_locations_heading' => 'Serving Families Across <span class="italic text-rose-600">The Metro</span>',
+                'home_locations_subheading' => 'Find your nearest clinical center and join our community of growth.',
+                'home_locations_cta_label' => 'View All Locations',
+                'home_faq_heading' => 'Frequently <span class="italic text-rose-600">Asked</span> Questions',
+                'home_faq_subheading' => 'Common questions from parents',
+                'home_services_json' => json_encode($home_services), // Seed the services tabs
+            )
+        ),
+        'about-us' => array(
+            'title' => 'About Us',
+            'template' => 'page-about.php',
+            'meta' => array(
+                'about_hero_badge_text' => 'Established 2015',
+                'about_hero_title' => 'Compassionate Care. <span class="text-rose-500 italic">Clinical Excellence.</span>',
+                'about_hero_description' => 'Founded with a mission to bridge the gap in neurodiverse pediatric support, Chroma Early Start provides a sanctuary for growth and development.',
+                'about_mission_quote' => 'We believe every child deserves a path to independence that honors their unique dignity and potential.',
+                'about_story_title' => 'Our Story',
+                'about_story_paragraph1' => 'Born from a need for integrated pediatric services, Chroma Early Start began as a small family project that grew into a regional leader in early intervention.',
+                'about_story_paragraph2' => 'Today, we serve hundreds of families with a multidisciplinary team of BCBAs, SLPs, and OTs.',
+                'about_stat1_value' => '10+',
+                'about_stat1_label' => 'Specialists',
+                'about_stat2_value' => '500+',
+                'about_stat2_label' => 'Families Served',
+                'about_stat3_value' => '3',
+                'about_stat3_label' => 'Clinical Centers',
+                'about_stat4_value' => '100%',
+                'about_stat4_label' => 'Licensed',
+                'about_educators_title' => 'The Heart of Chroma.',
+                'about_educators_description' => 'Our team is composed of dedicated therapists who are passionate about pediatric development.',
+                'about_leadership_title' => 'Led by clinicians, not investors.',
+            )
+        ),
+        'our-approach' => array('title' => 'Our Approach', 'template' => 'page-approach.php'),
+        'services' => array('title' => 'Services', 'template' => 'page-programs.php'),
+        'locations-list' => array('title' => 'Locations', 'template' => 'page-locations.php'),
+        'curriculum' => array(
+            'title' => 'Curriculum',
+            'template' => 'page-curriculum.php',
+            'meta' => array(
+                'curriculum_hero_badge' => 'The Chroma Difference',
+                'curriculum_hero_title' => 'Clinical rigor. <br><span class="italic text-rose-500">Compassionate delivery.</span>',
+                'curriculum_hero_description' => 'Our proprietary Prismpath™ framework refracts therapy into balanced pillars for physical, emotional, and social growth.',
+                'curriculum_framework_title' => 'The Prismpath™ Framework',
+                'curriculum_framework_description' => 'Our evidence-based methodology ensuring every child receives holistic support across all areas of development.',
+                'curriculum_pillar_physical_icon' => 'fa-solid fa-person-running',
+                'curriculum_pillar_physical_title' => 'Physical',
+                'curriculum_pillar_physical_desc' => 'Gross motor, fine motor, and sensory integration skills.',
+                'curriculum_pillar_emotional_icon' => 'fa-solid fa-face-smile',
+                'curriculum_pillar_emotional_title' => 'Emotional',
+                'curriculum_pillar_emotional_desc' => 'Self-regulation, resilience, and identifying complex emotions.',
+            )
+        ),
+        'parents' => array('title' => 'Parents', 'template' => 'page-parents.php'),
+        'contact' => array(
+            'title' => 'Contact',
+            'template' => 'page-contact.php',
+            'meta' => array(
+                'contact_hero_badge' => 'Connect With Us',
+                'contact_hero_title' => 'We\'d love to meet you.',
+                'contact_hero_description' => 'Start your child\'s journey today with a free 15-minute clinical consultation.',
+                'contact_corporate_title' => 'Clinical Headquarters',
+                'contact_corporate_name' => 'Chroma Early Start LLC',
+                'contact_corporate_address' => "123 Wellness Blvd\nTherapy City, ST 12345",
+                'contact_corporate_phone' => '(555) 123-4567',
+            )
+        ),
+        'careers' => array('title' => 'Careers', 'template' => 'page-careers.php'),
+    );
+
+    foreach ($pages as $slug => $data) {
+        $existing_page = get_page_by_path($slug);
+        if (!$existing_page) {
+            $post_id = wp_insert_post(array(
+                'post_title' => $data['title'],
+                'post_name' => $slug,
+                'post_status' => 'publish',
+                'post_type' => 'page',
+            ));
+            if (!is_wp_error($post_id)) {
+                if (!empty($data['template']))
+                    update_post_meta($post_id, '_wp_page_template', $data['template']);
+                if (!empty($data['meta'])) {
+                    foreach ($data['meta'] as $key => $value)
+                        update_post_meta($post_id, $key, $value);
+                }
+                if ($slug === 'home') {
+                    update_option('show_on_front', 'page');
+                    update_option('page_on_front', $post_id);
+                }
+            }
+        } else {
+            // Update Home Page JSON even if it exists
+            if ($slug === 'home' && !empty($data['meta']['home_services_json'])) {
+                update_post_meta($existing_page->ID, 'home_services_json', $data['meta']['home_services_json']);
+            }
+        }
+    }
+
+    // 4. Create Sample Programs
+    $programs = array(
+        'aba-therapy' => array(
+            'title' => 'ABA Therapy',
+            'excerpt' => 'Applied Behavior Analysis focused on positive reinforcement and measurable outcomes.',
+            'meta' => array(
+                'program_icon' => '🧩',
+                'program_age_range' => '18mo - 12y',
+                'program_color_scheme' => 'red',
+                'program_hero_title' => 'Individualized Behavioral Growth.',
+                'program_hero_description' => 'Our ABA program is designed to build essential life skills through data-driven intervention.',
+                'program_prism_title' => 'Behavioral Core',
+                'program_prism_physical' => 40,
+                'program_prism_emotional' => 90,
+                'program_prism_social' => 80,
+                'program_prism_academic' => 30,
+                'program_prism_creative' => 50,
+            )
+        ),
+        'speech-therapy' => array(
+            'title' => 'Speech Therapy',
+            'excerpt' => 'Helping children unlock their voice and communicate effectively with the world.',
+            'meta' => array(
+                'program_icon' => '💬',
+                'program_age_range' => '2y - 12y',
+                'program_color_scheme' => 'blue',
+                'program_hero_title' => 'Unlocking Every Voice.',
+                'program_prism_title' => 'Communication Core',
+                'program_prism_physical' => 20,
+                'program_prism_emotional' => 70,
+                'program_prism_social' => 95,
+                'program_prism_academic' => 60,
+                'program_prism_creative' => 80,
+            )
+        ),
+        'occupational-therapy' => array(
+            'title' => 'Occupational Therapy',
+            'excerpt' => 'Building independence through fine motor, sensory, and self-regulation skills.',
+            'meta' => array(
+                'program_icon' => '🖐️',
+                'program_age_range' => '6mo - 12y',
+                'program_color_scheme' => 'yellow',
+                'program_hero_title' => 'Developing Independence.',
+                'program_prism_title' => 'Motor & Sensory Core',
+                'program_prism_physical' => 90,
+                'program_prism_emotional' => 60,
+                'program_prism_social' => 40,
+                'program_prism_academic' => 50,
+                'program_prism_creative' => 70,
+            )
+        ),
+    );
+
+    foreach ($programs as $slug => $data) {
+        $existing = get_page_by_path($slug, OBJECT, 'program');
+        if (!$existing) {
+            $post_id = wp_insert_post(array(
+                'post_title' => $data['title'],
+                'post_name' => $slug,
+                'post_excerpt' => $data['excerpt'],
+                'post_status' => 'publish',
+                'post_type' => 'program',
+            ));
+            if (!is_wp_error($post_id) && !empty($data['meta'])) {
+                foreach ($data['meta'] as $key => $value)
+                    update_post_meta($post_id, $key, $value);
+            }
+        }
+    }
+
+    // 5. Create Sample Locations
+    $locations = array(
+        'alpharetta-center' => array(
+            'title' => 'Alpharetta Clinical Center',
+            'meta' => array(
+                'location_city' => 'Alpharetta',
+                'location_state' => 'GA',
+                'location_address' => '500 Alpha Way',
+                'location_phone' => '(770) 555-0100',
+                'location_hours' => '8am - 6pm',
+                'location_tagline' => 'Excellence in North Fulton.',
+                'location_director_name' => 'Dr. Jane Smith',
+                'location_google_rating' => '5.0',
+            )
+        ),
+    );
+
+    foreach ($locations as $slug => $data) {
+        $existing = get_page_by_path($slug, OBJECT, 'location');
+        if (!$existing) {
+            $post_id = wp_insert_post(array(
+                'post_title' => $data['title'],
+                'post_name' => $slug,
+                'post_status' => 'publish',
+                'post_type' => 'location',
+            ));
+            if (!is_wp_error($post_id) && !empty($data['meta'])) {
+                foreach ($data['meta'] as $key => $value)
+                    update_post_meta($post_id, $key, $value);
+            }
+        }
+    }
+
+    echo '<div class="notice notice-success is-dismissible"><p>Chroma Early Start: Pages, Programs, Locations, and Global Settings seeded!</p></div>';
+}
+
+add_action('admin_init', function () {
+    if (isset($_GET['earlystart_seed']) && $_GET['earlystart_seed'] === '1') {
+        earlystart_seed_core_content();
+    }
+});

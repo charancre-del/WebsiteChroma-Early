@@ -1,0 +1,198 @@
+/**
+ * Tailwind CSS Input File
+ * Compiled to assets/css/main.css via PostCSS
+ *
+ * @package EarlyStart_Early_Start
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Base Styles
+ */
+@layer base {
+
+  /* Outfit Font Family */
+  @font-face {
+    font-family: 'Outfit';
+    src: url('../webfonts/Outfit-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Outfit';
+    src: url('../webfonts/Outfit-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Outfit';
+    src: url('../webfonts/Outfit-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Outfit';
+    src: url('../webfonts/Outfit-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Outfit';
+    src: url('../webfonts/Outfit-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Playfair Display Font Family */
+  @font-face {
+    font-family: 'Playfair Display';
+    src: url('../webfonts/PlayfairDisplay-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Playfair Display';
+    src: url('../webfonts/PlayfairDisplay-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Playfair Display';
+    src: url('../webfonts/PlayfairDisplay-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: theme('fontFamily.sans');
+    overflow-x: hidden;
+  }
+
+  /* Accessible focus states for keyboard navigation */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid theme('colors.chroma.blue');
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  /* Remove default outline for non-keyboard focus */
+  a:focus:not(:focus-visible),
+  button:focus:not(:focus-visible),
+  input:focus:not(:focus-visible),
+  textarea:focus:not(:focus-visible),
+  select:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+/**
+ * Custom Components
+ */
+@layer components {
+  .shadow-soft {
+    box-shadow: 0 20px 40px -10px rgba(74, 108, 124, 0.08);
+  }
+
+  .shadow-card {
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .shadow-cardHover {
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-float {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  }
+
+  .shadow-glow {
+    box-shadow: 0 0 20px rgba(74, 108, 124, 0.3);
+  }
+}
+
+/**
+ * Custom Utilities
+ */
+@layer utilities {
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeInUp 1.1s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Lazy Loading Styles */
+  img[data-lazy-src] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  img.lazy-loaded {
+    opacity: 1;
+    background: none;
+    animation: none;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .faq-item.active {
+    border-color: #ffe4e6;
+    /* rose-100 */
+    background-color: #f8fafc;
+    /* stone-50 */
+  }
+}

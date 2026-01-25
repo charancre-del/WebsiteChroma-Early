@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABA Therapy | Chroma Early Start</title>
+    <meta name="description" content="Modern, assent-based ABA therapy for children with autism. Focused on communication, social skills, and school readiness in a play-based environment.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        },
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            800: '#292524',
+                            900: '#1c1917',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-rose-100 selection:text-rose-900 font-sans flex flex-col min-h-screen">
+
+    <!-- NAVIGATION -->
+    <header class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-stone-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="relative w-10 h-10 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-rose-100 rounded-full opacity-80"></div>
+                        <i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
+                            Chroma Early Start
+                        </span>
+                        <span class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
+                            Pediatric Therapy & Early Intervention
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden xl:flex space-x-1 items-center">
+                    <a href="index.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Home</a>
+                    <a href="about.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">About Us</a>
+                    <a href="approach.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Our Approach</a>
+                    <a href="services.html" class="px-3 py-2 text-rose-600 bg-rose-50 font-medium transition-colors text-sm tracking-wide rounded-lg">Services</a>
+                    <a href="index.html#families" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">For Families</a>
+                    <a href="index.html#team" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Clinical Team</a>
+                    
+                    <div class="pl-4">
+                        <a href="index.html#contact" class="bg-stone-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-rose-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm inline-block">
+                            Get Started
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="xl:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-stone-600 hover:text-rose-600 p-2">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden fixed top-20 left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 flex-col space-y-4 xl:hidden h-screen overflow-y-auto pb-32">
+            <a href="index.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">Home</a>
+            <a href="about.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">About Us</a>
+            <a href="services.html" class="block w-full text-left text-lg font-medium text-rose-600 py-3 border-b border-stone-50">Services</a>
+            <a href="index.html#contact" class="block w-full text-center bg-stone-900 text-white px-6 py-4 rounded-xl font-bold mt-4">Get Started</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-20">
+        
+        <!-- Hero Section -->
+        <section class="relative bg-white pt-24 pb-20 lg:pt-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="text-left">
+                        <div class="inline-flex items-center space-x-2 mb-6 animate-fade-in-up">
+                            <span class="w-8 h-1 bg-rose-500 rounded-full"></span>
+                            <span class="text-rose-600 font-bold tracking-widest text-sm uppercase">Clinical Services</span>
+                        </div>
+                        <h1 class="text-5xl md:text-6xl font-bold text-stone-900 mb-6 leading-tight animate-fade-in-up delay-100">
+                            Modern ABA:<br><span class="text-rose-600">Science with Heart.</span>
+                        </h1>
+                        <p class="text-xl text-stone-600 mb-8 leading-relaxed animate-fade-in-up delay-200">
+                            Applied Behavior Analysis is the most effective evidence-based treatment for autism. We focus on teaching skills that matter—communication, independence, and joy—without compromising your child's personality.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-200">
+                            <a href="#how-it-works" class="bg-rose-600 text-white px-8 py-4 rounded-full font-bold hover:bg-rose-500 transition-all shadow-lg flex items-center justify-center">
+                                How It Works <i data-lucide="arrow-down" class="ml-2 w-5 h-5"></i>
+                            </a>
+                            <a href="index.html#contact" class="bg-white text-stone-900 border border-stone-200 px-8 py-4 rounded-full font-bold hover:border-rose-200 hover:text-rose-600 transition-all shadow-sm flex items-center justify-center">
+                                Book Consultation
+                            </a>
+                        </div>
+                    </div>
+                    <div class="relative animate-fade-in-up delay-200">
+                        <!-- Abstract Visual -->
+                        <div class="absolute inset-0 bg-rose-100 rounded-[3rem] transform rotate-3"></div>
+                        <div class="relative bg-white rounded-[3rem] h-[500px] overflow-hidden shadow-2xl border border-stone-100 flex items-center justify-center">
+                            <div class="text-center p-10">
+                                <div class="bg-rose-50 w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <i data-lucide="puzzle" class="w-16 h-16 text-rose-500"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-stone-900">Skill Acquisition</h3>
+                                <div class="flex justify-center space-x-2 mt-4">
+                                    <span class="w-2 h-2 rounded-full bg-rose-300"></span>
+                                    <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                                    <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What We Teach (Core Domains) -->
+        <section class="py-24 bg-stone-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-stone-900 mb-4">Focus Areas</h2>
+                    <p class="text-stone-600 max-w-2xl mx-auto">ABA is about much more than reducing behavior. It is about expanding your child's world through skill building.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Domain 1 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 hover:shadow-lg transition-all">
+                        <div class="w-14 h-14 bg-rose-50 rounded-2xl flex items-center justify-center mb-6">
+                            <i data-lucide="message-circle" class="w-7 h-7 text-rose-600"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-stone-900 mb-3">Communication</h3>
+                        <p class="text-stone-600 text-sm">Functional communication training (FCT) to replace frustration with words, signs, or AAC.</p>
+                    </div>
+                    <!-- Domain 2 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 hover:shadow-lg transition-all">
+                        <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-6">
+                            <i data-lucide="users" class="w-7 h-7 text-orange-600"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-stone-900 mb-3">Social Skills</h3>
+                        <p class="text-stone-600 text-sm">Joint attention, turn-taking, and navigating peer interactions in our mock classroom settings.</p>
+                    </div>
+                    <!-- Domain 3 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 hover:shadow-lg transition-all">
+                        <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mb-6">
+                            <i data-lucide="star" class="w-7 h-7 text-amber-600"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-stone-900 mb-3">Independence</h3>
+                        <p class="text-stone-600 text-sm">Toileting, feeding, dressing, and following daily routines to foster self-confidence.</p>
+                    </div>
+                    <!-- Domain 4 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 hover:shadow-lg transition-all">
+                        <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
+                            <i data-lucide="brain" class="w-7 h-7 text-blue-600"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-stone-900 mb-3">School Readiness</h3>
+                        <p class="text-stone-600 text-sm">Sitting for circle time, following group instructions, and transitioning between activities.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Process -->
+        <section id="how-it-works" class="py-24 bg-white relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid lg:grid-cols-2 gap-20 items-start">
+                    <div>
+                        <span class="text-rose-600 font-bold tracking-widest text-sm uppercase mb-4 block">The Process</span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-8">How We Build Your Child's Program</h2>
+                        
+                        <div class="space-y-12">
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-6">
+                                    <div class="w-12 h-12 rounded-full bg-rose-600 text-white flex items-center justify-center font-bold text-xl">1</div>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-stone-900 mb-2">Assessment & Intake</h4>
+                                    <p class="text-stone-600 leading-relaxed">
+                                        Our BCBA conducts a comprehensive skills assessment (VB-MAPP or ABLLS-R) to identify strengths and barriers. We listen to your family's priorities first.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-6">
+                                    <div class="w-12 h-12 rounded-full bg-stone-900 text-white flex items-center justify-center font-bold text-xl">2</div>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-stone-900 mb-2">Custom Treatment Plan</h4>
+                                    <p class="text-stone-600 leading-relaxed">
+                                        We create a tailored roadmap with measurable goals. This plan is submitted to insurance for authorization (we handle the paperwork).
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-6">
+                                    <div class="w-12 h-12 rounded-full bg-stone-900 text-white flex items-center justify-center font-bold text-xl">3</div>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-stone-900 mb-2">1:1 Therapy Begins</h4>
+                                    <p class="text-stone-600 leading-relaxed">
+                                        Your child is paired with a Registered Behavior Technician (RBT). We start with "pairing"—playing and building trust—before placing demands.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-6">
+                                    <div class="w-12 h-12 rounded-full bg-stone-900 text-white flex items-center justify-center font-bold text-xl">4</div>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-stone-900 mb-2">Data & Generalization</h4>
+                                    <p class="text-stone-600 leading-relaxed">
+                                        We track data daily. As skills are mastered in the clinic, we work on generalizing them to home and school environments.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-stone-50 rounded-[3rem] p-10 border border-stone-100 sticky top-24">
+                        <h3 class="text-2xl font-bold text-stone-900 mb-6">Service Settings</h3>
+                        <p class="text-stone-600 mb-8">ABA isn't limited to a table. We provide therapy where your child needs it most.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center p-4 bg-white rounded-xl shadow-sm">
+                                <i data-lucide="building" class="w-6 h-6 text-rose-500 mr-4"></i>
+                                <div>
+                                    <span class="block font-bold text-stone-900">Clinic Based</span>
+                                    <span class="text-xs text-stone-500">Structured learning & social groups</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-white rounded-xl shadow-sm">
+                                <i data-lucide="home" class="w-6 h-6 text-rose-500 mr-4"></i>
+                                <div>
+                                    <span class="block font-bold text-stone-900">Home Based</span>
+                                    <span class="text-xs text-stone-500">Daily routines & family dynamics</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-white rounded-xl shadow-sm">
+                                <i data-lucide="school" class="w-6 h-6 text-rose-500 mr-4"></i>
+                                <div>
+                                    <span class="block font-bold text-stone-900">School Integrated</span>
+                                    <span class="text-xs text-stone-500">Push-in support at Chroma Academy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQs -->
+        <section class="py-24 bg-rose-600 text-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold mb-12 text-center">Common Questions About ABA</h2>
+                <div class="space-y-6">
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl border border-rose-400/30 p-6">
+                        <h4 class="font-bold text-lg mb-2">How many hours will my child need?</h4>
+                        <p class="text-rose-100 leading-relaxed">It varies by medical necessity. Focused programs (targeting specific behaviors) are typically 10-20 hours/week, while comprehensive early intervention programs are often 25-35 hours/week to maximize neuroplasticity.</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl border border-rose-400/30 p-6">
+                        <h4 class="font-bold text-lg mb-2">Is ABA "training" my child like a robot?</h4>
+                        <p class="text-rose-100 leading-relaxed">Absolutely not. That is old-school ABA. Our modern, assent-based approach focuses on functional skills and personality. We want your child to be their most independent self, not someone else.</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl border border-rose-400/30 p-6">
+                        <h4 class="font-bold text-lg mb-2">Do you involve parents?</h4>
+                        <p class="text-rose-100 leading-relaxed">Yes! Parent training is a required component of our program. We empower you with the strategies we use in the clinic so you can support your child at home.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-24 bg-white text-center">
+            <div class="max-w-4xl mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-6">Let's unlock their potential.</h2>
+                <p class="text-xl text-stone-600 mb-10">
+                    Schedule a tour or a free consultation with our Clinical Director to see if ABA is right for your family.
+                </p>
+                <a href="index.html#contact" class="bg-stone-900 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-rose-600 transition-colors shadow-lg inline-block">
+                    Get Started
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-16 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 lg:gap-8">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <i data-lucide="puzzle" class="w-8 h-8 text-rose-500"></i>
+                        <span class="text-2xl font-bold text-white tracking-tight">Chroma</span>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-6 text-stone-400">
+                        Empowering children and families through compassionate, evidence-based therapy. Ages 18mo - 12yrs.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Quick Links</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="about.html" class="hover:text-rose-400 transition-colors">About Us</a></li>
+                        <li><a href="approach.html" class="hover:text-rose-400 transition-colors">Our Approach</a></li>
+                        <li><a href="index.html#team" class="hover:text-rose-400 transition-colors">Clinical Team</a></li>
+                        <li><a href="index.html#faq" class="hover:text-rose-400 transition-colors">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Services</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="services.html" class="hover:text-rose-400 transition-colors">ABA Therapy</a></li>
+                        <li><a href="services.html" class="hover:text-rose-400 transition-colors">Speech Therapy</a></li>
+                        <li><a href="services.html" class="hover:text-rose-400 transition-colors">Occupational Therapy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Contact</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-2"></i> (555) 123-4567</li>
+                        <li class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-2"></i> hello@chromaearlystart.com</li>
+                        <li class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> 123 Wellness Blvd, Therapy City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 mt-16 pt-8 text-center text-xs text-stone-500">
+                <p>&copy; 2026 Chroma Early Start LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

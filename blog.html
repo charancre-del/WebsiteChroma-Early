@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & Resources | Chroma Early Start</title>
+    <meta name="description" content="Expert insights on ABA therapy, speech development, and occupational therapy for children with autism. Tips, news, and resources for families.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        },
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            800: '#292524',
+                            900: '#1c1917',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-rose-100 selection:text-rose-900 font-sans flex flex-col min-h-screen">
+
+    <!-- NAVIGATION -->
+    <header class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-stone-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="relative w-10 h-10 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-rose-100 rounded-full opacity-80"></div>
+                        <i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
+                            Chroma Early Start
+                        </span>
+                        <span class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
+                            Pediatric Therapy & Early Intervention
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden xl:flex space-x-1 items-center">
+                    <a href="index.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Home</a>
+                    <a href="about.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">About Us</a>
+                    <a href="services.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">Services</a>
+                    <a href="families.html" class="px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg">For Families</a>
+                    <a href="blog.html" class="px-3 py-2 text-rose-600 bg-rose-50 font-medium transition-colors text-sm tracking-wide rounded-lg">Blog</a>
+                    
+                    <div class="pl-4">
+                        <a href="contact.html" class="bg-stone-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-rose-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm inline-block">
+                            Get Started
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="xl:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-stone-600 hover:text-rose-600 p-2">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden fixed top-20 left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 flex-col space-y-4 xl:hidden h-screen overflow-y-auto pb-32">
+            <a href="index.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">Home</a>
+            <a href="about.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">About Us</a>
+            <a href="services.html" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">Services</a>
+            <a href="blog.html" class="block w-full text-left text-lg font-medium text-rose-600 py-3 border-b border-stone-50">Blog</a>
+            <a href="contact.html" class="block w-full text-center bg-stone-900 text-white px-6 py-4 rounded-xl font-bold mt-4">Get Started</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-20">
+        
+        <!-- Hero Section -->
+        <section class="relative bg-white pt-24 pb-20 lg:pt-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <span class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6 animate-fade-in-up">Chroma Knowledge Hub</span>
+                <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight animate-fade-in-up delay-100">
+                    Insights & <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Resources</span>
+                </h1>
+                <p class="text-xl text-stone-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200">
+                    Expert advice from our clinical team to help you navigate early intervention, support your child at home, and stay updated on company news.
+                </p>
+            </div>
+        </section>
+
+        <!-- Categories & Search (Placeholder functionality) -->
+        <section class="border-b border-stone-100 bg-white pb-8 sticky top-20 z-40 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex space-x-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
+                        <button class="px-4 py-2 bg-stone-900 text-white rounded-full text-sm font-bold whitespace-nowrap">All Posts</button>
+                        <button class="px-4 py-2 bg-stone-100 text-stone-600 hover:bg-stone-200 rounded-full text-sm font-bold whitespace-nowrap transition-colors">ABA Tips</button>
+                        <button class="px-4 py-2 bg-stone-100 text-stone-600 hover:bg-stone-200 rounded-full text-sm font-bold whitespace-nowrap transition-colors">Speech & Language</button>
+                        <button class="px-4 py-2 bg-stone-100 text-stone-600 hover:bg-stone-200 rounded-full text-sm font-bold whitespace-nowrap transition-colors">Occupational Therapy</button>
+                        <button class="px-4 py-2 bg-stone-100 text-stone-600 hover:bg-stone-200 rounded-full text-sm font-bold whitespace-nowrap transition-colors">Company News</button>
+                    </div>
+                    <div class="relative w-full md:w-64">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-stone-400"></i>
+                        <input type="text" placeholder="Search articles..." class="w-full pl-10 pr-4 py-2 rounded-full border border-stone-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 outline-none text-sm">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Post -->
+        <section class="py-16 bg-stone-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="relative rounded-[3rem] overflow-hidden shadow-xl bg-white group cursor-pointer hover:shadow-2xl transition-shadow">
+                    <div class="grid md:grid-cols-2">
+                        <div class="h-64 md:h-auto bg-stone-200 relative overflow-hidden">
+                            <!-- Image Placeholder -->
+                            <div class="absolute inset-0 flex items-center justify-center bg-rose-100">
+                                <i data-lucide="image" class="w-16 h-16 text-rose-300"></i>
+                            </div>
+                            <div class="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-1 rounded-full text-xs font-bold text-rose-600 uppercase tracking-wide">Featured</div>
+                        </div>
+                        <div class="p-8 md:p-12 flex flex-col justify-center">
+                            <div class="flex items-center text-stone-400 text-sm mb-4">
+                                <span class="font-bold text-rose-500">ABA Therapy</span>
+                                <span class="mx-2">•</span>
+                                <span>Jan 24, 2026</span>
+                                <span class="mx-2">•</span>
+                                <span>5 min read</span>
+                            </div>
+                            <h2 class="text-3xl font-bold text-stone-900 mb-4 group-hover:text-rose-600 transition-colors">What is "Assent-Based" ABA and Why Does It Matter?</h2>
+                            <p class="text-stone-600 leading-relaxed mb-8">
+                                Traditional ABA often focused on compliance. Today, we focus on joy. Learn how prioritizing your child's willingness to participate leads to better outcomes and a happier learner.
+                            </p>
+                            <span class="inline-flex items-center font-bold text-stone-900 group-hover:text-rose-600 transition-colors">
+                                Read Full Article <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Grid -->
+        <section class="py-16 bg-stone-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Article 1 -->
+                    <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-stone-100 hover:shadow-lg transition-all group cursor-pointer">
+                        <div class="h-48 bg-orange-50 relative flex items-center justify-center">
+                            <i data-lucide="message-circle" class="w-12 h-12 text-orange-300"></i>
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-bold text-orange-500 bg-orange-50 px-2 py-1 rounded-md">Speech</span>
+                                <span class="text-xs text-stone-400">Jan 10, 2026</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-stone-900 mb-3 group-hover:text-orange-600 transition-colors">5 Fun Ways to Encourage Language at Home</h3>
+                            <p class="text-stone-600 text-sm mb-4 line-clamp-3">
+                                You don't need fancy toys to build vocabulary. Discover simple games you can play during bath time and meal prep.
+                            </p>
+                            <span class="text-sm font-bold text-stone-900 flex items-center">Read More <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i></span>
+                        </div>
+                    </article>
+
+                    <!-- Article 2 -->
+                    <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-stone-100 hover:shadow-lg transition-all group cursor-pointer">
+                        <div class="h-48 bg-amber-50 relative flex items-center justify-center">
+                            <i data-lucide="hand-metal" class="w-12 h-12 text-amber-300"></i>
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-bold text-amber-500 bg-amber-50 px-2 py-1 rounded-md">Occupational Therapy</span>
+                                <span class="text-xs text-stone-400">Dec 28, 2025</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-stone-900 mb-3 group-hover:text-amber-600 transition-colors">Sensory Meltdowns vs. Tantrums</h3>
+                            <p class="text-stone-600 text-sm mb-4 line-clamp-3">
+                                Understanding the difference is key to helping your child regulate. Here are the signs to look for and strategies for each.
+                            </p>
+                            <span class="text-sm font-bold text-stone-900 flex items-center">Read More <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i></span>
+                        </div>
+                    </article>
+
+                    <!-- Article 3 -->
+                    <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-stone-100 hover:shadow-lg transition-all group cursor-pointer">
+                        <div class="h-48 bg-rose-50 relative flex items-center justify-center">
+                            <i data-lucide="school" class="w-12 h-12 text-rose-300"></i>
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-bold text-stone-600 bg-stone-100 px-2 py-1 rounded-md">Company News</span>
+                                <span class="text-xs text-stone-400">Dec 15, 2025</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-stone-900 mb-3 group-hover:text-rose-600 transition-colors">Chroma Expands to New Roswell Location</h3>
+                            <p class="text-stone-600 text-sm mb-4 line-clamp-3">
+                                We are excited to announce our newest clinic opening in Roswell! Meet the new Clinical Director and see the space.
+                            </p>
+                            <span class="text-sm font-bold text-stone-900 flex items-center">Read More <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i></span>
+                        </div>
+                    </article>
+
+                    <!-- Article 4 -->
+                    <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-stone-100 hover:shadow-lg transition-all group cursor-pointer">
+                        <div class="h-48 bg-blue-50 relative flex items-center justify-center">
+                            <i data-lucide="book-open" class="w-12 h-12 text-blue-300"></i>
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-bold text-blue-500 bg-blue-50 px-2 py-1 rounded-md">Resources</span>
+                                <span class="text-xs text-stone-400">Nov 30, 2025</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-stone-900 mb-3 group-hover:text-blue-600 transition-colors">The Ultimate IEP Prep Checklist</h3>
+                            <p class="text-stone-600 text-sm mb-4 line-clamp-3">
+                                Heading into an IEP meeting can be stressful. Use this checklist to ensure you have all your documents and questions ready.
+                            </p>
+                            <span class="text-sm font-bold text-stone-900 flex items-center">Read More <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i></span>
+                        </div>
+                    </article>
+
+                    <!-- Article 5 -->
+                    <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-stone-100 hover:shadow-lg transition-all group cursor-pointer">
+                        <div class="h-48 bg-rose-50 relative flex items-center justify-center">
+                            <i data-lucide="puzzle" class="w-12 h-12 text-rose-300"></i>
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-bold text-rose-500 bg-rose-50 px-2 py-1 rounded-md">ABA Tips</span>
+                                <span class="text-xs text-stone-400">Nov 12, 2025</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-stone-900 mb-3 group-hover:text-rose-600 transition-colors">Using "First/Then" Boards Effectively</h3>
+                            <p class="text-stone-600 text-sm mb-4 line-clamp-3">
+                                A simple visual tool can reduce transition tantrums significantly. Learn how to implement First/Then logic at home.
+                            </p>
+                            <span class="text-sm font-bold text-stone-900 flex items-center">Read More <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i></span>
+                        </div>
+                    </article>
+
+                    <!-- Article 6 -->
+                    <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-stone-100 hover:shadow-lg transition-all group cursor-pointer">
+                        <div class="h-48 bg-stone-100 relative flex items-center justify-center">
+                            <i data-lucide="users" class="w-12 h-12 text-stone-400"></i>
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-bold text-stone-600 bg-stone-100 px-2 py-1 rounded-md">Community</span>
+                                <span class="text-xs text-stone-400">Oct 20, 2025</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-stone-900 mb-3 group-hover:text-stone-700 transition-colors">Sensory-Friendly Santa Recap</h3>
+                            <p class="text-stone-600 text-sm mb-4 line-clamp-3">
+                                Thank you to everyone who joined us for our holiday event! Check out the photos and see how we made the holidays inclusive.
+                            </p>
+                            <span class="text-sm font-bold text-stone-900 flex items-center">Read More <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i></span>
+                        </div>
+                    </article>
+
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-16 flex justify-center space-x-2">
+                    <button class="w-10 h-10 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:text-stone-900 hover:border-stone-900 transition-colors"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                    <button class="w-10 h-10 rounded-full bg-stone-900 text-white flex items-center justify-center font-bold text-sm">1</button>
+                    <button class="w-10 h-10 rounded-full border border-stone-200 flex items-center justify-center text-stone-600 hover:bg-stone-50 font-bold text-sm transition-colors">2</button>
+                    <button class="w-10 h-10 rounded-full border border-stone-200 flex items-center justify-center text-stone-600 hover:bg-stone-50 font-bold text-sm transition-colors">3</button>
+                    <button class="w-10 h-10 rounded-full border border-stone-200 flex items-center justify-center text-stone-600 hover:text-stone-900 hover:border-stone-900 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Signup -->
+        <section class="py-24 bg-stone-900 text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-rose-500 opacity-20 rounded-full blur-3xl"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <i data-lucide="mail" class="w-12 h-12 text-rose-400 mx-auto mb-6"></i>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Join the Chroma Community</h2>
+                <p class="text-stone-300 text-lg mb-8 max-w-2xl mx-auto">
+                    Get expert tips, workshop announcements, and sensory-friendly event invites delivered straight to your inbox. No spam, ever.
+                </p>
+                <form class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto" onsubmit="event.preventDefault(); alert('Subscribed!');">
+                    <input type="email" placeholder="Enter your email" class="w-full px-6 py-4 rounded-full bg-stone-800 border border-stone-700 text-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 outline-none">
+                    <button class="bg-rose-600 text-white px-8 py-4 rounded-full font-bold hover:bg-rose-500 transition-colors shadow-lg">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-16 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 lg:gap-8">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <i data-lucide="puzzle" class="w-8 h-8 text-rose-500"></i>
+                        <span class="text-2xl font-bold text-white tracking-tight">Chroma</span>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-6 text-stone-400">
+                        Empowering children and families through compassionate, evidence-based therapy. Ages 18mo - 12yrs.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Quick Links</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="about.html" class="hover:text-rose-400 transition-colors">About Us</a></li>
+                        <li><a href="approach.html" class="hover:text-rose-400 transition-colors">Our Approach</a></li>
+                        <li><a href="index.html#team" class="hover:text-rose-400 transition-colors">Clinical Team</a></li>
+                        <li><a href="blog.html" class="hover:text-rose-400 transition-colors text-white font-bold">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Services</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="aba.html" class="hover:text-rose-400 transition-colors">ABA Therapy</a></li>
+                        <li><a href="speech.html" class="hover:text-rose-400 transition-colors">Speech Therapy</a></li>
+                        <li><a href="ot.html" class="hover:text-rose-400 transition-colors">Occupational Therapy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-wide text-sm uppercase">Contact</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-2"></i> (555) 123-4567</li>
+                        <li class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-2"></i> hello@chromaearlystart.com</li>
+                        <li class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> 123 Wellness Blvd, Therapy City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 mt-16 pt-8 text-center text-xs text-stone-500">
+                <p>&copy; 2026 Chroma Early Start LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
