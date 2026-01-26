@@ -121,7 +121,7 @@
 						<?php _e('Now Enrolling: Spring 2026 Bridge Program', 'earlystart-early-learning'); ?>
 					</span>
 					<span class="hidden md:block text-white/30">|</span>
-					<a href="<?php echo esc_url(home_url('/consultation/')); ?>"
+					<a href="<?php echo esc_url(earlystart_get_page_link('consultation')); ?>"
 						class="text-white hover:text-rose-200 transition-colors border-b border-white/40 pb-0.5">
 						<?php _e('Schedule Clinical Consultation', 'earlystart-early-learning'); ?>
 					</a>
@@ -134,33 +134,77 @@
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="flex justify-between items-center h-20">
 					<!-- Logo -->
-					<a href="<?php echo esc_url(home_url('/')); ?>"
-						class="flex items-center space-x-3 cursor-pointer group flex-shrink-0">
-						<div class="relative w-10 h-10 flex items-center justify-center">
-							<div
-								class="absolute inset-0 bg-rose-100 rounded-full opacity-80 group-hover:scale-110 transition-transform">
-							</div>
-							<i data-lucide="puzzle" class="w-6 h-6 text-rose-700 relative z-10"></i>
-						</div>
-						<div class="flex flex-col">
-							<?php
-							$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
-							$header_lines = explode("\n", $header_text_raw);
-							$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
-							$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
-							?>
-							<span
-								class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
-								<?php echo esc_html($primary_line); ?>
-							</span>
-							<?php if (!empty($secondary_line)): ?>
-								<span
-									class="text-[0.65rem] uppercase tracking-widest text-stone-700 font-semibold hidden md:block">
-									<?php echo esc_html($secondary_line); ?>
-								</span>
+
+					<!-- Logo -->
+					<div class="flex-shrink-0 flex items-center">
+						<a href="<?php echo esc_url(home_url('/')); ?>"
+							class="flex items-center space-x-3 cursor-pointer group flex-shrink-0" rel="home">
+
+							<?php if (has_custom_logo()): ?>
+								<?php
+								$custom_logo_id = get_theme_mod('custom_logo');
+								$logo = wp_get_attachment_image_src($custom_logo_id, 'full');
+
+								if ($logo):
+									?>
+									<img src="<?php echo esc_url($logo[0]); ?>"
+										alt="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>"
+										width="<?php echo esc_attr($logo[1]); ?>" height="<?php echo esc_attr($logo[2]); ?>"
+										class="h-10 w-auto md:h-12 object-contain logo-img transition-transform duration-300 group-hover:scale-105"
+										fetchpriority="high">
+								<?php endif; ?>
+
+								<?php // Optional: Show text alongside logo if layout option is enabled, but for now just logo if present 
+									?>
+								<div class="hidden md:flex flex-col ml-3">
+									<?php
+									$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
+									$header_lines = explode("\n", $header_text_raw);
+									$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
+									$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
+									?>
+									<span
+										class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
+										<?php echo esc_html($primary_line); ?>
+									</span>
+									<?php if (!empty($secondary_line)): ?>
+										<span
+											class="text-[0.65rem] uppercase tracking-widest text-stone-700 font-semibold hidden lg:block">
+											<?php echo esc_html($secondary_line); ?>
+										</span>
+									<?php endif; ?>
+								</div>
+
+							<?php else: ?>
+								<!-- Fallback: Hardcoded Icon + Text if no custom logo -->
+								<div class="relative w-10 h-10 flex items-center justify-center">
+									<div
+										class="absolute inset-0 bg-rose-100 rounded-full opacity-80 group-hover:scale-110 transition-transform">
+									</div>
+									<i data-lucide="puzzle" class="w-6 h-6 text-rose-700 relative z-10"></i>
+								</div>
+								<div class="flex flex-col">
+									<?php
+									$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
+									$header_lines = explode("\n", $header_text_raw);
+									$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
+									$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
+									?>
+									<span
+										class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
+										<?php echo esc_html($primary_line); ?>
+									</span>
+									<?php if (!empty($secondary_line)): ?>
+										<span
+											class="text-[0.65rem] uppercase tracking-widest text-stone-700 font-semibold hidden md:block">
+											<?php echo esc_html($secondary_line); ?>
+										</span>
+									<?php endif; ?>
+								</div>
 							<?php endif; ?>
-						</div>
-					</a>
+						</a>
+					</div>
+
 
 					<!-- Desktop Menu -->
 					<nav class="hidden xl:flex space-x-1 items-center">
@@ -168,7 +212,7 @@
 
 						<div class="pl-4">
 							<?php
-							$cta_url = earlystart_get_theme_mod('earlystart_book_tour_url', home_url('/contact/'));
+							$cta_url = earlystart_get_theme_mod('earlystart_book_tour_url', earlystart_get_page_link('contact'));
 							$cta_text = earlystart_get_theme_mod('earlystart_header_cta_text', 'Get Started');
 							?>
 							<a href="<?php echo esc_url($cta_url); ?>"
