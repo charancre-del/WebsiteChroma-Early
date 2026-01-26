@@ -40,13 +40,13 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                     <?php if (!empty($hero['cta_url'])): ?>
                         <a href="<?php echo esc_url($hero['cta_url']); ?>"
                             class="bg-stone-900 text-white px-10 py-4 rounded-full font-bold hover:bg-rose-600 transition-all shadow-xl hover:shadow-rose-200 hover:-translate-y-1 text-center">
-                            <?php echo esc_html($hero['cta_label']); ?>
+                            <?php echo esc_html($hero['cta_label'] ?: __('Start Your Journey', 'earlystart-early-learning')); ?>
                         </a>
                     <?php endif; ?>
                     <?php if (!empty($hero['secondary_url'])): ?>
                         <a href="<?php echo esc_url($hero['secondary_url']); ?>"
                             class="bg-white text-stone-900 border-2 border-stone-100 px-10 py-4 rounded-full font-bold hover:border-rose-600 hover:text-rose-700 transition-all text-center">
-                            <?php echo esc_html($hero['secondary_label']); ?>
+                            <?php echo esc_html($hero['secondary_label'] ?: __('Explore Services', 'earlystart-early-learning')); ?>
                         </a>
                     <?php endif; ?>
                 </div>
@@ -55,19 +55,19 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                     <div class="flex -space-x-3">
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden relative">
-                            <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1544717305-27a734ef202e', 100, 100)); ?>"
+                            <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1544717305-27a734ef202e', 100, 100, 60)); ?>"
                                 class="absolute inset-0 w-full h-full object-cover" alt="User" width="48" height="48"
                                 loading="lazy">
                         </div>
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden relative">
-                            <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1544005313-94ddf0286df2', 100, 100)); ?>"
+                            <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1544005313-94ddf0286df2', 100, 100, 60)); ?>"
                                 class="absolute inset-0 w-full h-full object-cover" alt="User" width="48" height="48"
                                 loading="lazy">
                         </div>
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden relative">
-                            <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1548142813-c348350df52b', 100, 100)); ?>"
+                            <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1548142813-c348350df52b', 100, 100, 60)); ?>"
                                 class="absolute inset-0 w-full h-full object-cover" alt="User" width="48" height="48"
                                 loading="lazy">
                         </div>

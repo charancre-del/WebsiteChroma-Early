@@ -32,7 +32,7 @@ if (!$tour_cta) {
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="<?php echo esc_url($tour_cta['cta_url']); ?>"
                     class="bg-white text-rose-700 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-50 transition-all shadow-2xl hover:scale-105 active:scale-95">
-                    <?php echo esc_html($tour_cta['cta_label']); ?>
+                    <?php echo esc_html($tour_cta['cta_label'] ?: __('Schedule a Tour', 'earlystart-early-learning')); ?>
                 </a>
                 <a href="tel:4045550123"
                     class="bg-stone-900 text-white border-2 border-stone-800 px-12 py-5 rounded-full font-bold text-lg hover:bg-stone-800 transition-all text-center"
