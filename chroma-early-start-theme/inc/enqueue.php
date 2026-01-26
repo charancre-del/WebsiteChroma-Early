@@ -57,6 +57,17 @@ function earlystart_enqueue_assets()
                 false // Load in Header to avoid race conditions
         );
 
+        // Initialize Lucide Icons (Inline Script to keep footer clean)
+        wp_add_inline_script('lucide-icons', "
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                } else {
+                    console.warn('Lucide icons not loaded');
+                }
+            });
+        ");
+
         // Tailwind CSS (CDN for immediate visual parity with HTML)
         wp_enqueue_script(
                 'tailwind-cdn',
