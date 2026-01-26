@@ -15,7 +15,7 @@ if (empty($team)) {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row justify-between items-end mb-16 gap-8">
             <div class="max-w-2xl fade-in-up">
-                <span class="text-rose-600 font-bold uppercase tracking-[0.2em] text-xs mb-4 block">
+                <span class="text-rose-700 font-bold uppercase tracking-[0.2em] text-xs mb-4 block">
                     <?php _e('Our Clinical Experts', 'earlystart-early-learning'); ?>
                 </span>
                 <h2 class="text-4xl lg:text-5xl font-extrabold text-stone-900 mb-6">
@@ -46,17 +46,18 @@ if (empty($team)) {
                                 <div class="flex space-x-4">
                                     <a href="<?php echo esc_url($member['linkedin']); ?>"
                                         class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-rose-600 transition-colors"
-                                        target="_blank" rel="noopener">
+                                        target="_blank" rel="noopener"
+                                        aria-label="<?php echo esc_attr(sprintf(__('Connect with %s on LinkedIn', 'earlystart-early-learning'), $member['name'])); ?>">
                                         <i data-lucide="linkedin" class="w-5 h-5"></i>
                                     </a>
                                 </div>
                             </div>
                         <?php endif; ?>
                     </div>
-                    <h4 class="text-2xl font-bold text-stone-900">
+                    <h3 class="text-2xl font-bold text-stone-900">
                         <?php echo esc_html($member['name']); ?>
-                    </h4>
-                    <p class="text-rose-600 font-bold text-sm uppercase tracking-wider mt-1">
+                    </h3>
+                    <p class="text-rose-700 font-bold text-sm uppercase tracking-wider mt-1">
                         <?php echo esc_html($member['role']); ?>
                     </p>
                 </div>

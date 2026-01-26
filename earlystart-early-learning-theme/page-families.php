@@ -135,7 +135,7 @@ while (have_posts()):
                                 <i data-lucide="file-text" class="w-5 h-5 text-rose-500 mr-2"></i>
                                 <?php _e('Documents Needed for Intake', 'earlystart-early-learning'); ?>
                             </h4>
-                            <p class="text-sm text-stone-500 mb-4">
+                            <p class="text-sm text-stone-600 mb-4">
                                 <?php _e('Having these ready can speed up the enrollment process by 1-2 weeks.', 'earlystart-early-learning'); ?>
                             </p>
                             <ul class="space-y-3">
@@ -264,7 +264,7 @@ while (have_posts()):
                                     <?php _e('A free 15-minute call to discuss your concerns and see if we are a good fit. We\'ll answer all your initial questions about logistics, approach, and availability.', 'earlystart-early-learning'); ?>
                                 </p>
                                 <span
-                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: Day 1', 'earlystart-early-learning'); ?></span>
+                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-600"><?php _e('Timeline: Day 1', 'earlystart-early-learning'); ?></span>
                             </div>
                         </div>
 
@@ -284,7 +284,7 @@ while (have_posts()):
                                     <?php _e('We check your insurance benefits and submit the assessment request. We handle the communication with the payer so you don\'t have to wait on hold.', 'earlystart-early-learning'); ?>
                                 </p>
                                 <span
-                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: 3-5 Days', 'earlystart-early-learning'); ?></span>
+                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-600"><?php _e('Timeline: 3-5 Days', 'earlystart-early-learning'); ?></span>
                             </div>
                         </div>
 
@@ -304,7 +304,7 @@ while (have_posts()):
                                     <?php _e('Our BCBA meets your child for a play-based skills assessment to identify strengths, barriers, and goals. We use tools like the VB-MAPP or ABLLS-R to build a baseline.', 'earlystart-early-learning'); ?>
                                 </p>
                                 <span
-                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: 1 Week', 'earlystart-early-learning'); ?></span>
+                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-600"><?php _e('Timeline: 1 Week', 'earlystart-early-learning'); ?></span>
                             </div>
                         </div>
 
@@ -324,7 +324,7 @@ while (have_posts()):
                                     <?php _e('We build a schedule that works for your family, pair you with a clinical team (BCBA & RBTs), and begin the journey of growth and connection.', 'earlystart-early-learning'); ?>
                                 </p>
                                 <span
-                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: Immediate openings', 'earlystart-early-learning'); ?></span>
+                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-600"><?php _e('Timeline: Immediate openings', 'earlystart-early-learning'); ?></span>
                             </div>
                         </div>
                     </div>

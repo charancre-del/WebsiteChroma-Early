@@ -223,7 +223,7 @@ while (have_posts()):
 								<?php the_post_thumbnail('large', array('class' => 'w-full h-full object-cover', 'fetchpriority' => 'high', 'sizes' => '(max-width: 768px) 100vw, 50vw')); ?>
 							<?php else:
 								// Unsplash fallback with srcset
-								$base_unsplash = "https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&auto=format&fit=crop";
+								$base_unsplash = "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80&fm=webp?q=80&auto=format&fit=crop&q=80&fm=webp";
 								$src_mobile = $base_unsplash . "&w=600&h=600";
 								$src_desktop = $base_unsplash . "&w=1000&h=750";
 								?>
@@ -268,7 +268,7 @@ while (have_posts()):
 					<h2 class="text-4xl font-bold text-stone-900 mb-6">
 						<?php _e('Designed for Clinical Magic.', 'earlystart-early-learning'); ?>
 					</h2>
-					<p class="text-xl text-stone-500 max-w-2xl mx-auto">
+					<p class="text-xl text-stone-600 max-w-2xl mx-auto">
 						<?php printf(__('Every corner of our %s campus is intentional—from sensory-sensitive treatment rooms to stimulating learning environments.', 'earlystart-early-learning'), esc_html($city)); ?>
 					</p>
 				</div>
@@ -282,7 +282,7 @@ while (have_posts()):
 						<h3 class="text-xl font-bold text-stone-900 mb-4">
 							<?php _e('Secure Access', 'earlystart-early-learning'); ?>
 						</h3>
-						<p class="text-stone-500 text-sm leading-relaxed">
+						<p class="text-stone-600 text-sm leading-relaxed">
 							<?php _e('Biometric entry and constant clinical oversight ensure our students are safe and supported.', 'earlystart-early-learning'); ?>
 						</p>
 					</div>
@@ -296,7 +296,7 @@ while (have_posts()):
 						<h3 class="text-xl font-bold text-stone-900 mb-4">
 							<?php _e('Sensory Spaces', 'earlystart-early-learning'); ?>
 						</h3>
-						<p class="text-stone-500 text-sm leading-relaxed">
+						<p class="text-stone-600 text-sm leading-relaxed">
 							<?php _e('Custom-built zones to help students regulate and focus through evidence-based sensory integration.', 'earlystart-early-learning'); ?>
 						</p>
 					</div>
@@ -308,7 +308,7 @@ while (have_posts()):
 						</div>
 						<h3 class="text-xl font-bold text-stone-900 mb-4"><?php _e('STEM Labs', 'earlystart-early-learning'); ?>
 						</h3>
-						<p class="text-stone-500 text-sm leading-relaxed">
+						<p class="text-stone-600 text-sm leading-relaxed">
 							<?php _e('Clinical learning hubs for early engineering, light exploration, and scientific discovery.', 'earlystart-early-learning'); ?>
 						</p>
 					</div>
@@ -320,7 +320,7 @@ while (have_posts()):
 						</div>
 						<h3 class="text-xl font-bold text-stone-900 mb-4"><?php _e('GA Pre-K', 'earlystart-early-learning'); ?>
 						</h3>
-						<p class="text-stone-500 text-sm leading-relaxed">
+						<p class="text-stone-600 text-sm leading-relaxed">
 							<?php _e('A proud partner of the Georgia Pre-K Program, blending clinical support with academic readiness.', 'earlystart-early-learning'); ?>
 						</p>
 					</div>
@@ -366,7 +366,7 @@ while (have_posts()):
 								<?php endif; ?>
 								<div>
 									<p class="text-lg font-bold text-white"><?php echo esc_html($director_name); ?></p>
-									<p class="text-sm text-stone-500 uppercase tracking-widest">
+									<p class="text-sm text-stone-600 uppercase tracking-widest">
 										<?php _e('Campus Director', 'earlystart-early-learning'); ?></p>
 								</div>
 							</div>
@@ -383,7 +383,7 @@ while (have_posts()):
 					<div class="text-center mb-16 fade-in-up">
 						<h2 class="text-4xl font-bold text-stone-900 mb-6">
 							<?php _e('Explore Our Clinical Environment.', 'earlystart-early-learning'); ?></h2>
-						<p class="text-xl text-stone-500 max-w-2xl mx-auto">
+						<p class="text-xl text-stone-600 max-w-2xl mx-auto">
 							<?php printf(__('Walk through our %s campus from the comfort of your home. See our PrismaPath™ curriculum in action.', 'earlystart-early-learning'), esc_html($city)); ?>
 						</p>
 					</div>
@@ -408,7 +408,7 @@ while (have_posts()):
 						<div class="fade-in-up">
 							<h2 class="text-4xl font-bold text-stone-900 mb-4">
 								<?php _e('Specialized Care. Hyperlocal Delivery.', 'earlystart-early-learning'); ?></h2>
-							<p class="text-stone-500 text-lg">
+							<p class="text-stone-600 text-lg">
 								<?php _e('Our campus offers clinical programs tailored to every developmental stage.', 'earlystart-early-learning'); ?>
 							</p>
 						</div>
@@ -440,7 +440,7 @@ while (have_posts()):
 									</span>
 									<h3 class="text-2xl font-bold text-stone-900 mb-4 group-hover:text-rose-600 transition-colors">
 										<?php the_title(); ?></h3>
-									<p class="text-stone-500 text-sm leading-relaxed mb-8 flex-1"><?php echo esc_html($excerpt); ?>
+									<p class="text-stone-600 text-sm leading-relaxed mb-8 flex-1"><?php echo esc_html($excerpt); ?>
 									</p>
 									<div class="flex items-center gap-2 text-rose-600 font-bold text-xs">
 										<?php _e('View Program', 'earlystart-early-learning'); ?>
@@ -485,7 +485,7 @@ while (have_posts()):
 				<div class="text-center mb-16 fade-in-up">
 					<h2 class="text-4xl font-bold text-stone-900 mb-6">
 						<?php _e('Questions & Answers', 'earlystart-early-learning'); ?></h2>
-					<p class="text-stone-500 text-lg">
+					<p class="text-stone-600 text-lg">
 						<?php _e('Common inquiries about our clinical approach and enrollment process.', 'earlystart-early-learning'); ?>
 					</p>
 				</div>
@@ -498,7 +498,7 @@ while (have_posts()):
 						<div
 							class="group bg-white rounded-3xl p-8 shadow-sm border border-stone-100 hover:shadow-xl transition-all duration-300">
 							<h3 class="text-lg font-bold text-stone-900 mb-4"><?php echo esc_html($item['question']); ?></h3>
-							<div class="text-stone-500 text-sm leading-relaxed prose prose-stone max-w-none">
+							<div class="text-stone-600 text-sm leading-relaxed prose prose-stone max-w-none">
 								<?php echo wp_kses_post($item['answer']); ?>
 							</div>
 						</div>
@@ -523,7 +523,7 @@ while (have_posts()):
 						<h2 class="text-4xl md:text-5xl font-bold text-stone-900 mb-8 leading-tight">
 							<?php _e('Experience the Magic.', 'earlystart-early-learning'); ?>
 						</h2>
-						<p class="text-lg text-stone-500 mb-12 leading-relaxed">
+						<p class="text-lg text-stone-600 mb-12 leading-relaxed">
 							<?php _e('Clinical excellence is best experienced in person. Come see how we blend therapy and education in a premium environment.', 'earlystart-early-learning'); ?>
 						</p>
 
@@ -535,7 +535,7 @@ while (have_posts()):
 								<div>
 									<h4 class="text-lg font-bold mb-2"><?php _e('Campus Address', 'earlystart-early-learning'); ?>
 									</h4>
-									<p class="text-stone-500 leading-relaxed">
+									<p class="text-stone-600 leading-relaxed">
 										<?php echo esc_html($address); ?><br><?php echo esc_html("$city, $state $zip"); ?>
 									</p>
 								</div>
@@ -548,7 +548,7 @@ while (have_posts()):
 								<div>
 									<h4 class="text-lg font-bold mb-2"><?php _e('Direct Line', 'earlystart-early-learning'); ?>
 									</h4>
-									<p class="text-stone-500 leading-relaxed"><?php echo esc_html($phone); ?></p>
+									<p class="text-stone-600 leading-relaxed"><?php echo esc_html($phone); ?></p>
 								</div>
 							</div>
 
@@ -559,7 +559,7 @@ while (have_posts()):
 								<div>
 									<h4 class="text-lg font-bold mb-2">
 										<?php _e('Operational Hours', 'earlystart-early-learning'); ?></h4>
-									<p class="text-stone-500 leading-relaxed"><?php echo esc_html($hours); ?>
+									<p class="text-stone-600 leading-relaxed"><?php echo esc_html($hours); ?>
 										(<?php _e('Mon-Fri', 'earlystart-early-learning'); ?>)</p>
 								</div>
 							</div>
@@ -577,7 +577,7 @@ while (have_posts()):
 						class="fade-in-up bg-stone-50 p-12 lg:p-16 rounded-[3rem] border border-stone-100 shadow-xl sticky top-32">
 						<h3 class="text-3xl font-bold text-stone-900 mb-4">
 							<?php _e('Schedule a Private Tour', 'earlystart-early-learning'); ?></h3>
-						<p class="text-stone-500 mb-10">
+						<p class="text-stone-600 mb-10">
 							<?php _e('Enter your details below and our intake team will coordinate a time for you to visit.', 'earlystart-early-learning'); ?>
 						</p>
 
@@ -605,7 +605,7 @@ while (have_posts()):
 			<section class="py-24 bg-stone-50">
 				<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 					<h2 class="text-3xl font-bold text-stone-900 mb-8"><?php echo esc_html($seo_content_title); ?></h2>
-					<div class="text-stone-500 leading-relaxed prose prose-stone max-w-none">
+					<div class="text-stone-600 leading-relaxed prose prose-stone max-w-none">
 						<?php echo wp_kses_post(wpautop($seo_content_text)); ?>
 					</div>
 				</div>
@@ -631,7 +631,7 @@ while (have_posts()):
 		<div class="bg-stone-50 border-b border-stone-100 px-8 py-6 flex items-center justify-between flex-shrink-0">
 			<h3 class="text-2xl font-bold text-stone-900"><?php _e('Schedule Your Visit', 'earlystart-early-learning'); ?></h3>
 			<div class="flex items-center gap-6">
-				<a href="#" id="chroma-tour-external" target="_blank"
+				<a href="#" id="chroma-tour-external" target="_blank" rel="noopener noreferrer"
 					class="text-sm font-bold uppercase tracking-widest text-stone-400 hover:text-rose-600 transition-colors hidden md:block">
 					<?php _e('Open in new tab', 'earlystart-early-learning'); ?> <i data-lucide="external-link"
 						class="w-4 h-4 inline-block ml-1"></i>

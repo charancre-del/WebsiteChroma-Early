@@ -39,7 +39,7 @@ function earlystart_seed_core_content()
             'icon' => 'puzzle',
             'heading' => 'Individualized Behavioral Growth',
             'description' => 'Our ABA therapy focuses on increasing helpful behaviors and decreasing harmful ones to improve learning and social skills.',
-            'image' => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&fit=crop',
+            'image' => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp',
             'bullets' => array('One-on-one sessions', 'Data-driven progress tracking', 'Positive reinforcement focus')
         ),
         array(
@@ -49,7 +49,7 @@ function earlystart_seed_core_content()
             'icon' => 'message-circle',
             'heading' => 'Unlocking Every Voice',
             'description' => 'Specialized support for articulation, language comprehension, and social communication milestones.',
-            'image' => 'https://images.unsplash.com/photo-1544717305-27a734ef202e?w=800&fit=crop',
+            'image' => 'https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp',
             'bullets' => array('Articulation support', 'Social language skills', 'Early intervention focus')
         ),
         array(
@@ -59,7 +59,7 @@ function earlystart_seed_core_content()
             'icon' => 'hand',
             'heading' => 'Developing Independence',
             'description' => 'Helping children build the fine motor, sensory, and cognitive skills needed for daily life and play.',
-            'image' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&fit=crop',
+            'image' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp',
             'bullets' => array('Fine motor development', 'Sensory integration', 'Self-regulation tools')
         ),
     );

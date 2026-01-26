@@ -105,7 +105,7 @@ $locations_query = earlystart_cached_query(
 									<?php if (has_post_thumbnail()): ?>
 										<?php the_post_thumbnail('medium_large', ['class' => 'w-full h-full object-cover group-hover:scale-110 transition-transform duration-700']); ?>
 									<?php else: ?>
-										<img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&fit=crop"
+										<img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp"
 											class="w-full h-full object-cover" alt="Campus">
 									<?php endif; ?>
 
@@ -127,7 +127,7 @@ $locations_query = earlystart_cached_query(
 										class="text-2xl font-bold text-stone-900 mb-4 group-hover:text-rose-600 transition-colors">
 										<?php echo esc_html($location_name); ?>
 									</h2>
-									<p class="text-stone-500 text-sm leading-relaxed mb-10">
+									<p class="text-stone-600 text-sm leading-relaxed mb-10">
 										<?php echo esc_html($address); ?><br>
 										<?php echo esc_html("$city, GA $zip"); ?>
 									</p>

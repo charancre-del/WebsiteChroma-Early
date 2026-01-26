@@ -103,7 +103,7 @@ $programs_query = new WP_Query(array(
                     wp_reset_postdata(); ?>
                 <?php else: ?>
                     <div class="col-span-full text-center py-20">
-                        <p class="text-stone-500"><?php _e('No programs found.', 'earlystart-early-learning'); ?></p>
+                        <p class="text-stone-600"><?php _e('No programs found.', 'earlystart-early-learning'); ?></p>
                     </div>
                 <?php endif; ?>
             </div>

@@ -41,7 +41,7 @@ while (have_posts()):
                         <h3 class="font-bold text-lg mb-2 text-stone-900">
                             <?php _e('Initial Match', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-500 text-sm">
+                        <p class="text-stone-600 text-sm">
                             <?php _e('Share basic info about your child\'s needs and your location.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -53,7 +53,7 @@ while (have_posts()):
                         <h3 class="font-bold text-lg mb-2 text-stone-900">
                             <?php _e('Expert Review', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-500 text-sm">
+                        <p class="text-stone-600 text-sm">
                             <?php _e('A Clinical Director reviews your profile to prepare for the call.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -65,7 +65,7 @@ while (have_posts()):
                         <h3 class="font-bold text-lg mb-2 text-stone-900">
                             <?php _e('Consultation', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-500 text-sm">
+                        <p class="text-stone-600 text-sm">
                             <?php _e('A 20-minute deep dive into goals, therapy models, and scheduling.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -112,7 +112,7 @@ while (have_posts()):
                                 <h4 class="text-xl font-bold text-stone-900 mb-4">
                                     <?php _e('Clinical Intake Form', 'earlystart-early-learning'); ?>
                                 </h4>
-                                <p class="text-stone-500 text-sm">
+                                <p class="text-stone-600 text-sm">
                                     <?php _e('Please provide a few details to get started. Our clinical directors use this to maximize the value of your call.', 'earlystart-early-learning'); ?>
                                 </p>
                             </div>

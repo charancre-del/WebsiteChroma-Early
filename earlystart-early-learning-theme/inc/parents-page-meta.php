@@ -877,7 +877,7 @@ function earlystart_seed_parents_page_defaults($post_id)
         'parents_events_badge' => 'Community',
         'parents_events_title' => 'Events & Celebrations',
         'parents_events_description' => 'Join us for our upcoming community events designed to bring families together.',
-        'parents_events_image' => 'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=1200&auto=format&fit=crop',
+        'parents_events_image' => 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&fm=webp?q=80&w=1200&auto=format&fit=crop&q=80&fm=webp',
 
         'parents_event1_icon' => 'fa-solid fa-calendar-days',
         'parents_event1_title' => 'Quarterly Family Events',
@@ -895,7 +895,7 @@ function earlystart_seed_parents_page_defaults($post_id)
         'parents_nutrition_badge' => 'Wellness',
         'parents_nutrition_title' => 'What\'s for lunch?',
         'parents_nutrition_description' => 'Our in-house chef prepares fresh, balanced meals daily. We accommodate allergies and dietary restrictions with care.',
-        'parents_nutrition_image' => 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200&auto=format&fit=crop',
+        'parents_nutrition_image' => 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&fm=webp?q=80&w=1200&auto=format&fit=crop&q=80&fm=webp',
 
         'parents_menu1_icon' => 'fa-solid fa-apple-whole',
         'parents_menu1_title' => 'Breakfast & Snacks',

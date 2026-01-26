@@ -91,7 +91,7 @@ $partner_query = new WP_Query(array(
 						$zip = get_post_meta($location_id, 'location_zip', true);
 						$phone = get_post_meta($location_id, 'location_phone', true);
 						$hours = get_post_meta($location_id, 'location_hours', true) ?: 'Mon - Fri: 8:00 AM - 6:00 PM';
-						$image = get_the_post_thumbnail_url($location_id, 'large') ?: 'https://images.unsplash.com/photo-1544717305-27a734ef202e?w=800&fit=crop';
+						$image = get_the_post_thumbnail_url($location_id, 'large') ?: 'https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp';
 
 						// Prepare map data for this location
 						$lat = get_post_meta($location_id, 'location_latitude', true) ?: 34.0754; // Default to Alpharettaish
@@ -185,7 +185,7 @@ $partner_query = new WP_Query(array(
 									<?php the_title(); ?>
 								</h4>
 								<span
-									class="text-[10px] bg-white border border-stone-200 px-3 py-1 rounded-full text-stone-500 font-bold uppercase tracking-wider"><?php echo esc_html($region_name); ?></span>
+									class="text-[10px] bg-white border border-stone-200 px-3 py-1 rounded-full text-stone-600 font-bold uppercase tracking-wider"><?php echo esc_html($region_name); ?></span>
 							</div>
 							<p class="text-sm text-stone-600 mb-6 flex items-center">
 								<i data-lucide="map-pin" class="w-4 h-4 inline mr-2 text-stone-400"></i>
@@ -202,7 +202,7 @@ $partner_query = new WP_Query(array(
 					wp_reset_postdata(); ?>
 				<?php else: ?>
 					<div class="col-span-full text-center py-12">
-						<p class="text-stone-500"><?php _e('No partner locations found.', 'earlystart-early-learning'); ?></p>
+						<p class="text-stone-600"><?php _e('No partner locations found.', 'earlystart-early-learning'); ?></p>
 					</div>
 				<?php endif; ?>
 			</div>
@@ -254,8 +254,8 @@ $partner_query = new WP_Query(array(
 							<?php _e('Check', 'earlystart-early-learning'); ?>
 						</button>
 					</div>
-					<div id="chroma-zip-message" class="mt-6 text-stone-500 text-sm font-bold min-h-[20px]"></div>
-					<div class="mt-2 text-stone-500 text-sm">
+					<div id="chroma-zip-message" class="mt-6 text-stone-600 text-sm font-bold min-h-[20px]"></div>
+					<div class="mt-2 text-stone-600 text-sm">
 						<p><?php _e('Immediate availability in most areas.', 'earlystart-early-learning'); ?></p>
 					</div>
 				</div>

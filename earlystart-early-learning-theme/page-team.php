@@ -48,7 +48,7 @@ $team_query = new WP_Query(array(
                     <?php while ($team_query->have_posts()):
                         $team_query->the_post();
                         $role = get_post_meta(get_the_ID(), 'team_member_title', true);
-                        $thumb_url = get_the_post_thumbnail_url(get_the_ID(), 'large') ?: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=800&auto=format&fit=crop';
+                        $thumb_url = get_the_post_thumbnail_url(get_the_ID(), 'large') ?: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&fm=webp?q=80&w=800&auto=format&fit=crop&q=80&fm=webp';
                         ?>
                         <div
                             class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-stone-100 group hover:shadow-xl transition-all duration-500 flex flex-col fade-in-up">
@@ -78,7 +78,7 @@ $team_query = new WP_Query(array(
                     wp_reset_postdata(); ?>
                 <?php else: ?>
                     <div class="col-span-full text-center py-20">
-                        <p class="text-stone-500">
+                        <p class="text-stone-600">
                             <?php _e('No team members found.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>

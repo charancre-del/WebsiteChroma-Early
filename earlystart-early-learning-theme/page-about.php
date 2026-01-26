@@ -62,7 +62,7 @@ while (have_posts()):
 		$story_title = get_post_meta($page_id, 'about_story_title', true) ?: __('From One Classroom to a Community', 'earlystart-early-learning');
 		$story_p1 = get_post_meta($page_id, 'about_story_paragraph1', true);
 		$story_p2 = get_post_meta($page_id, 'about_story_paragraph2', true);
-		$story_image = get_post_meta($page_id, 'about_story_image', true) ?: 'https://images.unsplash.com/photo-1544717305-27a734ef202e?w=800&fit=crop';
+		$story_image = get_post_meta($page_id, 'about_story_image', true) ?: 'https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp';
 		?>
 		<section class="py-24 bg-stone-50 overflow-hidden">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -106,7 +106,7 @@ while (have_posts()):
 										<span class="block text-4xl font-bold text-rose-600">
 											<?php echo esc_html($val); ?>
 										</span>
-										<span class="text-xs text-stone-500 uppercase font-bold tracking-widest">
+										<span class="text-xs text-stone-600 uppercase font-bold tracking-widest">
 											<?php echo esc_html($lbl); ?>
 										</span>
 									</div>
@@ -154,7 +154,7 @@ while (have_posts()):
 								<h4 class="font-bold text-lg mb-2 text-stone-900">
 									<?php echo esc_html($m['title']); ?>
 								</h4>
-								<p class="text-sm text-stone-500 leading-relaxed">
+								<p class="text-sm text-stone-600 leading-relaxed">
 									<?php echo esc_html($m['desc']); ?>
 								</p>
 							</div>
@@ -338,7 +338,7 @@ while (have_posts()):
 						while ($team_query->have_posts()):
 							$team_query->the_post();
 							$role = get_post_meta(get_the_ID(), 'team_member_title', true);
-							$image = get_the_post_thumbnail_url(get_the_ID(), 'large') ?: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800';
+							$image = get_the_post_thumbnail_url(get_the_ID(), 'large') ?: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&fm=webp?w=800&q=80&fm=webp';
 							$bio = get_the_content();
 							?>
 							<div class="group fade-in-up">
@@ -359,7 +359,7 @@ while (have_posts()):
 								<h4 class="text-2xl font-bold text-stone-900 mb-1 group-hover:text-rose-600 transition-colors">
 									<?php the_title(); ?>
 								</h4>
-								<p class="text-stone-500 font-medium tracking-wide text-sm uppercase">
+								<p class="text-stone-600 font-medium tracking-wide text-sm uppercase">
 									<?php echo esc_html($role); ?>
 								</p>
 							</div>

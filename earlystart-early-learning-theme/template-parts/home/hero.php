@@ -6,7 +6,7 @@
  */
 
 $hero = earlystart_home_hero();
-$hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&fit=crop');
+$hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp');
 ?>
 
 <section class="pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden relative">
@@ -51,18 +51,18 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                     <div class="flex -space-x-3">
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1544717305-27a734ef202e?w=100&h=100&fit=crop"
-                                alt="User">
+                            <img src="https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?w=100&h=100&fit=crop&q=80&fm=webp"
+                                alt="User" width="48" height="48">
                         </div>
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop"
-                                alt="User">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&fm=webp?w=100&h=100&fit=crop&q=80&fm=webp"
+                                alt="User" width="48" height="48">
                         </div>
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1548142813-c348350df52b?w=100&h=100&fit=crop"
-                                alt="User">
+                            <img src="https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&q=80&fm=webp?w=100&h=100&fit=crop&q=80&fm=webp"
+                                alt="User" width="48" height="48">
                         </div>
                     </div>
                     <div class="text-sm">
@@ -73,8 +73,9 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                             <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                             <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                         </div>
-                        <p class="text-stone-500 font-medium">
-                            <?php _e('Trusted by 500+ Local Families', 'earlystart-early-learning'); ?></p>
+                        <p class="text-stone-600 font-medium">
+                            <?php _e('Trusted by 500+ Local Families', 'earlystart-early-learning'); ?>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -103,9 +104,11 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                     </div>
                     <div>
                         <p class="text-stone-900 font-bold leading-none mb-1">
-                            <?php _e('Clinic Center', 'earlystart-early-learning'); ?></p>
-                        <p class="text-xs text-stone-500 font-medium tracking-wide uppercase">
-                            <?php _e('Compassionate Care', 'earlystart-early-learning'); ?></p>
+                            <?php _e('Clinic Center', 'earlystart-early-learning'); ?>
+                        </p>
+                        <p class="text-xs text-stone-600 font-medium tracking-wide uppercase">
+                            <?php _e('Compassionate Care', 'earlystart-early-learning'); ?>
+                        </p>
                     </div>
                 </div>
 
@@ -117,9 +120,11 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                     </div>
                     <div>
                         <p class="text-stone-900 font-bold leading-none mb-1">
-                            <?php _e('ABA Experts', 'earlystart-early-learning'); ?></p>
-                        <p class="text-xs text-stone-500 font-medium tracking-wide uppercase">
-                            <?php _e('Evidence-Based', 'earlystart-early-learning'); ?></p>
+                            <?php _e('ABA Experts', 'earlystart-early-learning'); ?>
+                        </p>
+                        <p class="text-xs text-stone-600 font-medium tracking-wide uppercase">
+                            <?php _e('Evidence-Based', 'earlystart-early-learning'); ?>
+                        </p>
                     </div>
                 </div>
             </div>

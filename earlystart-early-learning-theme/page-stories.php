@@ -97,7 +97,7 @@ get_header();
     if ($featured_post):
       setup_postdata($featured_post);
       $featured_categories = get_the_category($featured_post_id);
-      $featured_image = get_the_post_thumbnail_url($featured_post_id, 'large') ?: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=1200&auto=format&fit=crop';
+      $featured_image = get_the_post_thumbnail_url($featured_post_id, 'large') ?: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?q=80&w=1200&auto=format&fit=crop&q=80&fm=webp';
       ?>
       <!-- Featured Post -->
       <section class="py-12 px-4 lg:px-6 max-w-7xl mx-auto">
@@ -137,7 +137,7 @@ get_header();
           $category_name = !empty($post_categories) ? $post_categories[0]->name : 'Uncategorized';
           $category_slug = !empty($post_categories) ? $post_categories[0]->slug : 'uncategorized';
           $category_color = earlystart_get_category_color($category_slug);
-          $post_image = get_the_post_thumbnail_url(get_the_ID(), 'medium_large') ?: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=600&auto=format&fit=crop';
+          $post_image = get_the_post_thumbnail_url(get_the_ID(), 'medium_large') ?: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80&fm=webp?q=80&w=600&auto=format&fit=crop&q=80&fm=webp';
           ?>
           <!-- Post -->
           <article class="group cursor-pointer">

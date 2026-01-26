@@ -25,7 +25,7 @@ if (!$stats) {
                                                 <?php echo esc_html($stat['value']); ?>
                                                 <?php if (!empty($stat['label'])): ?>
                                                         <span
-                                                                class="text-stone-500 font-medium ml-1"><?php echo esc_html($stat['label']); ?></span>
+                                                                class="text-stone-600 font-bold ml-1"><?php echo esc_html($stat['label']); ?></span>
                                                 <?php endif; ?>
                                         </span>
                                 </div>

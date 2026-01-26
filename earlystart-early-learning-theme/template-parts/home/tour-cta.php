@@ -41,7 +41,7 @@ if (!$tour_cta) {
             </div>
 
             <?php if (!empty($tour_cta['trust_text'])): ?>
-                <p class="mt-8 text-rose-200/60 text-sm font-medium">
+                <p class="mt-8 text-rose-100 text-sm font-bold">
                     <i data-lucide="shield-check" class="w-4 h-4 inline-block mr-1 align-text-bottom"></i>
                     <?php echo esc_html($tour_cta['trust_text']); ?>
                 </p>

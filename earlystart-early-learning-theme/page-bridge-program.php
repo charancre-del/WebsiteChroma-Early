@@ -55,7 +55,7 @@ while (have_posts()):
                                 <h3 class="text-3xl font-bold text-stone-900 mb-2">
                                     <?php _e('School Ready', 'earlystart-early-learning'); ?>
                                 </h3>
-                                <p class="text-stone-500">
+                                <p class="text-stone-600">
                                     <?php _e('The Ultimate Transition Pathway', 'earlystart-early-learning'); ?>
                                 </p>
                                 <div class="flex justify-center space-x-2 mt-6">
@@ -86,12 +86,12 @@ while (have_posts()):
                             <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
                                 <span class="block text-3xl font-bold text-blue-500 mb-1">92%</span>
                                 <span
-                                    class="text-[10px] font-bold text-stone-500 uppercase tracking-widest"><?php _e('Placement Rate', 'earlystart-early-learning'); ?></span>
+                                    class="text-[10px] font-bold text-stone-600 uppercase tracking-widest"><?php _e('Placement Rate', 'earlystart-early-learning'); ?></span>
                             </div>
                             <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
                                 <span class="block text-3xl font-bold text-blue-400 mb-1">1:3</span>
                                 <span
-                                    class="text-[10px] font-bold text-stone-500 uppercase tracking-widest"><?php _e('Group Ratio', 'earlystart-early-learning'); ?></span>
+                                    class="text-[10px] font-bold text-stone-600 uppercase tracking-widest"><?php _e('Group Ratio', 'earlystart-early-learning'); ?></span>
                             </div>
                         </div>
                     </div>

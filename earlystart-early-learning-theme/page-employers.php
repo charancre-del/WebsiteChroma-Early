@@ -129,7 +129,7 @@ $contact_title = earlystart_get_translated_meta($page_id, 'employers_contact_tit
 							<p class="text-brand-ink/80 text-sm leading-relaxed mb-6">
 								<?php echo wp_kses_post($federal_desc); ?>
 							</p>
-							<a href="<?php echo esc_url($federal_link_url); ?>" target="_blank"
+							<a href="<?php echo esc_url($federal_link_url); ?>" target="_blank" rel="noopener noreferrer"
 								class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-brand-ink border-b border-chroma-blue pb-1 hover:text-chroma-blue transition-colors">
 								<?php echo esc_html($federal_link_text); ?>
 								<i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -156,7 +156,7 @@ $contact_title = earlystart_get_translated_meta($page_id, 'employers_contact_tit
 							<p class="text-brand-ink/80 text-sm leading-relaxed mb-6">
 								<?php echo wp_kses_post($georgia_desc); ?>
 							</p>
-							<a href="<?php echo esc_url($georgia_link_url); ?>" target="_blank"
+							<a href="<?php echo esc_url($georgia_link_url); ?>" target="_blank" rel="noopener noreferrer"
 								class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-brand-ink border-b border-chroma-green pb-1 hover:text-chroma-green transition-colors">
 								<?php echo esc_html($georgia_link_text); ?>
 								<i class="fa-solid fa-arrow-up-right-from-square"></i>

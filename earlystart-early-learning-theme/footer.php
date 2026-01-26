@@ -22,21 +22,24 @@
 				</p>
 				<div class="flex space-x-4">
 					<a href="https://facebook.com/chromaearlystart" target="_blank" rel="noopener"
-						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-400 hover:bg-rose-600 hover:text-white transition-all"><i
+						aria-label="Follow Early Start on Facebook"
+						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 							data-lucide="facebook" class="w-5 h-5"></i></a>
 					<a href="https://instagram.com/chromaearlystart" target="_blank" rel="noopener"
-						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-400 hover:bg-rose-600 hover:text-white transition-all"><i
+						aria-label="Follow Early Start on Instagram"
+						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 							data-lucide="instagram" class="w-5 h-5"></i></a>
 					<a href="https://linkedin.com/company/chromaearlystart" target="_blank" rel="noopener"
-						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-400 hover:bg-rose-600 hover:text-white transition-all"><i
+						aria-label="Follow Early Start on LinkedIn"
+						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 							data-lucide="linkedin" class="w-5 h-5"></i></a>
 				</div>
 			</div>
 
 			<div>
-				<h4 class="text-white font-bold mb-8 tracking-widest text-xs uppercase">
+				<h3 class="text-white font-bold mb-8 tracking-widest text-xs uppercase">
 					<?php _e('Quick Links', 'earlystart-early-learning'); ?>
-				</h4>
+				</h3>
 				<div class="flex flex-col space-y-4 text-sm font-medium">
 					<a href="<?php echo esc_url(home_url('/about/')); ?>"
 						class="hover:text-rose-400 transition-colors"><?php _e('About Us', 'earlystart-early-learning'); ?></a>
@@ -52,9 +55,9 @@
 			</div>
 
 			<div>
-				<h4 class="text-white font-bold mb-8 tracking-widest text-xs uppercase">
+				<h3 class="text-white font-bold mb-8 tracking-widest text-xs uppercase">
 					<?php _e('Clinics & Programs', 'earlystart-early-learning'); ?>
-				</h4>
+				</h3>
 				<div class="flex flex-col space-y-4 text-sm font-medium">
 					<a href="<?php echo esc_url(home_url('/programs/aba/')); ?>"
 						class="hover:text-rose-400 transition-colors">ABA Therapy</a>
@@ -68,9 +71,9 @@
 			</div>
 
 			<div>
-				<h4 class="text-white font-bold mb-8 tracking-widest text-xs uppercase">
+				<h3 class="text-white font-bold mb-8 tracking-widest text-xs uppercase">
 					<?php _e('Contact Admissions', 'earlystart-early-learning'); ?>
-				</h4>
+				</h3>
 				<ul class="space-y-6 text-sm">
 					<li class="flex items-start">
 						<i data-lucide="phone" class="w-5 h-5 mr-4 text-rose-500 shrink-0"></i>
@@ -89,7 +92,7 @@
 		</div>
 
 		<div class="border-t border-stone-800 mt-20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
-			<p class="text-xs text-stone-500">&copy; <?php echo date('Y'); ?>
+			<p class="text-xs text-stone-600">&copy; <?php echo date('Y'); ?>
 				<?php _e('Early Start. All rights reserved.', 'earlystart-early-learning'); ?>
 			</p>
 			<div class="flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-stone-600">

@@ -47,57 +47,20 @@ function earlystart_enqueue_assets()
                 array(),
                 null
         );
+        // Ensure font-display: swap is added
+        wp_style_add_data('earlystart-fonts', 'media', 'all');
 
-        // Lucide Icons
+        // Lucide Icons - Moved to footer and deferred
         wp_enqueue_script(
                 'lucide-icons',
                 'https://unpkg.com/lucide@latest',
                 array(),
                 null,
-                false // Load in Header to avoid race conditions
+                true // Load in Footer
         );
+        wp_script_add_data('lucide-icons', 'defer', true);
 
-        // Initialize Lucide Icons (Inline Script to keep footer clean)
-        wp_add_inline_script('lucide-icons', "
-            document.addEventListener('DOMContentLoaded', function() {
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                } else {
-                    console.warn('Lucide icons not loaded');
-                }
-            });
-        ");
-
-        // Tailwind CSS (CDN for immediate visual parity with HTML)
-        // Only load in debug mode or if explicitly requested.
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-                wp_enqueue_script(
-                        'tailwind-cdn',
-                        'https://cdn.tailwindcss.com',
-                        array(),
-                        null,
-                        false
-                );
-        }
-
-        // Configure Tailwind (Basic Brand Colors)
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-                wp_add_inline_script('tailwind-cdn', "
-                tailwind.config = {
-                    theme: {
-                        extend: {
-                            fontFamily: {
-                                sans: ['\"Plus Jakarta Sans\"', 'sans-serif'],
-                            },
-                            colors: {
-                                rose: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#f43f5e', 600: '#e11d48', 700: '#be123c' },
-                                stone: { 50: '#fafaf9', 100: '#f5f5f4', 800: '#292524', 900: '#1c1917' }
-                            }
-                        }
-                    }
-                }
-            ");
-        }
+        // ... rest of scripts ...
 
         // Compiled Tailwind CSS.
         $css_path = earlystart_THEME_DIR . '/assets/css/main.css';
@@ -109,16 +72,10 @@ function earlystart_enqueue_assets()
                 earlystart_THEME_URI . '/assets/css/main.css',
                 array(),
                 $css_version,
-                'all' // Load normally to prevent FOUC
+                'all'
         );
 
-        // Critical Utility CSS (Moved from inline to static file for caching)
-        wp_enqueue_style(
-                'chroma-utils',
-                earlystart_THEME_URI . '/assets/css/utils.css',
-                array('chroma-main'),
-                earlystart_VERSION
-        );
+        // chroma-utils is now INLINED in header.php for performance
 
         // Main JavaScript.
         $js_path = earlystart_THEME_DIR . '/assets/js/main.js';

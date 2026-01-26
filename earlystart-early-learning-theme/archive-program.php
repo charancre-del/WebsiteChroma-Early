@@ -24,7 +24,7 @@ $programs_query = new WP_Query(array(
 		</div>
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 			<span
-				class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
+				class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
 				<?php _e('Our Programs', 'earlystart-early-learning'); ?>
 			</span>
 			<h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
@@ -65,7 +65,7 @@ $programs_query = new WP_Query(array(
 								<?php if (has_post_thumbnail()): ?>
 									<?php the_post_thumbnail('large', ['class' => 'w-full h-full object-cover group-hover:scale-110 transition-transform duration-700']); ?>
 								<?php else: ?>
-									<img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=800&fit=crop"
+									<img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp"
 										class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
 										alt="Program">
 								<?php endif; ?>
@@ -84,7 +84,7 @@ $programs_query = new WP_Query(array(
 									<?php the_title(); ?>
 								</h3>
 
-								<div class="text-stone-500 text-sm leading-relaxed mb-8 flex-grow">
+								<div class="text-stone-600 text-sm leading-relaxed mb-8 flex-grow font-medium">
 									<?php echo wp_trim_words(get_the_excerpt(), 25); ?>
 								</div>
 
@@ -113,7 +113,8 @@ $programs_query = new WP_Query(array(
 							</div>
 						</div>
 					<?php endwhile;
-					wp_reset_postdata(); endif; ?>
+					wp_reset_postdata();
+				endif; ?>
 			</div>
 		</div>
 	</section>
@@ -125,7 +126,8 @@ $programs_query = new WP_Query(array(
 				class="bg-rose-600 rounded-[3rem] p-12 lg:p-20 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between text-center lg:text-left gap-12">
 				<div class="relative z-10 max-w-2xl">
 					<h2 class="text-3xl md:text-4xl font-bold mb-6">
-						<?php _e('Unsure which program fits?', 'earlystart-early-learning'); ?></h2>
+						<?php _e('Unsure which program fits?', 'earlystart-early-learning'); ?>
+					</h2>
 					<p class="text-rose-100 text-lg">
 						<?php _e('Our clinical intake team can help assess your child\'s needs and recommend a personalized development path.', 'earlystart-early-learning'); ?>
 					</p>

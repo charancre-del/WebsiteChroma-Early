@@ -89,7 +89,7 @@ while (have_posts()):
 								<?php _e('Find a Clinic', 'earlystart-early-learning'); ?>
 							</a>
 							<?php if ($lesson_plan_url): ?>
-								<a href="<?php echo esc_url($lesson_plan_url); ?>" target="_blank"
+								<a href="<?php echo esc_url($lesson_plan_url); ?>" target="_blank" rel="noopener noreferrer"
 									class="bg-white text-stone-900 border-2 border-stone-100 px-8 py-4 rounded-full font-bold hover:border-rose-600 hover:text-rose-600 transition-all inline-block">
 									<?php _e('View Curriculum PDF', 'earlystart-early-learning'); ?>
 								</a>
@@ -103,7 +103,7 @@ while (have_posts()):
 							<?php if (has_post_thumbnail()): ?>
 								<?php the_post_thumbnail('large', ['class' => 'w-full h-full object-cover']); ?>
 							<?php else: ?>
-								<img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200&fit=crop"
+								<img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?w=1200&fit=crop&q=80&fm=webp"
 									class="w-full h-full object-cover" alt="Program">
 							<?php endif; ?>
 						</div>
@@ -128,7 +128,7 @@ while (have_posts()):
 
 					<div class="fade-in-up order-1 lg:order-2">
 						<span
-							class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-[10px] font-bold tracking-widest uppercase mb-6">
+							class="inline-block px-4 py-2 bg-rose-50 text-rose-700 font-bold rounded-full text-[10px] font-bold tracking-widest uppercase mb-6">
 							<?php _e('The PrismaPath™ Focus', 'earlystart-early-learning'); ?>
 						</span>
 						<h2 class="text-4xl font-bold text-stone-900 mb-8"><?php echo esc_html($prism_title); ?></h2>
@@ -160,7 +160,7 @@ while (have_posts()):
 				<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div class="text-center mb-20 fade-in-up">
 						<h2 class="text-4xl font-bold text-stone-900 mb-6"><?php echo esc_html($schedule_title); ?></h2>
-						<p class="text-stone-500 text-lg">
+						<p class="text-stone-600 text-lg font-medium">
 							<?php _e('Structured routines facilitate confidence, while spontaneous play builds skills.', 'earlystart-early-learning'); ?>
 						</p>
 					</div>
@@ -181,7 +181,7 @@ while (have_posts()):
 									<div class="flex-grow">
 										<h4 class="font-bold text-stone-900"><?php echo esc_html(trim($parts[1])); ?></h4>
 										<?php if (isset($parts[2])): ?>
-											<p class="text-sm text-stone-500 mt-1"><?php echo esc_html(trim($parts[2])); ?></p>
+											<p class="text-sm text-stone-600 mt-1 font-medium"><?php echo esc_html(trim($parts[2])); ?></p>
 										<?php endif; ?>
 									</div>
 								</div>
@@ -229,14 +229,16 @@ while (have_posts()):
 							<div
 								class="absolute top-0 right-0 w-64 h-64 bg-rose-600 opacity-20 rounded-full blur-3xl -mr-32 -mt-32">
 							</div>
-							<h2 class="text-3xl font-bold mb-8"><?php _e('Ready to Start?', 'earlystart-early-learning'); ?></h2>
+							<h2 class="text-3xl font-bold mb-8"><?php _e('Ready to Start?', 'earlystart-early-learning'); ?>
+							</h2>
 							<div class="space-y-8 mb-10">
 								<div class="flex gap-6">
 									<div
 										class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center font-bold text-rose-500 shrink-0">
 										1</div>
 									<div>
-										<h4 class="font-bold mb-1"><?php _e('Find Your Clinic', 'earlystart-early-learning'); ?>
+										<h4 class="font-bold mb-1">
+											<?php _e('Find Your Clinic', 'earlystart-early-learning'); ?>
 										</h4>
 										<p class="text-xs text-stone-400">
 											<?php _e('Select a location near you with availability.', 'earlystart-early-learning'); ?>
@@ -248,7 +250,8 @@ while (have_posts()):
 										class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center font-bold text-rose-500 shrink-0">
 										2</div>
 									<div>
-										<h4 class="font-bold mb-1"><?php _e('Clinical Tour', 'earlystart-early-learning'); ?></h4>
+										<h4 class="font-bold mb-1">
+											<?php _e('Clinical Tour', 'earlystart-early-learning'); ?></h4>
 										<p class="text-xs text-stone-400">
 											<?php _e('Tour our facilities and meet our clinical team.', 'earlystart-early-learning'); ?>
 										</p>
@@ -259,7 +262,8 @@ while (have_posts()):
 										class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center font-bold text-rose-500 shrink-0">
 										3</div>
 									<div>
-										<h4 class="font-bold mb-1"><?php _e('Assessment & Start', 'earlystart-early-learning'); ?>
+										<h4 class="font-bold mb-1">
+											<?php _e('Assessment & Start', 'earlystart-early-learning'); ?>
 										</h4>
 										<p class="text-xs text-stone-400">
 											<?php _e('We build your child’s individualized clinical roadmap.', 'earlystart-early-learning'); ?>

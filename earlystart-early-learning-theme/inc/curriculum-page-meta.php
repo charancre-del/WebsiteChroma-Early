@@ -768,7 +768,7 @@ function earlystart_seed_curriculum_page_defaults( $post_id ) {
 		'curriculum_timeline_badge'       => 'Learning Journey',
 		'curriculum_timeline_title'       => 'How learning evolves.',
 		'curriculum_timeline_description' => 'Our curriculum is not static. It shifts and matures alongside your child, moving from sensory-based discovery to logic-based inquiry.',
-		'curriculum_timeline_image'       => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=800&auto=format&fit=crop',
+		'curriculum_timeline_image'       => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?q=80&w=800&auto=format&fit=crop&q=80&fm=webp',
 
 		'curriculum_stage_foundation_title' => 'Foundation (0-18 Months)',
 		'curriculum_stage_foundation_desc'  => 'Focus on security and senses. Learning happens through touch, sound, and responsive caregiving.',

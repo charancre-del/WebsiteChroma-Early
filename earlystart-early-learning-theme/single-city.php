@@ -17,7 +17,7 @@ $location_ids = get_post_meta($id, 'city_nearby_locations', true);
 $intro_text = get_post_meta($id, 'city_intro_text', true);
 
 // Local fallback image
-$local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1200&fit=crop';
+$local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&fm=webp?w=1200&fit=crop&q=80&fm=webp';
 ?>
 
 <main class="pt-20">
@@ -81,7 +81,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1
                 <h2 class="text-4xl font-bold text-stone-900 mb-4">
                     <?php printf(__('Clinics Serving %s', 'earlystart-early-learning'), esc_html($city)); ?>
                 </h2>
-                <p class="text-stone-500 text-lg">
+                <p class="text-stone-600 text-lg">
                     <?php _e('Select the campus closest to your home or work.', 'earlystart-early-learning'); ?>
                 </p>
             </div>
@@ -106,13 +106,13 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1
                                     <?php if (has_post_thumbnail()): ?>
                                         <?php the_post_thumbnail('large', ['class' => 'w-full h-full object-cover']); ?>
                                     <?php else: ?>
-                                        <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dee7a?w=600&fit=crop"
+                                        <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dee7a?auto=format&fit=crop&q=80&fm=webp?w=600&fit=crop&q=80&fm=webp"
                                             class="w-full h-full object-cover" alt="Clinic">
                                     <?php endif; ?>
                                 </div>
 
                                 <h3 class="text-2xl font-bold text-stone-900 mb-3"><?php the_title(); ?></h3>
-                                <p class="text-stone-500 text-sm mb-8 line-clamp-2"><?php echo esc_html($addr); ?></p>
+                                <p class="text-stone-600 text-sm mb-8 line-clamp-2"><?php echo esc_html($addr); ?></p>
 
                                 <a href="<?php the_permalink(); ?>"
                                     class="inline-flex items-center gap-2 text-rose-600 font-bold group-hover:gap-4 transition-all">

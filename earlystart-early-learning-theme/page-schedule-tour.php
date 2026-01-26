@@ -51,7 +51,7 @@ if ($locations_query->have_posts()) {
         $post_data = array(
             'title' => get_the_title(),
             'permalink' => get_permalink(),
-            'thumb' => get_the_post_thumbnail_url($id, 'large') ?: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=600&fit=crop',
+            'thumb' => get_the_post_thumbnail_url($id, 'large') ?: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80&fm=webp?w=600&fit=crop&q=80&fm=webp',
             'address' => get_post_meta($id, 'location_address', true),
             'city' => get_post_meta($id, 'location_city', true),
             'booking' => get_post_meta($id, 'location_tour_booking_link', true),
@@ -116,7 +116,7 @@ if ($locations_query->have_posts()) {
                 <div class="relative fade-in-up">
                     <div
                         class="aspect-[4/3] rounded-[3rem] bg-stone-50 overflow-hidden shadow-2xl border-8 border-white">
-                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1200&fit=crop"
+                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&fm=webp?w=1200&fit=crop&q=80&fm=webp"
                             class="w-full h-full object-cover" alt="Parent and child">
                     </div>
                     <div class="absolute -bottom-8 -left-8 w-48 h-48 bg-amber-50 rounded-full blur-3xl -z-10"></div>
@@ -162,7 +162,7 @@ if ($locations_query->have_posts()) {
 
                             <div class="mt-auto pt-6 border-t border-stone-50">
                                 <?php if ($post['booking']): ?>
-                                    <a href="<?php echo esc_url($post['booking']); ?>" target="_blank"
+                                    <a href="<?php echo esc_url($post['booking']); ?>" target="_blank" rel="noopener noreferrer"
                                         class="block w-full py-4 bg-stone-900 text-white text-center rounded-xl font-bold text-sm tracking-widest uppercase hover:bg-rose-600 transition-all">
                                         <?php _e('Schedule Tour', 'earlystart-early-learning'); ?>
                                     </a>
@@ -184,14 +184,16 @@ if ($locations_query->have_posts()) {
     <section class="py-24 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
             <h2 class="text-3xl font-bold text-stone-900 mb-8">
-                <?php _e('What happens during a tour?', 'earlystart-early-learning'); ?></h2>
+                <?php _e('What happens during a tour?', 'earlystart-early-learning'); ?>
+            </h2>
             <div class="grid md:grid-cols-3 gap-12 text-left">
                 <div>
                     <div
                         class="w-12 h-12 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center font-bold mb-6">
                         1</div>
-                    <h4 class="font-bold text-stone-900 mb-2"><?php _e('Walkthrough', 'earlystart-early-learning'); ?></h4>
-                    <p class="text-sm text-stone-500 leading-relaxed">
+                    <h4 class="font-bold text-stone-900 mb-2"><?php _e('Walkthrough', 'earlystart-early-learning'); ?>
+                    </h4>
+                    <p class="text-sm text-stone-600 leading-relaxed">
                         <?php _e('See our clean, safe, and stimulating clinical environments in person.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
@@ -199,8 +201,9 @@ if ($locations_query->have_posts()) {
                     <div
                         class="w-12 h-12 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center font-bold mb-6">
                         2</div>
-                    <h4 class="font-bold text-stone-900 mb-2"><?php _e('Meet the Team', 'earlystart-early-learning'); ?></h4>
-                    <p class="text-sm text-stone-500 leading-relaxed">
+                    <h4 class="font-bold text-stone-900 mb-2"><?php _e('Meet the Team', 'earlystart-early-learning'); ?>
+                    </h4>
+                    <p class="text-sm text-stone-600 leading-relaxed">
                         <?php _e('Speak with the Clinical Director about your child’s unique goals.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
@@ -208,8 +211,9 @@ if ($locations_query->have_posts()) {
                     <div
                         class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold mb-6">
                         3</div>
-                    <h4 class="font-bold text-stone-900 mb-2"><?php _e('Next Steps', 'earlystart-early-learning'); ?></h4>
-                    <p class="text-sm text-stone-500 leading-relaxed">
+                    <h4 class="font-bold text-stone-900 mb-2"><?php _e('Next Steps', 'earlystart-early-learning'); ?>
+                    </h4>
+                    <p class="text-sm text-stone-600 leading-relaxed">
                         <?php _e('Learn about our intake process, assessment, and individualized timelines.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
@@ -217,7 +221,5 @@ if ($locations_query->have_posts()) {
         </div>
     </section>
 </main>
-
-<?php get_footer(); ?>
 
 <?php get_footer(); ?>

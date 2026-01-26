@@ -90,7 +90,7 @@ while (have_posts()):
 					</div>
 					<div class="hidden md:block">
 						<span
-							class="text-sm text-stone-500"><?php _e('Early Start Regional Openings', 'earlystart-early-learning'); ?></span>
+							class="text-sm text-stone-600"><?php _e('Early Start Regional Openings', 'earlystart-early-learning'); ?></span>
 					</div>
 				</div>
 
@@ -110,7 +110,7 @@ while (have_posts()):
 										<p class="text-stone-600 mb-6 max-w-2xl text-sm leading-relaxed">
 											<?php echo esc_html($job['description'] ?: 'Join our clinical team and make a difference in the lives of early learners. We prioritize evidence-based care and staff support.'); ?>
 										</p>
-										<div class="flex flex-wrap gap-4 text-xs text-stone-500 font-bold uppercase tracking-wider">
+										<div class="flex flex-wrap gap-4 text-xs text-stone-600 font-bold uppercase tracking-wider">
 											<span class="flex items-center"><i data-lucide="map-pin"
 													class="w-4 h-4 mr-2 text-rose-400"></i>
 												<?php echo esc_html($job['location'] ?: 'Regional Clinic'); ?></span>
@@ -129,7 +129,7 @@ while (have_posts()):
 					<?php else: ?>
 						<div class="text-center py-20 border-2 border-dashed border-stone-100 rounded-[2rem] fade-in-up">
 							<i data-lucide="search" class="w-12 h-12 text-stone-200 mx-auto mb-4"></i>
-							<p class="text-stone-500">
+							<p class="text-stone-600">
 								<?php _e('No current openings found. Please check back soon!', 'earlystart-early-learning'); ?></p>
 						</div>
 					<?php endif; ?>

@@ -18,7 +18,7 @@ function earlystart_render_booking_modal() {
             <div class="bg-brand-cream border-b border-brand-ink/5 px-6 py-4 flex items-center justify-between flex-shrink-0">
                 <h3 class="font-serif text-xl font-bold text-brand-ink"><?php _e('Schedule Your Visit', 'earlystart-early-learning'); ?></h3>
                 <div class="flex items-center gap-4">
-                    <a href="#" id="chroma-booking-external" target="_blank"
+                    <a href="#" id="chroma-booking-external" target="_blank" rel="noopener noreferrer"
                         class="text-xs font-bold uppercase tracking-wider text-brand-ink/70 hover:text-chroma-blue transition-colors hidden md:block">
                         <?php _e('Open in new tab', 'earlystart-early-learning'); ?> <i class="fa-solid fa-external-link-alt ml-1"></i>
                     </a>

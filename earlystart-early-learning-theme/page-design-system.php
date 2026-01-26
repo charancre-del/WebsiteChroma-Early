@@ -54,28 +54,28 @@ get_header();
                     <div class="h-24 rounded-2xl bg-rose-600 shadow-lg"></div>
                     <div class="flex justify-between text-xs">
                         <span class="font-bold text-stone-900">Rose 600</span>
-                        <span class="text-stone-500">Brand Primary</span>
+                        <span class="text-stone-600">Brand Primary</span>
                     </div>
                 </div>
                 <div class="space-y-2">
                     <div class="h-24 rounded-2xl bg-rose-500 shadow-md"></div>
                     <div class="flex justify-between text-xs">
                         <span class="font-bold text-stone-900">Rose 500</span>
-                        <span class="text-stone-500">Interactive</span>
+                        <span class="text-stone-600">Interactive</span>
                     </div>
                 </div>
                 <div class="space-y-2">
                     <div class="h-24 rounded-2xl bg-rose-100"></div>
                     <div class="flex justify-between text-xs">
                         <span class="font-bold text-stone-900">Rose 100</span>
-                        <span class="text-stone-500">Backgrounds</span>
+                        <span class="text-stone-600">Backgrounds</span>
                     </div>
                 </div>
                 <div class="space-y-2">
                     <div class="h-24 rounded-2xl bg-rose-50"></div>
                     <div class="flex justify-between text-xs">
                         <span class="font-bold text-stone-900">Rose 50</span>
-                        <span class="text-stone-500">Subtle Wash</span>
+                        <span class="text-stone-600">Subtle Wash</span>
                     </div>
                 </div>
 
@@ -84,28 +84,28 @@ get_header();
                     <div class="h-24 rounded-2xl bg-stone-900 shadow-lg"></div>
                     <div class="flex justify-between text-xs">
                         <span class="font-bold text-stone-900">Stone 900</span>
-                        <span class="text-stone-500">Headings</span>
+                        <span class="text-stone-600">Headings</span>
                     </div>
                 </div>
                 <div class="space-y-2">
                     <div class="h-24 rounded-2xl bg-stone-600"></div>
                     <div class="flex justify-between text-xs">
                         <span class="font-bold text-stone-900">Stone 600</span>
-                        <span class="text-stone-500">Body Text</span>
+                        <span class="text-stone-600">Body Text</span>
                     </div>
                 </div>
                 <div class="space-y-2">
                     <div class="h-24 rounded-2xl bg-stone-100"></div>
                     <div class="flex justify-between text-xs">
                         <span class="font-bold text-stone-900">Stone 100</span>
-                        <span class="text-stone-500">Borders</span>
+                        <span class="text-stone-600">Borders</span>
                     </div>
                 </div>
                 <div class="space-y-2">
                     <div class="h-24 rounded-2xl bg-stone-50 border border-stone-100"></div>
                     <div class="flex justify-between text-xs">
                         <span class="font-bold text-stone-900">Stone 50</span>
-                        <span class="text-stone-500">Surface</span>
+                        <span class="text-stone-600">Surface</span>
                     </div>
                 </div>
 
@@ -114,14 +114,14 @@ get_header();
                     <div class="h-24 rounded-2xl bg-orange-500 shadow-md"></div>
                     <div class="flex justify-between text-xs">
                         <span class="font-bold text-stone-900">Orange 500</span>
-                        <span class="text-stone-500">Gradient Start</span>
+                        <span class="text-stone-600">Gradient Start</span>
                     </div>
                 </div>
                 <div class="space-y-2">
                     <div class="h-24 rounded-2xl bg-amber-400 shadow-md"></div>
                     <div class="flex justify-between text-xs">
                         <span class="font-bold text-stone-900">Amber 400</span>
-                        <span class="text-stone-500">Sparkles</span>
+                        <span class="text-stone-600">Sparkles</span>
                     </div>
                 </div>
             </div>
@@ -164,7 +164,7 @@ get_header();
                             Coming Soon
                         </span>
                         <span
-                            class="text-[10px] bg-white border border-stone-200 px-3 py-1 rounded-full text-stone-500 font-bold uppercase tracking-wider">
+                            class="text-[10px] bg-white border border-stone-200 px-3 py-1 rounded-full text-stone-600 font-bold uppercase tracking-wider">
                             North Atlanta
                         </span>
                     </div>
@@ -182,14 +182,14 @@ get_header();
                                 <i data-lucide="star" class="w-6 h-6"></i>
                             </div>
                             <h4 class="font-bold text-xl mb-3">Service Card</h4>
-                            <p class="text-sm text-stone-500 leading-relaxed">Standard card used for features, services,
+                            <p class="text-sm text-stone-600 leading-relaxed">Standard card used for features, services,
                                 and simple content blocks.</p>
                         </div>
 
                         <!-- Highlight Card -->
                         <div class="bg-stone-50 p-8 rounded-[2.5rem] border border-stone-100">
                             <h4 class="font-bold text-xl mb-3">Highlight Card</h4>
-                            <p class="text-sm text-stone-500 leading-relaxed mb-6">Slightly darker background to break
+                            <p class="text-sm text-stone-600 leading-relaxed mb-6">Slightly darker background to break
                                 up white space.</p>
                             <a href="#"
                                 class="text-rose-600 font-bold text-sm uppercase tracking-widest flex items-center gap-2">

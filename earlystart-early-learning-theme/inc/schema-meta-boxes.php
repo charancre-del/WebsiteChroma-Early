@@ -73,7 +73,7 @@ function earlystart_schema_organization_meta_box( $post ) {
 	?>
 	<div style="margin-bottom: 15px; padding: 10px; background: #f0f8ff; border-left: 4px solid #0073aa;">
 		<strong>Active Schema:</strong> ChildCare Organization<br>
-		<a href="https://schema.org/ChildCare" target="_blank">View ChildCare schema documentation →</a>
+		<a href="https://schema.org/ChildCare" target="_blank" rel="noopener noreferrer">View ChildCare schema documentation →</a>
 	</div>
 
 	<table class="form-table">
@@ -166,8 +166,8 @@ function earlystart_schema_location_meta_box( $post ) {
 	?>
 	<div style="margin-bottom: 15px; padding: 10px; background: #f0f8ff; border-left: 4px solid #0073aa;">
 		<strong>Active Schemas:</strong> ChildCare + LocalBusiness<br>
-		<a href="https://schema.org/ChildCare" target="_blank">ChildCare</a> |
-		<a href="https://schema.org/LocalBusiness" target="_blank">LocalBusiness</a>
+		<a href="https://schema.org/ChildCare" target="_blank" rel="noopener noreferrer">ChildCare</a> |
+		<a href="https://schema.org/LocalBusiness" target="_blank" rel="noopener noreferrer">LocalBusiness</a>
 	</div>
 
 	<table class="form-table">
@@ -254,7 +254,7 @@ function earlystart_schema_program_meta_box( $post ) {
 	?>
 	<div style="margin-bottom: 15px; padding: 10px; background: #f0f8ff; border-left: 4px solid #0073aa;">
 		<strong>Active Schema:</strong> Service<br>
-		<a href="https://schema.org/Service" target="_blank">View Service schema documentation →</a>
+		<a href="https://schema.org/Service" target="_blank" rel="noopener noreferrer">View Service schema documentation →</a>
 	</div>
 
 	<table class="form-table">

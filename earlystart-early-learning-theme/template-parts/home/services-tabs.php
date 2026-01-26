@@ -14,7 +14,7 @@ if (empty($services)) {
 <section id="services" class="py-24 bg-stone-50 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 fade-in-up">
-            <span class="text-rose-600 font-bold uppercase tracking-[0.2em] text-xs mb-4 block">
+            <span class="text-rose-700 font-bold uppercase tracking-[0.2em] text-xs mb-4 block">
                 <?php _e('Therapy in Action', 'earlystart-early-learning'); ?>
             </span>
             <h2 class="text-4xl lg:text-5xl font-extrabold text-stone-900 mb-6">
@@ -40,10 +40,10 @@ if (empty($services)) {
                                     class="w-6 h-6 text-rose-600"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-stone-900">
+                                <h3 class="font-bold text-stone-900">
                                     <?php echo esc_html($service['title']); ?>
-                                </h4>
-                                <p class="text-xs text-stone-500 font-medium">
+                                </h3>
+                                <p class="text-xs text-stone-600 font-bold">
                                     <?php echo esc_html($service['subtitle']); ?>
                                 </p>
                             </div>
@@ -90,7 +90,7 @@ if (empty($services)) {
                             <div class="relative">
                                 <div class="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl">
                                     <img src="<?php echo esc_url($service['image']); ?>" class="w-full h-full object-cover"
-                                        alt="<?php echo esc_attr($service['title']); ?>">
+                                        alt="<?php echo esc_attr($service['title']); ?>" width="800" height="1000">
                                 </div>
                                 <div
                                     class="absolute -bottom-6 -right-6 w-32 h-32 bg-stone-900 rounded-2xl flex flex-col items-center justify-center text-white p-4 shadow-xl">

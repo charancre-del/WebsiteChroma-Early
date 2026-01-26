@@ -18,7 +18,7 @@ $grouped = $locations_data['grouped'] ?? array();
         <div class="flex flex-col lg:flex-row justify-between items-end mb-16 gap-8 fade-in-up">
             <div class="max-w-2xl">
                 <span
-                    class="text-rose-600 font-bold uppercase tracking-[0.2em] text-xs mb-4 block"><?php _e('Neighborhood Clinical Centers', 'earlystart-early-learning'); ?></span>
+                    class="text-rose-700 font-bold uppercase tracking-[0.2em] text-xs mb-4 block"><?php _e('Neighborhood Clinical Centers', 'earlystart-early-learning'); ?></span>
                 <h2 class="text-4xl lg:text-5xl font-extrabold text-stone-900 mb-6">
                     <?php echo $locations_data['heading']; // Already wp_kses_post ?>
                 </h2>
@@ -42,7 +42,7 @@ $grouped = $locations_data['grouped'] ?? array();
                             break 2; // Show only 3 for preview
                         $count++;
 
-                        $image = get_the_post_thumbnail_url($location['id'], 'large') ?: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&fit=crop';
+                        $image = get_the_post_thumbnail_url($location['id'], 'large') ?: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp';
                         ?>
                         <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border border-stone-100 group fade-in-up"
                             style="transition-delay: <?php echo $count * 100; ?>ms">
@@ -56,14 +56,14 @@ $grouped = $locations_data['grouped'] ?? array();
                                 </div>
                             </div>
                             <div class="p-8">
-                                <h4 class="text-2xl font-bold text-stone-900 mb-2"><?php echo esc_html($location['title']); ?></h4>
+                                <h3 class="text-2xl font-bold text-stone-900 mb-2"><?php echo esc_html($location['title']); ?></h3>
                                 <div class="space-y-3 mb-6">
-                                    <div class="flex items-center text-stone-500 text-sm">
-                                        <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-rose-600"></i>
+                                    <div class="flex items-center text-stone-600 text-sm font-medium">
+                                        <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-rose-700"></i>
                                         <?php echo esc_html($location['address']); ?>
                                     </div>
-                                    <div class="flex items-center text-stone-500 text-sm">
-                                        <i data-lucide="phone" class="w-4 h-4 mr-2 text-rose-600"></i>
+                                    <div class="flex items-center text-stone-600 text-sm font-medium">
+                                        <i data-lucide="phone" class="w-4 h-4 mr-2 text-rose-700"></i>
                                         <?php echo esc_html($location['phone']); ?>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@ $grouped = $locations_data['grouped'] ?? array();
                                 </a>
                             </div>
                         </div>
-                    <?php
+                        <?php
                     endforeach;
                 endforeach;
                 ?>

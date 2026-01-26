@@ -7,8 +7,61 @@
 	<?php // Canonical URL is handled by Yoast SEO and class-canonical-enforcer.php via wp_head ?>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-		rel="stylesheet">
+
+	<style id="earlystart-critical-css">
+		/* Darkened Brand Colors for WCAG AA Compliance (Enhanced) */
+		.text-chroma-red {
+			color: #964030 !important;
+		}
+
+		.bg-chroma-red {
+			background-color: #964030 !important;
+		}
+
+		.text-chroma-orange {
+			color: #A8551E !important;
+		}
+
+		.bg-chroma-orange {
+			background-color: #A8551E !important;
+		}
+
+		.text-chroma-green {
+			color: #4D5C54 !important;
+		}
+
+		.bg-chroma-green {
+			background-color: #4D5C54 !important;
+		}
+
+		.text-chroma-yellow {
+			color: #8C6B2F !important;
+		}
+
+		.bg-chroma-yellow {
+			background-color: #8C6B2F !important;
+		}
+
+		/* touch targets & visibility */
+		footer nav a,
+		[data-reviews-dots] button {
+			min-width: 44px;
+			min-height: 44px;
+		}
+
+		.fade-in-up {
+			animation: fadeInUp 0.8s ease forwards;
+			opacity: 0;
+			transform: translateY(20px);
+		}
+
+		@keyframes fadeInUp {
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	</style>
 
 	<?php wp_head(); ?>
 </head>
@@ -68,7 +121,7 @@
 							</span>
 							<?php if (!empty($secondary_line)): ?>
 								<span
-									class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
+									class="text-[0.65rem] uppercase tracking-widest text-stone-600 font-semibold hidden md:block">
 									<?php echo esc_html($secondary_line); ?>
 								</span>
 							<?php endif; ?>

@@ -44,7 +44,7 @@ while (have_posts()):
                     <div class="relative fade-in-up">
                         <div
                             class="aspect-square rounded-[3rem] bg-stone-50 overflow-hidden shadow-2xl border-8 border-white p-4">
-                            <img src="https://images.unsplash.com/photo-1544717305-27a734ef202e?q=80&w=1000&auto=format&fit=crop"
+                            <img src="https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?q=80&w=1000&auto=format&fit=crop&q=80&fm=webp"
                                 class="w-full h-full object-cover rounded-[2rem]" alt="PrismaPath">
                         </div>
                         <div class="absolute -bottom-8 -right-8 w-48 h-48 bg-amber-50 rounded-full blur-3xl -z-10"></div>
@@ -75,22 +75,22 @@ while (have_posts()):
                 <div class="grid md:grid-cols-4 gap-8">
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-rose-500 mb-2">1:1</span>
-                        <p class="text-stone-500 text-sm font-bold uppercase tracking-widest">
+                        <p class="text-stone-600 text-sm font-bold uppercase tracking-widest">
                             <?php _e('Intensive Ratio', 'earlystart-early-learning'); ?></p>
                     </div>
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-orange-500 mb-2">100%</span>
-                        <p class="text-stone-500 text-sm font-bold uppercase tracking-widest">
+                        <p class="text-stone-600 text-sm font-bold uppercase tracking-widest">
                             <?php _e('Assent-Based', 'earlystart-early-learning'); ?></p>
                     </div>
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-amber-500 mb-2">Daily</span>
-                        <p class="text-stone-500 text-sm font-bold uppercase tracking-widest">
+                        <p class="text-stone-600 text-sm font-bold uppercase tracking-widest">
                             <?php _e('Data Insights', 'earlystart-early-learning'); ?></p>
                     </div>
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-rose-500 mb-2">19+</span>
-                        <p class="text-stone-500 text-sm font-bold uppercase tracking-widest">
+                        <p class="text-stone-600 text-sm font-bold uppercase tracking-widest">
                             <?php _e('Care Hubs', 'earlystart-early-learning'); ?></p>
                     </div>
                 </div>
@@ -211,7 +211,7 @@ while (have_posts()):
                         <h4 class="text-stone-400 font-bold uppercase tracking-widest text-xs mb-6">
                             <?php _e('Traditional ABA', 'earlystart-early-learning'); ?>
                         </h4>
-                        <ul class="space-y-4 text-stone-500">
+                        <ul class="space-y-4 text-stone-600">
                             <li class="flex items-start"><i data-lucide="x-circle"
                                     class="w-5 h-5 mr-3 text-stone-300 shrink-0 mt-0.5"></i>
                                 <?php _e('Forced compliance to meet trial counts.', 'earlystart-early-learning'); ?>
