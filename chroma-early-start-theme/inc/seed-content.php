@@ -115,6 +115,8 @@ function earlystart_seed_core_content()
         'our-approach' => array('title' => 'Our Approach', 'template' => 'page-approach.php'),
         'services' => array('title' => 'Services', 'template' => 'page-programs.php'),
         'locations-list' => array('title' => 'Locations', 'template' => 'page-locations.php'),
+        'curriculum' => array('title' => 'Our Approach', 'template' => 'page-approach.php'),
+        'parents' => array('title' => 'Chroma Bridge Program', 'template' => 'page-bridge-program.php'),
         'bridge-program' => array(
             'title' => 'Chroma Bridge Program',
             'template' => 'page-bridge-program.php',
@@ -164,10 +166,14 @@ function earlystart_seed_core_content()
                     update_option('page_on_front', $post_id);
                 }
             }
-        } else {
-            // Update Home Page JSON even if it exists
-            if ($slug === 'home' && !empty($data['meta']['home_services_json'])) {
-                update_post_meta($existing_page->ID, 'home_services_json', $data['meta']['home_services_json']);
+            // If page exists, ensure it is using the correct template and has current meta
+            if (!empty($data['template'])) {
+                update_post_meta($existing_page->ID, '_wp_page_template', $data['template']);
+            }
+            if (!empty($data['meta'])) {
+                foreach ($data['meta'] as $key => $value) {
+                    update_post_meta($existing_page->ID, $key, $value);
+                }
             }
         }
     }
