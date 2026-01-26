@@ -116,7 +116,13 @@ function earlystart_seed_core_content()
         'services' => array('title' => 'Services', 'template' => 'page-programs.php'),
         'locations-list' => array('title' => 'Locations', 'template' => 'page-locations.php'),
         'curriculum' => array('title' => 'Our Approach', 'template' => 'page-approach.php'),
-        'parents' => array('title' => 'Chroma Bridge Program', 'template' => 'page-bridge-program.php'),
+        'parents' => array(
+            'title' => 'For Families',
+            'template' => 'page-families.php',
+            'meta' => array(
+                '_wp_page_template' => 'page-families.php'
+            )
+        ),
         'bridge-program' => array(
             'title' => 'Chroma Bridge Program',
             'template' => 'page-bridge-program.php',
