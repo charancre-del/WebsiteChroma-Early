@@ -48,6 +48,17 @@
 
 		.logo-img {
 			aspect-ratio: attr(width) / attr(height);
+			width:
+				<?php echo absint(get_theme_mod('earlystart_logo_width_mobile', 56)); ?>
+				px;
+		}
+
+		@media (min-width: 768px) {
+			.logo-img {
+				width:
+					<?php echo absint(get_theme_mod('earlystart_logo_width_desktop', 70)); ?>
+					px;
+			}
 		}
 
 		/* Darkened Brand Colors for WCAG AA Compliance (Enhanced) */
@@ -175,8 +186,8 @@
 									<img src="<?php echo esc_url($logo[0]); ?>"
 										alt="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>"
 										width="<?php echo esc_attr($logo[1]); ?>" height="<?php echo esc_attr($logo[2]); ?>"
-										class="h-10 w-auto md:h-12 object-contain logo-img transition-transform duration-300 group-hover:scale-105"
-												style="aspect-ratio: <?php echo esc_attr($logo[1]); ?> / <?php echo esc_attr($logo[2]); ?>;"
+										class="object-contain logo-img transition-transform duration-300 group-hover:scale-105"
+										style="aspect-ratio: <?php echo esc_attr($logo[1]); ?> / <?php echo esc_attr($logo[2]); ?>;"
 										fetchpriority="high">
 								<?php endif; ?>
 
