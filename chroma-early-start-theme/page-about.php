@@ -48,8 +48,9 @@ while (have_posts()):
 			</div>
 			<div class="max-w-5xl mx-auto px-4 text-center relative z-10">
 				<i data-lucide="sparkles" class="w-12 h-12 text-amber-400 mx-auto mb-8"></i>
-				<span
-					class="text-sm font-bold text-stone-400 uppercase tracking-widest mb-6 block"><?php _e('Our Purpose', 'chroma-early-start'); ?></span>
+				<span class="text-sm font-bold text-stone-400 uppercase tracking-widest mb-6 block">
+					<?php _e('Our Purpose', 'chroma-early-start'); ?>
+				</span>
 				<p class="text-2xl md:text-4xl font-serif italic leading-relaxed fade-in-up">
 					<?php echo esc_html($mission_quote); ?>
 				</p>
@@ -72,16 +73,23 @@ while (have_posts()):
 						</h2>
 						<div class="prose prose-lg text-stone-600 space-y-6 max-w-none">
 							<?php if ($story_p1): ?>
-								<p><?php echo esc_html($story_p1); ?></p>
+								<p>
+									<?php echo esc_html($story_p1); ?>
+								</p>
 							<?php else: ?>
-								<p><?php _e('Chroma Early Learning Academy began with a mission to redefine "daycare." We didn\'t just want to watch children; we wanted to ignite their potential.', 'chroma-early-start'); ?>
+								<p>
+									<?php _e('Chroma Early Learning Academy began with a mission to redefine "daycare." We didn\'t just want to watch children; we wanted to ignite their potential.', 'chroma-early-start'); ?>
 								</p>
 							<?php endif; ?>
 
 							<?php if ($story_p2): ?>
-								<p><?php echo esc_html($story_p2); ?></p>
+								<p>
+									<?php echo esc_html($story_p2); ?>
+								</p>
 							<?php else: ?>
-								<p><strong><?php _e('Chroma Early Start', 'chroma-early-start'); ?></strong>
+								<p><strong>
+										<?php _e('Chroma Early Start', 'chroma-early-start'); ?>
+									</strong>
 									<?php _e('was created to bring that same "second home" philosophy to pediatric therapy.', 'chroma-early-start'); ?>
 								</p>
 							<?php endif; ?>
@@ -95,9 +103,12 @@ while (have_posts()):
 								$lbl = get_post_meta($page_id, "about_stat{$i}_label", true);
 								if ($val): ?>
 									<div>
-										<span class="block text-4xl font-bold text-rose-600"><?php echo esc_html($val); ?></span>
-										<span
-											class="text-xs text-stone-500 uppercase font-bold tracking-widest"><?php echo esc_html($lbl); ?></span>
+										<span class="block text-4xl font-bold text-rose-600">
+											<?php echo esc_html($val); ?>
+										</span>
+										<span class="text-xs text-stone-500 uppercase font-bold tracking-widest">
+											<?php echo esc_html($lbl); ?>
+										</span>
 									</div>
 								<?php endif;
 							} ?>
@@ -119,7 +130,9 @@ while (have_posts()):
 		<section class="py-24 bg-white border-b border-stone-100 overflow-hidden">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="text-center mb-16 fade-in-up">
-					<h2 class="text-3xl font-bold text-stone-900"><?php _e('Our Journey', 'chroma-early-start'); ?></h2>
+					<h2 class="text-3xl font-bold text-stone-900">
+						<?php _e('Our Journey', 'chroma-early-start'); ?>
+					</h2>
 				</div>
 				<div class="relative">
 					<div class="absolute top-1/2 left-0 w-full h-1 bg-stone-100 -translate-y-1/2 hidden md:block"></div>
@@ -138,8 +151,12 @@ while (have_posts()):
 									class="inline-block px-4 py-1 bg-<?php echo $m['color']; ?>-50 text-<?php echo $m['color']; ?>-600 rounded-full text-sm font-bold mb-4">
 									<?php echo esc_html($m['year']); ?>
 								</span>
-								<h4 class="font-bold text-lg mb-2 text-stone-900"><?php echo esc_html($m['title']); ?></h4>
-								<p class="text-sm text-stone-500 leading-relaxed"><?php echo esc_html($m['desc']); ?></p>
+								<h4 class="font-bold text-lg mb-2 text-stone-900">
+									<?php echo esc_html($m['title']); ?>
+								</h4>
+								<p class="text-sm text-stone-500 leading-relaxed">
+									<?php echo esc_html($m['desc']); ?>
+								</p>
 							</div>
 						<?php endforeach; ?>
 					</div>
@@ -177,8 +194,12 @@ while (have_posts()):
 									class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 text-rose-500">
 									<i data-lucide="<?php echo esc_attr($icon ?: 'star'); ?>" class="w-7 h-7"></i>
 								</div>
-								<h3 class="font-bold text-stone-900 text-xl mb-3"><?php echo esc_html($title); ?></h3>
-								<p class="text-stone-600 text-sm leading-relaxed"><?php echo esc_html($desc); ?></p>
+								<h3 class="font-bold text-stone-900 text-xl mb-3">
+									<?php echo esc_html($title); ?>
+								</h3>
+								<p class="text-stone-600 text-sm leading-relaxed">
+									<?php echo esc_html($desc); ?>
+								</p>
 							</div>
 						<?php endif;
 					} ?>
@@ -195,7 +216,9 @@ while (have_posts()):
 			<div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl"></div>
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 				<div class="text-center mb-16 fade-in-up">
-					<h2 class="text-4xl font-bold mb-4"><?php echo esc_html($val_title); ?></h2>
+					<h2 class="text-4xl font-bold mb-4">
+						<?php echo esc_html($val_title); ?>
+					</h2>
 					<p class="text-rose-100 max-w-2xl mx-auto text-lg">
 						<?php echo esc_html($val_desc); ?>
 					</p>
@@ -213,13 +236,13 @@ while (have_posts()):
 								class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-rose-400/30 hover:bg-white/20 transition-all fade-in-up">
 								<i data-lucide="<?php echo esc_attr($icon ?: 'circle'); ?>"
 									class="w-10 h-10 text-rose-200 mb-4"></i>
-								<h3 class="text-xl font-bold mb-2"><?php echo esc_html($title); ?></h3>
-								<p class="text-sm text-rose-100 leading-relaxed"><?php echo esc_html($desc); ?></p>
+								<h3 class="text-xl font-bold mb-2">
+									<?php echo esc_html($title); ?>
+								</h3>
+								<p class="text-sm text-rose-100 leading-relaxed">
+									<?php echo esc_html($desc); ?>
+								</p>
 							</div>
-						<?php endif;
-					} ?>
-				</div>
-			</div>
 						<?php endif;
 					} ?>
 				</div>
@@ -231,8 +254,9 @@ while (have_posts()):
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="grid lg:grid-cols-2 gap-16 items-center">
 					<div class="fade-in-up">
-						<span
-							class="text-amber-400 font-bold tracking-widest text-sm uppercase mb-4 block"><?php _e('Our Culture', 'chroma-early-start'); ?></span>
+						<span class="text-amber-400 font-bold tracking-widest text-sm uppercase mb-4 block">
+							<?php _e('Our Culture', 'chroma-early-start'); ?>
+						</span>
 						<h2 class="text-3xl md:text-4xl font-bold mb-6">
 							<?php _e('A Place Where Everyone Belongs', 'chroma-early-start'); ?>
 						</h2>
@@ -244,15 +268,17 @@ while (have_posts()):
 								<div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center mr-4">
 									<i data-lucide="globe" class="w-5 h-5 text-amber-400"></i>
 								</div>
-								<span class="font-medium"><?php _e('Culturally Responsive Care', 'chroma-early-start'); ?></span>
+								<span class="font-medium">
+									<?php _e('Culturally Responsive Care', 'chroma-early-start'); ?>
+								</span>
 							</div>
 							<div class="flex items-center">
 								<div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center mr-4">
-									<i data-lucide="heart-handshake"
-										class="w-5 h-5 text-amber-400"></i>
+									<i data-lucide="heart-handshake" class="w-5 h-5 text-amber-400"></i>
 								</div>
-								<span
-									class="font-medium"><?php _e('Neurodiversity-Affirming Practices', 'chroma-early-start'); ?></span>
+								<span class="font-medium">
+									<?php _e('Neurodiversity-Affirming Practices', 'chroma-early-start'); ?>
+								</span>
 							</div>
 						</div>
 					</div>
@@ -262,16 +288,20 @@ while (have_posts()):
 						</div>
 						<div class="relative bg-stone-800 rounded-[2.5rem] p-10 border border-stone-700">
 							<blockquote class="text-xl italic text-stone-200 mb-6">
-								"<?php _e('Our son has never fit into a \'box\' before. At Chroma, they didn\'t try to change him; they built a world where he could succeed just as he is.', 'chroma-early-start'); ?>"
+								"
+								<?php _e('Our son has never fit into a \'box\' before. At Chroma, they didn\'t try to change him; they built a world where he could succeed just as he is.', 'chroma-early-start'); ?>"
 							</blockquote>
 							<div class="flex items-center">
 								<div
 									class="w-10 h-10 bg-rose-500 rounded-full flex items-center justify-center font-bold text-white text-sm mr-3">
 									MJ</div>
 								<div>
-									<div class="font-bold"><?php _e('Marcus J.', 'chroma-early-start'); ?></div>
+									<div class="font-bold">
+										<?php _e('Marcus J.', 'chroma-early-start'); ?>
+									</div>
 									<div class="text-xs text-stone-400">
-										<?php _e('Chroma Parent', 'chroma-early-start'); ?></div>
+										<?php _e('Chroma Parent', 'chroma-early-start'); ?>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -327,8 +357,10 @@ while (have_posts()):
 									</div>
 								</div>
 								<h4 class="text-2xl font-bold text-stone-900 mb-1 group-hover:text-rose-600 transition-colors">
-									<?php the_title(); ?></h4>
-								<p class="text-stone-500 font-medium tracking-wide text-sm uppercase"><?php echo esc_html($role); ?>
+									<?php the_title(); ?>
+								</h4>
+								<p class="text-stone-500 font-medium tracking-wide text-sm uppercase">
+									<?php echo esc_html($role); ?>
 								</p>
 							</div>
 						<?php endwhile;
@@ -357,16 +389,20 @@ while (have_posts()):
 					<div id="modal-bio" class="prose prose-stone text-stone-600 leading-relaxed"></div>
 					<div class="mt-8 pt-8 border-t border-stone-100 flex gap-4">
 						<div class="bg-stone-50 p-4 rounded-2xl flex-1">
-							<span
-								class="block text-[10px] font-bold text-stone-400 uppercase mb-1"><?php _e('Specialty', 'chroma-early-start'); ?></span>
-							<span
-								class="text-sm font-bold text-stone-700"><?php _e('Early Intervention', 'chroma-early-start'); ?></span>
+							<span class="block text-[10px] font-bold text-stone-400 uppercase mb-1">
+								<?php _e('Specialty', 'chroma-early-start'); ?>
+							</span>
+							<span class="text-sm font-bold text-stone-700">
+								<?php _e('Early Intervention', 'chroma-early-start'); ?>
+							</span>
 						</div>
 						<div class="bg-stone-50 p-4 rounded-2xl flex-1">
-							<span
-								class="block text-[10px] font-bold text-stone-400 uppercase mb-1"><?php _e('Approach', 'chroma-early-start'); ?></span>
-							<span
-								class="text-sm font-bold text-stone-700"><?php _e('Assent-Based', 'chroma-early-start'); ?></span>
+							<span class="block text-[10px] font-bold text-stone-400 uppercase mb-1">
+								<?php _e('Approach', 'chroma-early-start'); ?>
+							</span>
+							<span class="text-sm font-bold text-stone-700">
+								<?php _e('Assent-Based', 'chroma-early-start'); ?>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -387,8 +423,9 @@ while (have_posts()):
 						class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-rose-500 to-transparent">
 					</div>
 					<div class="relative z-10">
-						<span
-							class="text-rose-400 font-bold tracking-widest text-sm uppercase mb-4 block"><?php echo esc_html($phil_subtitle); ?></span>
+						<span class="text-rose-400 font-bold tracking-widest text-sm uppercase mb-4 block">
+							<?php echo esc_html($phil_subtitle); ?>
+						</span>
 						<h2 class="text-4xl md:text-5xl font-bold mb-8">
 							<?php echo esc_html($phil_title); ?>
 						</h2>
