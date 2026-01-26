@@ -40,20 +40,14 @@ function earlystart_enqueue_assets()
                 'all'
         );
 
-        // Google Fonts: Plus Jakarta Sans & Playfair Display
-        wp_enqueue_style(
-                'earlystart-fonts',
-                'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@400;700&display=swap',
-                array(),
-                null
-        );
-        // Ensure font-display: swap is added
-        wp_style_add_data('earlystart-fonts', 'media', 'all');
 
-        // Lucide Icons - Pinned version to avoid redirects and duplication
+        // Google Fonts: Removed in favor of local fonts in assets/webfonts loaded via main.css
+        // checks input.css for @font-face definitions
+
+        // Lucide Icons - Local version to unnecessary external request and optimize chain
         wp_enqueue_script(
                 'lucide-icons',
-                'https://unpkg.com/lucide@0.320.0/dist/umd/lucide.min.js',
+                earlystart_THEME_URI . '/assets/js/lucide.min.js',
                 array(),
                 '0.320.0',
                 true // Load in Footer
@@ -83,7 +77,6 @@ function earlystart_enqueue_assets()
 
         // chroma-utils is now INLINED in header.php for performance
 
-        // Main JavaScript.
         // Main JavaScript.
         $js_path = earlystart_THEME_DIR . '/assets/js/main.min.js';
         $js_version = file_exists($js_path) ? filemtime($js_path) : earlystart_VERSION;
@@ -150,9 +143,7 @@ function earlystart_resource_hints($urls, $relation_type)
                 $urls[] = 'https://services.leadconnectorhq.com';
                 $urls[] = 'https://images.leadconnectorhq.com';
                 $urls[] = 'https://stcdn.leadconnectorhq.com';
-                $urls[] = 'https://fonts.bunny.net';
                 $urls[] = 'https://images.unsplash.com';
-                $urls[] = 'https://unpkg.com';
         }
 
         if ('dns-prefetch' === $relation_type) {
@@ -167,7 +158,6 @@ function earlystart_resource_hints($urls, $relation_type)
                 $urls[] = '//services.leadconnectorhq.com';
                 $urls[] = '//images.leadconnectorhq.com';
                 $urls[] = '//stcdn.leadconnectorhq.com';
-                $urls[] = '//fonts.bunny.net';
         }
 
         return array_unique($urls, SORT_REGULAR);
@@ -293,7 +283,16 @@ add_action('wp_head', 'earlystart_preload_main_css', 1);
  */
 function earlystart_preload_fonts()
 {
+        // Outfit Regular (Body)
         $font_url = earlystart_THEME_URI . '/assets/webfonts/Outfit-Regular.woff2';
+        echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+
+        // Outfit SemiBold (LCP Heading / Strong Text)
+        $font_url = earlystart_THEME_URI . '/assets/webfonts/Outfit-SemiBold.woff2';
+        echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+
+        // Playfair Display Bold (Headings)
+        $font_url = earlystart_THEME_URI . '/assets/webfonts/PlayfairDisplay-Bold.woff2';
         echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 }
 add_action('wp_head', 'earlystart_preload_fonts', 1);
