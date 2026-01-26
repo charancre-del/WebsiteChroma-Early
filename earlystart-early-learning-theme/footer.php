@@ -36,39 +36,71 @@
 				</div>
 			</div>
 
+
 			<div>
 				<h3 class="text-white font-bold mb-8 tracking-widest text-xs uppercase">
 					<?php _e('Quick Links', 'earlystart-early-learning'); ?>
 				</h3>
-				<div class="flex flex-col space-y-4 text-sm font-medium">
-					<a href="<?php echo esc_url(home_url('/about/')); ?>"
-						class="hover:text-rose-400 transition-colors"><?php _e('About Us', 'earlystart-early-learning'); ?></a>
-					<a href="<?php echo esc_url(home_url('/locations/')); ?>"
-						class="hover:text-rose-400 transition-colors"><?php _e('Find a Clinic', 'earlystart-early-learning'); ?></a>
-					<a href="<?php echo esc_url(home_url('/parents/')); ?>"
-						class="hover:text-rose-400 transition-colors"><?php _e('For Families', 'earlystart-early-learning'); ?></a>
-					<a href="<?php echo esc_url(home_url('/careers/')); ?>"
-						class="hover:text-rose-400 transition-colors"><?php _e('Join Our Team', 'earlystart-early-learning'); ?></a>
-					<a href="<?php echo esc_url(home_url('/faq/')); ?>"
-						class="hover:text-rose-400 transition-colors"><?php _e('FAQs', 'earlystart-early-learning'); ?></a>
-				</div>
+				<?php
+				$location = (class_exists('earlystart_Multilingual_Manager') && method_exists('earlystart_Multilingual_Manager', 'is_spanish') && earlystart_Multilingual_Manager::is_spanish()) ? 'footer_quick_es' : 'footer_quick';
+				if (has_nav_menu($location)) {
+					wp_nav_menu(array(
+						'theme_location' => $location,
+						'container' => false,
+						'menu_class' => 'flex flex-col space-y-4 text-sm font-medium',
+						'fallback_cb' => false,
+						'items_wrap' => '<div class="%2$s">%3$s</div>',
+						'depth' => 1,
+						'walker' => new earlystart_Footer_Nav_Walker(),
+					));
+				} else {
+					?>
+					<div class="flex flex-col space-y-4 text-sm font-medium">
+						<a href="<?php echo esc_url(home_url('/about/')); ?>"
+							class="hover:text-rose-400 transition-colors"><?php _e('About Us', 'earlystart-early-learning'); ?></a>
+						<a href="<?php echo esc_url(home_url('/locations/')); ?>"
+							class="hover:text-rose-400 transition-colors"><?php _e('Find a Clinic', 'earlystart-early-learning'); ?></a>
+						<a href="<?php echo esc_url(home_url('/parents/')); ?>"
+							class="hover:text-rose-400 transition-colors"><?php _e('For Families', 'earlystart-early-learning'); ?></a>
+						<a href="<?php echo esc_url(home_url('/careers/')); ?>"
+							class="hover:text-rose-400 transition-colors"><?php _e('Join Our Team', 'earlystart-early-learning'); ?></a>
+						<a href="<?php echo esc_url(home_url('/faq/')); ?>"
+							class="hover:text-rose-400 transition-colors"><?php _e('FAQs', 'earlystart-early-learning'); ?></a>
+					</div>
+				<?php } ?>
 			</div>
 
 			<div>
 				<h3 class="text-white font-bold mb-8 tracking-widest text-xs uppercase">
 					<?php _e('Clinics & Programs', 'earlystart-early-learning'); ?>
 				</h3>
-				<div class="flex flex-col space-y-4 text-sm font-medium">
-					<a href="<?php echo esc_url(home_url('/programs/aba/')); ?>"
-						class="hover:text-rose-400 transition-colors">ABA Therapy</a>
-					<a href="<?php echo esc_url(home_url('/programs/speech/')); ?>"
-						class="hover:text-rose-400 transition-colors">Speech Therapy</a>
-					<a href="<?php echo esc_url(home_url('/programs/ot/')); ?>"
-						class="hover:text-rose-400 transition-colors">Occupational Therapy</a>
-					<a href="<?php echo esc_url(home_url('/programs/bridge/')); ?>"
-						class="hover:text-rose-400 transition-colors">Preschool Bridge</a>
-				</div>
+				<?php
+				$location = (class_exists('earlystart_Multilingual_Manager') && method_exists('earlystart_Multilingual_Manager', 'is_spanish') && earlystart_Multilingual_Manager::is_spanish()) ? 'footer_programs_es' : 'footer_programs';
+				if (has_nav_menu($location)) {
+					wp_nav_menu(array(
+						'theme_location' => $location,
+						'container' => false,
+						'menu_class' => 'flex flex-col space-y-4 text-sm font-medium',
+						'fallback_cb' => false,
+						'items_wrap' => '<div class="%2$s">%3$s</div>',
+						'depth' => 1,
+						'walker' => new earlystart_Footer_Nav_Walker(),
+					));
+				} else {
+					?>
+					<div class="flex flex-col space-y-4 text-sm font-medium">
+						<a href="<?php echo esc_url(home_url('/programs/aba/')); ?>"
+							class="hover:text-rose-400 transition-colors">ABA Therapy</a>
+						<a href="<?php echo esc_url(home_url('/programs/speech/')); ?>"
+							class="hover:text-rose-400 transition-colors">Speech Therapy</a>
+						<a href="<?php echo esc_url(home_url('/programs/ot/')); ?>"
+							class="hover:text-rose-400 transition-colors">Occupational Therapy</a>
+						<a href="<?php echo esc_url(home_url('/programs/bridge/')); ?>"
+							class="hover:text-rose-400 transition-colors">Preschool Bridge</a>
+					</div>
+				<?php } ?>
 			</div>
+
 
 			<div>
 				<h3 class="text-white font-bold mb-8 tracking-widest text-xs uppercase">

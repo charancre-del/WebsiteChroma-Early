@@ -17,13 +17,17 @@ if (!defined('ABSPATH')) {
 function earlystart_register_menus()
 {
 	register_nav_menus(array(
+
 		'primary' => __('Primary Menu', 'earlystart-early-learning'),
 		'primary_es' => __('Primary Menu (Spanish)', 'earlystart-early-learning'),
-		'footer' => __('Footer Menu', 'earlystart-early-learning'),
-		'footer_es' => __('Footer Menu (Spanish)', 'earlystart-early-learning'),
+		'footer_quick' => __('Footer Quick Links', 'earlystart-early-learning'),
+		'footer_quick_es' => __('Footer Quick Links (Spanish)', 'earlystart-early-learning'),
+		'footer_programs' => __('Footer Programs Menu', 'earlystart-early-learning'),
+		'footer_programs_es' => __('Footer Programs Menu (Spanish)', 'earlystart-early-learning'),
 		'footer_contact' => __('Footer Contact Menu', 'earlystart-early-learning'),
 		'footer_contact_es' => __('Footer Contact Menu (Spanish)', 'earlystart-early-learning'),
 	));
+
 }
 add_action('init', 'earlystart_register_menus');
 
