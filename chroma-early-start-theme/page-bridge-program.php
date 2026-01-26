@@ -70,6 +70,46 @@ while (have_posts()):
             </div>
         </section>
 
+        <!-- High Prestige Stat Section (Dark) -->
+        <section class="py-24 bg-stone-900 overflow-hidden relative">
+            <div class="absolute inset-0 bg-blue-600/5"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                            <?php _e('Measuring Success Beyond the Clinic.', 'chroma-early-start'); ?>
+                        </h2>
+                        <p class="text-stone-400 text-lg leading-relaxed mb-8">
+                            <?php _e('Our results are measured by your child\'s confidence in the real world. We track 50+ readiness milestones to ensure the transition is seamless.', 'chroma-early-start'); ?>
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
+                                <span class="block text-3xl font-bold text-blue-500 mb-1">92%</span>
+                                <span
+                                    class="text-[10px] font-bold text-stone-500 uppercase tracking-widest"><?php _e('Placement Rate', 'chroma-early-start'); ?></span>
+                            </div>
+                            <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
+                                <span class="block text-3xl font-bold text-blue-400 mb-1">1:3</span>
+                                <span
+                                    class="text-[10px] font-bold text-stone-500 uppercase tracking-widest"><?php _e('Group Ratio', 'chroma-early-start'); ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div
+                            class="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-[3rem] p-12 text-white shadow-2xl">
+                            <i data-lucide="shield-check" class="w-16 h-16 mb-8 text-blue-200"></i>
+                            <h3 class="text-2xl font-bold mb-4"><?php _e('Clinical Guarantee', 'chroma-early-start'); ?>
+                            </h3>
+                            <p class="text-blue-100 leading-relaxed italic">
+                                <?php _e('"We don\'t graduate children based on age; we graduate them based on objective readiness data. This ensures they enter school with the skills to succeed, not just survive."', 'chroma-early-start'); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Bridging the Gap (Transition Model) -->
         <section class="py-24 bg-stone-50 overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

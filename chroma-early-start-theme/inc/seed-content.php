@@ -123,11 +123,15 @@ function earlystart_seed_core_content()
             'meta' => array(
                 'bridge_hero_badge' => 'School Readiness',
                 'bridge_hero_title' => 'Clinical Pre-K: <span class="italic text-blue-600">The Ultimate Bridge.</span>',
+                '_wp_page_template' => 'page-bridge-program.php'
             )
         ),
         'consultation' => array(
             'title' => 'Book Your Consultation',
-            'template' => 'page-consultation.php'
+            'template' => 'page-consultation.php',
+            'meta' => array(
+                '_wp_page_template' => 'page-consultation.php'
+            )
         ),
         'contact' => array(
             'title' => 'Contact',

@@ -19,8 +19,29 @@
 	<a href="#main-content"
 		class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white text-brand-ink p-4 z-50 rounded-lg shadow-lg"><?php _e('Skip to content', 'chroma-early-start'); ?></a>
 
+	<!-- TOP BAR / ANNOUNCEMENT -->
+	<div class="bg-stone-900 py-2.5 relative z-[60] overflow-hidden">
+		<div
+			class="absolute inset-0 bg-gradient-to-r from-rose-600/20 via-orange-600/20 to-amber-600/20 opacity-50 animate-pulse">
+		</div>
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+			<div
+				class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-8 text-white/90 text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase text-center">
+				<span class="flex items-center gap-2">
+					<span class="w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping"></span>
+					<?php _e('Now Enrolling: Spring 2026 Bridge Program', 'chroma-early-start'); ?>
+				</span>
+				<span class="hidden md:block text-white/30">|</span>
+				<a href="<?php echo esc_url(home_url('/consultation/')); ?>"
+					class="hover:text-white transition-colors border-b border-white/20 pb-0.5">
+					<?php _e('Schedule Clinical Consultation', 'chroma-early-start'); ?>
+				</a>
+			</div>
+		</div>
+	</div>
+
 	<!-- NAVIGATION -->
-	<header class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-stone-100">
+	<header class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-stone-100 mt-0">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<div class="flex justify-between items-center h-20">
 				<!-- Logo -->

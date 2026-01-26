@@ -53,6 +53,50 @@ while (have_posts()):
             </div>
         </section>
 
+        <!-- The Clinical Prism (Dark Mode Section) -->
+        <section class="py-24 bg-stone-900 text-white relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full opacity-10">
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-rose-500/20 via-transparent to-transparent">
+                </div>
+            </div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <span
+                    class="inline-block px-4 py-2 bg-rose-500/10 text-rose-400 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
+                    <?php _e('The Chroma Difference', 'chroma-early-start'); ?>
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-8">
+                    <?php _e('Clinical Precision,', 'chroma-early-start'); ?> <br>
+                    <span class="text-rose-500 italic"><?php _e('Human Compassion.', 'chroma-early-start'); ?></span>
+                </h2>
+                <p class="text-stone-400 text-xl max-w-3xl mx-auto leading-relaxed mb-16">
+                    <?php _e('We don\'t just iterate; we innovate. Our model converts data into discovery, ensuring every session is an opportunity for a breakthrough.', 'chroma-early-start'); ?>
+                </p>
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
+                        <span class="block text-4xl font-bold text-rose-500 mb-2">1:1</span>
+                        <p class="text-stone-500 text-sm font-bold uppercase tracking-widest">
+                            <?php _e('Intensive Ratio', 'chroma-early-start'); ?></p>
+                    </div>
+                    <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
+                        <span class="block text-4xl font-bold text-orange-500 mb-2">100%</span>
+                        <p class="text-stone-500 text-sm font-bold uppercase tracking-widest">
+                            <?php _e('Assent-Based', 'chroma-early-start'); ?></p>
+                    </div>
+                    <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
+                        <span class="block text-4xl font-bold text-amber-500 mb-2">Daily</span>
+                        <p class="text-stone-500 text-sm font-bold uppercase tracking-widest">
+                            <?php _e('Data Insights', 'chroma-early-start'); ?></p>
+                    </div>
+                    <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
+                        <span class="block text-4xl font-bold text-rose-500 mb-2">19+</span>
+                        <p class="text-stone-500 text-sm font-bold uppercase tracking-widest">
+                            <?php _e('Care Hubs', 'chroma-early-start'); ?></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- The PrismaPath Model -->
         <section id="model" class="py-24 bg-stone-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
