@@ -22,16 +22,16 @@
 				</p>
 				<div class="flex space-x-4">
 					<a href="https://facebook.com/chromaearlystart" target="_blank" rel="noopener"
-						aria-label="Follow Early Start on Facebook"
-						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
+						aria-label="<?php esc_attr_e('Follow Early Start on Facebook', 'earlystart-early-learning'); ?>"
+						class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 							data-lucide="facebook" class="w-5 h-5"></i></a>
 					<a href="https://instagram.com/chromaearlystart" target="_blank" rel="noopener"
-						aria-label="Follow Early Start on Instagram"
-						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
+						aria-label="<?php esc_attr_e('Follow Early Start on Instagram', 'earlystart-early-learning'); ?>"
+						class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 							data-lucide="instagram" class="w-5 h-5"></i></a>
 					<a href="https://linkedin.com/company/chromaearlystart" target="_blank" rel="noopener"
-						aria-label="Follow Early Start on LinkedIn"
-						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
+						aria-label="<?php esc_attr_e('Follow Early Start on LinkedIn', 'earlystart-early-learning'); ?>"
+						class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 							data-lucide="linkedin" class="w-5 h-5"></i></a>
 				</div>
 			</div>
@@ -97,11 +97,11 @@
 			</p>
 			<div class="flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-stone-400">
 				<a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>"
-					class="hover:text-stone-300 transition-colors">Privacy Policy</a>
+					class="hover:text-stone-200 transition-colors">Privacy Policy</a>
 				<a href="<?php echo esc_url(home_url('/terms/')); ?>"
-					class="hover:text-stone-300 transition-colors">Terms of Use</a>
+					class="hover:text-stone-200 transition-colors">Terms of Use</a>
 				<a href="<?php echo esc_url(home_url('/hipaa/')); ?>"
-					class="hover:text-stone-300 transition-colors">HIPAA Notice</a>
+					class="hover:text-stone-200 transition-colors">HIPAA Notice</a>
 			</div>
 		</div>
 	</div>

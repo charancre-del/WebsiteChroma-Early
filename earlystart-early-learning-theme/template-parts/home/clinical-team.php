@@ -37,9 +37,12 @@ if (empty($team)) {
             <?php foreach ($team as $index => $member): ?>
                 <div class="group fade-in-up" style="transition-delay: <?php echo ($index + 1) * 100; ?>ms">
                     <div class="relative mb-6 rounded-[2rem] overflow-hidden aspect-[3/4] shadow-xl">
-                        <img src="<?php echo esc_url($member['image']); ?>"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            alt="<?php echo esc_attr($member['name']); ?>">
+                        <?php echo earlystart_responsive_unsplash(
+                            $member['image'],
+                            $member['name'],
+                            'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
+                            '(max-width: 768px) 100vw, 33vw'
+                        ); ?>
                         <?php if (!empty($member['linkedin'])): ?>
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">

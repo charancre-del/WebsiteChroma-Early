@@ -47,9 +47,12 @@ $grouped = $locations_data['grouped'] ?? array();
                         <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border border-stone-100 group fade-in-up"
                             style="transition-delay: <?php echo $count * 100; ?>ms">
                             <div class="relative h-64 overflow-hidden">
-                                <img src="<?php echo esc_url($image); ?>"
-                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                    alt="<?php echo esc_attr($location['title']); ?>">
+                                <?php echo earlystart_responsive_unsplash(
+                                    $image,
+                                    $location['title'],
+                                    'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
+                                    '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
+                                ); ?>
                                 <div
                                     class="absolute top-4 right-4 bg-rose-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                                     <?php _e('Clinics Open', 'earlystart-early-learning'); ?>

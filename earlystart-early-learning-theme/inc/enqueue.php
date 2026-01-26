@@ -40,25 +40,29 @@ function earlystart_enqueue_assets()
                 'all'
         );
 
-        // Google Fonts: Plus Jakarta Sans
+        // Google Fonts: Plus Jakarta Sans & Playfair Display
         wp_enqueue_style(
                 'earlystart-fonts',
-                'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap',
+                'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@400;700&display=swap',
                 array(),
                 null
         );
         // Ensure font-display: swap is added
         wp_style_add_data('earlystart-fonts', 'media', 'all');
 
-        // Lucide Icons - Moved to footer and deferred
+        // Lucide Icons - Pinned version to avoid redirects and duplication
         wp_enqueue_script(
                 'lucide-icons',
-                'https://unpkg.com/lucide@latest',
+                'https://unpkg.com/lucide@0.320.0/dist/umd/lucide.min.js',
                 array(),
-                null,
+                '0.320.0',
                 true // Load in Footer
         );
         wp_script_add_data('lucide-icons', 'defer', true);
+
+        // Dequeue any other potential lucide handles from plugins
+        wp_dequeue_script('lucide');
+        wp_dequeue_script('lucide-js');
 
         // ... rest of scripts ...
 

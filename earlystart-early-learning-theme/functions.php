@@ -136,6 +136,7 @@ add_action('trash_post', 'earlystart_clear_query_cache');
 // Core setup and configuration
 require_once earlystart_THEME_DIR . '/inc/setup.php';
 require_once earlystart_THEME_DIR . '/inc/critical-css.php';
+require_once earlystart_THEME_DIR . '/inc/performance-helpers.php';
 require_once earlystart_THEME_DIR . '/inc/enqueue.php';
 require_once earlystart_THEME_DIR . '/inc/program-settings.php';
 require_once earlystart_THEME_DIR . '/inc/nav-menus.php';
@@ -458,6 +459,11 @@ function earlystart_dequeue_leadconnector_plugin()
     // Also dequeue any styles
     wp_dequeue_style('leadconnector');
     wp_deregister_style('leadconnector');
+
+    // Dequeue Dev-only Tailwind CDN if present
+    wp_dequeue_script('tailwindcss');
+    wp_deregister_script('tailwindcss');
+    wp_dequeue_style('tailwindcss');
 }
 add_action('wp_enqueue_scripts', 'earlystart_dequeue_leadconnector_plugin', 9999);
 

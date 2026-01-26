@@ -123,9 +123,33 @@ The theme is **Cache-Compatible** but **Cache-Ignorant**.
 
 ---
 
+---
+
+## 11. Lighthouse Audit Findings (Mobile)
+*Generated: 2026-01-26*
+
+### 🖼️ Image Delivery Details (Est. Savings: 483 KiB)
+| Asset | Current Size | Est. Savings | Issue |
+| :--- | :--- | :--- | :--- |
+| **Hero: Happy child in therapy** | 382.9 KiB | 274.5 KiB | Oversized (1200x1807 vs 665x1001). |
+| **Clinic: Alpharetta Center** | 109.5 KiB | 100.3 KiB | Oversized (2301x1536 vs 665x444). |
+| **ABA Therapy Intro** | 162.6 KiB | 54.3 KiB | Modern format/Compression needed. |
+| **Team: Michael Chen** | 128.5 KiB | 26.1 KiB | Dimensional mismatch. |
+
+### 📐 Layout Shift Analysis (Total CLS: 0.362)
+*   **Services Section (`#services`)**: 0.208 shift.
+*   **Hero Content Block**: 0.136 shift.
+*   **Font Swapping**: Minor shifts detected in Heading fonts.
+
+### ♿ Accessibility Failures
+*   **Contrast**: Trust section spans (`text-stone-700`) fail AA on white backgrounds.
+*   **Discernible Names**: Hero secondary button renders empty `<a>` tag.
+
+---
+
 ## Final Verdict
 The codebase is clean but naive about scale. It does "too much" on every request.
-**Immediate Actions**:
-1.  Remove `tailwind-cdn` (Code Change).
-2.  Wrap Meta Box includes in `is_admin()` (Code Change).
-3.  Cache the Homepage Queries (Code Change).
+1.  Remove `tailwind-cdn` (DONE).
+2.  Wrap Meta Box includes in `is_admin()` (DONE).
+3.  Cache the Homepage Queries (DONE).
+4.  Remediate specific LCP Image and CLS issues (IN PROGRESS/VERIFIED).

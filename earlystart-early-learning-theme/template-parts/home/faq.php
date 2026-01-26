@@ -17,7 +17,8 @@ if (!$faq_data || empty($faq_data['items'])) {
             <span
                 class="text-rose-700 font-bold uppercase tracking-[0.2em] text-xs mb-4 block"><?php echo esc_html($faq_data['subheading'] ?: __('Common Questions', 'earlystart-early-learning')); ?></span>
             <h2 class="text-4xl font-extrabold text-stone-900 mb-6">
-                <?php echo $faq_data['heading']; // Already wp_kses_post ?></h2>
+                <?php echo $faq_data['heading']; // Already wp_kses_post ?>
+            </h2>
         </div>
 
         <div class="space-y-4" data-accordion-group>
@@ -33,7 +34,8 @@ if (!$faq_data || empty($faq_data['items'])) {
                     <button
                         class="w-full flex items-center justify-between p-6 text-left hover:bg-stone-50 transition-colors"
                         data-accordion-trigger aria-expanded="<?php echo $is_active ? 'true' : 'false'; ?>"
-                        aria-controls="<?php echo esc_attr($faq_id); ?>">
+                        aria-controls="<?php echo esc_attr($faq_id); ?>"
+                        aria-label="<?php echo esc_attr(sprintf(__('Toggle answer for: %s', 'earlystart-early-learning'), $item['question'])); ?>">
                         <span class="font-bold text-stone-900"><?php echo esc_html($item['question']); ?></span>
                         <i data-lucide="plus"
                             class="w-5 h-5 text-rose-700 transition-transform duration-300 <?php echo $is_active ? 'rotate-45' : ''; ?>"

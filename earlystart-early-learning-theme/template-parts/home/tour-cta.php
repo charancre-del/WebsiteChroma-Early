@@ -35,7 +35,8 @@ if (!$tour_cta) {
                     <?php echo esc_html($tour_cta['cta_label']); ?>
                 </a>
                 <a href="tel:4045550123"
-                    class="bg-rose-700 text-white border-2 border-rose-400 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-800 transition-all">
+                    class="bg-stone-900 text-white border-2 border-stone-800 px-12 py-5 rounded-full font-bold text-lg hover:bg-stone-800 transition-all text-center"
+                    aria-label="<?php esc_attr_e('Call Early Start Admissions', 'earlystart-early-learning'); ?>">
                     <?php _e('Call Now', 'earlystart-early-learning'); ?>
                 </a>
             </div>

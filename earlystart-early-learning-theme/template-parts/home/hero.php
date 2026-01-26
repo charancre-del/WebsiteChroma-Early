@@ -55,18 +55,18 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                     <div class="flex -space-x-3">
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&w=100&h=100&q=80&fm=webp"
-                                alt="User" width="48" height="48">
+                            <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1544717305-27a734ef202e', 100, 100)); ?>"
+                                alt="User" width="48" height="48" loading="lazy">
                         </div>
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&h=100&q=80&fm=webp"
-                                alt="User" width="48" height="48">
+                            <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1544005313-94ddf0286df2', 100, 100)); ?>"
+                                alt="User" width="48" height="48" loading="lazy">
                         </div>
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=100&h=100&q=80&fm=webp"
-                                alt="User" width="48" height="48">
+                            <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1548142813-c348350df52b', 100, 100)); ?>"
+                                alt="User" width="48" height="48" loading="lazy">
                         </div>
                     </div>
                     <div class="text-sm">
@@ -88,9 +88,13 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                 <!-- Main Image with Creative Frame -->
                 <div
                     class="relative z-10 w-full aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                    <img src="<?php echo esc_url($hero_image); ?>" class="w-full h-full object-cover no-lazy"
-                        alt="<?php echo esc_attr__('Happy child in therapy', 'earlystart-early-learning'); ?>"
-                        fetchpriority="high" data-no-lazy="1">
+                    <?php echo earlystart_responsive_unsplash(
+                        $hero_image,
+                        __('Happy child in therapy', 'earlystart-early-learning'),
+                        'w-full h-full object-cover no-lazy',
+                        '(max-width: 1024px) 100vw, 50vw',
+                        true
+                    ); ?>
                 </div>
 
                 <!-- Floating Decorations -->

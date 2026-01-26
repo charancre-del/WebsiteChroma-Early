@@ -85,14 +85,14 @@
 			</div>
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 				<div
-					class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-8 text-white/90 text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase text-center">
+					class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-8 text-white text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase text-center">
 					<span class="flex items-center gap-2">
 						<span class="w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping"></span>
 						<?php _e('Now Enrolling: Spring 2026 Bridge Program', 'earlystart-early-learning'); ?>
 					</span>
 					<span class="hidden md:block text-white/30">|</span>
 					<a href="<?php echo esc_url(home_url('/consultation/')); ?>"
-						class="hover:text-white transition-colors border-b border-white/20 pb-0.5">
+						class="text-white hover:text-rose-200 transition-colors border-b border-white/40 pb-0.5">
 						<?php _e('Schedule Clinical Consultation', 'earlystart-early-learning'); ?>
 					</a>
 				</div>
@@ -152,7 +152,7 @@
 					<div class="xl:hidden flex items-center">
 						<button data-mobile-nav-toggle
 							class="text-stone-700 hover:text-rose-700 p-3 focus:outline-none bg-stone-50 rounded-lg transition-colors border border-stone-200"
-							aria-label="Toggle menu">
+							aria-label="<?php _e('Open main menu', 'earlystart-early-learning'); ?>">
 							<i data-lucide="menu" class="w-6 h-6"></i>
 						</button>
 					</div>

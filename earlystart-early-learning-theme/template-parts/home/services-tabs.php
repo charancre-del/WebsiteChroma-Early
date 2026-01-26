@@ -32,7 +32,8 @@ if (empty($services)) {
             <div class="w-full lg:w-1/3 flex flex-row lg:flex-col gap-3 overflow-x-auto pb-4 lg:pb-0 no-scrollbar">
                 <?php foreach ($services as $index => $service): ?>
                     <button data-services-tab="<?php echo esc_attr($service['id']); ?>"
-                        class="tab-btn <?php echo (0 === $index) ? 'active' : ''; ?> w-full text-left px-8 py-6 rounded-2xl bg-white border-2 border-transparent shadow-md hover:shadow-lg transition-all group shrink-0 lg:shrink">
+                        class="tab-btn <?php echo (0 === $index) ? 'active' : ''; ?> w-full text-left px-8 py-6 rounded-2xl bg-white border-2 border-transparent shadow-md hover:shadow-lg transition-all group shrink-0 lg:shrink"
+                        aria-label="<?php echo esc_attr(sprintf(__('View details for %s', 'earlystart-early-learning'), $service['title'])); ?>">
                         <div class="flex items-center space-x-4">
                             <div
                                 class="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center group-hover:bg-rose-100 transition-colors">
@@ -89,8 +90,12 @@ if (empty($services)) {
                             </div>
                             <div class="relative">
                                 <div class="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl">
-                                    <img src="<?php echo esc_url($service['image']); ?>" class="w-full h-full object-cover"
-                                        alt="<?php echo esc_attr($service['title']); ?>" width="800" height="1000">
+                                    <?php echo earlystart_responsive_unsplash(
+                                        $service['image'],
+                                        $service['title'],
+                                        'w-full h-full object-cover',
+                                        '(max-width: 768px) 100vw, 40vw'
+                                    ); ?>
                                 </div>
                                 <div
                                     class="absolute -bottom-6 -right-6 w-32 h-32 bg-stone-900 rounded-2xl flex flex-col items-center justify-center text-white p-4 shadow-xl">

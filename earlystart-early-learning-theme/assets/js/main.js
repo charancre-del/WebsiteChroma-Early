@@ -6,10 +6,21 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Initialize Lucide Icons
-  if (typeof lucide !== 'undefined') {
-    lucide.createIcons();
-  }
+  /**
+   * Performance-first Lucide initialization (Consolidated)
+   */
+  const refreshIcons = () => {
+    if (typeof lucide !== 'undefined') {
+      // Use requestIdleCallback if available for non-critical icon refresh
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => lucide.createIcons(), { timeout: 2000 });
+      } else {
+        setTimeout(() => lucide.createIcons(), 100);
+      }
+    }
+  };
+
+  refreshIcons();
 
   const safeParseJSON = (value, fallback) => {
     try {
@@ -135,10 +146,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (isValid) {
         zipMsg.innerHTML = `<span class="text-green-600 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i> Great news! We serve ${zip}.</span>`;
-        if (typeof lucide !== 'undefined') lucide.createIcons();
+        refreshIcons();
       } else {
         zipMsg.innerHTML = `<span class="text-amber-600 flex items-center justify-center gap-2"><i data-lucide="info" class="w-4 h-4"></i> We're expanding! ${zip} isn't active yet, but contact us to confirm.</span>`;
-        if (typeof lucide !== 'undefined') lucide.createIcons();
+        refreshIcons();
       }
     };
 
@@ -186,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
           });
 
           // Refresh Lucide icons in panels if needed
-          if (typeof lucide !== 'undefined') lucide.createIcons();
+          refreshIcons();
         });
       });
     });
@@ -799,21 +810,32 @@ document.addEventListener('DOMContentLoaded', function () {
   initEnhancedLazyLoading();
 
   // Also handle dynamically added images (for AJAX/SPA scenarios)
+  // Optimize MutationObserver to be more selective if possible, 
+  // or use a debounced approach to reduce main thread load
+  let mutationTimeout;
   const lazyLoadObserver = new MutationObserver((mutations) => {
-    mutations.forEach(mutation => {
-      mutation.addedNodes.forEach(node => {
-        if (node.nodeType === 1) { // Element node
-          const newLazyImages = node.querySelectorAll ?
-            node.querySelectorAll('img[data-lazy-src]') : [];
-          if (newLazyImages.length > 0) {
-            initEnhancedLazyLoading();
+    if (mutationTimeout) return;
+
+    mutationTimeout = setTimeout(() => {
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+          if (node.nodeType === 1) { // Element node
+            const hasLazy = node.querySelector('img[data-lazy-src]') || node.hasAttribute('data-lazy-src');
+            if (hasLazy) {
+              initEnhancedLazyLoading();
+            }
           }
-        }
+        });
       });
-    });
+      mutationTimeout = null;
+    }, 500);
   });
 
-  lazyLoadObserver.observe(document.body, { childList: true, subtree: true });
+  // Only observe if we actually have dynamic content areas
+  const dynamicContent = document.querySelector('#main-content');
+  if (dynamicContent) {
+    lazyLoadObserver.observe(dynamicContent, { childList: true, subtree: true });
+  }
 
   /**
    * Scroll Reveal Color Animation
