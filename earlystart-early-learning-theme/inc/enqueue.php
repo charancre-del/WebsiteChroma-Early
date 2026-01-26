@@ -144,6 +144,8 @@ function earlystart_resource_hints($urls, $relation_type)
                 $urls[] = 'https://images.leadconnectorhq.com';
                 $urls[] = 'https://stcdn.leadconnectorhq.com';
                 $urls[] = 'https://fonts.bunny.net';
+                $urls[] = 'https://images.unsplash.com';
+                $urls[] = 'https://unpkg.com';
         }
 
         if ('dns-prefetch' === $relation_type) {
@@ -152,9 +154,8 @@ function earlystart_resource_hints($urls, $relation_type)
                         $urls[] = '//cdn.jsdelivr.net';
                 }
 
-                if (earlystart_should_load_maps()) {
-                        $urls[] = '//unpkg.com';
-                }
+                $urls[] = '//unpkg.com';
+                $urls[] = '//images.unsplash.com';
                 $urls[] = '//widgets.leadconnectorhq.com';
                 $urls[] = '//services.leadconnectorhq.com';
                 $urls[] = '//images.leadconnectorhq.com';

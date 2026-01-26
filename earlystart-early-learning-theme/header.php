@@ -7,6 +7,10 @@
 	<?php // Canonical URL is handled by Yoast SEO and class-canonical-enforcer.php via wp_head ?>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preconnect" href="https://images.unsplash.com">
+	<link rel="preconnect" href="https://unpkg.com">
+	<link rel="dns-prefetch" href="https://images.unsplash.com">
+	<link rel="dns-prefetch" href="https://unpkg.com">
 
 	<style id="earlystart-critical-css">
 		/* Darkened Brand Colors for WCAG AA Compliance (Enhanced) */
