@@ -116,7 +116,7 @@ add_action('wp_head', function () {
       <div class="flex items-center justify-center gap-4">
         <img src="<?php echo esc_url($author_avatar); ?>"
           class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
-          alt="<?php echo esc_attr($author_name); ?>" />
+          alt="<?php echo esc_attr($author_name); ?>" width="48" height="48" loading="lazy" />
         <div class="text-left">
           <p class="text-sm font-bold text-brand-ink">
             <?php echo esc_html($author_name); ?>
@@ -130,8 +130,11 @@ add_action('wp_head', function () {
 
     <?php if ($featured_image): ?>
       <div class="max-w-5xl mx-auto px-4 lg:px-6 mb-12">
-        <img src="<?php echo esc_url($featured_image); ?>" alt="<?php the_title_attribute(); ?>"
-          class="w-full h-auto rounded-3xl shadow-lg">
+        <?php the_post_thumbnail('full', array(
+          'class' => 'w-full h-auto rounded-3xl shadow-lg',
+          'fetchpriority' => 'high',
+          'decoding' => 'async'
+        )); ?>
       </div>
     <?php endif; ?>
 

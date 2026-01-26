@@ -63,11 +63,18 @@ $programs_query = new WP_Query(array(
 							class="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col fade-in-up">
 							<div class="relative aspect-video overflow-hidden">
 								<?php if (has_post_thumbnail()): ?>
-									<?php the_post_thumbnail('large', ['class' => 'w-full h-full object-cover group-hover:scale-110 transition-transform duration-700']); ?>
+									<?php the_post_thumbnail('large', [
+										'class' => 'w-full h-full object-cover group-hover:scale-110 transition-transform duration-700',
+										'loading' => 'lazy',
+										'decoding' => 'async'
+									]); ?>
 								<?php else: ?>
-									<img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp"
-										class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-										alt="Program">
+                  <?php echo earlystart_responsive_unsplash(
+                    'https://images.unsplash.com/photo-1516627145497-ae6968895b74',
+                    'Program',
+                    'w-full h-full object-cover group-hover:scale-110 transition-transform duration-700',
+                    '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                  ); ?>
 								<?php endif; ?>
 
 								<?php if ($age_range): ?>

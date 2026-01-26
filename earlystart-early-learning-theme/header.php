@@ -12,9 +12,14 @@
 	<link rel="dns-prefetch" href="https://images.unsplash.com">
 	<link rel="dns-prefetch" href="https://unpkg.com">
 
-	<?php // CLS Optimization: Preload Critical Local Fonts ?>
+	<?php // CLS Optimization: Preload Critical Local Fonts (Heading & Body) ?>
+	<link rel="preload"
+		href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/PlayfairDisplay-ExtraBold.woff2" as="font"
+		type="font/woff2" crossorigin>
 	<link rel="preload"
 		href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/PlayfairDisplay-SemiBold.woff2" as="font"
+		type="font/woff2" crossorigin>
+	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Bold.woff2" as="font"
 		type="font/woff2" crossorigin>
 	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Medium.woff2" as="font"
 		type="font/woff2" crossorigin>
