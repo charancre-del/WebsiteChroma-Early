@@ -42,7 +42,8 @@ while (have_posts()):
                         <span
                             class="text-rose-600 font-bold tracking-widest text-sm uppercase mb-4 block"><?php _e('The "Magic Window"', 'chroma-early-start'); ?></span>
                         <h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
-                            <?php _e('Why Early Intervention Matters', 'chroma-early-start'); ?></h2>
+                            <?php _e('Why Early Intervention Matters', 'chroma-early-start'); ?>
+                        </h2>
                         <div class="prose prose-lg text-stone-600 space-y-6">
                             <p>
                                 <?php _e('The first few years of a child\'s life are a period of rapid brain development known as <strong>neuroplasticity</strong>. During this time, the brain is incredibly adaptable, making it the ideal window for learning new skills and overcoming developmental hurdles.', 'chroma-early-start'); ?>
@@ -58,7 +59,8 @@ while (have_posts()):
                     <div class="relative mt-12 lg:mt-0 fade-in-up">
                         <div class="bg-rose-50 rounded-[2.5rem] p-10 border border-rose-100">
                             <h3 class="text-xl font-bold text-stone-900 mb-6">
-                                <?php _e('The Benefits of Starting Early', 'chroma-early-start'); ?></h3>
+                                <?php _e('The Benefits of Starting Early', 'chroma-early-start'); ?>
+                            </h3>
                             <ul class="space-y-4">
                                 <li class="flex items-start">
                                     <div
@@ -122,7 +124,8 @@ while (have_posts()):
                     <!-- Left: Insurance Text -->
                     <div class="fade-in-up">
                         <h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
-                            <?php _e('We Make Insurance Simple', 'chroma-early-start'); ?></h2>
+                            <?php _e('We Make Insurance Simple', 'chroma-early-start'); ?>
+                        </h2>
                         <p class="text-lg text-stone-600 leading-relaxed mb-8">
                             <?php _e('Understanding your benefits shouldn\'t require a degree. Our dedicated admissions team handles the heavy lifting—verifying benefits, obtaining authorizations, and clearly explaining your coverage options before you start. We advocate for your child to ensure they get the coverage they deserve.', 'chroma-early-start'); ?>
                         </p>
@@ -155,7 +158,7 @@ while (have_posts()):
                             </ul>
                         </div>
 
-                        <a href="<?php echo esc_url(home_url('/contact-us/')); ?>"
+                        <a href="<?php echo esc_url(home_url('/contact/')); ?>"
                             class="bg-rose-600 text-white px-8 py-4 rounded-full font-bold hover:bg-rose-700 transition-colors inline-flex items-center shadow-lg">
                             <i data-lucide="shield-check" class="w-5 h-5 mr-2"></i>
                             <?php _e('Verify My Insurance', 'chroma-early-start'); ?>
@@ -226,7 +229,8 @@ while (have_posts()):
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16 fade-in-up">
                     <h2 class="text-3xl font-bold text-stone-900 mb-4">
-                        <?php _e('Your Intake Journey', 'chroma-early-start'); ?></h2>
+                        <?php _e('Your Intake Journey', 'chroma-early-start'); ?>
+                    </h2>
                     <p class="text-stone-600">
                         <?php _e('From first call to first day, we make the process seamless.', 'chroma-early-start'); ?>
                     </p>
@@ -265,7 +269,8 @@ while (have_posts()):
                             <span
                                 class="text-xs font-bold text-orange-500 uppercase tracking-wide"><?php _e('Step 2', 'chroma-early-start'); ?></span>
                             <h4 class="text-xl font-bold text-stone-900">
-                                <?php _e('Verification & Auth', 'chroma-early-start'); ?></h4>
+                                <?php _e('Verification & Auth', 'chroma-early-start'); ?>
+                            </h4>
                             <p class="text-stone-600 mt-2">
                                 <?php _e('We check your insurance benefits and submit the assessment request. We handle the communication with the payer so you don\'t have to wait on hold.', 'chroma-early-start'); ?>
                             </p>
@@ -284,7 +289,8 @@ while (have_posts()):
                             <span
                                 class="text-xs font-bold text-amber-500 uppercase tracking-wide"><?php _e('Step 3', 'chroma-early-start'); ?></span>
                             <h4 class="text-xl font-bold text-stone-900">
-                                <?php _e('Skills Assessment', 'chroma-early-start'); ?></h4>
+                                <?php _e('Skills Assessment', 'chroma-early-start'); ?>
+                            </h4>
                             <p class="text-stone-600 mt-2">
                                 <?php _e('Our BCBA meets your child for a play-based skills assessment to identify strengths, barriers, and goals. We use tools like the VB-MAPP or ABLLS-R to build a baseline.', 'chroma-early-start'); ?>
                             </p>
@@ -303,7 +309,8 @@ while (have_posts()):
                             <span
                                 class="text-xs font-bold text-green-500 uppercase tracking-wide"><?php _e('Step 4', 'chroma-early-start'); ?></span>
                             <h4 class="text-xl font-bold text-stone-900">
-                                <?php _e('Start Therapy!', 'chroma-early-start'); ?></h4>
+                                <?php _e('Start Therapy!', 'chroma-early-start'); ?>
+                            </h4>
                             <p class="text-stone-600 mt-2">
                                 <?php _e('We build a schedule that works for your family, pair you with a clinical team (BCBA & RBTs), and begin the journey of growth and connection.', 'chroma-early-start'); ?>
                             </p>
@@ -323,7 +330,8 @@ while (have_posts()):
                     <span
                         class="text-rose-400 font-bold tracking-widest text-sm uppercase mb-4 block"><?php _e('The First Month', 'chroma-early-start'); ?></span>
                     <h2 class="text-3xl md:text-4xl font-bold mb-6">
-                        <?php _e('What to Expect: The First 30 Days', 'chroma-early-start'); ?></h2>
+                        <?php _e('What to Expect: The First 30 Days', 'chroma-early-start'); ?>
+                    </h2>
                     <p class="text-stone-400 max-w-2xl mx-auto">
                         <?php _e('Starting therapy is a big transition. Here is exactly what happens during your first month with us.', 'chroma-early-start'); ?>
                     </p>
@@ -403,7 +411,8 @@ while (have_posts()):
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16 fade-in-up">
                     <h2 class="text-3xl font-bold text-stone-900 mb-4">
-                        <?php _e('Support Beyond the Child', 'chroma-early-start'); ?></h2>
+                        <?php _e('Support Beyond the Child', 'chroma-early-start'); ?>
+                    </h2>
                     <p class="text-stone-600 max-w-2xl mx-auto">
                         <?php _e('When a child thrives, the whole family thrives. Our goal is to reduce stress and increase connection in your home.', 'chroma-early-start'); ?>
                     </p>
@@ -414,7 +423,8 @@ while (have_posts()):
                             <i data-lucide="heart-handshake" class="w-6 h-6"></i>
                         </div>
                         <h4 class="text-xl font-bold text-stone-900 mb-2">
-                            <?php _e('Parent Empowerment', 'chroma-early-start'); ?></h4>
+                            <?php _e('Parent Empowerment', 'chroma-early-start'); ?>
+                        </h4>
                         <p class="text-stone-600 text-sm leading-relaxed">
                             <?php _e('We don\'t keep secrets. We teach you the exact strategies we use, so you feel confident handling behaviors and teaching new skills at home.', 'chroma-early-start'); ?>
                         </p>
@@ -425,7 +435,8 @@ while (have_posts()):
                             <i data-lucide="users" class="w-6 h-6"></i>
                         </div>
                         <h4 class="text-xl font-bold text-stone-900 mb-2">
-                            <?php _e('Sibling Harmony', 'chroma-early-start'); ?></h4>
+                            <?php _e('Sibling Harmony', 'chroma-early-start'); ?>
+                        </h4>
                         <p class="text-stone-600 text-sm leading-relaxed">
                             <?php _e('Improved communication and regulation skills often lead to better play and fewer conflicts between siblings, creating a more peaceful home environment.', 'chroma-early-start'); ?>
                         </p>
@@ -436,7 +447,8 @@ while (have_posts()):
                             <i data-lucide="coffee" class="w-6 h-6"></i>
                         </div>
                         <h4 class="text-xl font-bold text-stone-900 mb-2">
-                            <?php _e('Community Access', 'chroma-early-start'); ?></h4>
+                            <?php _e('Community Access', 'chroma-early-start'); ?>
+                        </h4>
                         <p class="text-stone-600 text-sm leading-relaxed">
                             <?php _e('We work on skills that make outings easier—like waiting in line, tolerating loud noises, or safety in parking lots—so you can enjoy family trips again.', 'chroma-early-start'); ?>
                         </p>
@@ -453,12 +465,14 @@ while (have_posts()):
                         <span
                             class="text-rose-600 font-bold tracking-widest text-sm uppercase mb-3 block"><?php _e('Education', 'chroma-early-start'); ?></span>
                         <h2 class="text-3xl font-bold text-stone-900 mb-6">
-                            <?php _e('Parent Training Workshops', 'chroma-early-start'); ?></h2>
+                            <?php _e('Parent Training Workshops', 'chroma-early-start'); ?>
+                        </h2>
                         <p class="text-lg text-stone-600 leading-relaxed mb-6">
                             <?php _e('Parent training isn\'t just a requirement; it\'s a resource. We offer monthly group workshops and 1:1 coaching sessions to tackle the specific challenges your family faces.', 'chroma-early-start'); ?>
                         </p>
                         <h4 class="font-bold text-stone-900 mb-4">
-                            <?php _e('Popular Workshop Topics:', 'chroma-early-start'); ?></h4>
+                            <?php _e('Popular Workshop Topics:', 'chroma-early-start'); ?>
+                        </h4>
                         <div class="space-y-3">
                             <div class="flex items-center p-3 bg-white rounded-lg shadow-sm">
                                 <span class="w-2 h-2 bg-rose-500 rounded-full mr-3"></span>
@@ -490,9 +504,11 @@ while (have_posts()):
                             <div class="text-center p-8">
                                 <i data-lucide="users" class="w-24 h-24 text-rose-500 mx-auto mb-6"></i>
                                 <h3 class="text-2xl font-bold text-rose-900">
-                                    <?php _e('You are the expert on your child.', 'chroma-early-start'); ?></h3>
+                                    <?php _e('You are the expert on your child.', 'chroma-early-start'); ?>
+                                </h3>
                                 <p class="text-rose-800 mt-2">
-                                    <?php _e('We are just here to give you more tools.', 'chroma-early-start'); ?></p>
+                                    <?php _e('We are just here to give you more tools.', 'chroma-early-start'); ?>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -504,7 +520,8 @@ while (have_posts()):
         <section class="py-24 bg-white border-t border-stone-100">
             <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl font-bold text-stone-900 mb-10 text-center">
-                    <?php _e('Family Logistics FAQ', 'chroma-early-start'); ?></h2>
+                    <?php _e('Family Logistics FAQ', 'chroma-early-start'); ?>
+                </h2>
 
                 <div class="space-y-4">
                     <!-- Q1 -->
@@ -556,11 +573,12 @@ while (have_posts()):
         <section class="py-24 bg-stone-50 text-center border-t border-stone-100">
             <div class="max-w-4xl mx-auto px-4 fade-in-up">
                 <h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
-                    <?php _e('Ready to take the first step?', 'chroma-early-start'); ?></h2>
+                    <?php _e('Ready to take the first step?', 'chroma-early-start'); ?>
+                </h2>
                 <p class="text-xl text-stone-600 mb-10">
                     <?php _e('We know this process is new for many families. We are here to answer every question, no matter how small.', 'chroma-early-start'); ?>
                 </p>
-                <a href="<?php echo esc_url(home_url('/contact-us/')); ?>"
+                <a href="<?php echo esc_url(home_url('/contact/')); ?>"
                     class="bg-stone-900 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-rose-600 transition-colors shadow-lg inline-block transform hover:-translate-y-0.5">
                     <?php _e('Contact Admissions', 'chroma-early-start'); ?>
                 </a>

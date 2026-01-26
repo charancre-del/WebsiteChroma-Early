@@ -54,13 +54,34 @@ function earlystart_enqueue_assets()
                 'https://unpkg.com/lucide@latest',
                 array(),
                 null,
-                true
+                false // Load in Header to avoid race conditions
         );
 
-        // Chart.js is now lazy loaded in main.js
-        if (is_front_page()) {
-                // Chart.js removed from initial load - saved ~200KB
-        }
+        // Tailwind CSS (CDN for immediate visual parity with HTML)
+        wp_enqueue_script(
+                'tailwind-cdn',
+                'https://cdn.tailwindcss.com',
+                array(),
+                null,
+                false
+        );
+
+        // Configure Tailwind (Basic Brand Colors)
+        wp_add_inline_script('tailwind-cdn', "
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ['\"Plus Jakarta Sans\"', 'sans-serif'],
+                        },
+                        colors: {
+                            rose: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#f43f5e', 600: '#e11d48', 700: '#be123c' },
+                            stone: { 50: '#fafaf9', 100: '#f5f5f4', 800: '#292524', 900: '#1c1917' }
+                        }
+                    }
+                }
+            }
+        ");
 
         // Compiled Tailwind CSS.
         $css_path = earlystart_THEME_DIR . '/assets/css/main.css';
@@ -328,20 +349,21 @@ add_filter('style_loader_tag', 'earlystart_async_styles', 10, 4);
  * Deregisters core jQuery and re-registers it in the footer.
  * Considers admin bar and login status.
  */
-function earlystart_move_jquery_to_footer() {
-    // Do not move if admin bar is showing (prevents breakage)
-    if (is_admin() || is_user_logged_in()) {
-        return;
-    }
+function earlystart_move_jquery_to_footer()
+{
+        // Do not move if admin bar is showing (prevents breakage)
+        if (is_admin() || is_user_logged_in()) {
+                return;
+        }
 
-    wp_deregister_script('jquery');
-    wp_deregister_script('jquery-core');
-    wp_deregister_script('jquery-migrate');
+        wp_deregister_script('jquery');
+        wp_deregister_script('jquery-core');
+        wp_deregister_script('jquery-migrate');
 
-    // Re-register jQuery in footer
-    // Uses includes_url() to maintain compatibility with WP versioning
-    wp_register_script('jquery', includes_url('/js/jquery/jquery.min.js'), false, null, true);
-    wp_enqueue_script('jquery');
+        // Re-register jQuery in footer
+        // Uses includes_url() to maintain compatibility with WP versioning
+        wp_register_script('jquery', includes_url('/js/jquery/jquery.min.js'), false, null, true);
+        wp_enqueue_script('jquery');
 }
 add_action('wp_enqueue_scripts', 'earlystart_move_jquery_to_footer', 1);
 
@@ -358,12 +380,13 @@ function earlystart_dequeue_dashicons()
 /**
  * Preload Main CSS to minimize FOUC (Flash of Unstyled Content)
  */
-function earlystart_preload_main_css() {
-    $css_path = earlystart_THEME_DIR . '/assets/css/main.css';
-    $css_version = file_exists($css_path) ? filemtime($css_path) : earlystart_VERSION;
-    $css_url = earlystart_THEME_URI . '/assets/css/main.css?ver=' . $css_version;
-    
-    echo '<link rel="preload" href="' . esc_url($css_url) . '" as="style">' . "\n";
+function earlystart_preload_main_css()
+{
+        $css_path = earlystart_THEME_DIR . '/assets/css/main.css';
+        $css_version = file_exists($css_path) ? filemtime($css_path) : earlystart_VERSION;
+        $css_url = earlystart_THEME_URI . '/assets/css/main.css?ver=' . $css_version;
+
+        echo '<link rel="preload" href="' . esc_url($css_url) . '" as="style">' . "\n";
 }
 add_action('wp_head', 'earlystart_preload_main_css', 1);
 

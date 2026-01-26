@@ -150,7 +150,7 @@ function earlystart_get_page_link($name)
 {
     // Define common aliases for pages that may have changed slugs
     $aliases = array(
-        'contact' => 'contact-us',
+        'contact-us' => 'contact', // Map legacy to new
         'preschool' => 'programs/preschool',
         'ga-pre-k' => 'programs/ga-pre-k',
         'infant-care' => 'programs/infant-care',
@@ -222,7 +222,7 @@ function earlystart_url_needs_update($url)
 {
     // List of known old URL patterns that redirect
     $redirect_patterns = array(
-        '/contact$' => true,       // /contact → /contact-us/
+        // '/contact$' => true,       // DISABLED: /contact is canonical
         '/preschool/' => true,     // /preschool/ → /programs/preschool/
         '/ga-pre-k/' => true,      // /ga-pre-k/ → /programs/ga-pre-k/
         '/infant-care/' => true,   // etc.
@@ -250,8 +250,9 @@ function earlystart_url_needs_update($url)
  * @return string Full URL
  */
 if (!function_exists('earlystart_url')) {
-    function earlystart_url($path = '/') {
-         return home_url($path);
+    function earlystart_url($path = '/')
+    {
+        return home_url($path);
     }
 }
 

@@ -107,10 +107,15 @@
 <?php wp_footer(); ?>
 
 <script>
-	// Lucide Icons Initialization
-	if (typeof lucide !== 'undefined') {
-		lucide.createIcons();
-	}
+    // Lucide Icons Initialization
+    // Standard initialization on DOM ready
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        } else {
+            console.warn('Lucide icons not loaded');
+        }
+    });
 </script>
 
 </body>
