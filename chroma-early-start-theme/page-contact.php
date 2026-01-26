@@ -69,7 +69,8 @@ while (have_posts()):
 				<div class="grid lg:grid-cols-2 gap-20">
 					<div class="fade-in-up">
 						<h2 class="text-4xl font-bold text-stone-900 mb-8">
-							<?php _e('Get Started Today', 'chroma-early-start'); ?></h2>
+							<?php _e('Get Started Today', 'chroma-early-start'); ?>
+						</h2>
 						<p class="text-xl text-stone-600 mb-12 leading-relaxed">
 							<?php _e('Ready to learn more? Fill out the form, and our admissions team will reach out within 24 hours to guide you through the process.', 'chroma-early-start'); ?>
 						</p>
@@ -77,9 +78,9 @@ while (have_posts()):
 						<div class="space-y-8">
 							<?php
 							$contacts = array(
-								array('icon' => 'phone', 'title' => 'Call Us', 'value' => '(555) 123-4567'),
-								array('icon' => 'mail', 'title' => 'Email Us', 'value' => 'hello@chromaearlystart.com'),
-								array('icon' => 'map-pin', 'title' => 'Main Office', 'value' => '123 Wellness Blvd, Therapy City, GA'),
+								array('icon' => 'phone', 'title' => 'Call Us', 'value' => earlystart_global_phone()),
+								array('icon' => 'mail', 'title' => 'Email Us', 'value' => earlystart_global_email()),
+								array('icon' => 'map-pin', 'title' => 'Main Office', 'value' => earlystart_global_full_address()),
 							);
 							foreach ($contacts as $c): ?>
 								<div class="flex items-center">
@@ -97,7 +98,8 @@ while (have_posts()):
 
 						<div class="mt-16 pt-12 border-t border-stone-100">
 							<h4 class="text-stone-900 font-bold mb-6">
-								<?php _e('Departmental Emails', 'chroma-early-start'); ?></h4>
+								<?php _e('Departmental Emails', 'chroma-early-start'); ?>
+							</h4>
 							<div class="grid sm:grid-cols-2 gap-4 text-sm">
 								<a href="mailto:admissions@chromaearlystart.com"
 									class="text-stone-600 hover:text-rose-600 transition-colors"><strong><?php _e('Admissions:', 'chroma-early-start'); ?></strong>
@@ -120,7 +122,8 @@ while (have_posts()):
 							<div class="absolute -top-6 -right-6 w-24 h-24 bg-rose-50 rounded-full blur-2xl opacity-60">
 							</div>
 							<h3 class="text-2xl font-bold text-stone-900 mb-8">
-								<?php _e('Send a Message', 'chroma-early-start'); ?></h3>
+								<?php _e('Send a Message', 'chroma-early-start'); ?>
+							</h3>
 							<?php
 							// If the contact form shortcode exists, use it. Otherwise, fallback to a placeholder style.
 							if (shortcode_exists('earlystart_contact_form')) {
@@ -186,7 +189,8 @@ while (have_posts()):
 		<section class="py-24 bg-stone-50 border-t border-stone-100">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
 				<h2 class="text-3xl font-bold text-stone-900 mb-6">
-					<?php _e('Visit one of our 10+ clinics.', 'chroma-early-start'); ?></h2>
+					<?php _e('Visit one of our 10+ clinics.', 'chroma-early-start'); ?>
+				</h2>
 				<p class="text-stone-600 mb-10 max-w-2xl mx-auto">
 					<?php _e('With specialized therapy centers across the region, there is likely a Chroma Early Start clinic in your community.', 'chroma-early-start'); ?>
 				</p>

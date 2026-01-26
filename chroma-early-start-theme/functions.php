@@ -176,9 +176,11 @@ require_once earlystart_THEME_DIR . '/inc/customizer-seo.php';
 require_once earlystart_THEME_DIR . '/inc/customizer-scripts.php';
 
 // Legacy helper files (ACF plugin optional; helpers run on core WP functions only)
-require_once earlystart_THEME_DIR . '/inc/acf-options.php';
-require_once earlystart_THEME_DIR . '/inc/acf-homepage.php';
-require_once earlystart_THEME_DIR . '/inc/acf-field-groups.php';
+// Native Theme Settings (Replaces ACF Options Page)
+require_once earlystart_THEME_DIR . '/inc/theme-settings.php';
+require_once earlystart_THEME_DIR . '/inc/acf-options.php'; // Keeps helper functions
+require_once earlystart_THEME_DIR . '/inc/homepage-data.php'; // Renamed from acf-homepage.php
+// require_once earlystart_THEME_DIR . '/inc/acf-field-groups.php'; // Deprecated
 require_once earlystart_THEME_DIR . '/inc/seed-content.php';
 
 require_once earlystart_THEME_DIR . '/inc/cleanup.php';

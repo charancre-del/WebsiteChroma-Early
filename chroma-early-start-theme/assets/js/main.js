@@ -89,6 +89,47 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /**
+   * Zip Code Checker (Home Therapy Zones)
+   */
+  const zipInput = document.getElementById('chroma-zip-input');
+  const zipBtn = document.getElementById('chroma-zip-btn');
+  const zipMsg = document.getElementById('chroma-zip-message');
+
+  if (zipInput && zipBtn && zipMsg) {
+    // Metro Atlanta Zips (Approximate list for demo)
+    const validZips = [
+      '30004', '30005', '30009', '30022', '30024', '30040', '30041', '30075', '30076', // North Fulton/Forsyth
+      '30060', '30062', '30064', '30066', '30067', '30068', // Cobb
+      '30043', '30044', '30045', '30046', '30047', // Gwinnett
+      '30319', '30328', '30338', '30342', '30350' // Sandy Springs/Dunwoody
+    ];
+
+    const checkZip = () => {
+      const zip = zipInput.value.trim();
+      if (!zip) {
+        zipMsg.textContent = 'Please enter a valid 5-digit zip code.';
+        zipMsg.className = 'mt-6 text-stone-500 text-sm font-bold min-h-[20px]';
+        return;
+      }
+
+      const isValid = validZips.includes(zip);
+
+      if (isValid) {
+        zipMsg.innerHTML = `<span class="text-green-600 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i> Great news! We serve ${zip}.</span>`;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      } else {
+        zipMsg.innerHTML = `<span class="text-amber-600 flex items-center justify-center gap-2"><i data-lucide="info" class="w-4 h-4"></i> We're expanding! ${zip} isn't active yet, but contact us to confirm.</span>`;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    };
+
+    zipBtn.addEventListener('click', checkZip);
+    zipInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkZip();
+    });
+  }
+
+  /**
    * Generic Tabs Handler (Services, Schedule, etc.)
    */
   const initTabs = (selector, attrPrefix) => {

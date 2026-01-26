@@ -33,14 +33,22 @@
 						<i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
 					</div>
 					<div class="flex flex-col">
+						<?php
+						$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Chroma Early Start\nPediatric Therapy & Early Intervention");
+						$header_lines = explode("\n", $header_text_raw);
+						$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Chroma Early Start';
+						$secondary_line = isset($header_lines[1]) ? $header_lines[1] : '';
+						?>
 						<span
 							class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
-							Chroma Early Start
+							<?php echo esc_html($primary_line); ?>
 						</span>
-						<span
-							class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
-							Pediatric Therapy & Early Intervention
-						</span>
+						<?php if (!empty($secondary_line)): ?>
+							<span
+								class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
+								<?php echo esc_html($secondary_line); ?>
+							</span>
+						<?php endif; ?>
 					</div>
 				</a>
 
@@ -50,7 +58,8 @@
 
 					<div class="pl-4">
 						<?php
-						$cta_url = earlystart_get_theme_mod('earlystart_header_cta_url', home_url('/contact-us/'));
+						// Updated key to match inc/customizer-header.php
+						$cta_url = earlystart_get_theme_mod('earlystart_book_tour_url', home_url('/contact-us/'));
 						$cta_text = earlystart_get_theme_mod('earlystart_header_cta_text', 'Get Started');
 						?>
 						<a href="<?php echo esc_url($cta_url); ?>"

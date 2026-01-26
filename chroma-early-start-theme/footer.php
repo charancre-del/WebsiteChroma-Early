@@ -74,11 +74,11 @@
 				<ul class="space-y-6 text-sm">
 					<li class="flex items-start">
 						<i data-lucide="phone" class="w-5 h-5 mr-4 text-rose-500 shrink-0"></i>
-						<span>(555) 123-4567</span>
+						<span><?php echo esc_html(earlystart_global_phone()); ?></span>
 					</li>
 					<li class="flex items-start">
 						<i data-lucide="mail" class="w-5 h-5 mr-4 text-rose-500 shrink-0"></i>
-						<span class="break-all">hello@chromaearlystart.com</span>
+						<span class="break-all"><?php echo esc_html(earlystart_global_email()); ?></span>
 					</li>
 					<li class="flex items-start">
 						<i data-lucide="calendar" class="w-5 h-5 mr-4 text-rose-500 shrink-0"></i>
@@ -90,7 +90,8 @@
 
 		<div class="border-t border-stone-800 mt-20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
 			<p class="text-xs text-stone-500">&copy; <?php echo date('Y'); ?>
-				<?php _e('Chroma Early Start. All rights reserved.', 'chroma-early-start'); ?></p>
+				<?php _e('Chroma Early Start. All rights reserved.', 'chroma-early-start'); ?>
+			</p>
 			<div class="flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-stone-600">
 				<a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>"
 					class="hover:text-stone-400 transition-colors">Privacy Policy</a>

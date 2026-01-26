@@ -92,6 +92,19 @@ $partner_query = new WP_Query(array(
 						$phone = get_post_meta($location_id, 'location_phone', true);
 						$hours = get_post_meta($location_id, 'location_hours', true) ?: 'Mon - Fri: 8:00 AM - 6:00 PM';
 						$image = get_the_post_thumbnail_url($location_id, 'large') ?: 'https://images.unsplash.com/photo-1544717305-27a734ef202e?w=800&fit=crop';
+
+						// Prepare map data for this location
+						$lat = get_post_meta($location_id, 'location_latitude', true) ?: 34.0754; // Default to Alpharettaish
+						$lng = get_post_meta($location_id, 'location_longitude', true) ?: -84.2941;
+						$map_data = json_encode(array(
+							array(
+								'name' => get_the_title(),
+								'lat' => $lat,
+								'lng' => $lng,
+								'url' => get_permalink(),
+								'city' => $city
+							)
+						));
 						?>
 						<div class="grid lg:grid-cols-2 gap-12 items-center">
 							<div class="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border border-stone-100 fade-in-up">
@@ -129,22 +142,9 @@ $partner_query = new WP_Query(array(
 							</div>
 
 							<!-- Map/Visual decoration for featured -->
-							<div
-								class="bg-stone-200 rounded-[2.5rem] min-h-[400px] flex items-center justify-center relative overflow-hidden shadow-inner hidden lg:flex fade-in-up">
-								<div
-									class="absolute inset-0 opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-cover bg-center">
-								</div>
-								<div
-									class="text-center p-8 bg-white/80 backdrop-blur-md rounded-3xl shadow-lg border border-white/50">
-									<i data-lucide="map" class="w-12 h-12 text-rose-500 mx-auto mb-4"></i>
-									<h4 class="text-xl font-bold text-stone-900 mb-2">
-										<?php _e('Interactive Map', 'chroma-early-start'); ?></h4>
-									<p class="text-stone-600 text-sm">
-										<?php _e('Google Maps integration available at', 'chroma-early-start'); ?> <a
-											href="<?php the_permalink(); ?>"
-											class="text-rose-600 font-bold underline"><?php _e('Campus Page', 'chroma-early-start'); ?></a>
-									</p>
-								</div>
+							<div class="bg-stone-200 rounded-[2.5rem] min-h-[400px] h-full relative overflow-hidden shadow-inner hidden lg:block fade-in-up"
+								data-chroma-map="true" data-chroma-locations="<?php echo esc_attr($map_data); ?>">
+								<!-- Map is rendered here by map-layer.js -->
 							</div>
 						</div>
 					<?php endwhile;
@@ -161,7 +161,8 @@ $partner_query = new WP_Query(array(
 				<span
 					class="text-rose-600 font-bold tracking-widest text-sm uppercase mb-3 block"><?php _e('Integrated Therapy', 'chroma-early-start'); ?></span>
 				<h2 class="text-4xl font-bold text-stone-900 mb-6">
-					<?php _e('Our Partner Network', 'chroma-early-start'); ?></h2>
+					<?php _e('Our Partner Network', 'chroma-early-start'); ?>
+				</h2>
 				<p class="text-stone-600 max-w-2xl mx-auto text-lg leading-relaxed">
 					<?php _e('We partner with elite schools to provide on-site therapy. No more driving between school and clinic—we come to the classroom.', 'chroma-early-start'); ?>
 				</p>
@@ -181,7 +182,8 @@ $partner_query = new WP_Query(array(
 							class="bg-stone-50 p-8 rounded-3xl border border-stone-100 hover:shadow-xl hover:border-rose-100 transition-all group fade-in-up">
 							<div class="flex justify-between items-start mb-4">
 								<h4 class="font-bold text-lg text-stone-900 group-hover:text-rose-600 transition-colors">
-									<?php the_title(); ?></h4>
+									<?php the_title(); ?>
+								</h4>
 								<span
 									class="text-[10px] bg-white border border-stone-200 px-3 py-1 rounded-full text-stone-500 font-bold uppercase tracking-wider"><?php echo esc_html($region_name); ?></span>
 							</div>
@@ -244,14 +246,16 @@ $partner_query = new WP_Query(array(
 						<?php _e('Enter your zip code to see if you are in our home-based service area.', 'chroma-early-start'); ?>
 					</p>
 					<div class="flex flex-col sm:flex-row gap-4">
-						<input type="text" placeholder="<?php esc_attr_e('Zip Code', 'chroma-early-start'); ?>"
+						<input type="text" id="chroma-zip-input"
+							placeholder="<?php esc_attr_e('Zip Code', 'chroma-early-start'); ?>"
 							class="flex-grow px-6 py-4 rounded-xl bg-stone-800 border border-stone-700 text-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 outline-none transition-all">
-						<button
+						<button id="chroma-zip-btn"
 							class="bg-rose-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-rose-500 transition-all shadow-lg hover:shadow-rose-900/20 active:scale-95">
 							<?php _e('Check', 'chroma-early-start'); ?>
 						</button>
 					</div>
-					<div class="mt-6 text-stone-500 text-sm">
+					<div id="chroma-zip-message" class="mt-6 text-stone-500 text-sm font-bold min-h-[20px]"></div>
+					<div class="mt-2 text-stone-500 text-sm">
 						<p><?php _e('Immediate availability in most areas.', 'chroma-early-start'); ?></p>
 					</div>
 				</div>
@@ -263,7 +267,8 @@ $partner_query = new WP_Query(array(
 	<section class="py-24 bg-white text-center">
 		<div class="max-w-4xl mx-auto px-4">
 			<h2 class="text-4xl font-bold text-stone-900 mb-6">
-				<?php _e('Find the perfect fit for your family.', 'chroma-early-start'); ?></h2>
+				<?php _e('Find the perfect fit for your family.', 'chroma-early-start'); ?>
+			</h2>
 			<p class="text-xl text-stone-600 mb-10 leading-relaxed">
 				<?php _e('Whether it\'s in our specialized clinical clinic, your family home, or one of our partner schools, we have a spot for you.', 'chroma-early-start'); ?>
 			</p>

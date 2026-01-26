@@ -19,18 +19,16 @@ function earlystart_seed_core_content()
         return;
     }
 
-    // 1. Seed Global Brand Settings (ACF Options Page)
-    if (function_exists('update_field')) {
-        update_field('field_global_phone', '(555) 123-4567', 'options');
-        update_field('field_global_email', 'hello@chromaearlystart.com', 'options');
-        update_field('field_global_address', "123 Wellness Blvd\nTherapy City, ST 12345", 'options');
+    // 1. Seed Global Brand Settings (Native Options API)
+    $global_settings = array(
+        'global_phone' => '(555) 123-4567',
+        'global_email' => 'hello@chromaearlystart.com',
+        'global_address' => "123 Wellness Blvd\nTherapy City, ST 12345",
+        'global_facebook_url' => 'https://facebook.com/chromaearlystart',
+        'global_instagram_url' => 'https://instagram.com/chromaearlystart',
+    );
 
-        $social_links = array(
-            array('platform' => 'facebook', 'url' => 'https://facebook.com/chromaearlystart'),
-            array('platform' => 'instagram', 'url' => 'https://instagram.com/chromaearlystart'),
-        );
-        update_field('field_global_social_links', $social_links, 'options');
-    }
+    update_option('earlystart_global_settings', $global_settings);
 
     // 2. Prepare JSON data for sections that use it
     $home_services = array(

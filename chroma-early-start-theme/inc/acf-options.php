@@ -12,17 +12,9 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Register ACF Options Page
+ * Legacy options helpers (works without ACF)
+ * Now registered via inc/theme-settings.php
  */
-if (function_exists('acf_add_options_page')) {
-        acf_add_options_page(array(
-                'page_title' => __('Theme Settings', 'chroma-early-start'),
-                'menu_title' => __('Theme Settings', 'chroma-early-start'),
-                'menu_slug' => 'theme-general-settings',
-                'capability' => 'edit_posts',
-                'redirect' => false
-        ));
-}
 
 /**
  * Global settings helper
