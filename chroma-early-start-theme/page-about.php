@@ -220,6 +220,64 @@ while (have_posts()):
 					} ?>
 				</div>
 			</div>
+						<?php endif;
+					} ?>
+				</div>
+			</div>
+		</section>
+
+		<!-- Culture & Diversity (New Section) -->
+		<section class="py-24 bg-stone-900 text-white border-t border-stone-800">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="grid lg:grid-cols-2 gap-16 items-center">
+					<div class="fade-in-up">
+						<span
+							class="text-amber-400 font-bold tracking-widest text-sm uppercase mb-4 block"><?php _e('Our Culture', 'chroma-early-start'); ?></span>
+						<h2 class="text-3xl md:text-4xl font-bold mb-6">
+							<?php _e('A Place Where Everyone Belongs', 'chroma-early-start'); ?>
+						</h2>
+						<p class="text-stone-300 text-lg leading-relaxed mb-8">
+							<?php _e('We believe that diversity strengthens our care. Chroma Early Start is committed to creating an inclusive environment where every child, family, and team member is celebrated for exactly who they are.', 'chroma-early-start'); ?>
+						</p>
+						<div class="space-y-4">
+							<div class="flex items-center">
+								<div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center mr-4">
+									<i data-lucide="globe" class="w-5 h-5 text-amber-400"></i>
+								</div>
+								<span class="font-medium"><?php _e('Culturally Responsive Care', 'chroma-early-start'); ?></span>
+							</div>
+							<div class="flex items-center">
+								<div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center mr-4">
+									<i data-lucide="heart-handshake"
+										class="w-5 h-5 text-amber-400"></i>
+								</div>
+								<span
+									class="font-medium"><?php _e('Neurodiversity-Affirming Practices', 'chroma-early-start'); ?></span>
+							</div>
+						</div>
+					</div>
+					<div class="relative fade-in-up">
+						<div
+							class="absolute inset-0 bg-gradient-to-r from-rose-500 to-orange-500 rounded-[2.5rem] transform -rotate-2 opacity-50">
+						</div>
+						<div class="relative bg-stone-800 rounded-[2.5rem] p-10 border border-stone-700">
+							<blockquote class="text-xl italic text-stone-200 mb-6">
+								"<?php _e('Our son has never fit into a \'box\' before. At Chroma, they didn\'t try to change him; they built a world where he could succeed just as he is.', 'chroma-early-start'); ?>"
+							</blockquote>
+							<div class="flex items-center">
+								<div
+									class="w-10 h-10 bg-rose-500 rounded-full flex items-center justify-center font-bold text-white text-sm mr-3">
+									MJ</div>
+								<div>
+									<div class="font-bold"><?php _e('Marcus J.', 'chroma-early-start'); ?></div>
+									<div class="text-xs text-stone-400">
+										<?php _e('Chroma Parent', 'chroma-early-start'); ?></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</section>
 
 		<!-- Leadership Section (Dynamic CPT) -->

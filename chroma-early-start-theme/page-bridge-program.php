@@ -240,6 +240,39 @@ while (have_posts()):
             </div>
         </section>
 
+        <!-- Readiness Checklist (Blue Section) -->
+        <section class="py-24 bg-blue-600 text-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold mb-8"><?php _e('Is Your Child Ready for Bridge?', 'chroma-early-start'); ?>
+                </h2>
+                <p class="text-blue-100 mb-12 max-w-2xl mx-auto">
+                    <?php _e('The Bridge Program is typically for children ages 3-6 who have mastered foundational 1:1 skills and are preparing for a less restrictive environment.', 'chroma-early-start'); ?>
+                </p>
+                <div class="grid md:grid-cols-2 gap-6 text-left">
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                        <h4 class="font-bold mb-2 flex items-center text-xl justify-center"><i data-lucide="check"
+                                class="w-6 h-6 mr-2 text-green-300"></i>
+                            <?php _e('Prerequisite Skills', 'chroma-early-start'); ?></h4>
+                        <ul class="text-sm text-blue-50 space-y-3 list-disc pl-5 leading-relaxed">
+                            <li><?php _e('Minimal aggressive/disruptive behavior', 'chroma-early-start'); ?></li>
+                            <li><?php _e('Can sit for 2-3 minutes with reinforcement', 'chroma-early-start'); ?></li>
+                            <li><?php _e('Basic functional communication (vocal or AAC)', 'chroma-early-start'); ?></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                        <h4 class="font-bold mb-2 flex items-center text-xl justify-center"><i data-lucide="target"
+                                class="w-6 h-6 mr-2 text-amber-300"></i>
+                            <?php _e('Targeted Outcomes', 'chroma-early-start'); ?></h4>
+                        <ul class="text-sm text-blue-50 space-y-3 list-disc pl-5 leading-relaxed">
+                            <li><?php _e('Follows group instructions without 1:1 prompts', 'chroma-early-start'); ?></li>
+                            <li><?php _e('Engages in sustained peer play', 'chroma-early-start'); ?></li>
+                            <li><?php _e('Independently transitions between activities', 'chroma-early-start'); ?></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Final CTA -->
         <section class="py-24 bg-blue-600 text-white overflow-hidden text-center">
             <div class="max-w-4xl mx-auto px-4 fade-in-up">

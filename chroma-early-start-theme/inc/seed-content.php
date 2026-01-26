@@ -135,46 +135,30 @@ function earlystart_seed_core_content()
         ),
         'contact' => array(
             'title' => 'Contact',
-            'template' => 'page-contact.php',
-            'meta' => array(
-                'contact_hero_badge' => 'Connect With Us',
-                'contact_hero_title' => 'We\'d love to meet you.',
-                'contact_hero_description' => 'Start your child\'s journey today with a free 15-minute clinical consultation.',
-                'contact_corporate_title' => 'Clinical Headquarters',
-                'contact_corporate_name' => 'Chroma Early Start LLC',
-                'contact_corporate_address' => "123 Wellness Blvd\nTherapy City, ST 12345",
-                'contact_corporate_phone' => '(555) 123-4567',
-            )
+            'template' => 'page-contact.php'
         ),
         'careers' => array('title' => 'Careers', 'template' => 'page-careers.php'),
     );
 
-    foreach ($pages as $slug => $data) {
+    foreach ($pages as $slug => $page_data) {
         $existing_page = get_page_by_path($slug);
         if (!$existing_page) {
-            $post_id = wp_insert_post(array(
-                'post_title' => $data['title'],
+            $page_id = wp_insert_post(array(
+                'post_title' => $page_data['title'],
                 'post_name' => $slug,
                 'post_status' => 'publish',
                 'post_type' => 'page',
+                'page_template' => $page_data['template']
             ));
-            if (!is_wp_error($post_id)) {
-                if (!empty($data['template']))
-                    update_post_meta($post_id, '_wp_page_template', $data['template']);
-                if (!empty($data['meta'])) {
-                    foreach ($data['meta'] as $key => $value)
-                        update_post_meta($post_id, $key, $value);
+            if (!is_wp_error($page_id)) {
+                if (!empty($page_data['template']))
+                    update_post_meta($page_id, '_wp_page_template', $page_data['template']);
+                if (!empty($page_data['meta'])) {
+                    foreach ($page_data['meta'] as $key => $value)
+                        update_post_meta($page_id, $key, $value);
                 }
                 if ($slug === 'home') {
                     update_option('show_on_front', 'page');
-                    update_option('page_on_front', $post_id);
-                }
-            }
-            // If page exists, ensure it is using the correct template and has current meta
-            if (!empty($data['template'])) {
-                update_post_meta($existing_page->ID, '_wp_page_template', $data['template']);
-            }
-            if (!empty($data['meta'])) {
                 foreach ($data['meta'] as $key => $value) {
                     update_post_meta($existing_page->ID, $key, $value);
                 }
