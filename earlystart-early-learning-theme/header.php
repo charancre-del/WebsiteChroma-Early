@@ -21,10 +21,35 @@
 		type="font/woff2" crossorigin>
 	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Bold.woff2" as="font"
 		type="font/woff2" crossorigin>
+	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-SemiBold.woff2"
+		as="font" type="font/woff2" crossorigin>
 	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Medium.woff2" as="font"
 		type="font/woff2" crossorigin>
+	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Regular.woff2"
+		as="font" type="font/woff2" crossorigin>
 
 	<style id="earlystart-critical-css">
+		/* CLS Stability: Reserve Header & Hero height */
+		#site-header-fixed-group {
+			min-height: 116px;
+		}
+
+		@media (max-width: 767px) {
+			#site-header-fixed-group {
+				min-height: 124px;
+			}
+		}
+
+		#main-content h1 {
+			min-height: 1.1em;
+		}
+
+		/* Reserve space for dynamic text */
+
+		.logo-img {
+			aspect-ratio: attr(width) / attr(height);
+		}
+
 		/* Darkened Brand Colors for WCAG AA Compliance (Enhanced) */
 		.text-chroma-red {
 			color: #964030 !important;
@@ -151,6 +176,7 @@
 										alt="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>"
 										width="<?php echo esc_attr($logo[1]); ?>" height="<?php echo esc_attr($logo[2]); ?>"
 										class="h-10 w-auto md:h-12 object-contain logo-img transition-transform duration-300 group-hover:scale-105"
+												style="aspect-ratio: <?php echo esc_attr($logo[1]); ?> / <?php echo esc_attr($logo[2]); ?>;"
 										fetchpriority="high">
 								<?php endif; ?>
 

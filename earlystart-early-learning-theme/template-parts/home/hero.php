@@ -96,7 +96,9 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                         __('Happy child in therapy', 'earlystart-early-learning'),
                         'w-full h-full object-cover no-lazy',
                         '(max-width: 1024px) 100vw, 50vw',
-                        true
+                        true,
+                        800,
+                        1000
                     ); ?>
                 </div>
 

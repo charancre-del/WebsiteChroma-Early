@@ -43,7 +43,7 @@ function earlystart_get_optimized_unsplash_url($base_url, $width, $height = null
  * Comprehensive responsive Unsplash image helper
  * Generates <img> tag with srcset and sizes.
  */
-function earlystart_responsive_unsplash($base_url, $alt = '', $class = '', $sizes = '100vw', $lcp = false)
+function earlystart_responsive_unsplash($base_url, $alt = '', $class = '', $sizes = '100vw', $lcp = false, $width = 1200, $height = null)
 {
     if (empty($base_url))
         return '';
@@ -55,7 +55,7 @@ function earlystart_responsive_unsplash($base_url, $alt = '', $class = '', $size
         $srcset[] = earlystart_get_optimized_unsplash_url($base_url, $w) . ' ' . $w . 'w';
     }
 
-    $default_src = earlystart_get_optimized_unsplash_url($base_url, 1200);
+    $default_src = earlystart_get_optimized_unsplash_url($base_url, $width, $height);
 
     $attrs = array(
         'src="' . esc_url($default_src) . '"',
@@ -63,8 +63,14 @@ function earlystart_responsive_unsplash($base_url, $alt = '', $class = '', $size
         'sizes="' . esc_attr($sizes) . '"',
         'alt="' . esc_attr($alt) . '"',
         'class="' . esc_attr($class) . '"',
-        'decoding="async"'
+        'decoding="async"',
+        'width="' . esc_attr($width) . '"'
     );
+
+    if ($height) {
+        $attrs[] = 'height="' . esc_attr($height) . '"';
+        $attrs[] = 'style="aspect-ratio: ' . $width . '/' . $height . '; object-fit: cover;"';
+    }
 
     if ($lcp) {
         $attrs[] = 'fetchpriority="high"';
