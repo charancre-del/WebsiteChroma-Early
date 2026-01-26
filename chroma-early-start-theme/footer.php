@@ -21,13 +21,13 @@
 					<?php _e('Empowering neurodivergent children through play-led, evidence-based therapy. Ages 18mo - 12yrs.', 'chroma-early-start'); ?>
 				</p>
 				<div class="flex space-x-4">
-					<a href="#"
+					<a href="https://facebook.com/chromaearlystart" target="_blank" rel="noopener"
 						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-400 hover:bg-rose-600 hover:text-white transition-all"><i
 							data-lucide="facebook" class="w-5 h-5"></i></a>
-					<a href="#"
+					<a href="https://instagram.com/chromaearlystart" target="_blank" rel="noopener"
 						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-400 hover:bg-rose-600 hover:text-white transition-all"><i
 							data-lucide="instagram" class="w-5 h-5"></i></a>
-					<a href="#"
+					<a href="https://linkedin.com/company/chromaearlystart" target="_blank" rel="noopener"
 						class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center text-stone-400 hover:bg-rose-600 hover:text-white transition-all"><i
 							data-lucide="linkedin" class="w-5 h-5"></i></a>
 				</div>

@@ -28,12 +28,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
   mobileNavToggles.forEach((toggle) => {
     toggle.addEventListener('click', () => {
-      mobileNav.classList.toggle('translate-x-full');
-      // Toggle body scroll
-      if (!mobileNav.classList.contains('translate-x-full')) {
+      if (!mobileNav) return;
+
+      const isHidden = mobileNav.classList.contains('hidden');
+
+      if (isHidden) {
+        // Opening
+        mobileNav.classList.remove('hidden');
+        // Small delay to allow transition
+        requestAnimationFrame(() => {
+          mobileNav.classList.remove('translate-x-full');
+          mobileNav.classList.add('translate-x-0');
+        });
         document.body.style.overflow = 'hidden';
       } else {
+        // Closing
+        mobileNav.classList.remove('translate-x-0');
+        mobileNav.classList.add('translate-x-full');
         document.body.style.overflow = '';
+
+        // Wait for transition before hiding
+        setTimeout(() => {
+          if (mobileNav.classList.contains('translate-x-full')) {
+            mobileNav.classList.add('hidden');
+          }
+        }, 300);
       }
     });
   });
