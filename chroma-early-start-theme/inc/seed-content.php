@@ -142,6 +142,8 @@ function earlystart_seed_core_content()
 
     foreach ($pages as $slug => $page_data) {
         $existing_page = get_page_by_path($slug);
+        $page_id = 0;
+
         if (!$existing_page) {
             $page_id = wp_insert_post(array(
                 'post_title' => $page_data['title'],
@@ -150,18 +152,25 @@ function earlystart_seed_core_content()
                 'post_type' => 'page',
                 'page_template' => $page_data['template']
             ));
-            if (!is_wp_error($page_id)) {
-                if (!empty($page_data['template']))
-                    update_post_meta($page_id, '_wp_page_template', $page_data['template']);
-                if (!empty($page_data['meta'])) {
-                    foreach ($page_data['meta'] as $key => $value)
-                        update_post_meta($page_id, $key, $value);
+        } else {
+            $page_id = $existing_page->ID;
+            // Force update template for existing pages to match our new architecture
+            if (!empty($page_data['template'])) {
+                update_post_meta($page_id, '_wp_page_template', $page_data['template']);
+            }
+        }
+
+        if ($page_id && !is_wp_error($page_id)) {
+            // Update Meta
+            if (!empty($page_data['meta'])) {
+                foreach ($page_data['meta'] as $key => $value) {
+                    update_post_meta($page_id, $key, $value);
                 }
-                if ($slug === 'home') {
-                    update_option('show_on_front', 'page');
-                foreach ($data['meta'] as $key => $value) {
-                    update_post_meta($existing_page->ID, $key, $value);
-                }
+            }
+            // Set Homepage Settings
+            if ($slug === 'home') {
+                update_option('show_on_front', 'page');
+                update_option('page_on_front', $page_id);
             }
         }
     }
