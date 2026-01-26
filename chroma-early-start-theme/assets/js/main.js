@@ -176,6 +176,52 @@ document.addEventListener('DOMContentLoaded', function () {
   initTabs('[data-services-tabs]', 'services');
 
   /**
+   * Team Bio Modal Logic
+   */
+  const teamModal = document.getElementById('team-modal');
+  const teamModalContent = document.getElementById('team-modal-content');
+  const modalClose = document.getElementById('team-modal-close');
+  const modalOverlay = document.getElementById('team-modal-overlay');
+
+  if (teamModal && teamModalContent) {
+    const triggers = document.querySelectorAll('[data-team-bio-trigger]');
+
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const data = JSON.parse(trigger.getAttribute('data-team-bio-trigger'));
+
+        // Populate modal
+        document.getElementById('modal-name').textContent = data.name;
+        document.getElementById('modal-role').textContent = data.role;
+        document.getElementById('modal-bio').innerHTML = data.bio;
+        document.getElementById('modal-image').src = data.image;
+
+        // Show modal
+        teamModal.classList.remove('hidden');
+        teamModal.classList.add('flex');
+
+        setTimeout(() => {
+          teamModalContent.classList.remove('scale-95', 'opacity-0');
+          teamModalContent.classList.add('scale-100', 'opacity-100');
+        }, 10);
+      });
+    });
+
+    const closeModal = () => {
+      teamModalContent.classList.remove('scale-100', 'opacity-100');
+      teamModalContent.classList.add('scale-95', 'opacity-0');
+
+      setTimeout(() => {
+        teamModal.classList.add('hidden');
+        teamModal.classList.remove('flex');
+      }, 300);
+    };
+
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
+  }
+
+  /**
    * Programs wizard
    */
   /**

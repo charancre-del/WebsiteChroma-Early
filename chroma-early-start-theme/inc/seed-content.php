@@ -115,24 +115,18 @@ function earlystart_seed_core_content()
         'our-approach' => array('title' => 'Our Approach', 'template' => 'page-approach.php'),
         'services' => array('title' => 'Services', 'template' => 'page-programs.php'),
         'locations-list' => array('title' => 'Locations', 'template' => 'page-locations.php'),
-        'curriculum' => array(
-            'title' => 'Curriculum',
-            'template' => 'page-curriculum.php',
+        'bridge-program' => array(
+            'title' => 'Chroma Bridge Program',
+            'template' => 'page-bridge-program.php',
             'meta' => array(
-                'curriculum_hero_badge' => 'The Chroma Difference',
-                'curriculum_hero_title' => 'Clinical rigor. <br><span class="italic text-rose-500">Compassionate delivery.</span>',
-                'curriculum_hero_description' => 'Our proprietary Prismpath™ framework refracts therapy into balanced pillars for physical, emotional, and social growth.',
-                'curriculum_framework_title' => 'The Prismpath™ Framework',
-                'curriculum_framework_description' => 'Our evidence-based methodology ensuring every child receives holistic support across all areas of development.',
-                'curriculum_pillar_physical_icon' => 'fa-solid fa-person-running',
-                'curriculum_pillar_physical_title' => 'Physical',
-                'curriculum_pillar_physical_desc' => 'Gross motor, fine motor, and sensory integration skills.',
-                'curriculum_pillar_emotional_icon' => 'fa-solid fa-face-smile',
-                'curriculum_pillar_emotional_title' => 'Emotional',
-                'curriculum_pillar_emotional_desc' => 'Self-regulation, resilience, and identifying complex emotions.',
+                'bridge_hero_badge' => 'School Readiness',
+                'bridge_hero_title' => 'Clinical Pre-K: <span class="italic text-blue-600">The Ultimate Bridge.</span>',
             )
         ),
-        'parents' => array('title' => 'Parents', 'template' => 'page-parents.php'),
+        'consultation' => array(
+            'title' => 'Book Your Consultation',
+            'template' => 'page-consultation.php'
+        ),
         'contact' => array(
             'title' => 'Contact',
             'template' => 'page-contact.php',

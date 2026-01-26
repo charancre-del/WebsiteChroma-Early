@@ -244,30 +244,34 @@ while (have_posts()):
 					</p>
 				</div>
 
-				<div class="grid md:grid-cols-3 gap-8">
+				<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
 					<?php
 					if ($team_query->have_posts()):
 						while ($team_query->have_posts()):
 							$team_query->the_post();
 							$role = get_post_meta(get_the_ID(), 'team_member_title', true);
+							$image = get_the_post_thumbnail_url(get_the_ID(), 'large') ?: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800';
+							$bio = get_the_content();
 							?>
-							<div
-								class="bg-white rounded-[2.5rem] p-8 shadow-md border border-stone-100 group hover:-translate-y-1 transition-all fade-in-up">
+							<div class="group fade-in-up">
 								<div
-									class="bg-stone-100 rounded-3xl aspect-square mb-8 flex items-center justify-center overflow-hidden">
-									<?php if (has_post_thumbnail()): ?>
-										<?php the_post_thumbnail('large', array('class' => 'w-full h-full object-cover')); ?>
-									<?php else: ?>
-										<i data-lucide="user" class="w-20 h-20 text-stone-300"></i>
-									<?php endif; ?>
+									class="relative mb-6 overflow-hidden rounded-[2.5rem] aspect-[4/5] shadow-lg group-hover:shadow-2xl transition-all duration-500">
+									<img src="<?php echo esc_url($image); ?>"
+										class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+										alt="<?php the_title_attribute(); ?>">
+									<div
+										class="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+										<button
+											class="bg-white text-stone-900 px-6 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+											data-team-bio-trigger='<?php echo json_encode(array("name" => get_the_title(), "role" => $role, "bio" => wp_kses_post($bio), "image" => $image)); ?>'>
+											<?php _e('View Bio', 'chroma-early-start'); ?>
+										</button>
+									</div>
 								</div>
-								<h3 class="text-2xl font-bold text-stone-900 mb-1"><?php the_title(); ?></h3>
-								<p class="text-rose-600 font-bold text-sm uppercase tracking-widest mb-4">
-									<?php echo esc_html($role); ?>
+								<h4 class="text-2xl font-bold text-stone-900 mb-1 group-hover:text-rose-600 transition-colors">
+									<?php the_title(); ?></h4>
+								<p class="text-stone-500 font-medium tracking-wide text-sm uppercase"><?php echo esc_html($role); ?>
 								</p>
-								<div class="text-stone-600 text-sm leading-relaxed">
-									<?php the_content(); ?>
-								</div>
 							</div>
 						<?php endwhile;
 						wp_reset_postdata();
@@ -275,6 +279,41 @@ while (have_posts()):
 				</div>
 			</div>
 		</section>
+
+		<!-- Team Bio Modal Container -->
+		<div id="team-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+			<div id="team-modal-overlay" class="absolute inset-0 bg-stone-900/80 backdrop-blur-sm"></div>
+			<div class="relative bg-white w-full max-w-4xl rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300"
+				id="team-modal-content">
+				<button id="team-modal-close"
+					class="absolute top-6 right-6 z-10 w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center hover:bg-stone-200 transition-colors">
+					<i data-lucide="x" class="w-6 h-6 text-stone-900"></i>
+				</button>
+				<div class="md:w-2/5 h-64 md:h-auto">
+					<img id="modal-image" src="" alt="" class="w-full h-full object-cover">
+				</div>
+				<div class="md:w-3/5 p-12 overflow-y-auto max-h-[80vh]">
+					<span id="modal-role"
+						class="text-rose-600 font-bold tracking-widest text-xs uppercase mb-2 block"></span>
+					<h3 id="modal-name" class="text-4xl font-bold text-stone-900 mb-6"></h3>
+					<div id="modal-bio" class="prose prose-stone text-stone-600 leading-relaxed"></div>
+					<div class="mt-8 pt-8 border-t border-stone-100 flex gap-4">
+						<div class="bg-stone-50 p-4 rounded-2xl flex-1">
+							<span
+								class="block text-[10px] font-bold text-stone-400 uppercase mb-1"><?php _e('Specialty', 'chroma-early-start'); ?></span>
+							<span
+								class="text-sm font-bold text-stone-700"><?php _e('Early Intervention', 'chroma-early-start'); ?></span>
+						</div>
+						<div class="bg-stone-50 p-4 rounded-2xl flex-1">
+							<span
+								class="block text-[10px] font-bold text-stone-400 uppercase mb-1"><?php _e('Approach', 'chroma-early-start'); ?></span>
+							<span
+								class="text-sm font-bold text-stone-700"><?php _e('Assent-Based', 'chroma-early-start'); ?></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<!-- Community Section (Philanthropy) -->
 		<?php
