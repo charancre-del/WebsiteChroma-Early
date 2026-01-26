@@ -129,19 +129,19 @@ function earlystart_home_default_team()
                 array(
                         'name' => __('Dr. Sarah Johnson', 'earlystart-early-learning'),
                         'role' => __('Clinical Director, BCBA-D', 'earlystart-early-learning'),
-                        'image' => 'https://images.unsplash.com/photo-1559839734-2b71f1536783?auto=format&fit=crop&q=80&fm=webp?w=600&fit=crop&q=80&fm=webp',
+                        'image' => 'https://images.unsplash.com/photo-1559839734-2b71f1536783?auto=format&fit=crop&w=800&h=1000&q=80&fm=webp',
                         'linkedin' => '#'
                 ),
                 array(
                         'name' => __('Michael Chen, MS', 'earlystart-early-learning'),
                         'role' => __('Lead Speech Pathologist', 'earlystart-early-learning'),
-                        'image' => 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&fm=webp?w=600&fit=crop&q=80&fm=webp',
+                        'image' => 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=800&h=1000&q=80&fm=webp',
                         'linkedin' => '#'
                 ),
                 array(
                         'name' => __('Emily Rodriguez, OTR/L', 'earlystart-early-learning'),
                         'role' => __('Occupational Therapy Lead', 'earlystart-early-learning'),
-                        'image' => 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&fm=webp?w=600&fit=crop&q=80&fm=webp',
+                        'image' => 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&h=1000&q=80&fm=webp',
                         'linkedin' => '#'
                 )
         );
@@ -491,7 +491,7 @@ function earlystart_home_default_faq_items()
 function earlystart_home_default_locations_preview()
 {
         return array(
-                'heading' => __('Serving Families Across <span class="italic text-rose-600">The Metro</span>', 'earlystart-early-learning'),
+                'heading' => __('Serving Families Across <span class="italic text-rose-700">The Metro</span>', 'earlystart-early-learning'),
                 'subheading' => __('Find your nearest clinical center and join our community of growth.', 'earlystart-early-learning'),
                 'cta_label' => __('View All Locations', 'earlystart-early-learning'),
                 'cta_link' => '/locations/',
@@ -501,7 +501,7 @@ function earlystart_home_default_locations_preview()
 function earlystart_home_default_faq()
 {
         return array(
-                'heading' => __('Frequently <span class="italic text-rose-600">Asked</span> Questions', 'earlystart-early-learning'),
+                'heading' => __('Frequently <span class="italic text-rose-700">Asked</span> Questions', 'earlystart-early-learning'),
                 'subheading' => __('Common questions from parents', 'earlystart-early-learning'),
                 'items' => earlystart_home_default_faq_items(),
                 'cta_text' => '',

@@ -33,7 +33,7 @@ $programs_query = new WP_Query(array(
 					<?php _e('Early Development.', 'earlystart-early-learning'); ?>
 				</span>
 			</h1>
-			<p class="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed fade-in-up">
+			<p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
 				<?php _e('From clinical intensive ABA therapy to social-focused summer camps, our programs are designed to meet children exactly where they are in their developmental journey.', 'earlystart-early-learning'); ?>
 			</p>
 		</div>
@@ -84,7 +84,7 @@ $programs_query = new WP_Query(array(
 									<?php the_title(); ?>
 								</h3>
 
-								<div class="text-stone-600 text-sm leading-relaxed mb-8 flex-grow font-medium">
+								<div class="text-stone-700 text-sm leading-relaxed mb-8 flex-grow font-medium">
 									<?php echo wp_trim_words(get_the_excerpt(), 25); ?>
 								</div>
 
@@ -94,7 +94,7 @@ $programs_query = new WP_Query(array(
 									<ul class="space-y-3 mb-10 border-t border-stone-50 pt-8">
 										<?php foreach ($feat_list as $feat):
 											if (trim($feat)): ?>
-												<li class="flex items-center text-xs font-medium text-stone-600">
+												<li class="flex items-center text-xs font-medium text-stone-700">
 													<i data-lucide="check" class="w-4 h-4 text-<?php echo $theme_color; ?>-500 mr-3"></i>
 													<?php echo esc_html(trim($feat)); ?>
 												</li>
@@ -128,13 +128,13 @@ $programs_query = new WP_Query(array(
 					<h2 class="text-3xl md:text-4xl font-bold mb-6">
 						<?php _e('Unsure which program fits?', 'earlystart-early-learning'); ?>
 					</h2>
-					<p class="text-rose-100 text-lg">
+					<p class="text-white text-lg">
 						<?php _e('Our clinical intake team can help assess your child\'s needs and recommend a personalized development path.', 'earlystart-early-learning'); ?>
 					</p>
 				</div>
 				<div class="shrink-0 relative z-10">
 					<a href="<?php echo esc_url(home_url('/contact/')); ?>"
-						class="bg-white text-rose-600 px-10 py-5 rounded-full font-bold text-lg hover:bg-stone-900 hover:text-white transition-all shadow-xl">
+						class="bg-white text-rose-700 px-10 py-5 rounded-full font-bold text-lg hover:bg-stone-900 hover:text-white transition-all shadow-xl">
 						<?php _e('Contact Intake Team', 'earlystart-early-learning'); ?>
 					</a>
 				</div>

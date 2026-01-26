@@ -22,7 +22,7 @@ $programs_query = new WP_Query(array(
     <section class="relative bg-white pt-24 pb-20 lg:pt-32">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span
-                class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
+                class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
                 <?php _e('What We Do', 'earlystart-early-learning'); ?>
             </span>
             <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
@@ -31,7 +31,7 @@ $programs_query = new WP_Query(array(
                     <?php _e('Integrated Care.', 'earlystart-early-learning'); ?>
                 </span>
             </h1>
-            <p class="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed fade-in-up">
+            <p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
                 <?php _e('We offer a full spectrum of pediatric services. Whether you need focused behavioral support or a comprehensive school-readiness plan, we have a pathway for you.', 'earlystart-early-learning'); ?>
             </p>
         </div>
@@ -61,7 +61,7 @@ $programs_query = new WP_Query(array(
                         if ($color === 'stone') {
                             $bg_class = "bg-stone-100";
                             $icon_bg_class = "bg-stone-200";
-                            $icon_text_class = "text-stone-400 group-hover:text-stone-600";
+                            $icon_text_class = "text-stone-300 group-hover:text-stone-700";
                             $check_text_class = "text-stone-900";
                             $btn_hover_class = "hover:border-stone-900 hover:bg-stone-900 hover:text-white";
                         }
@@ -78,13 +78,13 @@ $programs_query = new WP_Query(array(
                             </div>
                             <div class="p-10 flex-grow flex flex-col">
                                 <h3 class="text-3xl font-bold text-stone-900 mb-4"><?php the_title(); ?></h3>
-                                <div class="text-stone-600 leading-relaxed mb-6">
+                                <div class="text-stone-700 leading-relaxed mb-6">
                                     <?php the_excerpt(); ?>
                                 </div>
                                 <?php if (!empty($features_array)): ?>
                                     <ul class="space-y-3 mb-8 flex-grow">
                                         <?php foreach ($features_array as $feature): ?>
-                                            <li class="flex items-center text-stone-600 text-sm">
+                                            <li class="flex items-center text-stone-700 text-sm">
                                                 <i data-lucide="check"
                                                     class="w-4 h-4 <?php echo esc_attr($check_text_class); ?> mr-3"></i>
                                                 <?php echo esc_html($feature); ?>
@@ -103,7 +103,7 @@ $programs_query = new WP_Query(array(
                     wp_reset_postdata(); ?>
                 <?php else: ?>
                     <div class="col-span-full text-center py-20">
-                        <p class="text-stone-600"><?php _e('No programs found.', 'earlystart-early-learning'); ?></p>
+                        <p class="text-stone-700"><?php _e('No programs found.', 'earlystart-early-learning'); ?></p>
                     </div>
                 <?php endif; ?>
             </div>
@@ -116,7 +116,7 @@ $programs_query = new WP_Query(array(
             <div class="text-center mb-16 fade-in-up">
                 <h2 class="text-4xl font-bold text-stone-900 mb-4">
                     <?php _e('Flexible Service Settings', 'earlystart-early-learning'); ?></h2>
-                <p class="text-stone-600 max-w-2xl mx-auto text-lg">
+                <p class="text-stone-700 max-w-2xl mx-auto text-lg">
                     <?php _e('We offer therapy in three distinct environments to best suit your family\'s needs and your child\'s goals.', 'earlystart-early-learning'); ?>
                 </p>
             </div>
@@ -129,7 +129,7 @@ $programs_query = new WP_Query(array(
                     </div>
                     <h3 class="font-bold text-2xl mb-4 text-stone-900">
                         <?php _e('Clinic Based', 'earlystart-early-learning'); ?></h3>
-                    <p class="text-stone-600 leading-relaxed">
+                    <p class="text-stone-700 leading-relaxed">
                         <?php _e('Structured environments with sensory gyms and mock classrooms designed for focused skill acquisition.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
@@ -140,7 +140,7 @@ $programs_query = new WP_Query(array(
                     </div>
                     <h3 class="font-bold text-2xl mb-4 text-stone-900"><?php _e('Home Based', 'earlystart-early-learning'); ?>
                     </h3>
-                    <p class="text-stone-600 leading-relaxed">
+                    <p class="text-stone-700 leading-relaxed">
                         <?php _e('Therapy in your natural environment. Perfect for working on daily routines, sleep, and family dynamics.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
@@ -151,7 +151,7 @@ $programs_query = new WP_Query(array(
                     </div>
                     <h3 class="font-bold text-2xl mb-4 text-stone-900">
                         <?php _e('School Integrated', 'earlystart-early-learning'); ?></h3>
-                    <p class="text-stone-600 leading-relaxed">
+                    <p class="text-stone-700 leading-relaxed">
                         <?php _e('Push-in support at partner schools. We generalize skills to the classroom in real-time.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>

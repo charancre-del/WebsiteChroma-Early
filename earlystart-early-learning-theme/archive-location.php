@@ -32,7 +32,7 @@ $locations_query = earlystart_cached_query(
 	<!-- Hero Section -->
 	<section class="relative pt-24 pb-20 lg:pt-32 bg-white overflow-hidden border-b border-stone-50">
 			<span
-				class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
+				class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
 				<?php printf(__('%d Campus Locations', 'earlystart-early-learning'), $locations_query->found_posts); ?>
 			</span>
 
@@ -43,7 +43,7 @@ $locations_query = earlystart_cached_query(
 				</span>
 			</h1>
 
-			<p class="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed mb-12 fade-in-up">
+			<p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed mb-12 fade-in-up">
 				<?php _e('Explore our state-of-the-art campuses across Georgia. Each location features premium clinical environments, PrismaPath™ curriculum, and expert care.', 'earlystart-early-learning'); ?>
 			</p>
 
@@ -51,7 +51,7 @@ $locations_query = earlystart_cached_query(
 			<div
 				class="max-w-4xl mx-auto bg-white p-2 rounded-full shadow-2xl border border-stone-100 flex flex-col lg:flex-row gap-2 fade-in-up">
 				<div class="relative flex-grow">
-					<i data-lucide="search" class="w-5 h-5 absolute left-6 top-1/2 -translate-y-1/2 text-stone-400"></i>
+					<i data-lucide="search" class="w-5 h-5 absolute left-6 top-1/2 -translate-y-1/2 text-stone-300"></i>
 					<input type="text" id="location-search"
 						placeholder="<?php esc_attr_e('Search by City or ZIP...', 'earlystart-early-learning'); ?>"
 						class="w-full pl-14 pr-6 py-4 rounded-full focus:outline-none text-stone-900 bg-transparent" />
@@ -64,7 +64,7 @@ $locations_query = earlystart_cached_query(
 					<?php foreach ($all_regions as $region): ?>
 						<button onclick="filterLocations('<?php echo esc_attr($region->slug); ?>')"
 							data-region="<?php echo esc_attr($region->slug); ?>"
-							class="filter-btn px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest bg-white text-stone-600 border border-stone-100 hover:bg-stone-50 transition-all duration-300 whitespace-nowrap">
+							class="filter-btn px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest bg-white text-stone-700 border border-stone-100 hover:bg-stone-50 transition-all duration-300 whitespace-nowrap">
 							<?php echo esc_html($region->name); ?>
 						</button>
 					<?php endforeach; ?>
@@ -119,21 +119,21 @@ $locations_query = earlystart_cached_query(
 
 								<div class="p-10 flex-1 flex flex-col">
 									<div
-										class="flex items-center gap-2 text-rose-600 font-bold text-[10px] uppercase tracking-widest mb-4">
+										class="flex items-center gap-2 text-rose-700 font-bold text-[10px] uppercase tracking-widest mb-4">
 										<i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
 										<?php echo esc_html($region_name); ?>
 									</div>
 									<h2
-										class="text-2xl font-bold text-stone-900 mb-4 group-hover:text-rose-600 transition-colors">
+										class="text-2xl font-bold text-stone-900 mb-4 group-hover:text-rose-700 transition-colors">
 										<?php echo esc_html($location_name); ?>
 									</h2>
-									<p class="text-stone-600 text-sm leading-relaxed mb-10">
+									<p class="text-stone-700 text-sm leading-relaxed mb-10">
 										<?php echo esc_html($address); ?><br>
 										<?php echo esc_html("$city, GA $zip"); ?>
 									</p>
 
 									<div class="mt-auto flex items-center justify-between pt-8 border-t border-stone-50">
-										<span class="text-stone-400 text-[10px] font-bold uppercase tracking-widest">
+										<span class="text-stone-300 text-[10px] font-bold uppercase tracking-widest">
 											<?php _e('Explore Campus', 'earlystart-early-learning'); ?>
 										</span>
 										<div
@@ -158,7 +158,7 @@ $locations_query = earlystart_cached_query(
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
 			<h2 class="text-4xl md:text-5xl font-bold mb-8">
 				<?php _e('Not sure where to start?', 'earlystart-early-learning'); ?></h2>
-			<p class="text-xl text-stone-400 max-w-2xl mx-auto mb-12">
+			<p class="text-xl text-stone-300 max-w-2xl mx-auto mb-12">
 				<?php _e('Our clinical intake team can help you identify the best campus and program for your child\'s unique developmental path.', 'earlystart-early-learning'); ?>
 			</p>
 			<div class="flex flex-wrap justify-center gap-6">
@@ -186,10 +186,10 @@ $locations_query = earlystart_cached_query(
 
 		buttons.forEach(btn => {
 			if (region === btn.dataset.region) {
-				btn.classList.remove('bg-white', 'text-stone-600', 'border', 'border-stone-100');
+				btn.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-100');
 				btn.classList.add('bg-stone-900', 'text-white');
 			} else {
-				btn.classList.add('bg-white', 'text-stone-600', 'border', 'border-stone-100');
+				btn.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-100');
 				btn.classList.remove('bg-stone-900', 'text-white');
 			}
 		});
@@ -210,7 +210,7 @@ $locations_query = earlystart_cached_query(
 		const buttons = document.querySelectorAll('.filter-btn');
 
 		buttons.forEach(btn => {
-			btn.classList.add('bg-white', 'text-stone-600', 'border', 'border-stone-100');
+			btn.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-100');
 			btn.classList.remove('bg-stone-900', 'text-white');
 		});
 

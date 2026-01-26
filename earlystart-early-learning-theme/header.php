@@ -106,7 +106,7 @@
 							<div
 								class="absolute inset-0 bg-rose-100 rounded-full opacity-80 group-hover:scale-110 transition-transform">
 							</div>
-							<i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
+							<i data-lucide="puzzle" class="w-6 h-6 text-rose-700 relative z-10"></i>
 						</div>
 						<div class="flex flex-col">
 							<?php
@@ -121,7 +121,7 @@
 							</span>
 							<?php if (!empty($secondary_line)): ?>
 								<span
-									class="text-[0.65rem] uppercase tracking-widest text-stone-600 font-semibold hidden md:block">
+									class="text-[0.65rem] uppercase tracking-widest text-stone-700 font-semibold hidden md:block">
 									<?php echo esc_html($secondary_line); ?>
 								</span>
 							<?php endif; ?>
@@ -147,7 +147,7 @@
 					<!-- Mobile Menu Button -->
 					<div class="xl:hidden flex items-center">
 						<button data-mobile-nav-toggle
-							class="text-stone-600 hover:text-rose-600 p-3 focus:outline-none bg-stone-50 rounded-lg transition-colors border border-stone-200"
+							class="text-stone-700 hover:text-rose-700 p-3 focus:outline-none bg-stone-50 rounded-lg transition-colors border border-stone-200"
 							aria-label="Toggle menu">
 							<i data-lucide="menu" class="w-6 h-6"></i>
 						</button>

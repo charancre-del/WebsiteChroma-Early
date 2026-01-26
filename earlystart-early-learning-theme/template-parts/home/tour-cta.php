@@ -25,23 +25,23 @@ if (!$tour_cta) {
             <h2 class="text-4xl lg:text-6xl font-extrabold text-white mb-8">
                 <?php echo $tour_cta['heading']; // Already wp_kses_post ?>
             </h2>
-            <p class="text-rose-100 text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
+            <p class="text-white text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
                 <?php echo esc_html($tour_cta['subheading']); ?>
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="<?php echo esc_url($tour_cta['cta_url']); ?>"
-                    class="bg-white text-rose-600 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-50 transition-all shadow-2xl hover:scale-105 active:scale-95">
+                    class="bg-white text-rose-700 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-50 transition-all shadow-2xl hover:scale-105 active:scale-95">
                     <?php echo esc_html($tour_cta['cta_label']); ?>
                 </a>
                 <a href="tel:4045550123"
-                    class="bg-rose-500/30 backdrop-blur-md text-white border-2 border-rose-400/50 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-500/50 transition-all">
+                    class="bg-rose-700 text-white border-2 border-rose-400 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-800 transition-all">
                     <?php _e('Call Now', 'earlystart-early-learning'); ?>
                 </a>
             </div>
 
             <?php if (!empty($tour_cta['trust_text'])): ?>
-                <p class="mt-8 text-rose-100 text-sm font-bold">
+                <p class="mt-8 text-white text-sm font-bold">
                     <i data-lucide="shield-check" class="w-4 h-4 inline-block mr-1 align-text-bottom"></i>
                     <?php echo esc_html($tour_cta['trust_text']); ?>
                 </p>

@@ -26,7 +26,7 @@ get_header();
                     <?php _e('Help you today?', 'earlystart-early-learning'); ?>
                 </span>
             </h1>
-            <p class="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed fade-in-up">
+            <p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
                 <?php _e('Find answers to common questions about our clinical model, enrollment process, and how we support your child\'s unique journey.', 'earlystart-early-learning'); ?>
             </p>
         </div>
@@ -78,11 +78,11 @@ get_header();
                                         <?php echo esc_html($faq['q']); ?>
                                     </span>
                                     <span
-                                        class="w-10 h-10 bg-stone-50 rounded-full flex items-center justify-center text-stone-400 group-open:rotate-180 transition-transform group-hover:bg-amber-50 group-hover:text-amber-600 shrink-0">
+                                        class="w-10 h-10 bg-stone-50 rounded-full flex items-center justify-center text-stone-300 group-open:rotate-180 transition-transform group-hover:bg-amber-50 group-hover:text-amber-600 shrink-0">
                                         <i data-lucide="chevron-down" class="w-5 h-5"></i>
                                     </span>
                                 </summary>
-                                <div class="mt-6 text-stone-600 leading-relaxed border-t border-stone-50 pt-6">
+                                <div class="mt-6 text-stone-700 leading-relaxed border-t border-stone-50 pt-6">
                                     <?php echo wp_kses_post($faq['a']); ?>
                                 </div>
                             </details>
@@ -103,7 +103,7 @@ get_header();
             <h2 class="text-4xl md:text-5xl font-bold mb-6">
                 <?php _e('Still have questions?', 'earlystart-early-learning'); ?>
             </h2>
-            <p class="text-stone-400 text-xl mb-10 leading-relaxed">
+            <p class="text-stone-300 text-xl mb-10 leading-relaxed">
                 <?php _e('Our admissions coordinators are happy to jump on a call and talk through your specific situation. We are here to help.', 'earlystart-early-learning'); ?>
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">

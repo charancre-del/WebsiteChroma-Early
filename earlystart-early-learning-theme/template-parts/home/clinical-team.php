@@ -19,16 +19,16 @@ if (empty($team)) {
                     <?php _e('Our Clinical Experts', 'earlystart-early-learning'); ?>
                 </span>
                 <h2 class="text-4xl lg:text-5xl font-extrabold text-stone-900 mb-6">
-                    <?php _e('Expertise Guided by', 'earlystart-early-learning'); ?> <span class="italic text-rose-600">
+                    <?php _e('Expertise Guided by', 'earlystart-early-learning'); ?> <span class="italic text-rose-700">
                         <?php _e('Compassion', 'earlystart-early-learning'); ?>
                     </span>
                 </h2>
-                <p class="text-stone-600 text-lg leading-relaxed">
+                <p class="text-stone-700 text-lg leading-relaxed">
                     <?php _e('Our leadership team brings decades of experience in ABA, speech-language pathology, and pediatric development to every child\'s care plan.', 'earlystart-early-learning'); ?>
                 </p>
             </div>
             <a href="<?php echo esc_url(home_url('/about-us/')); ?>"
-                class="bg-white text-stone-900 border-2 border-stone-200 px-8 py-3 rounded-full font-bold hover:border-rose-600 hover:text-rose-600 transition-all fade-in-up">
+                class="bg-white text-stone-900 border-2 border-stone-200 px-8 py-3 rounded-full font-bold hover:border-rose-600 hover:text-rose-700 transition-all fade-in-up">
                 <?php _e('Meet the Full Team', 'earlystart-early-learning'); ?>
             </a>
         </div>

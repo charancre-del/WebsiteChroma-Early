@@ -22,12 +22,12 @@ $grouped = $locations_data['grouped'] ?? array();
                 <h2 class="text-4xl lg:text-5xl font-extrabold text-stone-900 mb-6">
                     <?php echo $locations_data['heading']; // Already wp_kses_post ?>
                 </h2>
-                <p class="text-stone-600 text-lg leading-relaxed">
+                <p class="text-stone-700 text-lg leading-relaxed">
                     <?php echo esc_html($locations_data['subheading']); ?>
                 </p>
             </div>
             <a href="<?php echo esc_url($locations_data['cta_link'] ?: home_url('/locations/')); ?>"
-                class="bg-white text-stone-900 border-2 border-stone-200 px-8 py-3 rounded-full font-bold hover:border-rose-600 hover:text-rose-600 transition-all">
+                class="bg-white text-stone-900 border-2 border-stone-200 px-8 py-3 rounded-full font-bold hover:border-rose-600 hover:text-rose-700 transition-all">
                 <?php echo esc_html($locations_data['cta_label'] ?: __('View All Locations', 'earlystart-early-learning')); ?>
             </a>
         </div>
@@ -58,11 +58,11 @@ $grouped = $locations_data['grouped'] ?? array();
                             <div class="p-8">
                                 <h3 class="text-2xl font-bold text-stone-900 mb-2"><?php echo esc_html($location['title']); ?></h3>
                                 <div class="space-y-3 mb-6">
-                                    <div class="flex items-center text-stone-600 text-sm font-medium">
+                                    <div class="flex items-center text-stone-700 text-sm font-medium">
                                         <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-rose-700"></i>
                                         <?php echo esc_html($location['address']); ?>
                                     </div>
-                                    <div class="flex items-center text-stone-600 text-sm font-medium">
+                                    <div class="flex items-center text-stone-700 text-sm font-medium">
                                         <i data-lucide="phone" class="w-4 h-4 mr-2 text-rose-700"></i>
                                         <?php echo esc_html($location['phone']); ?>
                                     </div>

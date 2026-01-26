@@ -23,7 +23,7 @@ $cards = $panels['cards'];
 					<h2 class="text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
 						<?php echo $feature['heading']; // Already wp_kses_post ?>
 					</h2>
-					<p class="text-stone-400 text-lg leading-relaxed mb-8">
+					<p class="text-stone-300 text-lg leading-relaxed mb-8">
 						<?php echo esc_html($feature['subheading']); ?>
 					</p>
 					<a href="<?php echo esc_url($feature['cta_url']); ?>"
@@ -38,7 +38,7 @@ $cards = $panels['cards'];
 			<?php
 			$colors = [
 				'orange' => ['bg' => 'bg-orange-50', 'hover' => 'hover:bg-orange-100', 'icon_text' => 'text-orange-600'],
-				'rose' => ['bg' => 'bg-rose-50', 'hover' => 'hover:bg-rose-100', 'icon_text' => 'text-rose-600'],
+				'rose' => ['bg' => 'bg-rose-50', 'hover' => 'hover:bg-rose-100', 'icon_text' => 'text-rose-700'],
 				'amber' => ['bg' => 'bg-amber-50', 'hover' => 'hover:bg-amber-100', 'icon_text' => 'text-amber-600'],
 			];
 
@@ -54,7 +54,7 @@ $cards = $panels['cards'];
 					</div>
 					<div>
 						<h3 class="text-2xl font-bold text-stone-900 mb-2"><?php echo esc_html($card['heading']); ?></h3>
-						<p class="text-stone-600 leading-relaxed"><?php echo esc_html($card['text']); ?></p>
+						<p class="text-stone-700 leading-relaxed"><?php echo esc_html($card['text']); ?></p>
 					</div>
 				</div>
 			<?php endforeach; ?>

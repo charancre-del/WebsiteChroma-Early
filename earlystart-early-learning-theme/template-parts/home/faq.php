@@ -15,7 +15,7 @@ if (!$faq_data || empty($faq_data['items'])) {
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 fade-in-up">
             <span
-                class="text-rose-600 font-bold uppercase tracking-[0.2em] text-xs mb-4 block"><?php echo esc_html($faq_data['subheading'] ?: __('Common Questions', 'earlystart-early-learning')); ?></span>
+                class="text-rose-700 font-bold uppercase tracking-[0.2em] text-xs mb-4 block"><?php echo esc_html($faq_data['subheading'] ?: __('Common Questions', 'earlystart-early-learning')); ?></span>
             <h2 class="text-4xl font-extrabold text-stone-900 mb-6">
                 <?php echo $faq_data['heading']; // Already wp_kses_post ?></h2>
         </div>
@@ -36,11 +36,11 @@ if (!$faq_data || empty($faq_data['items'])) {
                         aria-controls="<?php echo esc_attr($faq_id); ?>">
                         <span class="font-bold text-stone-900"><?php echo esc_html($item['question']); ?></span>
                         <i data-lucide="plus"
-                            class="w-5 h-5 text-rose-600 transition-transform duration-300 <?php echo $is_active ? 'rotate-45' : ''; ?>"
+                            class="w-5 h-5 text-rose-700 transition-transform duration-300 <?php echo $is_active ? 'rotate-45' : ''; ?>"
                             data-accordion-icon></i>
                     </button>
                     <div id="<?php echo esc_attr($faq_id); ?>"
-                        class="faq-answer px-6 pb-6 text-stone-600 leading-relaxed <?php echo $is_active ? '' : 'hidden'; ?>"
+                        class="faq-answer px-6 pb-6 text-stone-700 leading-relaxed <?php echo $is_active ? '' : 'hidden'; ?>"
                         data-accordion-content>
                         <div class="pb-1"><?php echo wp_kses_post(wpautop($item['answer'])); ?></div>
                     </div>

@@ -6,10 +6,10 @@
  */
 
 $hero = earlystart_home_hero();
-$hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp');
+$hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1200&q=80&fm=webp');
 ?>
 
-<section class="pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden relative">
+<section class="pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden relative min-h-[70vh] flex items-center">
     <!-- Background Elements -->
     <div
         class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[600px] h-[600px] bg-rose-50 rounded-full blur-3xl opacity-50">
@@ -32,36 +32,40 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                     <?php echo $hero['heading']; // Already run through wp_kses_post ?>
                 </h1>
 
-                <p class="text-lg text-stone-600 leading-relaxed max-w-xl">
+                <p class="text-lg text-stone-700 leading-relaxed max-w-xl">
                     <?php echo esc_html($hero['subheading']); ?>
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <a href="<?php echo esc_url($hero['cta_url']); ?>"
-                        class="bg-stone-900 text-white px-10 py-4 rounded-full font-bold hover:bg-rose-600 transition-all shadow-xl hover:shadow-rose-200 hover:-translate-y-1 text-center">
-                        <?php echo esc_html($hero['cta_label']); ?>
-                    </a>
-                    <a href="<?php echo esc_url($hero['secondary_url']); ?>"
-                        class="bg-white text-stone-900 border-2 border-stone-100 px-10 py-4 rounded-full font-bold hover:border-rose-600 hover:text-rose-600 transition-all text-center">
-                        <?php echo esc_html($hero['secondary_label']); ?>
-                    </a>
+                    <?php if (!empty($hero['cta_url'])): ?>
+                        <a href="<?php echo esc_url($hero['cta_url']); ?>"
+                            class="bg-stone-900 text-white px-10 py-4 rounded-full font-bold hover:bg-rose-600 transition-all shadow-xl hover:shadow-rose-200 hover:-translate-y-1 text-center">
+                            <?php echo esc_html($hero['cta_label']); ?>
+                        </a>
+                    <?php endif; ?>
+                    <?php if (!empty($hero['secondary_url'])): ?>
+                        <a href="<?php echo esc_url($hero['secondary_url']); ?>"
+                            class="bg-white text-stone-900 border-2 border-stone-100 px-10 py-4 rounded-full font-bold hover:border-rose-600 hover:text-rose-700 transition-all text-center">
+                            <?php echo esc_html($hero['secondary_label']); ?>
+                        </a>
+                    <?php endif; ?>
                 </div>
 
                 <div class="flex items-center space-x-6 pt-4">
                     <div class="flex -space-x-3">
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?w=100&h=100&fit=crop&q=80&fm=webp"
+                            <img src="https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&w=100&h=100&q=80&fm=webp"
                                 alt="User" width="48" height="48">
                         </div>
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&fm=webp?w=100&h=100&fit=crop&q=80&fm=webp"
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&h=100&q=80&fm=webp"
                                 alt="User" width="48" height="48">
                         </div>
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&q=80&fm=webp?w=100&h=100&fit=crop&q=80&fm=webp"
+                            <img src="https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=100&h=100&q=80&fm=webp"
                                 alt="User" width="48" height="48">
                         </div>
                     </div>
@@ -73,7 +77,7 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                             <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                             <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                         </div>
-                        <p class="text-stone-600 font-medium">
+                        <p class="text-stone-700 font-medium">
                             <?php _e('Trusted by 500+ Local Families', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -100,13 +104,13 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                 <div
                     class="absolute -left-12 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl z-20 hidden sm:flex items-center space-x-4 border border-white/50 animate-bounce-slow">
                     <div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center">
-                        <i data-lucide="heart" class="w-6 h-6 text-rose-600"></i>
+                        <i data-lucide="heart" class="w-6 h-6 text-rose-700"></i>
                     </div>
                     <div>
                         <p class="text-stone-900 font-bold leading-none mb-1">
                             <?php _e('Clinic Center', 'earlystart-early-learning'); ?>
                         </p>
-                        <p class="text-xs text-stone-600 font-medium tracking-wide uppercase">
+                        <p class="text-xs text-stone-700 font-medium tracking-wide uppercase">
                             <?php _e('Compassionate Care', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -122,7 +126,7 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                         <p class="text-stone-900 font-bold leading-none mb-1">
                             <?php _e('ABA Experts', 'earlystart-early-learning'); ?>
                         </p>
-                        <p class="text-xs text-stone-600 font-medium tracking-wide uppercase">
+                        <p class="text-xs text-stone-700 font-medium tracking-wide uppercase">
                             <?php _e('Evidence-Based', 'earlystart-early-learning'); ?>
                         </p>
                     </div>

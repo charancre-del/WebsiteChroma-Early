@@ -18,11 +18,11 @@ if (empty($services)) {
                 <?php _e('Therapy in Action', 'earlystart-early-learning'); ?>
             </span>
             <h2 class="text-4xl lg:text-5xl font-extrabold text-stone-900 mb-6">
-                <?php _e('Support for Every', 'earlystart-early-learning'); ?> <span class="italic text-rose-600">
+                <?php _e('Support for Every', 'earlystart-early-learning'); ?> <span class="italic text-rose-700">
                     <?php _e('Milestone', 'earlystart-early-learning'); ?>
                 </span>
             </h2>
-            <p class="text-stone-600 max-w-2xl mx-auto text-lg leading-relaxed">
+            <p class="text-stone-700 max-w-2xl mx-auto text-lg leading-relaxed">
                 <?php _e('Our integrated therapy approach treats the whole child. Choose a service below to see how our clinical team helps your child reach their full potential.', 'earlystart-early-learning'); ?>
             </p>
         </div>
@@ -37,13 +37,13 @@ if (empty($services)) {
                             <div
                                 class="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center group-hover:bg-rose-100 transition-colors">
                                 <i data-lucide="<?php echo esc_attr($service['icon']); ?>"
-                                    class="w-6 h-6 text-rose-600"></i>
+                                    class="w-6 h-6 text-rose-700"></i>
                             </div>
                             <div>
                                 <h3 class="font-bold text-stone-900">
                                     <?php echo esc_html($service['title']); ?>
                                 </h3>
-                                <p class="text-xs text-stone-600 font-bold">
+                                <p class="text-xs text-stone-700 font-bold">
                                     <?php echo esc_html($service['subtitle']); ?>
                                 </p>
                             </div>
@@ -53,23 +53,23 @@ if (empty($services)) {
             </div>
 
             <!-- Tab Content -->
-            <div class="w-full lg:w-2/3">
+            <div class="w-full lg:w-2/3 min-h-[600px] lg:min-h-[700px]">
                 <?php foreach ($services as $index => $service): ?>
                     <div data-services-panel="<?php echo esc_attr($service['id']); ?>"
-                        class="service-panel <?php echo (0 === $index) ? '' : 'hidden'; ?> bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-xl border border-stone-100 animate-fade-in">
+                        class="service-panel <?php echo (0 === $index) ? '' : 'hidden'; ?> bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-xl border border-stone-100 animate-fade-in h-full">
                         <div class="grid md:grid-cols-2 gap-12 items-center">
                             <div class="space-y-6">
                                 <h3 class="text-3xl font-bold text-stone-900 leading-tight">
                                     <?php echo esc_html($service['heading']); ?>
                                 </h3>
-                                <p class="text-stone-600 leading-relaxed">
+                                <p class="text-stone-700 leading-relaxed">
                                     <?php echo esc_html($service['description']); ?>
                                 </p>
                                 <ul class="space-y-4">
                                     <?php foreach ($service['bullets'] as $bullet): ?>
                                         <li class="flex items-center space-x-3">
                                             <div class="w-5 h-5 bg-rose-100 rounded-full flex items-center justify-center">
-                                                <i data-lucide="check" class="w-3 h-3 text-rose-600"></i>
+                                                <i data-lucide="check" class="w-3 h-3 text-rose-700"></i>
                                             </div>
                                             <span class="text-stone-700 font-medium">
                                                 <?php echo esc_html($bullet); ?>
@@ -79,7 +79,7 @@ if (empty($services)) {
                                 </ul>
                                 <div class="pt-4">
                                     <a href="<?php echo esc_url(earlystart_get_theme_mod('earlystart_book_tour_url', home_url('/contact/'))); ?>"
-                                        class="inline-flex items-center text-rose-600 font-bold group">
+                                        class="inline-flex items-center text-rose-700 font-bold group">
                                         <?php _e('Get Started with', 'earlystart-early-learning'); ?>
                                         <?php echo esc_html($service['title']); ?>
                                         <i data-lucide="arrow-right"
@@ -95,7 +95,7 @@ if (empty($services)) {
                                 <div
                                     class="absolute -bottom-6 -right-6 w-32 h-32 bg-stone-900 rounded-2xl flex flex-col items-center justify-center text-white p-4 shadow-xl">
                                     <p class="text-3xl font-bold mb-0 leading-none">1:1</p>
-                                    <p class="text-[10px] uppercase font-bold tracking-widest mt-2 text-stone-400">Ratio</p>
+                                    <p class="text-[10px] uppercase font-bold tracking-widest mt-2 text-stone-300">Ratio</p>
                                 </div>
                             </div>
                         </div>

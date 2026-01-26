@@ -22,7 +22,7 @@ while (have_posts()):
                 <div class="grid lg:grid-cols-2 gap-16 items-center">
                     <div class="fade-in-up">
                         <span
-                            class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
+                            class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
                             <?php _e('Our Clinical Model', 'earlystart-early-learning'); ?>
                         </span>
                         <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight">
@@ -31,7 +31,7 @@ while (have_posts()):
                                 <?php _e('Not Compliance.', 'earlystart-early-learning'); ?>
                             </span>
                         </h1>
-                        <p class="text-xl text-stone-600 leading-relaxed mb-10">
+                        <p class="text-xl text-stone-700 leading-relaxed mb-10">
                             <?php _e('At Early Start, we use PrismaPath™—our signature assent-based ABA model. We prioritize the child\'s happiness and willingness to participate above all else.', 'earlystart-early-learning'); ?>
                         </p>
                         <div class="flex flex-wrap gap-4">
@@ -69,28 +69,28 @@ while (have_posts()):
                     <?php _e('Clinical Precision,', 'earlystart-early-learning'); ?> <br>
                     <span class="text-rose-500 italic"><?php _e('Human Compassion.', 'earlystart-early-learning'); ?></span>
                 </h2>
-                <p class="text-stone-400 text-xl max-w-3xl mx-auto leading-relaxed mb-16">
+                <p class="text-stone-300 text-xl max-w-3xl mx-auto leading-relaxed mb-16">
                     <?php _e('We don\'t just iterate; we innovate. Our model converts data into discovery, ensuring every session is an opportunity for a breakthrough.', 'earlystart-early-learning'); ?>
                 </p>
                 <div class="grid md:grid-cols-4 gap-8">
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-rose-500 mb-2">1:1</span>
-                        <p class="text-stone-600 text-sm font-bold uppercase tracking-widest">
+                        <p class="text-stone-700 text-sm font-bold uppercase tracking-widest">
                             <?php _e('Intensive Ratio', 'earlystart-early-learning'); ?></p>
                     </div>
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-orange-500 mb-2">100%</span>
-                        <p class="text-stone-600 text-sm font-bold uppercase tracking-widest">
+                        <p class="text-stone-700 text-sm font-bold uppercase tracking-widest">
                             <?php _e('Assent-Based', 'earlystart-early-learning'); ?></p>
                     </div>
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-amber-500 mb-2">Daily</span>
-                        <p class="text-stone-600 text-sm font-bold uppercase tracking-widest">
+                        <p class="text-stone-700 text-sm font-bold uppercase tracking-widest">
                             <?php _e('Data Insights', 'earlystart-early-learning'); ?></p>
                     </div>
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-rose-500 mb-2">19+</span>
-                        <p class="text-stone-600 text-sm font-bold uppercase tracking-widest">
+                        <p class="text-stone-700 text-sm font-bold uppercase tracking-widest">
                             <?php _e('Care Hubs', 'earlystart-early-learning'); ?></p>
                     </div>
                 </div>
@@ -104,7 +104,7 @@ while (have_posts()):
                     <h2 class="text-4xl font-bold text-stone-900 mb-6">
                         <?php _e('What is PrismaPath™?', 'earlystart-early-learning'); ?>
                     </h2>
-                    <p class="text-xl text-stone-600">
+                    <p class="text-xl text-stone-700">
                         <?php _e('PrismaPath™ is more than a curriculum; it\'s a philosophy of care that integrates modern ABA with developmental milestones and emotional security.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
@@ -114,13 +114,13 @@ while (have_posts()):
                     <div
                         class="bg-white p-12 rounded-[3rem] shadow-sm border border-stone-100 group hover:shadow-xl transition-all fade-in-up">
                         <div
-                            class="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 mb-8 group-hover:scale-110 transition-transform">
+                            class="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-700 mb-8 group-hover:scale-110 transition-transform">
                             <i data-lucide="heart" class="w-8 h-8"></i>
                         </div>
                         <h3 class="text-2xl font-bold text-stone-900 mb-4">
                             <?php _e('Assent-Based', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-600 leading-relaxed">
+                        <p class="text-stone-700 leading-relaxed">
                             <?php _e('We never force compliance. If a child is withdrawing or escaping, we pivot. We find what motivates them and build skills through joy.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -135,7 +135,7 @@ while (have_posts()):
                         <h3 class="text-2xl font-bold text-stone-900 mb-4">
                             <?php _e('Play-Led Goals', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-600 leading-relaxed">
+                        <p class="text-stone-700 leading-relaxed">
                             <?php _e('Goals are targetted during natural play. We don\'t sit at a desk drill-sergeant style; we sit on the floor and learn together.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -150,7 +150,7 @@ while (have_posts()):
                         <h3 class="text-2xl font-bold text-stone-900 mb-4">
                             <?php _e('Holistic Sync', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-600 leading-relaxed">
+                        <p class="text-stone-700 leading-relaxed">
                             <?php _e('ABA, Speech, and OT goals are synchronized in one clinical roadmap. No conflicting advice—just one unified team.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -166,7 +166,7 @@ while (have_posts()):
                     <h2 class="text-4xl font-bold mb-4">
                         <?php _e('Clinical Non-Negotiables', 'earlystart-early-learning'); ?>
                     </h2>
-                    <p class="text-rose-100 max-w-2xl mx-auto text-lg">
+                    <p class="text-white max-w-2xl mx-auto text-lg">
                         <?php _e('Every session across every clinic follows these baseline standards.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
@@ -185,7 +185,7 @@ while (have_posts()):
                             <h3 class="text-xl font-bold mb-3">
                                 <?php echo esc_html($p['title']); ?>
                             </h3>
-                            <p class="text-sm text-rose-100 leading-relaxed">
+                            <p class="text-sm text-white leading-relaxed">
                                 <?php echo esc_html($p['desc']); ?>
                             </p>
                         </div>
@@ -201,17 +201,17 @@ while (have_posts()):
                     <h2 class="text-3xl font-bold text-stone-900 mb-4">
                         <?php _e('The Early Start Difference', 'earlystart-early-learning'); ?>
                     </h2>
-                    <p class="text-stone-600">
+                    <p class="text-stone-700">
                         <?php _e('How our assent-based model compares to traditional approaches.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-12">
                     <div class="bg-stone-50 p-10 rounded-[2rem] border border-stone-100 fade-in-up">
-                        <h4 class="text-stone-400 font-bold uppercase tracking-widest text-xs mb-6">
+                        <h4 class="text-stone-300 font-bold uppercase tracking-widest text-xs mb-6">
                             <?php _e('Traditional ABA', 'earlystart-early-learning'); ?>
                         </h4>
-                        <ul class="space-y-4 text-stone-600">
+                        <ul class="space-y-4 text-stone-700">
                             <li class="flex items-start"><i data-lucide="x-circle"
                                     class="w-5 h-5 mr-3 text-stone-300 shrink-0 mt-0.5"></i>
                                 <?php _e('Forced compliance to meet trial counts.', 'earlystart-early-learning'); ?>
@@ -231,7 +231,7 @@ while (have_posts()):
                         </ul>
                     </div>
                     <div class="bg-rose-50 p-10 rounded-[2rem] border border-rose-100 fade-in-up">
-                        <h4 class="text-rose-600 font-bold uppercase tracking-widest text-xs mb-6">
+                        <h4 class="text-rose-700 font-bold uppercase tracking-widest text-xs mb-6">
                             <?php _e('PrismaPath™ Model', 'earlystart-early-learning'); ?>
                         </h4>
                         <ul class="space-y-4 text-stone-700">
@@ -263,7 +263,7 @@ while (have_posts()):
                 <h2 class="text-4xl font-bold mb-6">
                     <?php _e('See the PrismaPath™ in action.', 'earlystart-early-learning'); ?>
                 </h2>
-                <p class="text-xl text-stone-400 mb-10 leading-relaxed">
+                <p class="text-xl text-stone-300 mb-10 leading-relaxed">
                     <?php _e('Schedule a personal tour to see how our clinicians engage with children and how our clinics are designed for discovery.', 'earlystart-early-learning'); ?>
                 </p>
                 <a href="<?php echo esc_url(home_url('/locations/')); ?>"

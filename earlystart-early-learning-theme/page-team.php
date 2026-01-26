@@ -25,7 +25,7 @@ $team_query = new WP_Query(array(
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
             <span
-                class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
+                class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
                 <?php _e('Clinical Leadership', 'earlystart-early-learning'); ?>
             </span>
             <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
@@ -34,7 +34,7 @@ $team_query = new WP_Query(array(
                     <?php _e('Early Start.', 'earlystart-early-learning'); ?>
                 </span>
             </h1>
-            <p class="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed fade-in-up">
+            <p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
                 <?php _e('We don\'t just hire technicians; we hire career clinicians. Our team is selected for their passion, patience, and professional credentials.', 'earlystart-early-learning'); ?>
             </p>
         </div>
@@ -65,11 +65,11 @@ $team_query = new WP_Query(array(
                                 </h3>
                                 <?php if ($role): ?>
                                     <p
-                                        class="text-rose-600 font-bold text-sm uppercase tracking-widest mb-6 border-b border-rose-50 pb-4 inline-block">
+                                        class="text-rose-700 font-bold text-sm uppercase tracking-widest mb-6 border-b border-rose-50 pb-4 inline-block">
                                         <?php echo esc_html($role); ?>
                                     </p>
                                 <?php endif; ?>
-                                <div class="text-stone-600 text-sm leading-relaxed mb-6">
+                                <div class="text-stone-700 text-sm leading-relaxed mb-6">
                                     <?php the_content(); ?>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@ $team_query = new WP_Query(array(
                     wp_reset_postdata(); ?>
                 <?php else: ?>
                     <div class="col-span-full text-center py-20">
-                        <p class="text-stone-600">
+                        <p class="text-stone-700">
                             <?php _e('No team members found.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -95,7 +95,7 @@ $team_query = new WP_Query(array(
                 <h2 class="text-4xl font-bold mb-4">
                     <?php _e('Our Non-Negotiables', 'earlystart-early-learning'); ?>
                 </h2>
-                <p class="text-rose-100 max-w-2xl mx-auto text-lg">
+                <p class="text-white max-w-2xl mx-auto text-lg">
                     <?php _e('Four core pillars guide every clinical decision we make.', 'earlystart-early-learning'); ?>
                 </p>
             </div>
@@ -114,7 +114,7 @@ $team_query = new WP_Query(array(
                         <h3 class="text-xl font-bold mb-3">
                             <?php echo esc_html($p['title']); ?>
                         </h3>
-                        <p class="text-sm text-rose-100 leading-relaxed">
+                        <p class="text-sm text-white leading-relaxed">
                             <?php echo esc_html($p['desc']); ?>
                         </p>
                     </div>
@@ -129,7 +129,7 @@ $team_query = new WP_Query(array(
             <h2 class="text-4xl font-bold text-stone-900 mb-6">
                 <?php _e('Want to join the mission?', 'earlystart-early-learning'); ?>
             </h2>
-            <p class="text-xl text-stone-600 mb-10 leading-relaxed">
+            <p class="text-xl text-stone-700 mb-10 leading-relaxed">
                 <?php _e('We are always looking for passionate BCBAs, RBTs, and Speech Therapists to join our growing network.', 'earlystart-early-learning'); ?>
             </p>
             <a href="<?php echo esc_url(home_url('/careers/')); ?>"

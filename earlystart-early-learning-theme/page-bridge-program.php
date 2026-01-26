@@ -32,7 +32,7 @@ while (have_posts()):
                                 <?php _e('Bridge Program.', 'earlystart-early-learning'); ?>
                             </span>
                         </h1>
-                        <p class="text-xl text-stone-600 mb-8 leading-relaxed">
+                        <p class="text-xl text-stone-700 mb-8 leading-relaxed">
                             <?php _e('Preparing early learners for the transition from 1:1 therapy to a social classroom environment. Our "Bridge" simulates the preschool experience with clinical precision to ensure true school readiness.', 'earlystart-early-learning'); ?>
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4">
@@ -55,7 +55,7 @@ while (have_posts()):
                                 <h3 class="text-3xl font-bold text-stone-900 mb-2">
                                     <?php _e('School Ready', 'earlystart-early-learning'); ?>
                                 </h3>
-                                <p class="text-stone-600">
+                                <p class="text-stone-700">
                                     <?php _e('The Ultimate Transition Pathway', 'earlystart-early-learning'); ?>
                                 </p>
                                 <div class="flex justify-center space-x-2 mt-6">
@@ -79,19 +79,19 @@ while (have_posts()):
                         <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
                             <?php _e('Measuring Success Beyond the Clinic.', 'earlystart-early-learning'); ?>
                         </h2>
-                        <p class="text-stone-400 text-lg leading-relaxed mb-8">
+                        <p class="text-stone-300 text-lg leading-relaxed mb-8">
                             <?php _e('Our results are measured by your child\'s confidence in the real world. We track 50+ readiness milestones to ensure the transition is seamless.', 'earlystart-early-learning'); ?>
                         </p>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
                                 <span class="block text-3xl font-bold text-blue-500 mb-1">92%</span>
                                 <span
-                                    class="text-[10px] font-bold text-stone-600 uppercase tracking-widest"><?php _e('Placement Rate', 'earlystart-early-learning'); ?></span>
+                                    class="text-[10px] font-bold text-stone-700 uppercase tracking-widest"><?php _e('Placement Rate', 'earlystart-early-learning'); ?></span>
                             </div>
                             <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
                                 <span class="block text-3xl font-bold text-blue-400 mb-1">1:3</span>
                                 <span
-                                    class="text-[10px] font-bold text-stone-600 uppercase tracking-widest"><?php _e('Group Ratio', 'earlystart-early-learning'); ?></span>
+                                    class="text-[10px] font-bold text-stone-700 uppercase tracking-widest"><?php _e('Group Ratio', 'earlystart-early-learning'); ?></span>
                             </div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@ while (have_posts()):
                     <h2 class="text-4xl font-bold text-stone-900 mb-4">
                         <?php _e('Bridging the Gap', 'earlystart-early-learning'); ?>
                     </h2>
-                    <p class="text-stone-600 max-w-2xl mx-auto text-lg italic leading-relaxed">
+                    <p class="text-stone-700 max-w-2xl mx-auto text-lg italic leading-relaxed">
                         <?php _e('Moving from a quiet clinic room to a noisy school classroom is a huge leap. Our Bridge Program provides the structured support to navigate that jump successfully.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
@@ -133,7 +133,7 @@ while (have_posts()):
                         <h3 class="text-xl font-bold text-stone-900 mb-4 mt-4">
                             <?php _e('Foundation 1:1', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-600 text-sm mb-6 leading-relaxed">
+                        <p class="text-stone-700 text-sm mb-6 leading-relaxed">
                             <?php _e('Individualized clinical focus to master core communication and self-regulation.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -161,7 +161,7 @@ while (have_posts()):
                         <h3 class="text-xl font-bold text-stone-900 mb-4 mt-4">
                             <?php _e('Social Integration', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-600 text-sm mb-6 leading-relaxed">
+                        <p class="text-stone-700 text-sm mb-6 leading-relaxed">
                             <?php _e('Successful transition to a traditional educational setting with minimal support.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -199,7 +199,7 @@ while (have_posts()):
                                         <h4 class="text-xl font-bold text-stone-900 mb-2">
                                             <?php echo esc_html($area['title']); ?>
                                         </h4>
-                                        <p class="text-stone-600 text-sm leading-relaxed">
+                                        <p class="text-stone-700 text-sm leading-relaxed">
                                             <?php echo esc_html($area['desc']); ?>
                                         </p>
                                     </div>
@@ -228,7 +228,7 @@ while (have_posts()):
                                         <span class="w-24 font-bold text-blue-600 shrink-0">
                                             <?php echo esc_html($time); ?>
                                         </span>
-                                        <span class="text-stone-600 border-l border-stone-100 pl-6">
+                                        <span class="text-stone-700 border-l border-stone-100 pl-6">
                                             <?php echo esc_html($activity); ?>
                                         </span>
                                     </div>

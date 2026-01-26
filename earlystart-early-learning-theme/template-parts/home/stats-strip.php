@@ -19,13 +19,13 @@ if (!$stats) {
                                 <div class="flex items-center space-x-2">
                                         <?php if (!empty($stat['icon'])): ?>
                                                 <i data-lucide="<?php echo esc_attr($stat['icon']); ?>"
-                                                        class="w-6 h-6 text-rose-600"></i>
+                                                        class="w-6 h-6 text-rose-700"></i>
                                         <?php endif; ?>
                                         <span class="font-bold text-stone-900 tracking-tight">
                                                 <?php echo esc_html($stat['value']); ?>
                                                 <?php if (!empty($stat['label'])): ?>
                                                         <span
-                                                                class="text-stone-600 font-bold ml-1"><?php echo esc_html($stat['label']); ?></span>
+                                                                class="text-stone-700 font-bold ml-1"><?php echo esc_html($stat['label']); ?></span>
                                                 <?php endif; ?>
                                         </span>
                                 </div>

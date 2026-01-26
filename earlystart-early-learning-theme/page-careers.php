@@ -21,7 +21,7 @@ while (have_posts()):
 		<section class="relative bg-white pt-24 pb-20 lg:pt-32">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 				<span
-					class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
+					class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
 					<?php _e('Join Our Team', 'earlystart-early-learning'); ?>
 				</span>
 				<h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
@@ -30,7 +30,7 @@ while (have_posts()):
 						<?php _e('With Us.', 'earlystart-early-learning'); ?>
 					</span>
 				</h1>
-				<p class="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed fade-in-up">
+				<p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
 					<?php _e('We are building a workplace that prioritizes clinician burnout prevention, professional growth, and assent-based care. If you love kids but hate "the grind," you belong here.', 'earlystart-early-learning'); ?>
 				</p>
 				<div class="mt-10 fade-in-up">
@@ -49,7 +49,7 @@ while (have_posts()):
 				<div class="text-center mb-16 fade-in-up">
 					<h2 class="text-3xl font-bold text-stone-900 mb-4">
 						<?php _e('Why Clinicians Choose Early Start', 'earlystart-early-learning'); ?></h2>
-					<p class="text-stone-600">
+					<p class="text-stone-700">
 						<?php _e('We take care of our team so they can take care of our families.', 'earlystart-early-learning'); ?>
 					</p>
 				</div>
@@ -69,7 +69,7 @@ while (have_posts()):
 								<i data-lucide="<?php echo $b['icon']; ?>" class="w-7 h-7"></i>
 							</div>
 							<h3 class="text-xl font-bold text-stone-900 mb-4"><?php echo esc_html($b['title']); ?></h3>
-							<p class="text-stone-600 leading-relaxed text-sm">
+							<p class="text-stone-700 leading-relaxed text-sm">
 								<?php echo esc_html($b['desc']); ?>
 							</p>
 						</div>
@@ -84,13 +84,13 @@ while (have_posts()):
 				<div class="flex justify-between items-end mb-12 fade-in-up">
 					<div>
 						<span
-							class="text-rose-600 font-bold tracking-widest text-sm uppercase mb-2 block"><?php _e("We're Hiring", 'earlystart-early-learning'); ?></span>
+							class="text-rose-700 font-bold tracking-widest text-sm uppercase mb-2 block"><?php _e("We're Hiring", 'earlystart-early-learning'); ?></span>
 						<h2 class="text-3xl font-bold text-stone-900">
 							<?php _e('Current Opportunities', 'earlystart-early-learning'); ?></h2>
 					</div>
 					<div class="hidden md:block">
 						<span
-							class="text-sm text-stone-600"><?php _e('Early Start Regional Openings', 'earlystart-early-learning'); ?></span>
+							class="text-sm text-stone-700"><?php _e('Early Start Regional Openings', 'earlystart-early-learning'); ?></span>
 					</div>
 				</div>
 
@@ -107,10 +107,10 @@ while (have_posts()):
 											<span
 												class="bg-rose-100 text-rose-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"><?php echo esc_html($job['type'] ?: 'Full Time'); ?></span>
 										</div>
-										<p class="text-stone-600 mb-6 max-w-2xl text-sm leading-relaxed">
+										<p class="text-stone-700 mb-6 max-w-2xl text-sm leading-relaxed">
 											<?php echo esc_html($job['description'] ?: 'Join our clinical team and make a difference in the lives of early learners. We prioritize evidence-based care and staff support.'); ?>
 										</p>
-										<div class="flex flex-wrap gap-4 text-xs text-stone-600 font-bold uppercase tracking-wider">
+										<div class="flex flex-wrap gap-4 text-xs text-stone-700 font-bold uppercase tracking-wider">
 											<span class="flex items-center"><i data-lucide="map-pin"
 													class="w-4 h-4 mr-2 text-rose-400"></i>
 												<?php echo esc_html($job['location'] ?: 'Regional Clinic'); ?></span>
@@ -129,7 +129,7 @@ while (have_posts()):
 					<?php else: ?>
 						<div class="text-center py-20 border-2 border-dashed border-stone-100 rounded-[2rem] fade-in-up">
 							<i data-lucide="search" class="w-12 h-12 text-stone-200 mx-auto mb-4"></i>
-							<p class="text-stone-600">
+							<p class="text-stone-700">
 								<?php _e('No current openings found. Please check back soon!', 'earlystart-early-learning'); ?></p>
 						</div>
 					<?php endif; ?>
@@ -148,11 +148,11 @@ while (have_posts()):
 				</div>
 				<h2 class="text-3xl md:text-5xl font-bold mb-6">
 					<?php _e('New to the field? We\'ll train you.', 'earlystart-early-learning'); ?></h2>
-				<p class="text-rose-100 text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+				<p class="text-white text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
 					<?php _e('We offer a paid RBT Training Program for compassionate individuals. We cover your 40-hour coursework, background checks, and exam fees.', 'earlystart-early-learning'); ?>
 				</p>
 				<a href="<?php echo esc_url(home_url('/contact/')); ?>"
-					class="bg-white text-rose-600 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-50 transition-colors shadow-2xl active:scale-95 inline-block">
+					class="bg-white text-rose-700 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-50 transition-colors shadow-2xl active:scale-95 inline-block">
 					<?php _e('Apply for Training', 'earlystart-early-learning'); ?>
 				</a>
 			</div>
@@ -168,7 +168,7 @@ while (have_posts()):
 			<div class="bg-stone-50 border-b border-stone-200 px-8 py-4 flex items-center justify-between flex-shrink-0">
 				<h3 class="text-xl font-bold text-stone-900"><?php _e('Apply for Position', 'earlystart-early-learning'); ?></h3>
 				<button id="chroma-job-close"
-					class="w-10 h-10 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-stone-400 hover:text-rose-600 hover:border-rose-100 transition-all shadow-sm">
+					class="w-10 h-10 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-stone-300 hover:text-rose-700 hover:border-rose-100 transition-all shadow-sm">
 					<i data-lucide="x" class="w-6 h-6"></i>
 				</button>
 			</div>

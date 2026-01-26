@@ -27,13 +27,13 @@ while (have_posts()):
 
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 				<span
-					class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
+					class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
 					<?php echo esc_html($hero_badge); ?>
 				</span>
 				<h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
 					<?php echo wp_kses_post($hero_title); ?>
 				</h1>
-				<p class="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed fade-in-up">
+				<p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
 					<?php echo esc_html($hero_desc); ?>
 				</p>
 			</div>
@@ -48,7 +48,7 @@ while (have_posts()):
 			</div>
 			<div class="max-w-5xl mx-auto px-4 text-center relative z-10">
 				<i data-lucide="sparkles" class="w-12 h-12 text-amber-400 mx-auto mb-8"></i>
-				<span class="text-sm font-bold text-stone-400 uppercase tracking-widest mb-6 block">
+				<span class="text-sm font-bold text-stone-300 uppercase tracking-widest mb-6 block">
 					<?php _e('Our Purpose', 'earlystart-early-learning'); ?>
 				</span>
 				<p class="text-2xl md:text-4xl font-serif italic leading-relaxed fade-in-up">
@@ -71,7 +71,7 @@ while (have_posts()):
 						<h2 class="text-4xl font-bold text-stone-900 mb-6">
 							<?php echo esc_html($story_title); ?>
 						</h2>
-						<div class="prose prose-lg text-stone-600 space-y-6 max-w-none">
+						<div class="prose prose-lg text-stone-700 space-y-6 max-w-none">
 							<?php if ($story_p1): ?>
 								<p>
 									<?php echo esc_html($story_p1); ?>
@@ -103,10 +103,10 @@ while (have_posts()):
 								$lbl = get_post_meta($page_id, "about_stat{$i}_label", true);
 								if ($val): ?>
 									<div>
-										<span class="block text-4xl font-bold text-rose-600">
+										<span class="block text-4xl font-bold text-rose-700">
 											<?php echo esc_html($val); ?>
 										</span>
-										<span class="text-xs text-stone-600 uppercase font-bold tracking-widest">
+										<span class="text-xs text-stone-700 uppercase font-bold tracking-widest">
 											<?php echo esc_html($lbl); ?>
 										</span>
 									</div>
@@ -154,7 +154,7 @@ while (have_posts()):
 								<h4 class="font-bold text-lg mb-2 text-stone-900">
 									<?php echo esc_html($m['title']); ?>
 								</h4>
-								<p class="text-sm text-stone-600 leading-relaxed">
+								<p class="text-sm text-stone-700 leading-relaxed">
 									<?php echo esc_html($m['desc']); ?>
 								</p>
 							</div>
@@ -175,7 +175,7 @@ while (have_posts()):
 					<h2 class="text-4xl font-bold text-stone-900 mb-4">
 						<?php echo esc_html($edu_title); ?>
 					</h2>
-					<p class="text-stone-600 text-lg">
+					<p class="text-stone-700 text-lg">
 						<?php echo esc_html($edu_desc); ?>
 					</p>
 				</div>
@@ -197,7 +197,7 @@ while (have_posts()):
 								<h3 class="font-bold text-stone-900 text-xl mb-3">
 									<?php echo esc_html($title); ?>
 								</h3>
-								<p class="text-stone-600 text-sm leading-relaxed">
+								<p class="text-stone-700 text-sm leading-relaxed">
 									<?php echo esc_html($desc); ?>
 								</p>
 							</div>
@@ -219,7 +219,7 @@ while (have_posts()):
 					<h2 class="text-4xl font-bold mb-4">
 						<?php echo esc_html($val_title); ?>
 					</h2>
-					<p class="text-rose-100 max-w-2xl mx-auto text-lg">
+					<p class="text-white max-w-2xl mx-auto text-lg">
 						<?php echo esc_html($val_desc); ?>
 					</p>
 				</div>
@@ -239,7 +239,7 @@ while (have_posts()):
 								<h3 class="text-xl font-bold mb-2">
 									<?php echo esc_html($title); ?>
 								</h3>
-								<p class="text-sm text-rose-100 leading-relaxed">
+								<p class="text-sm text-white leading-relaxed">
 									<?php echo esc_html($desc); ?>
 								</p>
 							</div>
@@ -299,7 +299,7 @@ while (have_posts()):
 									<div class="font-bold">
 										<?php _e('Marcus J.', 'earlystart-early-learning'); ?>
 									</div>
-									<div class="text-xs text-stone-400">
+									<div class="text-xs text-stone-300">
 										<?php _e('Early Start Parent', 'earlystart-early-learning'); ?>
 									</div>
 								</div>
@@ -327,7 +327,7 @@ while (have_posts()):
 					<h2 class="text-4xl font-bold text-stone-900 mb-4">
 						<?php echo esc_html($lead_title); ?>
 					</h2>
-					<p class="text-stone-600 max-w-2xl mx-auto text-lg">
+					<p class="text-stone-700 max-w-2xl mx-auto text-lg">
 						<?php _e('Our leadership team combines decades of experience in clinical therapy and education.', 'earlystart-early-learning'); ?>
 					</p>
 				</div>
@@ -356,10 +356,10 @@ while (have_posts()):
 										</button>
 									</div>
 								</div>
-								<h4 class="text-2xl font-bold text-stone-900 mb-1 group-hover:text-rose-600 transition-colors">
+								<h4 class="text-2xl font-bold text-stone-900 mb-1 group-hover:text-rose-700 transition-colors">
 									<?php the_title(); ?>
 								</h4>
-								<p class="text-stone-600 font-medium tracking-wide text-sm uppercase">
+								<p class="text-stone-700 font-medium tracking-wide text-sm uppercase">
 									<?php echo esc_html($role); ?>
 								</p>
 							</div>
@@ -384,12 +384,12 @@ while (have_posts()):
 				</div>
 				<div class="md:w-3/5 p-12 overflow-y-auto max-h-[80vh]">
 					<span id="modal-role"
-						class="text-rose-600 font-bold tracking-widest text-xs uppercase mb-2 block"></span>
+						class="text-rose-700 font-bold tracking-widest text-xs uppercase mb-2 block"></span>
 					<h3 id="modal-name" class="text-4xl font-bold text-stone-900 mb-6"></h3>
-					<div id="modal-bio" class="prose prose-stone text-stone-600 leading-relaxed"></div>
+					<div id="modal-bio" class="prose prose-stone text-stone-700 leading-relaxed"></div>
 					<div class="mt-8 pt-8 border-t border-stone-100 flex gap-4">
 						<div class="bg-stone-50 p-4 rounded-2xl flex-1">
-							<span class="block text-[10px] font-bold text-stone-400 uppercase mb-1">
+							<span class="block text-[10px] font-bold text-stone-300 uppercase mb-1">
 								<?php _e('Specialty', 'earlystart-early-learning'); ?>
 							</span>
 							<span class="text-sm font-bold text-stone-700">
@@ -397,7 +397,7 @@ while (have_posts()):
 							</span>
 						</div>
 						<div class="bg-stone-50 p-4 rounded-2xl flex-1">
-							<span class="block text-[10px] font-bold text-stone-400 uppercase mb-1">
+							<span class="block text-[10px] font-bold text-stone-300 uppercase mb-1">
 								<?php _e('Approach', 'earlystart-early-learning'); ?>
 							</span>
 							<span class="text-sm font-bold text-stone-700">

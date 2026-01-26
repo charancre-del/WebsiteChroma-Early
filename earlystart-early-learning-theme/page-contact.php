@@ -22,7 +22,7 @@ while (have_posts()):
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
 				<div class="text-center max-w-3xl mx-auto mb-16 fade-in-up">
 					<span
-						class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
+						class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
 						<?php _e('Connect with Us', 'earlystart-early-learning'); ?>
 					</span>
 					<h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight">
@@ -31,7 +31,7 @@ while (have_posts()):
 							<?php _e('Support you?', 'earlystart-early-learning'); ?>
 						</span>
 					</h1>
-					<p class="text-xl text-stone-600 max-w-2xl mx-auto leading-relaxed">
+					<p class="text-xl text-stone-700 max-w-2xl mx-auto leading-relaxed">
 						<?php _e('Whether you are a family looking for care, a clinician seeking a career, or a provider wanting to refer, we are here to help.', 'earlystart-early-learning'); ?>
 					</p>
 				</div>
@@ -52,7 +52,7 @@ while (have_posts()):
 								<i data-lucide="<?php echo $r['icon']; ?>" class="w-8 h-8"></i>
 							</div>
 							<h3 class="text-2xl font-bold text-stone-900 mb-4"><?php echo esc_html($r['title']); ?></h3>
-							<p class="text-stone-600 text-sm leading-relaxed mb-8"><?php echo esc_html($r['desc']); ?></p>
+							<p class="text-stone-700 text-sm leading-relaxed mb-8"><?php echo esc_html($r['desc']); ?></p>
 							<a href="<?php echo esc_url(home_url($r['link'])); ?>"
 								class="inline-block w-full py-4 bg-white border border-stone-200 text-stone-900 font-bold rounded-xl hover:border-<?php echo $r['color']; ?>-200 hover:text-<?php echo $r['color']; ?>-600 transition-all text-sm">
 								<?php echo esc_html($r['label']); ?>
@@ -71,7 +71,7 @@ while (have_posts()):
 						<h2 class="text-4xl font-bold text-stone-900 mb-8">
 							<?php _e('Get Started Today', 'earlystart-early-learning'); ?>
 						</h2>
-						<p class="text-xl text-stone-600 mb-12 leading-relaxed">
+						<p class="text-xl text-stone-700 mb-12 leading-relaxed">
 							<?php _e('Ready to learn more? Fill out the form, and our admissions team will reach out within 24 hours to guide you through the process.', 'earlystart-early-learning'); ?>
 						</p>
 
@@ -90,7 +90,7 @@ while (have_posts()):
 									</div>
 									<div>
 										<h4 class="font-bold text-stone-900"><?php echo esc_html($c['title']); ?></h4>
-										<p class="text-stone-600"><?php echo esc_html($c['value']); ?></p>
+										<p class="text-stone-700"><?php echo esc_html($c['value']); ?></p>
 									</div>
 								</div>
 							<?php endforeach; ?>
@@ -102,16 +102,16 @@ while (have_posts()):
 							</h4>
 							<div class="grid sm:grid-cols-2 gap-4 text-sm">
 								<a href="mailto:admissions@earlystarttherapy.com"
-									class="text-stone-600 hover:text-rose-600 transition-colors"><strong><?php _e('Admissions:', 'earlystart-early-learning'); ?></strong>
+									class="text-stone-700 hover:text-rose-700 transition-colors"><strong><?php _e('Admissions:', 'earlystart-early-learning'); ?></strong>
 									admissions@...</a>
 								<a href="mailto:careers@earlystarttherapy.com"
-									class="text-stone-600 hover:text-rose-600 transition-colors"><strong><?php _e('Careers:', 'earlystart-early-learning'); ?></strong>
+									class="text-stone-700 hover:text-rose-700 transition-colors"><strong><?php _e('Careers:', 'earlystart-early-learning'); ?></strong>
 									careers@...</a>
 								<a href="mailto:billing@earlystarttherapy.com"
-									class="text-stone-600 hover:text-rose-600 transition-colors"><strong><?php _e('Billing:', 'earlystart-early-learning'); ?></strong>
+									class="text-stone-700 hover:text-rose-700 transition-colors"><strong><?php _e('Billing:', 'earlystart-early-learning'); ?></strong>
 									billing@...</a>
 								<a href="mailto:media@earlystarttherapy.com"
-									class="text-stone-600 hover:text-rose-600 transition-colors"><strong><?php _e('Media:', 'earlystart-early-learning'); ?></strong>
+									class="text-stone-700 hover:text-rose-700 transition-colors"><strong><?php _e('Media:', 'earlystart-early-learning'); ?></strong>
 									media@...</a>
 							</div>
 						</div>
@@ -159,7 +159,7 @@ while (have_posts()):
 										<label
 											class="block text-sm font-bold text-stone-700 mb-2"><?php _e('Interest', 'earlystart-early-learning'); ?></label>
 										<select
-											class="w-full px-5 py-4 rounded-2xl border border-stone-200 focus:border-rose-500 outline-none bg-white transition-all text-stone-600">
+											class="w-full px-5 py-4 rounded-2xl border border-stone-200 focus:border-rose-500 outline-none bg-white transition-all text-stone-700">
 											<option><?php _e('Inquiring for Child', 'earlystart-early-learning'); ?></option>
 											<option><?php _e('Clinical Employment', 'earlystart-early-learning'); ?></option>
 											<option><?php _e('Provider Referral', 'earlystart-early-learning'); ?></option>
@@ -191,11 +191,11 @@ while (have_posts()):
 				<h2 class="text-3xl font-bold text-stone-900 mb-6">
 					<?php _e('Visit one of our 10+ clinics.', 'earlystart-early-learning'); ?>
 				</h2>
-				<p class="text-stone-600 mb-10 max-w-2xl mx-auto">
+				<p class="text-stone-700 mb-10 max-w-2xl mx-auto">
 					<?php _e('With specialized therapy centers across the region, there is likely a Early Start clinic in your community.', 'earlystart-early-learning'); ?>
 				</p>
 				<a href="<?php echo esc_url(home_url('/locations/')); ?>"
-					class="inline-flex items-center text-rose-600 font-bold hover:underline gap-2">
+					class="inline-flex items-center text-rose-700 font-bold hover:underline gap-2">
 					<?php _e('View Location Directory', 'earlystart-early-learning'); ?>
 					<i data-lucide="arrow-right" class="w-5 h-5"></i>
 				</a>

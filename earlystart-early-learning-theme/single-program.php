@@ -79,7 +79,7 @@ while (have_posts()):
 							<?php echo esc_html($hero_title); ?>
 						</h1>
 
-						<p class="text-xl text-stone-600 leading-relaxed mb-10 max-w-xl">
+						<p class="text-xl text-stone-700 leading-relaxed mb-10 max-w-xl">
 							<?php echo esc_html($hero_description); ?>
 						</p>
 
@@ -90,7 +90,7 @@ while (have_posts()):
 							</a>
 							<?php if ($lesson_plan_url): ?>
 								<a href="<?php echo esc_url($lesson_plan_url); ?>" target="_blank" rel="noopener noreferrer"
-									class="bg-white text-stone-900 border-2 border-stone-100 px-8 py-4 rounded-full font-bold hover:border-rose-600 hover:text-rose-600 transition-all inline-block">
+									class="bg-white text-stone-900 border-2 border-stone-100 px-8 py-4 rounded-full font-bold hover:border-rose-600 hover:text-rose-700 transition-all inline-block">
 									<?php _e('View Curriculum PDF', 'earlystart-early-learning'); ?>
 								</a>
 							<?php endif; ?>
@@ -132,7 +132,7 @@ while (have_posts()):
 							<?php _e('The PrismaPath™ Focus', 'earlystart-early-learning'); ?>
 						</span>
 						<h2 class="text-4xl font-bold text-stone-900 mb-8"><?php echo esc_html($prism_title); ?></h2>
-						<p class="text-xl text-stone-600 leading-relaxed mb-10">
+						<p class="text-xl text-stone-700 leading-relaxed mb-10">
 							<?php echo esc_html($prism_description); ?>
 						</p>
 
@@ -160,7 +160,7 @@ while (have_posts()):
 				<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div class="text-center mb-20 fade-in-up">
 						<h2 class="text-4xl font-bold text-stone-900 mb-6"><?php echo esc_html($schedule_title); ?></h2>
-						<p class="text-stone-600 text-lg font-medium">
+						<p class="text-stone-700 text-lg font-medium">
 							<?php _e('Structured routines facilitate confidence, while spontaneous play builds skills.', 'earlystart-early-learning'); ?>
 						</p>
 					</div>
@@ -174,14 +174,14 @@ while (have_posts()):
 								?>
 								<div
 									class="group flex items-center gap-8 p-6 bg-stone-50 rounded-2xl border border-stone-100 hover:bg-white hover:border-rose-200 hover:shadow-xl transition-all duration-300">
-									<span class="text-sm font-bold text-stone-400 uppercase tracking-widest min-w-[100px] shrink-0">
+									<span class="text-sm font-bold text-stone-300 uppercase tracking-widest min-w-[100px] shrink-0">
 										<?php echo esc_html(trim($parts[0])); ?>
 									</span>
 									<div class="h-10 w-px bg-stone-200 group-hover:bg-rose-200"></div>
 									<div class="flex-grow">
 										<h4 class="font-bold text-stone-900"><?php echo esc_html(trim($parts[1])); ?></h4>
 										<?php if (isset($parts[2])): ?>
-											<p class="text-sm text-stone-600 mt-1 font-medium"><?php echo esc_html(trim($parts[2])); ?></p>
+											<p class="text-sm text-stone-700 mt-1 font-medium"><?php echo esc_html(trim($parts[2])); ?></p>
 										<?php endif; ?>
 									</div>
 								</div>
@@ -214,9 +214,9 @@ while (have_posts()):
 												class="flex items-center justify-between font-bold text-stone-900 list-none cursor-pointer">
 												<span><?php echo esc_html(trim($q_a[0])); ?></span>
 												<i data-lucide="chevron-down"
-													class="w-5 h-5 text-stone-400 group-open:rotate-180 transition-transform"></i>
+													class="w-5 h-5 text-stone-300 group-open:rotate-180 transition-transform"></i>
 											</summary>
-											<div class="mt-4 text-stone-600 leading-relaxed text-sm">
+											<div class="mt-4 text-stone-700 leading-relaxed text-sm">
 												<?php echo esc_html(trim($q_a[1])); ?>
 											</div>
 										</details>
@@ -240,7 +240,7 @@ while (have_posts()):
 										<h4 class="font-bold mb-1">
 											<?php _e('Find Your Clinic', 'earlystart-early-learning'); ?>
 										</h4>
-										<p class="text-xs text-stone-400">
+										<p class="text-xs text-stone-300">
 											<?php _e('Select a location near you with availability.', 'earlystart-early-learning'); ?>
 										</p>
 									</div>
@@ -252,7 +252,7 @@ while (have_posts()):
 									<div>
 										<h4 class="font-bold mb-1">
 											<?php _e('Clinical Tour', 'earlystart-early-learning'); ?></h4>
-										<p class="text-xs text-stone-400">
+										<p class="text-xs text-stone-300">
 											<?php _e('Tour our facilities and meet our clinical team.', 'earlystart-early-learning'); ?>
 										</p>
 									</div>
@@ -265,7 +265,7 @@ while (have_posts()):
 										<h4 class="font-bold mb-1">
 											<?php _e('Assessment & Start', 'earlystart-early-learning'); ?>
 										</h4>
-										<p class="text-xs text-stone-400">
+										<p class="text-xs text-stone-300">
 											<?php _e('We build your child’s individualized clinical roadmap.', 'earlystart-early-learning'); ?>
 										</p>
 									</div>

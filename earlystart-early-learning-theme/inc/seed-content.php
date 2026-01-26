@@ -80,10 +80,10 @@ function earlystart_seed_core_content()
                 'home_prismpath_cta_label' => 'Our Methodology',
                 'home_prismpath_readiness_heading' => 'Pediatric Excellence',
                 'home_prismpath_readiness_desc' => 'Integrating speech, OT, and ABA for holistic outcomes.',
-                'home_locations_heading' => 'Serving Families Across <span class="italic text-rose-600">The Metro</span>',
+                'home_locations_heading' => 'Serving Families Across <span class="italic text-rose-700">The Metro</span>',
                 'home_locations_subheading' => 'Find your nearest clinical center and join our community of growth.',
                 'home_locations_cta_label' => 'View All Locations',
-                'home_faq_heading' => 'Frequently <span class="italic text-rose-600">Asked</span> Questions',
+                'home_faq_heading' => 'Frequently <span class="italic text-rose-700">Asked</span> Questions',
                 'home_faq_subheading' => 'Common questions from parents',
                 'home_services_json' => json_encode($home_services), // Seed the services tabs
             )

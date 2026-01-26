@@ -30,13 +30,13 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="fade-in-up">
                     <span
-                        class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
+                        class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
                         <?php printf(__('Serving %s & %s County', 'earlystart-early-learning'), esc_html($city), esc_html($county)); ?>
                     </span>
                     <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight">
-                        <?php printf(__('Top-Rated Clinical Care in <span class="text-rose-600">%s.</span>', 'earlystart-early-learning'), esc_html($city)); ?>
+                        <?php printf(__('Top-Rated Clinical Care in <span class="text-rose-700">%s.</span>', 'earlystart-early-learning'), esc_html($city)); ?>
                     </h1>
-                    <p class="text-xl text-stone-600 leading-relaxed mb-10 max-w-xl">
+                    <p class="text-xl text-stone-700 leading-relaxed mb-10 max-w-xl">
                         <?php printf(__('Are you looking for specialized pediatric therapy near you? Discover Early Start’s clinical excellence in the %s area, featuring the PrismaPath™ model.', 'earlystart-early-learning'), esc_html($city)); ?>
                     </p>
 
@@ -63,7 +63,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
             <h2 class="text-3xl font-bold text-stone-900 mb-8">
                 <?php printf(__('About our %s Presence', 'earlystart-early-learning'), esc_html($city)); ?>
             </h2>
-            <div class="text-xl text-stone-600 leading-relaxed prose prose-stone max-w-none">
+            <div class="text-xl text-stone-700 leading-relaxed prose prose-stone max-w-none">
                 <?php if ($intro_text): ?>
                     <?php echo wp_kses_post(wpautop($intro_text)); ?>
                 <?php else: ?>
@@ -81,7 +81,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                 <h2 class="text-4xl font-bold text-stone-900 mb-4">
                     <?php printf(__('Clinics Serving %s', 'earlystart-early-learning'), esc_html($city)); ?>
                 </h2>
-                <p class="text-stone-600 text-lg">
+                <p class="text-stone-700 text-lg">
                     <?php _e('Select the campus closest to your home or work.', 'earlystart-early-learning'); ?>
                 </p>
             </div>
@@ -112,10 +112,10 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                                 </div>
 
                                 <h3 class="text-2xl font-bold text-stone-900 mb-3"><?php the_title(); ?></h3>
-                                <p class="text-stone-600 text-sm mb-8 line-clamp-2"><?php echo esc_html($addr); ?></p>
+                                <p class="text-stone-700 text-sm mb-8 line-clamp-2"><?php echo esc_html($addr); ?></p>
 
                                 <a href="<?php the_permalink(); ?>"
-                                    class="inline-flex items-center gap-2 text-rose-600 font-bold group-hover:gap-4 transition-all">
+                                    class="inline-flex items-center gap-2 text-rose-700 font-bold group-hover:gap-4 transition-all">
                                     <?php _e('View Campus', 'earlystart-early-learning'); ?>
                                     <i data-lucide="arrow-right" class="w-5 h-5"></i>
                                 </a>
@@ -138,7 +138,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                 <h2 class="text-4xl font-bold mb-4">
                     <?php printf(__('Specialized Care for %s Families', 'earlystart-early-learning'), esc_html($city)); ?>
                 </h2>
-                <p class="text-stone-400 text-lg">
+                <p class="text-stone-300 text-lg">
                     <?php _e('We offer a full spectrum of pediatric services tailored to individual needs.', 'earlystart-early-learning'); ?>
                 </p>
             </div>
@@ -177,9 +177,9 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                         class="flex items-center justify-between font-bold text-stone-900 list-none cursor-pointer">
                         <span><?php printf(__('Are your %s clinics accepting new clients?', 'earlystart-early-learning'), esc_html($city)); ?></span>
                         <i data-lucide="chevron-down"
-                            class="w-5 h-5 text-stone-400 group-open:rotate-180 transition-transform"></i>
+                            class="w-5 h-5 text-stone-300 group-open:rotate-180 transition-transform"></i>
                     </summary>
-                    <div class="mt-4 text-stone-600 leading-relaxed text-sm">
+                    <div class="mt-4 text-stone-700 leading-relaxed text-sm">
                         <?php printf(__('Yes, our locations serving %s are currently accepting new families for ABA therapy, Occupational Therapy, and Speech Therapy. Contact our intake team to start the assessment process.', 'earlystart-early-learning'), esc_html($city)); ?>
                     </div>
                 </details>
@@ -190,9 +190,9 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                         class="flex items-center justify-between font-bold text-stone-900 list-none cursor-pointer">
                         <span><?php printf(__('Do you offer GA Pre-K in %s?', 'earlystart-early-learning'), esc_html($city)); ?></span>
                         <i data-lucide="chevron-down"
-                            class="w-5 h-5 text-stone-400 group-open:rotate-180 transition-transform"></i>
+                            class="w-5 h-5 text-stone-300 group-open:rotate-180 transition-transform"></i>
                     </summary>
-                    <div class="mt-4 text-stone-600 leading-relaxed text-sm">
+                    <div class="mt-4 text-stone-700 leading-relaxed text-sm">
                         <?php printf(__('Several of our campuses serving %s participate in the Georgia Lottery Pre-K program. Please check individual campus pages for specific availability.', 'earlystart-early-learning'), esc_html($city)); ?>
                     </div>
                 </details>

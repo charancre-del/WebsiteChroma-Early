@@ -17,13 +17,13 @@ while (have_posts()):
         <section class="bg-white py-20 border-b border-stone-100">
             <div class="max-w-4xl mx-auto px-4 text-center">
                 <span
-                    class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
+                    class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
                     <?php _e('Clinical Intake', 'earlystart-early-learning'); ?>
                 </span>
                 <h1 class="text-4xl md:text-5xl font-bold text-stone-900 mb-6">
                     <?php _e('Book Your Clinical Consultation', 'earlystart-early-learning'); ?>
                 </h1>
-                <p class="text-xl text-stone-600 leading-relaxed max-w-2xl mx-auto">
+                <p class="text-xl text-stone-700 leading-relaxed max-w-2xl mx-auto">
                     <?php _e('Take the first step toward personalized, assent-based therapy. Our clinical team is ready to listen and build a plan for your child.', 'earlystart-early-learning'); ?>
                 </p>
             </div>
@@ -36,36 +36,36 @@ while (have_posts()):
                     <div
                         class="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm flex flex-col items-center text-center">
                         <div
-                            class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-600 mb-6 font-bold">
+                            class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-700 mb-6 font-bold">
                             1</div>
                         <h3 class="font-bold text-lg mb-2 text-stone-900">
                             <?php _e('Initial Match', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-600 text-sm">
+                        <p class="text-stone-700 text-sm">
                             <?php _e('Share basic info about your child\'s needs and your location.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
                     <div
                         class="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm flex flex-col items-center text-center">
                         <div
-                            class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-600 mb-6 font-bold">
+                            class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-700 mb-6 font-bold">
                             2</div>
                         <h3 class="font-bold text-lg mb-2 text-stone-900">
                             <?php _e('Expert Review', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-600 text-sm">
+                        <p class="text-stone-700 text-sm">
                             <?php _e('A Clinical Director reviews your profile to prepare for the call.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
                     <div
                         class="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm flex flex-col items-center text-center">
                         <div
-                            class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-600 mb-6 font-bold">
+                            class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-700 mb-6 font-bold">
                             3</div>
                         <h3 class="font-bold text-lg mb-2 text-stone-900">
                             <?php _e('Consultation', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-stone-600 text-sm">
+                        <p class="text-stone-700 text-sm">
                             <?php _e('A 20-minute deep dive into goals, therapy models, and scheduling.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -99,7 +99,7 @@ while (have_posts()):
                                 </span>
                             </li>
                         </ul>
-                        <div class="mt-12 p-6 bg-white/5 rounded-2xl border border-white/10 italic text-stone-400 text-sm">
+                        <div class="mt-12 p-6 bg-white/5 rounded-2xl border border-white/10 italic text-stone-300 text-sm">
                             <?php _e('Note: Consultations are for discovery; a full diagnostic assessment follows enrollment.', 'earlystart-early-learning'); ?>
                         </div>
                     </div>
@@ -112,7 +112,7 @@ while (have_posts()):
                                 <h4 class="text-xl font-bold text-stone-900 mb-4">
                                     <?php _e('Clinical Intake Form', 'earlystart-early-learning'); ?>
                                 </h4>
-                                <p class="text-stone-600 text-sm">
+                                <p class="text-stone-700 text-sm">
                                     <?php _e('Please provide a few details to get started. Our clinical directors use this to maximize the value of your call.', 'earlystart-early-learning'); ?>
                                 </p>
                             </div>
@@ -120,14 +120,14 @@ while (have_posts()):
                             <div class="space-y-6">
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="space-y-2">
-                                        <label class="text-xs font-bold text-stone-400 uppercase tracking-widest">
+                                        <label class="text-xs font-bold text-stone-300 uppercase tracking-widest">
                                             <?php _e('Parent Name', 'earlystart-early-learning'); ?>
                                         </label>
                                         <input type="text"
                                             class="w-full bg-stone-50 border border-stone-200 p-4 rounded-xl focus:border-rose-300 outline-none transition-all">
                                     </div>
                                     <div class="space-y-2">
-                                        <label class="text-xs font-bold text-stone-400 uppercase tracking-widest">
+                                        <label class="text-xs font-bold text-stone-300 uppercase tracking-widest">
                                             <?php _e('Phone Number', 'earlystart-early-learning'); ?>
                                         </label>
                                         <input type="tel"
@@ -135,14 +135,14 @@ while (have_posts()):
                                     </div>
                                 </div>
                                 <div class="space-y-2">
-                                    <label class="text-xs font-bold text-stone-400 uppercase tracking-widest">
+                                    <label class="text-xs font-bold text-stone-300 uppercase tracking-widest">
                                         <?php _e('Child\'s Age & Current Diagnosis (if any)', 'earlystart-early-learning'); ?>
                                     </label>
                                     <input type="text" placeholder="e.g. 4 years old, ASD diagnosis"
                                         class="w-full bg-stone-50 border border-stone-200 p-4 rounded-xl focus:border-rose-300 outline-none transition-all">
                                 </div>
                                 <div class="space-y-2">
-                                    <label class="text-xs font-bold text-stone-400 uppercase tracking-widest">
+                                    <label class="text-xs font-bold text-stone-300 uppercase tracking-widest">
                                         <?php _e('Preferred Clinical Hub', 'earlystart-early-learning'); ?>
                                     </label>
                                     <select
@@ -178,7 +178,7 @@ while (have_posts()):
         <!-- Trust Signals -->
         <section class="py-20 bg-stone-50">
             <div class="max-w-4xl mx-auto px-4 text-center">
-                <p class="text-stone-400 font-bold uppercase tracking-widest text-xs mb-8">
+                <p class="text-stone-300 font-bold uppercase tracking-widest text-xs mb-8">
                     <?php _e('Why Consultation Matters', 'earlystart-early-learning'); ?>
                 </p>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-8 grayscale opacity-60">

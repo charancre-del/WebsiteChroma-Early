@@ -7,7 +7,7 @@
 ?>
 </main>
 
-<footer class="bg-stone-900 text-stone-400 py-24 border-t border-stone-800 mt-auto">
+<footer class="bg-stone-900 text-stone-300 py-24 border-t border-stone-800 mt-auto">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="grid md:grid-cols-4 gap-12 lg:gap-16">
 			<div class="col-span-1 md:col-span-1">
@@ -17,7 +17,7 @@
 					</div>
 					<span class="text-2xl font-bold text-white tracking-tight">Early Start</span>
 				</div>
-				<p class="text-sm leading-relaxed mb-8 text-stone-400 max-w-xs">
+				<p class="text-sm leading-relaxed mb-8 text-stone-300 max-w-xs">
 					<?php _e('Empowering neurodivergent children through play-led, evidence-based therapy. Ages 18mo - 12yrs.', 'earlystart-early-learning'); ?>
 				</p>
 				<div class="flex space-x-4">
@@ -92,16 +92,16 @@
 		</div>
 
 		<div class="border-t border-stone-800 mt-20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
-			<p class="text-xs text-stone-600">&copy; <?php echo date('Y'); ?>
+			<p class="text-xs text-stone-400">&copy; <?php echo date('Y'); ?>
 				<?php _e('Early Start. All rights reserved.', 'earlystart-early-learning'); ?>
 			</p>
-			<div class="flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-stone-600">
+			<div class="flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-stone-400">
 				<a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>"
-					class="hover:text-stone-400 transition-colors">Privacy Policy</a>
+					class="hover:text-stone-300 transition-colors">Privacy Policy</a>
 				<a href="<?php echo esc_url(home_url('/terms/')); ?>"
-					class="hover:text-stone-400 transition-colors">Terms of Use</a>
+					class="hover:text-stone-300 transition-colors">Terms of Use</a>
 				<a href="<?php echo esc_url(home_url('/hipaa/')); ?>"
-					class="hover:text-stone-400 transition-colors">HIPAA Notice</a>
+					class="hover:text-stone-300 transition-colors">HIPAA Notice</a>
 			</div>
 		</div>
 	</div>

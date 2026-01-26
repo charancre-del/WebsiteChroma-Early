@@ -66,7 +66,7 @@ function earlystart_primary_nav_fallback()
 
 	foreach ($pages as $slug => $title) {
 		$url = earlystart_get_page_link($slug);
-		echo '<a href="' . esc_url($url) . '" class="hover:text-rose-600 transition">' . esc_html($title) . '</a>';
+		echo '<a href="' . esc_url($url) . '" class="hover:text-rose-700 transition">' . esc_html($title) . '</a>';
 	}
 }
 
@@ -170,10 +170,10 @@ class earlystart_Primary_Nav_Walker extends Walker_Nav_Menu
 
 	function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
 	{
-		$classes = 'nav-link px-3 py-2 text-stone-600 hover:text-rose-600 font-medium transition-colors text-sm tracking-wide rounded-lg';
+		$classes = 'nav-link px-3 py-2 text-stone-700 hover:text-rose-700 font-medium transition-colors text-sm tracking-wide rounded-lg';
 
 		if ($item->current) {
-			$classes .= ' text-rose-600 bg-rose-50';
+			$classes .= ' text-rose-700 bg-rose-50';
 		}
 
 		$url = $item->url;
@@ -272,7 +272,7 @@ function earlystart_mobile_nav_fallback()
 
 	foreach ($pages as $slug => $title) {
 		$url = ($slug === 'home') ? home_url('/') : home_url('/' . $slug . '/');
-		echo '<a href="' . esc_url($url) . '" class="block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50">' . esc_html($title) . '</a>';
+		echo '<a href="' . esc_url($url) . '" class="block w-full text-left text-lg font-medium text-stone-700 py-3 border-b border-stone-50">' . esc_html($title) . '</a>';
 	}
 }
 
@@ -293,10 +293,10 @@ class earlystart_Mobile_Nav_Walker extends Walker_Nav_Menu
 
 	function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
 	{
-		$classes = 'block w-full text-left text-lg font-medium text-stone-600 py-3 border-b border-stone-50';
+		$classes = 'block w-full text-left text-lg font-medium text-stone-700 py-3 border-b border-stone-50';
 
 		if ($item->current) {
-			$classes .= ' text-rose-600';
+			$classes .= ' text-rose-700';
 		}
 
 		$url = $item->url;

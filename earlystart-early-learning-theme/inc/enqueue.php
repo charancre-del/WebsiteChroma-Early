@@ -206,15 +206,17 @@ add_action('admin_enqueue_scripts', 'earlystart_enqueue_admin_assets');
  */
 function earlystart_async_styles($html, $handle, $href, $media)
 {
-        // Defer Font Awesome AND Main CSS (Critical CSS inlined in header)
-        if (in_array($handle, array('chroma-font-awesome', 'chroma-main'))) {
+        // Defer Font Awesome, Google Fonts AND Main CSS (Critical CSS inlined in header)
+        if (in_array($handle, array('chroma-font-awesome', 'chroma-main', 'earlystart-fonts'))) {
                 // Add data-no-optimize to prevent LiteSpeed from combining/blocking this file
                 $html = str_replace('<link', '<link data-no-optimize="1"', $html);
 
                 // If media is 'all', swap to 'print' and add onload
                 $html = str_replace("media='all'", "media='print' onload=\"this.media='all'\"", $html);
                 // If media is already 'print' (rare but possible), ensure onload is present
-                $html = str_replace("media='print'", "media='print' onload=\"this.media='all'\"", $html);
+                if (strpos($html, "media='print'") !== false && strpos($html, "onload=") === false) {
+                        $html = str_replace("media='print'", "media='print' onload=\"this.media='all'\"", $html);
+                }
 
                 // Add fallback for no-js
                 $html .= "<noscript><link rel='stylesheet' href='{$href}' media='all'></noscript>";

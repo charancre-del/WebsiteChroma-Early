@@ -89,7 +89,7 @@ if ($locations_query->have_posts()) {
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="fade-in-up">
                     <span
-                        class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
+                        class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
                         <?php _e('Clinic Tours', 'earlystart-early-learning'); ?>
                     </span>
                     <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight">
@@ -98,7 +98,7 @@ if ($locations_query->have_posts()) {
                             <?php _e('Clinical Magic.', 'earlystart-early-learning'); ?>
                         </span>
                     </h1>
-                    <p class="text-xl text-stone-600 leading-relaxed mb-10 max-w-xl">
+                    <p class="text-xl text-stone-700 leading-relaxed mb-10 max-w-xl">
                         <?php _e('Select your preferred campus below to schedule a private walkthrough with our Clinical Director. We look forward to welcoming your family.', 'earlystart-early-learning'); ?>
                     </p>
 
@@ -106,7 +106,7 @@ if ($locations_query->have_posts()) {
                         <?php foreach ($regions as $slug => $data):
                             if (!empty($data['posts'])): ?>
                                 <a href="#<?php echo esc_attr($slug); ?>"
-                                    class="px-6 py-2 rounded-full border border-stone-200 text-stone-600 font-bold text-xs uppercase tracking-widest hover:border-rose-600 hover:text-rose-600 transition-all">
+                                    class="px-6 py-2 rounded-full border border-stone-200 text-stone-700 font-bold text-xs uppercase tracking-widest hover:border-rose-600 hover:text-rose-700 transition-all">
                                     <?php echo esc_html($data['title']); ?>
                                 </a>
                             <?php endif; endforeach; ?>
@@ -155,7 +155,7 @@ if ($locations_query->have_posts()) {
                             <h3 class="text-xl font-bold text-stone-900 mb-2 truncate">
                                 <?php echo esc_html(str_replace('Location', '', $post['title'])); ?>
                             </h3>
-                            <p class="text-xs text-stone-400 font-medium mb-6 uppercase tracking-widest flex items-center">
+                            <p class="text-xs text-stone-300 font-medium mb-6 uppercase tracking-widest flex items-center">
                                 <i data-lucide="navigation" class="w-3 h-3 mr-2"></i>
                                 <?php echo esc_html($post['city'] ?: 'Georgia'); ?>
                             </p>
@@ -168,7 +168,7 @@ if ($locations_query->have_posts()) {
                                     </a>
                                 <?php else: ?>
                                     <a href="<?php echo esc_url($post['permalink']); ?>#contact"
-                                        class="block w-full py-4 bg-stone-50 text-stone-600 text-center rounded-xl font-bold text-sm tracking-widest uppercase hover:bg-rose-50 transition-all">
+                                        class="block w-full py-4 bg-stone-50 text-stone-700 text-center rounded-xl font-bold text-sm tracking-widest uppercase hover:bg-rose-50 transition-all">
                                         <?php _e('Inquire Now', 'earlystart-early-learning'); ?>
                                     </a>
                                 <?php endif; ?>
@@ -189,11 +189,11 @@ if ($locations_query->have_posts()) {
             <div class="grid md:grid-cols-3 gap-12 text-left">
                 <div>
                     <div
-                        class="w-12 h-12 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center font-bold mb-6">
+                        class="w-12 h-12 bg-rose-50 text-rose-700 rounded-full flex items-center justify-center font-bold mb-6">
                         1</div>
                     <h4 class="font-bold text-stone-900 mb-2"><?php _e('Walkthrough', 'earlystart-early-learning'); ?>
                     </h4>
-                    <p class="text-sm text-stone-600 leading-relaxed">
+                    <p class="text-sm text-stone-700 leading-relaxed">
                         <?php _e('See our clean, safe, and stimulating clinical environments in person.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
@@ -203,7 +203,7 @@ if ($locations_query->have_posts()) {
                         2</div>
                     <h4 class="font-bold text-stone-900 mb-2"><?php _e('Meet the Team', 'earlystart-early-learning'); ?>
                     </h4>
-                    <p class="text-sm text-stone-600 leading-relaxed">
+                    <p class="text-sm text-stone-700 leading-relaxed">
                         <?php _e('Speak with the Clinical Director about your child’s unique goals.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
@@ -213,7 +213,7 @@ if ($locations_query->have_posts()) {
                         3</div>
                     <h4 class="font-bold text-stone-900 mb-2"><?php _e('Next Steps', 'earlystart-early-learning'); ?>
                     </h4>
-                    <p class="text-sm text-stone-600 leading-relaxed">
+                    <p class="text-sm text-stone-700 leading-relaxed">
                         <?php _e('Learn about our intake process, assessment, and individualized timelines.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>

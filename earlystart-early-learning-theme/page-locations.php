@@ -55,7 +55,7 @@ $partner_query = new WP_Query(array(
 
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 			<span
-				class="inline-block px-4 py-2 bg-rose-50 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
+				class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
 				<?php _e('Serving Metro Atlanta', 'earlystart-early-learning'); ?>
 			</span>
 			<h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
@@ -64,7 +64,7 @@ $partner_query = new WP_Query(array(
 					<?php _e('Need It Most.', 'earlystart-early-learning'); ?>
 				</span>
 			</h1>
-			<p class="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed fade-in-up">
+			<p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
 				<?php _e('From our specialized clinics to your living room, and integrated into partner schools. We have a setting that fits your family\'s life.', 'earlystart-early-learning'); ?>
 			</p>
 		</div>
@@ -77,7 +77,7 @@ $partner_query = new WP_Query(array(
 				<div class="mb-12">
 					<h2 class="text-3xl font-bold text-stone-900 mb-2"><?php _e('Clinical Hubs', 'earlystart-early-learning'); ?>
 					</h2>
-					<p class="text-stone-600">
+					<p class="text-stone-700">
 						<?php _e('Our flagship centers for intensive therapy and early intervention.', 'earlystart-early-learning'); ?>
 					</p>
 				</div>
@@ -119,7 +119,7 @@ $partner_query = new WP_Query(array(
 								</div>
 								<div class="p-10">
 									<h3 class="text-3xl font-bold text-stone-900 mb-4"><?php the_title(); ?></h3>
-									<div class="text-stone-600 mb-6 leading-relaxed">
+									<div class="text-stone-700 mb-6 leading-relaxed">
 										<?php the_excerpt(); ?>
 									</div>
 									<div class="space-y-4 mb-8">
@@ -159,11 +159,11 @@ $partner_query = new WP_Query(array(
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<div class="text-center mb-16 fade-in-up">
 				<span
-					class="text-rose-600 font-bold tracking-widest text-sm uppercase mb-3 block"><?php _e('Integrated Therapy', 'earlystart-early-learning'); ?></span>
+					class="text-rose-700 font-bold tracking-widest text-sm uppercase mb-3 block"><?php _e('Integrated Therapy', 'earlystart-early-learning'); ?></span>
 				<h2 class="text-4xl font-bold text-stone-900 mb-6">
 					<?php _e('Our Partner Network', 'earlystart-early-learning'); ?>
 				</h2>
-				<p class="text-stone-600 max-w-2xl mx-auto text-lg leading-relaxed">
+				<p class="text-stone-700 max-w-2xl mx-auto text-lg leading-relaxed">
 					<?php _e('We partner with elite schools to provide on-site therapy. No more driving between school and clinic—we come to the classroom.', 'earlystart-early-learning'); ?>
 				</p>
 			</div>
@@ -181,19 +181,19 @@ $partner_query = new WP_Query(array(
 						<div
 							class="bg-stone-50 p-8 rounded-3xl border border-stone-100 hover:shadow-xl hover:border-rose-100 transition-all group fade-in-up">
 							<div class="flex justify-between items-start mb-4">
-								<h4 class="font-bold text-lg text-stone-900 group-hover:text-rose-600 transition-colors">
+								<h4 class="font-bold text-lg text-stone-900 group-hover:text-rose-700 transition-colors">
 									<?php the_title(); ?>
 								</h4>
 								<span
-									class="text-[10px] bg-white border border-stone-200 px-3 py-1 rounded-full text-stone-600 font-bold uppercase tracking-wider"><?php echo esc_html($region_name); ?></span>
+									class="text-[10px] bg-white border border-stone-200 px-3 py-1 rounded-full text-stone-700 font-bold uppercase tracking-wider"><?php echo esc_html($region_name); ?></span>
 							</div>
-							<p class="text-sm text-stone-600 mb-6 flex items-center">
-								<i data-lucide="map-pin" class="w-4 h-4 inline mr-2 text-stone-400"></i>
+							<p class="text-sm text-stone-700 mb-6 flex items-center">
+								<i data-lucide="map-pin" class="w-4 h-4 inline mr-2 text-stone-300"></i>
 								<?php echo esc_html($address); ?>
 							</p>
-							<div class="flex items-center text-xs font-bold text-rose-600 mt-auto">
+							<div class="flex items-center text-xs font-bold text-rose-700 mt-auto">
 								<div class="w-6 h-6 bg-rose-100 rounded-full flex items-center justify-center mr-2">
-									<i data-lucide="check" class="w-3 h-3 text-rose-600"></i>
+									<i data-lucide="check" class="w-3 h-3 text-rose-700"></i>
 								</div>
 								<?php echo esc_html($services); ?>
 							</div>
@@ -202,7 +202,7 @@ $partner_query = new WP_Query(array(
 					wp_reset_postdata(); ?>
 				<?php else: ?>
 					<div class="col-span-full text-center py-12">
-						<p class="text-stone-600"><?php _e('No partner locations found.', 'earlystart-early-learning'); ?></p>
+						<p class="text-stone-700"><?php _e('No partner locations found.', 'earlystart-early-learning'); ?></p>
 					</div>
 				<?php endif; ?>
 			</div>
@@ -222,7 +222,7 @@ $partner_query = new WP_Query(array(
 						<i data-lucide="home" class="w-8 h-8 text-rose-400"></i>
 					</div>
 					<h2 class="text-4xl font-bold mb-6"><?php _e('In-Home Therapy Zones', 'earlystart-early-learning'); ?></h2>
-					<p class="text-stone-400 text-lg leading-relaxed mb-8">
+					<p class="text-stone-300 text-lg leading-relaxed mb-8">
 						<?php _e('For families who prefer therapy in their natural environment, we deploy clinical teams to homes across Metro Atlanta.', 'earlystart-early-learning'); ?>
 					</p>
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -242,7 +242,7 @@ $partner_query = new WP_Query(array(
 				<div
 					class="bg-white/10 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/20 text-center fade-in-up">
 					<h3 class="text-2xl font-bold mb-4"><?php _e('Check Your Address', 'earlystart-early-learning'); ?></h3>
-					<p class="text-stone-400 mb-8">
+					<p class="text-stone-300 mb-8">
 						<?php _e('Enter your zip code to see if you are in our home-based service area.', 'earlystart-early-learning'); ?>
 					</p>
 					<div class="flex flex-col sm:flex-row gap-4">
@@ -254,8 +254,8 @@ $partner_query = new WP_Query(array(
 							<?php _e('Check', 'earlystart-early-learning'); ?>
 						</button>
 					</div>
-					<div id="chroma-zip-message" class="mt-6 text-stone-600 text-sm font-bold min-h-[20px]"></div>
-					<div class="mt-2 text-stone-600 text-sm">
+					<div id="chroma-zip-message" class="mt-6 text-stone-700 text-sm font-bold min-h-[20px]"></div>
+					<div class="mt-2 text-stone-700 text-sm">
 						<p><?php _e('Immediate availability in most areas.', 'earlystart-early-learning'); ?></p>
 					</div>
 				</div>
@@ -269,7 +269,7 @@ $partner_query = new WP_Query(array(
 			<h2 class="text-4xl font-bold text-stone-900 mb-6">
 				<?php _e('Find the perfect fit for your family.', 'earlystart-early-learning'); ?>
 			</h2>
-			<p class="text-xl text-stone-600 mb-10 leading-relaxed">
+			<p class="text-xl text-stone-700 mb-10 leading-relaxed">
 				<?php _e('Whether it\'s in our specialized clinical clinic, your family home, or one of our partner schools, we have a spot for you.', 'earlystart-early-learning'); ?>
 			</p>
 			<a href="<?php echo esc_url(home_url('/contact/')); ?>"
