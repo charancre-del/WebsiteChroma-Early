@@ -63,6 +63,8 @@ function earlystart_enqueue_assets()
         // Dequeue any other potential lucide handles from plugins
         wp_dequeue_script('lucide');
         wp_dequeue_script('lucide-js');
+        wp_deregister_script('lucide');
+        wp_deregister_script('lucide-js');
 
         // ... rest of scripts ...
 

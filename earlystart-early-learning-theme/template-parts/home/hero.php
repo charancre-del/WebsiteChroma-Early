@@ -54,19 +54,22 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                 <div class="flex items-center space-x-6 pt-4">
                     <div class="flex -space-x-3">
                         <div
-                            class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
+                            class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden relative">
                             <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1544717305-27a734ef202e', 100, 100)); ?>"
-                                alt="User" width="48" height="48" loading="lazy">
+                                class="absolute inset-0 w-full h-full object-cover" alt="User" width="48" height="48"
+                                loading="lazy">
                         </div>
                         <div
-                            class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
+                            class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden relative">
                             <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1544005313-94ddf0286df2', 100, 100)); ?>"
-                                alt="User" width="48" height="48" loading="lazy">
+                                class="absolute inset-0 w-full h-full object-cover" alt="User" width="48" height="48"
+                                loading="lazy">
                         </div>
                         <div
-                            class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden">
+                            class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden relative">
                             <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1548142813-c348350df52b', 100, 100)); ?>"
-                                alt="User" width="48" height="48" loading="lazy">
+                                class="absolute inset-0 w-full h-full object-cover" alt="User" width="48" height="48"
+                                loading="lazy">
                         </div>
                     </div>
                     <div class="text-sm">
@@ -87,7 +90,7 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
             <div class="relative">
                 <!-- Main Image with Creative Frame -->
                 <div
-                    class="relative z-10 w-full aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                    class="relative z-10 w-full aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white transform rotate-2 hover:rotate-0 transition-transform duration-500 bg-stone-200">
                     <?php echo earlystart_responsive_unsplash(
                         $hero_image,
                         __('Happy child in therapy', 'earlystart-early-learning'),

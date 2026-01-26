@@ -12,6 +12,13 @@
 	<link rel="dns-prefetch" href="https://images.unsplash.com">
 	<link rel="dns-prefetch" href="https://unpkg.com">
 
+	<?php // CLS Optimization: Preload Critical Local Fonts ?>
+	<link rel="preload"
+		href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/PlayfairDisplay-SemiBold.woff2" as="font"
+		type="font/woff2" crossorigin>
+	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Medium.woff2" as="font"
+		type="font/woff2" crossorigin>
+
 	<style id="earlystart-critical-css">
 		/* Darkened Brand Colors for WCAG AA Compliance (Enhanced) */
 		.text-chroma-red {
@@ -46,11 +53,29 @@
 			background-color: #8C6B2F !important;
 		}
 
-		/* touch targets & visibility */
-		footer nav a,
-		[data-reviews-dots] button {
-			min-width: 44px;
-			min-height: 44px;
+		/* accessibility: touch targets (48px) */
+		@media (max-width: 768px) {
+
+			a,
+			button,
+			input,
+			select,
+			textarea,
+			[role="button"] {
+				min-width: 48px;
+				min-height: 48px;
+			}
+
+			/* Reset for inline links to preserve flow */
+			p a,
+			span a,
+			li a {
+				min-width: auto;
+				min-height: auto;
+				display: inline-block;
+				padding: 12px;
+				margin: -12px;
+			}
 		}
 
 		.fade-in-up {
