@@ -56,12 +56,12 @@ function earlystart_primary_nav_fallback()
 		'programs' => 'Programas',
 		'locations' => 'Ubicaciones',
 		'about' => 'Nosotros',
-		'contact-us' => 'Contacto'
+		'contact' => 'Contacto'
 	) : array(
 		'programs' => 'Programs',
 		'locations' => 'Locations',
 		'about' => 'About Us',
-		'contact-us' => 'Contact'
+		'contact' => 'Contact'
 	);
 
 	foreach ($pages as $slug => $title) {

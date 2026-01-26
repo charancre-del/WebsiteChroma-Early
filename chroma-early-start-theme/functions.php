@@ -18,6 +18,12 @@ ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
 
+// PROBE: Verify if PHP changes are live
+add_filter('body_class', function ($classes) {
+    $classes[] = 'earlystart-php-probe-v1';
+    return $classes;
+});
+
 /**
  * Increase Memory Limit for SEO Engine
  */

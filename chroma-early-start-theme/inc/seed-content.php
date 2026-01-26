@@ -88,7 +88,7 @@ function earlystart_seed_core_content()
                 'home_services_json' => json_encode($home_services), // Seed the services tabs
             )
         ),
-        'about-us' => array(
+        'about' => array(
             'title' => 'About Us',
             'template' => 'page-about.php',
             'meta' => array(
@@ -114,7 +114,7 @@ function earlystart_seed_core_content()
         ),
         'our-approach' => array('title' => 'Our Approach', 'template' => 'page-approach.php'),
         'services' => array('title' => 'Services', 'template' => 'page-programs.php'),
-        'locations-list' => array('title' => 'Locations', 'template' => 'page-locations.php'),
+        'locations' => array('title' => 'Locations', 'template' => 'page-locations.php'),
         'curriculum' => array('title' => 'Our Approach', 'template' => 'page-approach.php'),
         'parents' => array(
             'title' => 'For Families',
