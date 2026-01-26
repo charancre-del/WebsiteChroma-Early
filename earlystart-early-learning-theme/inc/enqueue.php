@@ -288,6 +288,16 @@ function earlystart_preload_main_css()
 }
 add_action('wp_head', 'earlystart_preload_main_css', 1);
 
+/**
+ * Preload Critical Fonts (LCP Optimization)
+ */
+function earlystart_preload_fonts()
+{
+        $font_url = earlystart_THEME_URI . '/assets/webfonts/Outfit-Regular.woff2';
+        echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+}
+add_action('wp_head', 'earlystart_preload_fonts', 1);
+
 add_action('wp_enqueue_scripts', 'earlystart_dequeue_dashicons');
 
 

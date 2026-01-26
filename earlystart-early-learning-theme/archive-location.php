@@ -31,6 +31,7 @@ $locations_query = earlystart_cached_query(
 <main class="pt-20">
 	<!-- Hero Section -->
 	<section class="relative pt-24 pb-20 lg:pt-32 bg-white overflow-hidden border-b border-stone-50">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 			<span
 				class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
 				<?php printf(__('%d Campus Locations', 'earlystart-early-learning'), $locations_query->found_posts); ?>
@@ -145,7 +146,8 @@ $locations_query = earlystart_cached_query(
 							</a>
 						</div>
 					<?php endwhile;
-					wp_reset_postdata(); endif; ?>
+					wp_reset_postdata();
+				endif; ?>
 			</div>
 		</div>
 	</section>
@@ -157,7 +159,8 @@ $locations_query = earlystart_cached_query(
 		</div>
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
 			<h2 class="text-4xl md:text-5xl font-bold mb-8">
-				<?php _e('Not sure where to start?', 'earlystart-early-learning'); ?></h2>
+				<?php _e('Not sure where to start?', 'earlystart-early-learning'); ?>
+			</h2>
 			<p class="text-xl text-stone-300 max-w-2xl mx-auto mb-12">
 				<?php _e('Our clinical intake team can help you identify the best campus and program for your child\'s unique developmental path.', 'earlystart-early-learning'); ?>
 			</p>
