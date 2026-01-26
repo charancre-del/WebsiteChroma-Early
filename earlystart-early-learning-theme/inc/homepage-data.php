@@ -149,6 +149,41 @@ function earlystart_home_default_team()
 
 function earlystart_home_team()
 {
+        // Query CPT
+        $args = array(
+                'post_type' => 'team_member',
+                'posts_per_page' => -1,
+                'orderby' => 'menu_order',
+                'order' => 'ASC',
+                'post_status' => 'publish',
+        );
+
+        $query = earlystart_cached_query($args, 'home_team_list', DAY_IN_SECONDS);
+
+        if ($query->have_posts()) {
+                $team = array();
+                while ($query->have_posts()) {
+                        $query->the_post();
+                        $post_id = get_the_ID();
+
+                        $image = get_the_post_thumbnail_url($post_id, 'large');
+                        if (!$image) {
+                                // Default fallback if no image is set
+                                $image = 'https://images.unsplash.com/photo-1559839734-2b71f1536783?auto=format&fit=crop&w=800&h=1000&q=80&fm=webp';
+                        }
+
+                        $team[] = array(
+                                'name' => get_the_title(),
+                                'role' => get_post_meta($post_id, 'team_member_title', true) ?: '',
+                                'image' => $image,
+                                'linkedin' => get_post_meta($post_id, 'team_member_linkedin', true) ?: '',
+                        );
+                }
+                wp_reset_postdata();
+                return $team;
+        }
+
+        // Fallback if no CPT posts exist
         $post_id = earlystart_get_home_page_id();
         $team_json = earlystart_get_translated_meta($post_id, 'home_team_json', true);
 

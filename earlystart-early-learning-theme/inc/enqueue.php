@@ -84,18 +84,19 @@ function earlystart_enqueue_assets()
         // chroma-utils is now INLINED in header.php for performance
 
         // Main JavaScript.
-        $js_path = earlystart_THEME_DIR . '/assets/js/main.js';
+        // Main JavaScript.
+        $js_path = earlystart_THEME_DIR . '/assets/js/main.min.js';
         $js_version = file_exists($js_path) ? filemtime($js_path) : earlystart_VERSION;
 
         wp_enqueue_script(
                 'chroma-main-js',
-                earlystart_THEME_URI . '/assets/js/main.js',
-                $script_dependencies,
+                earlystart_THEME_URI . '/assets/js/main.min.js',
+                array(), // Removed jQuery dependency
                 $js_version,
                 true
         );
 
-        // Defer re-enabled for FCP optimization
+        // Defer right away
         wp_script_add_data('chroma-main-js', 'defer', true);
 
         // Map Facade (Lazy Load Leaflet).
@@ -245,16 +246,24 @@ function earlystart_move_jquery_to_footer()
                 return;
         }
 
+        // Dequeue jQuery entirely for non-logged in users (Performance)
+        // If specific plugins need it, they usually enqueue it as a dependency, 
+        // but we'll deregister it initially to avoid auto-loading.
+        wp_dequeue_script('jquery');
+        wp_dequeue_script('jquery-core');
+        wp_dequeue_script('jquery-migrate');
         wp_deregister_script('jquery');
         wp_deregister_script('jquery-core');
         wp_deregister_script('jquery-migrate');
 
-        // Re-register jQuery in footer
-        // Uses includes_url() to maintain compatibility with WP versioning
+        // OPTIONAL: If you encounter plugin errors, comment out the deregister lines above 
+        // and uncomment the lines below to keep it but move to footer:
+        /*
         wp_register_script('jquery', includes_url('/js/jquery/jquery.min.js'), false, null, true);
         wp_enqueue_script('jquery');
+        */
 }
-add_action('wp_enqueue_scripts', 'earlystart_move_jquery_to_footer', 1);
+add_action('wp_enqueue_scripts', 'earlystart_move_jquery_to_footer', 11); // Priority 11 to run after other enqueues
 
 /**
  * Dequeue Dashicons for non-logged in users to improve performance

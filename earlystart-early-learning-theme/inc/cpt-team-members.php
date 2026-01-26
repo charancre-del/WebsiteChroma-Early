@@ -69,6 +69,21 @@ function earlystart_register_team_member_meta()
             },
         )
     );
+
+    register_post_meta(
+        'team_member',
+        'team_member_linkedin',
+        array(
+            'object_subtype' => 'team_member',
+            'type' => 'string',
+            'single' => true,
+            'show_in_rest' => true, // Make accessible via REST API
+            'sanitize_callback' => 'esc_url_raw',
+            'auth_callback' => function () {
+                return current_user_can('edit_posts');
+            },
+        )
+    );
 }
 add_action('init', 'earlystart_register_team_member_meta');
 
@@ -94,15 +109,24 @@ add_action('add_meta_boxes', 'earlystart_team_member_add_meta_box');
 function earlystart_team_member_render_meta_box($post)
 {
     wp_nonce_field('earlystart_team_member_save', 'earlystart_team_member_nonce');
-    $value = get_post_meta($post->ID, 'team_member_title', true);
+    $title_value = get_post_meta($post->ID, 'team_member_title', true);
+    $linkedin_value = get_post_meta($post->ID, 'team_member_linkedin', true);
     ?>
     <p>
         <label for="team_member_title"
             style="font-weight:bold; display:block; margin-bottom:5px;"><?php _e('Job Title / Role', 'earlystart-early-learning'); ?></label>
-        <input type="text" id="team_member_title" name="team_member_title" value="<?php echo esc_attr($value); ?>"
+        <input type="text" id="team_member_title" name="team_member_title" value="<?php echo esc_attr($title_value); ?>"
             class="widefat" style="width:100%; max-width:400px;">
         <span class="description"
             style="display:block; margin-top:5px;"><?php _e('e.g. "Executive Director" or "Lead Teacher"', 'earlystart-early-learning'); ?></span>
+    </p>
+    <p>
+        <label for="team_member_linkedin"
+            style="font-weight:bold; display:block; margin-bottom:5px;"><?php _e('LinkedIn URL', 'earlystart-early-learning'); ?></label>
+        <input type="url" id="team_member_linkedin" name="team_member_linkedin"
+            value="<?php echo esc_url($linkedin_value); ?>" class="widefat" style="width:100%; max-width:400px;">
+        <span class="description"
+            style="display:block; margin-top:5px;"><?php _e('Optional: Link to LinkedIn profile.', 'earlystart-early-learning'); ?></span>
     </p>
     <?php
 }
@@ -126,6 +150,10 @@ function earlystart_team_member_save_meta_box($post_id)
 
     if (isset($_POST['team_member_title'])) {
         update_post_meta($post_id, 'team_member_title', sanitize_text_field($_POST['team_member_title']));
+    }
+
+    if (isset($_POST['team_member_linkedin'])) {
+        update_post_meta($post_id, 'team_member_linkedin', esc_url_raw($_POST['team_member_linkedin']));
     }
 }
 add_action('save_post', 'earlystart_team_member_save_meta_box');
