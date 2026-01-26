@@ -69,30 +69,35 @@ function earlystart_enqueue_assets()
         ");
 
         // Tailwind CSS (CDN for immediate visual parity with HTML)
-        wp_enqueue_script(
-                'tailwind-cdn',
-                'https://cdn.tailwindcss.com',
-                array(),
-                null,
-                false
-        );
+        // Only load in debug mode or if explicitly requested.
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+                wp_enqueue_script(
+                        'tailwind-cdn',
+                        'https://cdn.tailwindcss.com',
+                        array(),
+                        null,
+                        false
+                );
+        }
 
         // Configure Tailwind (Basic Brand Colors)
-        wp_add_inline_script('tailwind-cdn', "
-            tailwind.config = {
-                theme: {
-                    extend: {
-                        fontFamily: {
-                            sans: ['\"Plus Jakarta Sans\"', 'sans-serif'],
-                        },
-                        colors: {
-                            rose: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#f43f5e', 600: '#e11d48', 700: '#be123c' },
-                            stone: { 50: '#fafaf9', 100: '#f5f5f4', 800: '#292524', 900: '#1c1917' }
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+                wp_add_inline_script('tailwind-cdn', "
+                tailwind.config = {
+                    theme: {
+                        extend: {
+                            fontFamily: {
+                                sans: ['\"Plus Jakarta Sans\"', 'sans-serif'],
+                            },
+                            colors: {
+                                rose: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#f43f5e', 600: '#e11d48', 700: '#be123c' },
+                                stone: { 50: '#fafaf9', 100: '#f5f5f4', 800: '#292524', 900: '#1c1917' }
+                            }
                         }
                     }
                 }
-            }
-        ");
+            ");
+        }
 
         // Compiled Tailwind CSS.
         $css_path = earlystart_THEME_DIR . '/assets/css/main.css';
@@ -107,106 +112,13 @@ function earlystart_enqueue_assets()
                 'all' // Load normally to prevent FOUC
         );
 
-        // CRITICAL ACCESSIBILITY FIXES (Injected Inline to bypass cache/build)
-        $custom_css = "
-                /* Darkened Brand Colors for WCAG AA Compliance (Enhanced) */
-                .text-chroma-red { color: #964030 !important; }
-                .bg-chroma-red { background-color: #964030 !important; }
-                .text-chroma-orange { color: #A8551E !important; }
-                .bg-chroma-orange { background-color: #A8551E !important; }
-                .text-chroma-green { color: #4D5C54 !important; }
-                .bg-chroma-green { background-color: #4D5C54 !important; }
-                .text-chroma-yellow { color: #8C6B2F !important; }
-                .bg-chroma-yellow { background-color: #8C6B2F !important; }
-                
-                /* Footer Social Links - Touch Target Fix (48px) */
-                footer .flex.gap-3 a {
-                        width: 48px !important;
-                        height: 48px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                }
-                footer .flex.gap-3 a i {
-                        font-size: 1.25rem !important;
-                }
-                
-                /* Footer Navigation Links - Touch Target Fix */
-                footer nav a {
-                        display: inline-block !important;
-                        min-height: 48px !important;
-                        min-width: 48px !important;
-                        padding: 12px 16px !important;
-                        line-height: 1.5 !important;
-                        display: flex !important;
-                        align-items: center !important;
-                }
-                
-                /* Review Carousel Dots - Touch Target Fix (48px) */
-                [data-reviews-dots] button {
-                        min-width: 48px !important;
-                        min-height: 48px !important;
-                        padding: 12px !important;
-                }
-
-                /* Global Button Touch Targets */
-                a[class*='px-8'][class*='py-4'], 
-                button[class*='px-8'][class*='py-4'] {
-                        min-height: 48px !important;
-                        display: inline-flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                }
-
-                /* Form Inputs Touch Targets */
-                input[type='text'],
-                input[type='email'],
-                input[type='tel'],
-                input[type='number'],
-                select,
-                textarea {
-                        min-height: 48px !important;
-                        font-size: 16px !important; /* Prevent iOS zoom */
-                }
-                
-                /* Form Labels - Ensure visibility if hidden */
-                .chroma-tour-form label {
-                        display: block !important;
-                        color: #263238 !important; /* Brand Ink */
-                        opacity: 1 !important;
-                        margin-bottom: 0.5rem !important;
-                }
-
-                        /* Force CTA Button Visibility */
-                        header .container > a[href*='contact'] {
-                                display: flex !important;
-                        }
-                }
-
-                /* Accessibility: Increase contrast for muted text */
-                .text-brand-ink\/60 { color: rgba(38, 50, 56, 0.9) !important; }
-                .text-brand-ink\/70 { color: rgba(38, 50, 56, 0.95) !important; }
-
-                /* Animations (Moved from templates for AMP compatibility) */
-                .fade-in-up {
-                    animation: fadeInUp 0.8s ease forwards;
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                .delay-100 { animation-delay: 0.1s; }
-                .delay-200 { animation-delay: 0.2s; }
-                .delay-300 { animation-delay: 0.3s; }
-                @keyframes fadeInUp {
-                    to { opacity: 1; transform: translateY(0); }
-                }
-
-                /* Custom Scrollbar for Job Board */
-                .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-                .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-                .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-                .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #334155; }
-        ";
-        wp_add_inline_style('chroma-main', $custom_css);
+        // Critical Utility CSS (Moved from inline to static file for caching)
+        wp_enqueue_style(
+                'chroma-utils',
+                earlystart_THEME_URI . '/assets/css/utils.css',
+                array('chroma-main'),
+                earlystart_VERSION
+        );
 
         // Main JavaScript.
         $js_path = earlystart_THEME_DIR . '/assets/js/main.js';
@@ -433,6 +345,19 @@ function earlystart_dequeue_cdn_styles()
         }
 }
 add_action('wp_enqueue_scripts', 'earlystart_dequeue_cdn_styles', 100);
+
+/**
+ * Dequeue unused block styles to reduce payload.
+ */
+function earlystart_dequeue_block_styles()
+{
+        if (!is_admin()) {
+                wp_dequeue_style('wp-block-library');
+                wp_dequeue_style('wp-block-library-theme');
+                wp_dequeue_style('wc-blocks-style'); // WooCommerce
+        }
+}
+add_action('wp_enqueue_scripts', 'earlystart_dequeue_block_styles', 100);
 
 
 

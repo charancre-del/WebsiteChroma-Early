@@ -602,14 +602,16 @@ function earlystart_home_default_schedule_tracks()
  */
 function earlystart_home_program_wizard_options()
 {
-        // Query all published programs
-        $programs = new WP_Query(array(
+        // Query all published programs (Cached)
+        $args = array(
                 'post_type' => 'program',
                 'posts_per_page' => -1,
                 'orderby' => 'menu_order',
                 'order' => 'ASC',
                 'post_status' => 'publish',
-        ));
+        );
+
+        $programs = earlystart_cached_query($args, 'program_wizard_list', DAY_IN_SECONDS);
 
         if (!$programs->have_posts()) {
                 // Fallback to theme mod options if no programs exist
@@ -712,8 +714,8 @@ function earlystart_home_curriculum_profiles()
  */
 function earlystart_home_schedule_tracks()
 {
-        // Query all published programs with schedule data
-        $programs = new WP_Query(array(
+        // Query all published programs with schedule data (Cached)
+        $args = array(
                 'post_type' => 'program',
                 'posts_per_page' => -1,
                 'orderby' => 'menu_order',
@@ -726,7 +728,9 @@ function earlystart_home_schedule_tracks()
                                 'value' => '',
                         ),
                 ),
-        ));
+        );
+
+        $programs = earlystart_cached_query($args, 'program_schedule_tracks', DAY_IN_SECONDS);
 
         if (!$programs->have_posts()) {
                 // Fallback to theme mod/defaults if no programs have schedule data

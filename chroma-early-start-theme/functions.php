@@ -150,17 +150,18 @@ require_once earlystart_THEME_DIR . '/inc/class-amp-blog.php';
 
 
 // Page Meta Boxes
-require_once earlystart_THEME_DIR . '/inc/about-page-meta.php';
-require_once earlystart_THEME_DIR . '/inc/curriculum-page-meta.php';
-require_once earlystart_THEME_DIR . '/inc/contact-page-meta.php';
-require_once earlystart_THEME_DIR . '/inc/stories-page-meta.php';
-require_once earlystart_THEME_DIR . '/inc/parents-page-meta.php';
-require_once earlystart_THEME_DIR . '/inc/careers-page-meta.php';
-require_once earlystart_THEME_DIR . '/inc/employers-page-meta.php';
-require_once earlystart_THEME_DIR . '/inc/privacy-page-meta.php';
-// require_once earlystart_THEME_DIR . '/inc/schema-meta-boxes.php';
-require_once earlystart_THEME_DIR . '/inc/general-seo-meta.php';
-require_once earlystart_THEME_DIR . '/inc/home-page-meta.php';
+if (is_admin()) {
+    require_once earlystart_THEME_DIR . '/inc/about-page-meta.php';
+    require_once earlystart_THEME_DIR . '/inc/curriculum-page-meta.php';
+    require_once earlystart_THEME_DIR . '/inc/contact-page-meta.php';
+    require_once earlystart_THEME_DIR . '/inc/stories-page-meta.php';
+    require_once earlystart_THEME_DIR . '/inc/parents-page-meta.php';
+    require_once earlystart_THEME_DIR . '/inc/careers-page-meta.php';
+    require_once earlystart_THEME_DIR . '/inc/employers-page-meta.php';
+    require_once earlystart_THEME_DIR . '/inc/privacy-page-meta.php';
+    require_once earlystart_THEME_DIR . '/inc/general-seo-meta.php';
+    require_once earlystart_THEME_DIR . '/inc/home-page-meta.php';
+}
 
 
 // Utility Functions
@@ -168,12 +169,16 @@ require_once earlystart_THEME_DIR . '/inc/translation-helpers.php';
 require_once earlystart_THEME_DIR . '/inc/template-tags.php';
 require_once earlystart_THEME_DIR . '/inc/dynamic-links.php';
 // require_once earlystart_THEME_DIR . '/inc/about-seo.php';
-require_once earlystart_THEME_DIR . '/inc/customizer-home.php';
-require_once earlystart_THEME_DIR . '/inc/customizer-header.php';
-require_once earlystart_THEME_DIR . '/inc/customizer-footer.php';
-require_once earlystart_THEME_DIR . '/inc/customizer-locations.php';
-require_once earlystart_THEME_DIR . '/inc/customizer-seo.php';
-require_once earlystart_THEME_DIR . '/inc/customizer-scripts.php';
+
+// Customizer (Only load in Customizer preview or Admin)
+if (is_customize_preview() || is_admin()) {
+    require_once earlystart_THEME_DIR . '/inc/customizer-home.php';
+    require_once earlystart_THEME_DIR . '/inc/customizer-header.php';
+    require_once earlystart_THEME_DIR . '/inc/customizer-footer.php';
+    require_once earlystart_THEME_DIR . '/inc/customizer-locations.php';
+    require_once earlystart_THEME_DIR . '/inc/customizer-seo.php';
+    require_once earlystart_THEME_DIR . '/inc/customizer-scripts.php';
+}
 
 // Legacy helper files (ACF plugin optional; helpers run on core WP functions only)
 // Native Theme Settings (Replaces ACF Options Page)

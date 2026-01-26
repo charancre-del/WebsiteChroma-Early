@@ -224,103 +224,118 @@ while (have_posts()):
             </div>
         </section>
 
-        <!-- Intake Journey -->
-        <section class="py-24 bg-white">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16 fade-in-up">
-                    <h2 class="text-3xl font-bold text-stone-900 mb-4">
-                        <?php _e('Your Intake Journey', 'chroma-early-start'); ?>
-                    </h2>
-                    <p class="text-stone-600">
-                        <?php _e('From first call to first day, we make the process seamless.', 'chroma-early-start'); ?>
-                    </p>
+        <!-- Intake Journey (Fragment Cached) -->
+        <?php
+        $cache_key = 'chroma_intake_frag_' . get_locale();
+        $cached_intake = get_transient($cache_key);
+
+        if ($cached_intake !== false) {
+            echo $cached_intake;
+        } else {
+            ob_start();
+            ?>
+            <section class="py-24 bg-white">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16 fade-in-up">
+                        <h2 class="text-3xl font-bold text-stone-900 mb-4">
+                            <?php _e('Your Intake Journey', 'chroma-early-start'); ?>
+                        </h2>
+                        <p class="text-stone-600">
+                            <?php _e('From first call to first day, we make the process seamless.', 'chroma-early-start'); ?>
+                        </p>
+                    </div>
+
+                    <div class="relative fade-in-up">
+                        <!-- Vertical Line -->
+                        <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-stone-200 md:left-1/2 md:-ml-px"></div>
+
+                        <!-- Step 1 -->
+                        <div class="relative flex items-center mb-16 md:flex-row-reverse group">
+                            <div
+                                class="absolute left-8 w-8 h-8 rounded-full bg-rose-500 border-4 border-white shadow -ml-4 md:left-1/2 group-hover:scale-110 transition-transform">
+                            </div>
+                            <div class="ml-20 md:ml-0 md:w-1/2 md:pl-12"></div>
+                            <div class="ml-20 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
+                                <span
+                                    class="text-xs font-bold text-rose-500 uppercase tracking-wide"><?php _e('Step 1', 'chroma-early-start'); ?></span>
+                                <h4 class="text-xl font-bold text-stone-900"><?php _e('Consultation', 'chroma-early-start'); ?>
+                                </h4>
+                                <p class="text-stone-600 mt-2">
+                                    <?php _e('A free 15-minute call to discuss your concerns and see if we are a good fit. We\'ll answer all your initial questions about logistics, approach, and availability.', 'chroma-early-start'); ?>
+                                </p>
+                                <span
+                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: Day 1', 'chroma-early-start'); ?></span>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="relative flex items-center mb-16 group">
+                            <div
+                                class="absolute left-8 w-8 h-8 rounded-full bg-orange-500 border-4 border-white shadow -ml-4 md:left-1/2 group-hover:scale-110 transition-transform">
+                            </div>
+                            <div class="ml-20 md:ml-0 md:w-1/2 md:pr-12 text-left"></div>
+                            <div class="ml-20 md:ml-0 md:w-1/2 md:pl-12 text-left">
+                                <span
+                                    class="text-xs font-bold text-orange-500 uppercase tracking-wide"><?php _e('Step 2', 'chroma-early-start'); ?></span>
+                                <h4 class="text-xl font-bold text-stone-900">
+                                    <?php _e('Verification & Auth', 'chroma-early-start'); ?>
+                                </h4>
+                                <p class="text-stone-600 mt-2">
+                                    <?php _e('We check your insurance benefits and submit the assessment request. We handle the communication with the payer so you don\'t have to wait on hold.', 'chroma-early-start'); ?>
+                                </p>
+                                <span
+                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: 3-5 Days', 'chroma-early-start'); ?></span>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="relative flex items-center mb-16 md:flex-row-reverse group">
+                            <div
+                                class="absolute left-8 w-8 h-8 rounded-full bg-amber-500 border-4 border-white shadow -ml-4 md:left-1/2 group-hover:scale-110 transition-transform">
+                            </div>
+                            <div class="ml-20 md:ml-0 md:w-1/2 md:pl-12"></div>
+                            <div class="ml-20 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
+                                <span
+                                    class="text-xs font-bold text-amber-500 uppercase tracking-wide"><?php _e('Step 3', 'chroma-early-start'); ?></span>
+                                <h4 class="text-xl font-bold text-stone-900">
+                                    <?php _e('Skills Assessment', 'chroma-early-start'); ?>
+                                </h4>
+                                <p class="text-stone-600 mt-2">
+                                    <?php _e('Our BCBA meets your child for a play-based skills assessment to identify strengths, barriers, and goals. We use tools like the VB-MAPP or ABLLS-R to build a baseline.', 'chroma-early-start'); ?>
+                                </p>
+                                <span
+                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: 1 Week', 'chroma-early-start'); ?></span>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="relative flex items-center group">
+                            <div
+                                class="absolute left-8 w-8 h-8 rounded-full bg-green-500 border-4 border-white shadow -ml-4 md:left-1/2 group-hover:scale-110 transition-transform">
+                            </div>
+                            <div class="ml-20 md:ml-0 md:w-1/2 md:pr-12 text-left"></div>
+                            <div class="ml-20 md:ml-0 md:w-1/2 md:pl-12 text-left">
+                                <span
+                                    class="text-xs font-bold text-green-500 uppercase tracking-wide"><?php _e('Step 4', 'chroma-early-start'); ?></span>
+                                <h4 class="text-xl font-bold text-stone-900">
+                                    <?php _e('Start Therapy!', 'chroma-early-start'); ?>
+                                </h4>
+                                <p class="text-stone-600 mt-2">
+                                    <?php _e('We build a schedule that works for your family, pair you with a clinical team (BCBA & RBTs), and begin the journey of growth and connection.', 'chroma-early-start'); ?>
+                                </p>
+                                <span
+                                    class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: Immediate openings', 'chroma-early-start'); ?></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="relative fade-in-up">
-                    <!-- Vertical Line -->
-                    <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-stone-200 md:left-1/2 md:-ml-px"></div>
-
-                    <!-- Step 1 -->
-                    <div class="relative flex items-center mb-16 md:flex-row-reverse group">
-                        <div
-                            class="absolute left-8 w-8 h-8 rounded-full bg-rose-500 border-4 border-white shadow -ml-4 md:left-1/2 group-hover:scale-110 transition-transform">
-                        </div>
-                        <div class="ml-20 md:ml-0 md:w-1/2 md:pl-12"></div>
-                        <div class="ml-20 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
-                            <span
-                                class="text-xs font-bold text-rose-500 uppercase tracking-wide"><?php _e('Step 1', 'chroma-early-start'); ?></span>
-                            <h4 class="text-xl font-bold text-stone-900"><?php _e('Consultation', 'chroma-early-start'); ?>
-                            </h4>
-                            <p class="text-stone-600 mt-2">
-                                <?php _e('A free 15-minute call to discuss your concerns and see if we are a good fit. We\'ll answer all your initial questions about logistics, approach, and availability.', 'chroma-early-start'); ?>
-                            </p>
-                            <span
-                                class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: Day 1', 'chroma-early-start'); ?></span>
-                        </div>
-                    </div>
-
-                    <!-- Step 2 -->
-                    <div class="relative flex items-center mb-16 group">
-                        <div
-                            class="absolute left-8 w-8 h-8 rounded-full bg-orange-500 border-4 border-white shadow -ml-4 md:left-1/2 group-hover:scale-110 transition-transform">
-                        </div>
-                        <div class="ml-20 md:ml-0 md:w-1/2 md:pr-12 text-left"></div>
-                        <div class="ml-20 md:ml-0 md:w-1/2 md:pl-12 text-left">
-                            <span
-                                class="text-xs font-bold text-orange-500 uppercase tracking-wide"><?php _e('Step 2', 'chroma-early-start'); ?></span>
-                            <h4 class="text-xl font-bold text-stone-900">
-                                <?php _e('Verification & Auth', 'chroma-early-start'); ?>
-                            </h4>
-                            <p class="text-stone-600 mt-2">
-                                <?php _e('We check your insurance benefits and submit the assessment request. We handle the communication with the payer so you don\'t have to wait on hold.', 'chroma-early-start'); ?>
-                            </p>
-                            <span
-                                class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: 3-5 Days', 'chroma-early-start'); ?></span>
-                        </div>
-                    </div>
-
-                    <!-- Step 3 -->
-                    <div class="relative flex items-center mb-16 md:flex-row-reverse group">
-                        <div
-                            class="absolute left-8 w-8 h-8 rounded-full bg-amber-500 border-4 border-white shadow -ml-4 md:left-1/2 group-hover:scale-110 transition-transform">
-                        </div>
-                        <div class="ml-20 md:ml-0 md:w-1/2 md:pl-12"></div>
-                        <div class="ml-20 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
-                            <span
-                                class="text-xs font-bold text-amber-500 uppercase tracking-wide"><?php _e('Step 3', 'chroma-early-start'); ?></span>
-                            <h4 class="text-xl font-bold text-stone-900">
-                                <?php _e('Skills Assessment', 'chroma-early-start'); ?>
-                            </h4>
-                            <p class="text-stone-600 mt-2">
-                                <?php _e('Our BCBA meets your child for a play-based skills assessment to identify strengths, barriers, and goals. We use tools like the VB-MAPP or ABLLS-R to build a baseline.', 'chroma-early-start'); ?>
-                            </p>
-                            <span
-                                class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: 1 Week', 'chroma-early-start'); ?></span>
-                        </div>
-                    </div>
-
-                    <!-- Step 4 -->
-                    <div class="relative flex items-center group">
-                        <div
-                            class="absolute left-8 w-8 h-8 rounded-full bg-green-500 border-4 border-white shadow -ml-4 md:left-1/2 group-hover:scale-110 transition-transform">
-                        </div>
-                        <div class="ml-20 md:ml-0 md:w-1/2 md:pr-12 text-left"></div>
-                        <div class="ml-20 md:ml-0 md:w-1/2 md:pl-12 text-left">
-                            <span
-                                class="text-xs font-bold text-green-500 uppercase tracking-wide"><?php _e('Step 4', 'chroma-early-start'); ?></span>
-                            <h4 class="text-xl font-bold text-stone-900">
-                                <?php _e('Start Therapy!', 'chroma-early-start'); ?>
-                            </h4>
-                            <p class="text-stone-600 mt-2">
-                                <?php _e('We build a schedule that works for your family, pair you with a clinical team (BCBA & RBTs), and begin the journey of growth and connection.', 'chroma-early-start'); ?>
-                            </p>
-                            <span
-                                class="inline-block mt-2 px-3 py-1 bg-stone-100 rounded-full text-xs font-bold text-stone-500"><?php _e('Timeline: Immediate openings', 'chroma-early-start'); ?></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
+            <?php
+            $intake_html = ob_get_clean();
+            set_transient($cache_key, $intake_html, DAY_IN_SECONDS);
+            echo $intake_html;
+        }
+        ?>
 
         <!-- What to Expect: First 30 Days -->
         <section class="py-24 bg-stone-900 text-white relative overflow-hidden">
