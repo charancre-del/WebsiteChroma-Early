@@ -1,4 +1,4 @@
-# HTML to WP Template Mapping: Chroma Early Start
+# HTML to WP Template Mapping: Early Start
 
 **Status:** Draft  
 **Reference:** `Index.html`, `locations.html`, Base Theme Structure
@@ -24,7 +24,7 @@ This document details how each provided HTML file maps to the WordPress Theme Hi
 | `blog.html` | `index.php` / `home.php` | Blog Archive | **Exists**. Standard WP. |
 
 ## 2. Gap Analysis: Pages in Base Theme (No HTML Provided)
-The following templates exist in `chroma-excellence-theme` but have no corresponding HTML file in the new Chroma Early Start asset drop. **Action Required:** Determine if these pages should be hidden, deleted, or kept with generic branding.
+The following templates exist in `chroma-excellence-theme` but have no corresponding HTML file in the new Early Start asset drop. **Action Required:** Determine if these pages should be hidden, deleted, or kept with generic branding.
 
 *   `page-schedule-tour.php`: Critical conversion page. *Recommendation: Adapt `contact us.html` styles.*
 *   `page-privacy.php`: Legal requirement.

@@ -1,4 +1,4 @@
-# Implementation Plan: Chroma Early Start (Whitelabel Clone)
+# Implementation Plan: Early Start (Whitelabel Clone)
 
 **Status:** Draft  
 **Version:** 1.0.0  
@@ -7,9 +7,9 @@
 
 ## 1. Executive Summary
 
-This document outlines the engineering process to clone the "Chroma Preschool Platform" (Base Theme) and adapt it for a new tenant, **"Chroma Early Start"** (Pediatric Therapy).
+This document outlines the engineering process to clone the "Early Start Preschool Platform" (Base Theme) and adapt it for a new tenant, **"Early Start"** (Pediatric Therapy).
 
-The "Chroma Early Start" entity represents a sister company with a distinct brand identity (Rose/Orange/Amber/Stone palette) and service focus (ABA, Speech, OT), but shares the same technological backbone (Locations, Programs, Director Portal).
+The "Early Start" entity represents a sister company with a distinct brand identity (Rose/Orange/Amber/Stone palette) and service focus (ABA, Speech, OT), but shares the same technological backbone (Locations, Programs, Director Portal).
 
 **Core Strategy:**
 We will follow the `WHITELABEL-GUIDE.md` protocol to duplicate the platform, then apply a "Tenant Layer" overlay using the provided HTML assets. We will strictly adhere to the base theme's **Native Meta Box** architecture (removing dependency on ACF for core performance) while mapping the new UI components to WordPress templates.
@@ -26,7 +26,7 @@ We will follow the `WHITELABEL-GUIDE.md` protocol to duplicate the platform, the
 *   **Key CPTs:** `location`, `program` (implied or needing creation), `chroma_school` (TV Dashboard).
 *   **Plugins:** `chroma-parent-portal` (React App), `chroma-school-dashboard` (TV Signage).
 
-### 2.2 Target Tenant (Chroma Early Start)
+### 2.2 Target Tenant (Early Start)
 *   **Assets:** Static HTML files (`Index.html`, `locations.html`, etc.) + Tailwind CDN + Lucide Icons.
 *   **Brand:**
     *   **Primary:** Rose 600 (`#e11d48`)
@@ -43,18 +43,18 @@ We will follow the `WHITELABEL-GUIDE.md` protocol to duplicate the platform, the
 **Objective:** Create a running, unbranded "Acme" copy of the platform.
 
 1.  **Clone & Rename:**
-    *   Duplicate `chroma-excellence-theme` -> `chroma-early-start-theme`.
+    *   Duplicate `chroma-excellence-theme` -> `earlystart-early-learning-theme`.
     *   Duplicate plugins: `chroma-parent-portal` -> `early-start-parent-portal`, etc.
 2.  **Namespace Refactor:**
     *   Replace `chroma_` function prefixes with `earlystart_` (carefully preserving platform core logic where shared).
-    *   Update `style.css` Theme Name to "Chroma Early Start Theme".
+    *   Update `style.css` Theme Name to "Early Start Theme".
     *   Update `package.json` names.
 3.  **Dependency Install:**
     *   Run `npm install` in the new theme.
     *   Run `composer install` (if applicable).
 
 ### Phase 2: Design System Integration (Day 1-2)
-**Objective:** Port the "Chroma Early Start" design tokens into the specific build pipeline.
+**Objective:** Port the "Early Start" design tokens into the specific build pipeline.
 
 1.  **Tailwind Config:**
     *   Update `tailwind.config.js`:
@@ -90,7 +90,7 @@ We will follow the `WHITELABEL-GUIDE.md` protocol to duplicate the platform, the
 **Objective:** Configure content entry points.
 
 1.  **CPT Locations:**
-    *   Verify `inc/cpt-locations.php` fields match "Chroma Early Start" needs (Service Areas, School Pickups, Hours).
+    *   Verify `inc/cpt-locations.php` fields match "Early Start" needs (Service Areas, School Pickups, Hours).
     *   Add any missing fields via Native Meta (e.g., specific "Therapy Services" checkboxes if different from base).
 2.  **Programs/Services:**
     *   **Action:** Enable `program` CPT.

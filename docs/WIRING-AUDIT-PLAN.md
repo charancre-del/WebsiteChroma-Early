@@ -1,4 +1,4 @@
-# Wiring Audit Plan: Chroma Early Start Theme
+# Wiring Audit Plan: Early Start Theme
 
 This plan details the exhaustive validation of all data flows from backend settings to frontend templates.
 

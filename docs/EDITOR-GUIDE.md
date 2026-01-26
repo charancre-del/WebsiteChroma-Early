@@ -1,6 +1,6 @@
-# Editor Guide: Chroma Early Start Theme
+# Editor Guide: Early Start Theme
 
-Welcome to the Chroma Early Start WordPress editor guide. This document explains how to manage content for your pediatric therapy website.
+Welcome to the Early Start WordPress editor guide. This document explains how to manage content for your pediatric therapy website.
 
 ## 1. Global Settings
 Access global brand settings (Logo, Phone, Social Links) via:
@@ -36,5 +36,5 @@ Each meta box contains fields for **Spanish Overrides** (prefixed with [ES]).
 
 ## 6. Technical Builds
 If you make changes to the layout or CSS classes (for developers):
-1.  Navigate to the theme folder: `chroma-early-start-theme/`
+1.  Navigate to the theme folder: `earlystart-early-learning-theme/`
 2.  Run `npm run build` to recompile the Tailwind CSS.

@@ -1,10 +1,10 @@
-# Build Notes: Chroma Early Start Theme
+# Build Notes: Early Start Theme
 
 ## Environment Setup
 *   **Operating System**: Windows
 *   **PHP Version**: 8.x (Target)
 *   **Node.js**: Expected for Tailwind build
-*   **Base Repo**: [chroma-excellence-theme](file:///c:/Users/chara/Documents/WebsiteChroma%20Early/base-repo/chroma-excellence-theme)
+*   **Base Repo**: [chroma-excellence-theme](file:///c:/Users/chara/Documents/WebsiteEarly Start%20Early/base-repo/chroma-excellence-theme)
 
 ## Local Commands
 ```powershell
@@ -22,22 +22,22 @@ To automatically create all core pages and populate meta boxes:
 
 ## Global Search & Replace (Namespace Refactor)
 The following mapping was used to refactor the base theme:
-- `chroma-excellence` -> `chroma-early-start` (Text Domain)
+- `chroma-excellence` -> `earlystart-early-learning` (Text Domain)
 - `chroma_` -> `earlystart_` (Function Prefix)
-- `Chroma_Excellence` -> `Chroma_Early_Start` (Class/Namespace)
-- `Chroma Excellence` -> `Chroma Early Start` (Human-readable)
+- `Early Start_Excellence` -> `Early Start_Early_Start` (Class/Namespace)
+- `Early Start Excellence` -> `Early Start` (Human-readable)
 
 ## CHANGELOG
 All changes are tracked below:
 
 | Date | File | Action | Reason |
 | :--- | :--- | :--- | :--- |
-| 2026-01-25 | `chroma-early-start-theme/` | Created | Cloned from `chroma-excellence-theme` |
+| 2026-01-25 | `earlystart-early-learning-theme/` | Created | Cloned from `chroma-excellence-theme` |
 
 ## Seed Content & Setup Steps
 To rapidly populate the site:
 
-1.  **Activate Theme**: Go to Appearance -> Themes and activate **Chroma Early Start Theme**.
+1.  **Activate Theme**: Go to Appearance -> Themes and activate **Early Start Theme**.
 2.  **Plugin Requirements**: None (ACF Dependency Removed).
 3.  **Create Core Pages**:
 

@@ -1,6 +1,6 @@
 # Rollback & Risk Mitigation Plan
 
-**Context:** Cloning "Chroma Excellence" to "Chroma Early Start".
+**Context:** Cloning "Early Start Excellence" to "Early Start".
 
 ## 1. Risk Register
 
@@ -25,7 +25,7 @@ If the new theme breaks the site:
     ```
 2.  **Theme Switch:**
     *   Log in via WP-CLI: `wp theme activate chroma-excellence-theme`
-    *   OR rename folder: `mv wp-content/themes/chroma-early-start-theme wp-content/themes/_BROKEN_chroma` (Forces WP to fall back).
+    *   OR rename folder: `mv wp-content/themes/earlystart-early-learning-theme wp-content/themes/_BROKEN_chroma` (Forces WP to fall back).
 
 ### 2.2 Database Rollback
 If a migration script corrupts data:
@@ -48,4 +48,4 @@ If a migration script corrupts data:
 
 *   **Rule 1:** NEVER run "Search & Replace" on Production without a Dry Run.
 *   **Rule 2:** All content imports must happen on Staging first.
-*   **Rule 3:** The `chroma-early-start-theme` directory must be fully isolated (no shared symlinks with base theme).
+*   **Rule 3:** The `earlystart-early-learning-theme` directory must be fully isolated (no shared symlinks with base theme).

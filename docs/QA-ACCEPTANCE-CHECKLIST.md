@@ -1,4 +1,4 @@
-# QA Acceptance Checklist: Chroma Early Start
+# QA Acceptance Checklist: Early Start
 
 **Status:** Draft  
 **Target:** QA Team / Product Owner
@@ -52,7 +52,7 @@
 *   [ ] **Total Blocking Time:** < 200ms.
 
 ### 3.2 SEO & Schema
-*   [ ] **Meta Titles:** `[Page Title] | Chroma Early Start`
+*   [ ] **Meta Titles:** `[Page Title] | Early Start`
 *   [ ] **Meta Descriptions:** Present and unique.
 *   [ ] **Schema.org:**
     *   `Organization` or `LocalBusiness` schema present on Home.

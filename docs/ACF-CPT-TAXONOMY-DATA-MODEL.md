@@ -1,4 +1,4 @@
-# Data Model: Chroma Early Start
+# Data Model: Early Start
 
 **Status:** Draft  
 **Implementation:** Native Meta Boxes (ACF-Compatible Schema)
