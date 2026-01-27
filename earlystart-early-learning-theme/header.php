@@ -47,17 +47,17 @@
 		/* Reserve space for dynamic text */
 
 		.logo-img {
-			aspect-ratio: attr(width) / attr(height);
 			width:
 				<?php echo absint(get_theme_mod('earlystart_logo_width_mobile', 56)); ?>
-				px;
+				px !important;
+			height: auto !important;
 		}
 
 		@media (min-width: 768px) {
 			.logo-img {
 				width:
 					<?php echo absint(get_theme_mod('earlystart_logo_width_desktop', 70)); ?>
-					px;
+					px !important;
 			}
 		}
 
@@ -214,11 +214,11 @@
 
 							<?php else: ?>
 								<!-- Fallback: Hardcoded Icon + Text if no custom logo -->
-								<div class="relative w-10 h-10 flex items-center justify-center">
+								<div class="relative flex items-center justify-center logo-img">
 									<div
 										class="absolute inset-0 bg-rose-100 rounded-full opacity-80 group-hover:scale-110 transition-transform">
 									</div>
-									<i data-lucide="puzzle" class="w-6 h-6 text-rose-700 relative z-10"></i>
+									<i data-lucide="puzzle" class="w-full h-full text-rose-700 relative z-10"></i>
 								</div>
 								<div class="flex flex-col">
 									<?php
