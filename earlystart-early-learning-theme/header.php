@@ -29,6 +29,11 @@
 		as="font" type="font/woff2" crossorigin>
 
 	<style id="earlystart-critical-css">
+		body {
+			background-color: #f8f7f5;
+			margin: 0;
+		}
+
 		/* CLS Stability: Reserve Header & Hero height */
 		#site-header-fixed-group {
 			min-height: 116px;
@@ -44,20 +49,19 @@
 			min-height: 1.1em;
 		}
 
-		/* Reserve space for dynamic text */
+		body {
+			background-color: #f8f7f5 !important;
+			color: #292524 !important; /* stone-800 */
+		}
 
 		.logo-img {
-			width:
-				<?php echo absint(get_theme_mod('earlystart_logo_width_mobile', 56)); ?>
-				px !important;
+			width: <?php echo absint(get_theme_mod('earlystart_logo_width_mobile', 56)); ?>px !important;
 			height: auto !important;
 		}
 
 		@media (min-width: 768px) {
 			.logo-img {
-				width:
-					<?php echo absint(get_theme_mod('earlystart_logo_width_desktop', 70)); ?>
-					px !important;
+				width: <?php echo absint(get_theme_mod('earlystart_logo_width_desktop', 70)); ?>px !important;
 			}
 		}
 
@@ -183,11 +187,20 @@
 
 								if ($logo):
 									?>
+									<?php
+									$logo_w = $logo[1];
+									$logo_h = $logo[2];
+									$aspect_ratio = ($logo_h > 0) ? $logo_w / $logo_h : 1;
+									$display_w_mobile = absint(get_theme_mod('earlystart_logo_width_mobile', 56));
+									$display_h_mobile = round($display_w_mobile / $aspect_ratio);
+									$display_w_desktop = absint(get_theme_mod('earlystart_logo_width_desktop', 70));
+									$display_h_desktop = round($display_w_desktop / $aspect_ratio);
+									?>
 									<img src="<?php echo esc_url($logo[0]); ?>"
 										alt="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>"
-										width="<?php echo esc_attr($logo[1]); ?>" height="<?php echo esc_attr($logo[2]); ?>"
+										width="<?php echo esc_attr($display_w_desktop); ?>" height="<?php echo esc_attr($display_h_desktop); ?>"
 										class="object-contain logo-img transition-transform duration-300 group-hover:scale-105"
-										style="aspect-ratio: <?php echo esc_attr($logo[1]); ?> / <?php echo esc_attr($logo[2]); ?>;"
+										style="aspect-ratio: <?php echo esc_attr($logo_w); ?> / <?php echo esc_attr($logo_h); ?>;"
 										fetchpriority="high">
 								<?php endif; ?>
 
