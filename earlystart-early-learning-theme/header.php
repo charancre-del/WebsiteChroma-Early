@@ -7,135 +7,8 @@
 	<?php // Canonical URL is handled by Yoast SEO and class-canonical-enforcer.php via wp_head ?>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link rel="preconnect" href="https://images.unsplash.com">
-	<link rel="preconnect" href="https://unpkg.com">
-	<link rel="dns-prefetch" href="https://images.unsplash.com">
-	<link rel="dns-prefetch" href="https://unpkg.com">
-
-	<?php // CLS Optimization: Preload Critical Local Fonts (Heading & Body) ?>
-	<link rel="preload"
-		href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/PlayfairDisplay-ExtraBold.woff2" as="font"
-		type="font/woff2" crossorigin>
-	<link rel="preload"
-		href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/PlayfairDisplay-SemiBold.woff2" as="font"
-		type="font/woff2" crossorigin>
-	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Bold.woff2" as="font"
-		type="font/woff2" crossorigin>
-	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-SemiBold.woff2"
-		as="font" type="font/woff2" crossorigin>
-	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Medium.woff2" as="font"
-		type="font/woff2" crossorigin>
-	<link rel="preload" href="<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Regular.woff2"
-		as="font" type="font/woff2" crossorigin>
-
-	<style id="earlystart-critical-css">
-		body {
-			background-color: #f8f7f5;
-			margin: 0;
-		}
-
-		/* CLS Stability: Reserve Header & Hero height */
-		#site-header-fixed-group {
-			min-height: 116px;
-		}
-
-		@media (max-width: 767px) {
-			#site-header-fixed-group {
-				min-height: 124px;
-			}
-		}
-
-		#main-content h1 {
-			min-height: 1.1em;
-		}
-
-		body {
-			background-color: #f8f7f5 !important;
-			color: #292524 !important; /* stone-800 */
-		}
-
-		.logo-img {
-			width: <?php echo absint(get_theme_mod('earlystart_logo_width_mobile', 56)); ?>px !important;
-			height: auto !important;
-		}
-
-		@media (min-width: 768px) {
-			.logo-img {
-				width: <?php echo absint(get_theme_mod('earlystart_logo_width_desktop', 70)); ?>px !important;
-			}
-		}
-
-		/* Darkened Brand Colors for WCAG AA Compliance (Enhanced) */
-		.text-chroma-red {
-			color: #964030 !important;
-		}
-
-		.bg-chroma-red {
-			background-color: #964030 !important;
-		}
-
-		.text-chroma-orange {
-			color: #A8551E !important;
-		}
-
-		.bg-chroma-orange {
-			background-color: #A8551E !important;
-		}
-
-		.text-chroma-green {
-			color: #4D5C54 !important;
-		}
-
-		.bg-chroma-green {
-			background-color: #4D5C54 !important;
-		}
-
-		.text-chroma-yellow {
-			color: #8C6B2F !important;
-		}
-
-		.bg-chroma-yellow {
-			background-color: #8C6B2F !important;
-		}
-
-		/* accessibility: touch targets (48px) */
-		@media (max-width: 768px) {
-
-			a,
-			button,
-			input,
-			select,
-			textarea,
-			[role="button"] {
-				min-width: 48px;
-				min-height: 48px;
-			}
-
-			/* Reset for inline links to preserve flow */
-			p a,
-			span a,
-			li a {
-				min-width: auto;
-				min-height: auto;
-				display: inline-block;
-				padding: 12px;
-				margin: -12px;
-			}
-		}
-
-		.fade-in-up {
-			animation: fadeInUp 0.8s ease forwards;
-			opacity: 0;
-			transform: translateY(20px);
-		}
-
-		@keyframes fadeInUp {
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-	</style>
+	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+		rel="stylesheet">
 
 	<?php wp_head(); ?>
 </head>
@@ -148,113 +21,39 @@
 
 	<!-- SITE HEADER WRAPPER -->
 	<div id="site-header-fixed-group" class="fixed top-0 w-full z-[100] shadow-sm">
-		<!-- TOP BAR / ANNOUNCEMENT -->
-		<div class="bg-stone-900 py-2.5 relative z-[110] overflow-hidden">
-			<div
-				class="absolute inset-0 bg-gradient-to-r from-rose-600/20 via-orange-600/20 to-amber-600/20 opacity-50 animate-pulse">
-			</div>
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-				<div
-					class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-8 text-white text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase text-center">
-					<span class="flex items-center gap-2">
-						<span class="w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping"></span>
-						<?php _e('Now Enrolling: Spring 2026 Bridge Program', 'earlystart-early-learning'); ?>
-					</span>
-					<span class="hidden md:block text-white/30">|</span>
-					<a href="<?php echo esc_url(earlystart_get_page_link('consultation')); ?>"
-						class="text-white hover:text-rose-200 transition-colors border-b border-white/40 pb-0.5">
-						<?php _e('Schedule Clinical Consultation', 'earlystart-early-learning'); ?>
-					</a>
-				</div>
-			</div>
-		</div>
 
 		<!-- NAVIGATION -->
 		<header class="w-full bg-white/95 backdrop-blur-xl border-b border-stone-100 relative z-[100]">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="flex justify-between items-center h-20">
 					<!-- Logo -->
-
-					<!-- Logo -->
-					<div class="flex-shrink-0 flex items-center">
-						<a href="<?php echo esc_url(home_url('/')); ?>"
-							class="flex items-center space-x-3 cursor-pointer group flex-shrink-0" rel="home">
-
-							<?php if (has_custom_logo()): ?>
-								<?php
-								$custom_logo_id = get_theme_mod('custom_logo');
-								$logo = wp_get_attachment_image_src($custom_logo_id, 'full');
-
-								if ($logo):
-									?>
-									<?php
-									$logo_w = $logo[1];
-									$logo_h = $logo[2];
-									$aspect_ratio = ($logo_h > 0) ? $logo_w / $logo_h : 1;
-									$display_w_mobile = absint(get_theme_mod('earlystart_logo_width_mobile', 56));
-									$display_h_mobile = round($display_w_mobile / $aspect_ratio);
-									$display_w_desktop = absint(get_theme_mod('earlystart_logo_width_desktop', 70));
-									$display_h_desktop = round($display_w_desktop / $aspect_ratio);
-									?>
-									<img src="<?php echo esc_url($logo[0]); ?>"
-										alt="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>"
-										width="<?php echo esc_attr($display_w_desktop); ?>" height="<?php echo esc_attr($display_h_desktop); ?>"
-										class="object-contain logo-img transition-transform duration-300 group-hover:scale-105"
-										style="aspect-ratio: <?php echo esc_attr($logo_w); ?> / <?php echo esc_attr($logo_h); ?>;"
-										fetchpriority="high">
-								<?php endif; ?>
-
-								<?php // Optional: Show text alongside logo if layout option is enabled, but for now just logo if present 
-									?>
-								<div class="hidden md:flex flex-col ml-3">
-									<?php
-									$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
-									$header_lines = explode("\n", $header_text_raw);
-									$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
-									$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
-									?>
-									<span
-										class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
-										<?php echo esc_html($primary_line); ?>
-									</span>
-									<?php if (!empty($secondary_line)): ?>
-										<span
-											class="text-[0.65rem] uppercase tracking-widest text-stone-700 font-semibold hidden lg:block">
-											<?php echo esc_html($secondary_line); ?>
-										</span>
-									<?php endif; ?>
-								</div>
-
-							<?php else: ?>
-								<!-- Fallback: Hardcoded Icon + Text if no custom logo -->
-								<div class="relative flex items-center justify-center logo-img">
-									<div
-										class="absolute inset-0 bg-rose-100 rounded-full opacity-80 group-hover:scale-110 transition-transform">
-									</div>
-									<i data-lucide="puzzle" class="w-full h-full text-rose-700 relative z-10"></i>
-								</div>
-								<div class="flex flex-col">
-									<?php
-									$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
-									$header_lines = explode("\n", $header_text_raw);
-									$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
-									$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
-									?>
-									<span
-										class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
-										<?php echo esc_html($primary_line); ?>
-									</span>
-									<?php if (!empty($secondary_line)): ?>
-										<span
-											class="text-[0.65rem] uppercase tracking-widest text-stone-700 font-semibold hidden md:block">
-											<?php echo esc_html($secondary_line); ?>
-										</span>
-									<?php endif; ?>
-								</div>
+					<a href="<?php echo esc_url(home_url('/')); ?>"
+						class="flex items-center space-x-3 cursor-pointer group flex-shrink-0">
+						<div class="relative w-10 h-10 flex items-center justify-center">
+							<div
+								class="absolute inset-0 bg-rose-100 rounded-full opacity-80 group-hover:scale-110 transition-transform">
+							</div>
+							<i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
+						</div>
+						<div class="flex flex-col">
+							<?php
+							$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
+							$header_lines = explode("\n", $header_text_raw);
+							$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
+							$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
+							?>
+							<span
+								class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
+								<?php echo esc_html($primary_line); ?>
+							</span>
+							<?php if (!empty($secondary_line)): ?>
+								<span
+									class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
+									<?php echo esc_html($secondary_line); ?>
+								</span>
 							<?php endif; ?>
-						</a>
-					</div>
-
+						</div>
+					</a>
 
 					<!-- Desktop Menu -->
 					<nav class="hidden xl:flex space-x-1 items-center">
@@ -262,7 +61,7 @@
 
 						<div class="pl-4">
 							<?php
-							$cta_url = earlystart_get_theme_mod('earlystart_book_tour_url', earlystart_get_page_link('contact'));
+							$cta_url = earlystart_get_theme_mod('earlystart_book_tour_url', home_url('/contact/'));
 							$cta_text = earlystart_get_theme_mod('earlystart_header_cta_text', 'Get Started');
 							?>
 							<a href="<?php echo esc_url($cta_url); ?>"
@@ -275,8 +74,8 @@
 					<!-- Mobile Menu Button -->
 					<div class="xl:hidden flex items-center">
 						<button data-mobile-nav-toggle
-							class="text-stone-700 hover:text-rose-700 p-3 focus:outline-none bg-stone-50 rounded-lg transition-colors border border-stone-200"
-							aria-label="<?php _e('Open main menu', 'earlystart-early-learning'); ?>">
+							class="text-stone-600 hover:text-rose-600 p-3 focus:outline-none bg-stone-50 rounded-lg transition-colors border border-stone-200"
+							aria-label="Toggle menu">
 							<i data-lucide="menu" class="w-6 h-6"></i>
 						</button>
 					</div>
@@ -295,7 +94,7 @@
 		</header>
 	</div>
 
-	<main id="main-content" class="flex-grow pt-[124px] md:pt-[104px]">
+	<main id="main-content" class="flex-grow pt-20">
 		<?php
 		// Disabled to prevent duplication with external plugins
 		// do_action('earlystart_breadcrumbs'); 
