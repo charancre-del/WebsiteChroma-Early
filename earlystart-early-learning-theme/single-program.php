@@ -251,7 +251,8 @@ while (have_posts()):
 										2</div>
 									<div>
 										<h4 class="font-bold mb-1">
-											<?php _e('Clinical Tour', 'earlystart-early-learning'); ?></h4>
+											<?php _e('Clinical Tour', 'earlystart-early-learning'); ?>
+										</h4>
 										<p class="text-xs text-stone-300">
 											<?php _e('Tour our facilities and meet our clinical team.', 'earlystart-early-learning'); ?>
 										</p>
@@ -312,7 +313,7 @@ while (have_posts()):
 							r: {
 								angleLines: { color: '#f3f4f6' },
 								grid: { color: '#f3f4f6' },
-								pointLabels: { font: { family: 'Plus Jakarta Sans', size: 12, weight: '600' } },
+								pointLabels: { font: { family: "'Outfit', sans-serif", size: 12, weight: '600' } },
 								ticks: { display: false }
 							}
 						},
