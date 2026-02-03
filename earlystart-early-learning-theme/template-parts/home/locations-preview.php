@@ -32,20 +32,26 @@ $grouped = $locations_data['grouped'] ?? array();
             </a>
         </div>
 
+        <!-- Map Section -->
+        <?php if (!empty($locations_data['map_points'])): ?>
+            <div class="mb-16 rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 h-[400px] lg:h-[500px] w-full relative z-10 fade-in-up"
+                data-chroma-map="true"
+                data-chroma-locations="<?php echo esc_attr(json_encode($locations_data['map_points'])); ?>">
+            </div>
+        <?php endif; ?>
+
         <?php if (!empty($grouped)): ?>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php
                 $count = 0;
                 foreach ($grouped as $group):
                     foreach ($group['locations'] as $location):
-                        if ($count >= 3)
-                            break 2; // Show only 3 for preview
                         $count++;
 
-                        $image = get_the_post_thumbnail_url($location['id'], 'large') ?: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp';
+                        $image = get_the_post_thumbnail_url($location['id'] ?? 0, 'large') ?: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp';
                         ?>
                         <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border border-stone-100 group fade-in-up"
-                            style="transition-delay: <?php echo $count * 100; ?>ms">
+                            style="transition-delay: <?php echo min($count * 100, 1000); ?>ms">
                             <div class="relative h-64 overflow-hidden">
                                 <?php echo earlystart_responsive_unsplash(
                                     $image,

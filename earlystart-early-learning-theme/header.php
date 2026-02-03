@@ -22,33 +22,44 @@
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="flex justify-between items-center h-20">
 					<!-- Logo -->
-					<a href="<?php echo esc_url(home_url('/')); ?>"
-						class="flex items-center space-x-3 cursor-pointer group flex-shrink-0">
-						<div class="relative w-10 h-10 flex items-center justify-center">
-							<div
-								class="absolute inset-0 bg-rose-100 rounded-full opacity-80 group-hover:scale-110 transition-transform">
-							</div>
-							<i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
-						</div>
-						<div class="flex flex-col">
-							<?php
-							$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
-							$header_lines = explode("\n", $header_text_raw);
-							$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
-							$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
+					<!-- Logo -->
+					<div class="flex items-center flex-shrink-0">
+						<?php
+						if (has_custom_logo()) {
+							the_custom_logo();
+						} else {
 							?>
-							<span
-								class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
-								<?php echo esc_html($primary_line); ?>
-							</span>
-							<?php if (!empty($secondary_line)): ?>
-								<span
-									class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
-									<?php echo esc_html($secondary_line); ?>
-								</span>
-							<?php endif; ?>
-						</div>
-					</a>
+							<a href="<?php echo esc_url(home_url('/')); ?>"
+								class="flex items-center space-x-3 cursor-pointer group">
+								<div class="relative w-10 h-10 flex items-center justify-center">
+									<div
+										class="absolute inset-0 bg-rose-100 rounded-full opacity-80 group-hover:scale-110 transition-transform">
+									</div>
+									<i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
+								</div>
+								<div class="flex flex-col">
+									<?php
+									$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
+									$header_lines = explode("\n", $header_text_raw);
+									$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
+									$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
+									?>
+									<span
+										class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
+										<?php echo esc_html($primary_line); ?>
+									</span>
+									<?php if (!empty($secondary_line)): ?>
+										<span
+											class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
+											<?php echo esc_html($secondary_line); ?>
+										</span>
+									<?php endif; ?>
+								</div>
+							</a>
+							<?php
+						}
+						?>
+					</div>
 
 					<!-- Desktop Menu -->
 					<nav class="hidden xl:flex space-x-1 items-center">
