@@ -14,6 +14,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Temporary debug: enable error display
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    @ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+}
+
 // Define Constants
 define('EARLYSTART_SEO_VERSION', '1.0.1');
 define('EARLYSTART_SEO_PATH', plugin_dir_path(__FILE__));
