@@ -1,141 +1,716 @@
 <?php
 /**
  * Spanish Content Meta Box
+ * Allows manual overrides for Spanish translations of content and meta fields.
  *
  * @package earlystart_Excellence
  * @since 1.0.0
  */
 
+// Exit if accessed directly
 if (!defined('ABSPATH')) {
     exit;
 }
 
 class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_Box_Base
 {
+    /**
+     * Get the meta box ID
+     *
+     * @return string
+     */
     public function get_id()
     {
         return 'earlystart_spanish_content';
     }
+
+    /**
+     * Get the meta box title
+     *
+     * @return string
+     */
     public function get_title()
     {
-        return __('Spanish Content Overrides', 'earlystart-seo-pro');
+        return __('Spanish Content Overrides', 'earlystart-excellence');
     }
+
+    /**
+     * Get post types this meta box applies to
+     *
+     * @return array
+     */
     public function get_post_types()
     {
         return ['page', 'post', 'location', 'program'];
     }
 
+    /**
+     * Render the meta box fields
+     *
+     * @param WP_Post $post Current post object
+     */
     public function render_fields($post)
     {
+        // Universal Fields
         $this->render_universal_fields($post);
+
+        // Type-Specific Fields
         $post_type = get_post_type($post);
         if ($post_type === 'location') {
             $this->render_location_fields($post);
         } elseif ($post_type === 'program') {
             $this->render_program_fields($post);
         }
-
+        
+        // Template-Specific Fields
+        $template = get_page_template_slug($post->ID);
+        if (empty($template) && (int)$post->ID === (int)get_option('page_on_front')) {
+            $template = 'front-page.php';
+        }
+        if ($template) {
+            $this->render_template_fields($post, $template);
+        }
+        
+        // AI Auto-Fill Button
         echo '<div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #ddd;">';
         echo '<button type="button" id="earlystart-auto-translate-btn" class="button button-primary button-large">';
-        echo '<span class="dashicons dashicons-translation"></span> ' . __('Auto-Fill with AI Translation', 'earlystart-seo-pro');
+        echo '<span class="dashicons dashicons-translation" style="line-height: 28px; margin-right: 5px;"></span> ' . __('Auto-Fill with AI Translation', 'earlystart-excellence');
         echo '</button>';
+        echo ' <button type="button" id="earlystart-diff-preview-btn" class="button button-secondary">';
+        echo '<span class="dashicons dashicons-controls-repeat"></span> ' . __('Diff Preview', 'earlystart-excellence');
+        echo '</button>';
+        echo ' <button type="button" id="earlystart-rollback-btn" class="button button-secondary">';
+        echo '<span class="dashicons dashicons-backup"></span> ' . __('Rollback', 'earlystart-excellence');
+        echo '</button>';
+        echo '<span class="spinner" id="earlystart-translate-spinner" style="float: none; margin-left: 10px;"></span>';
+        echo '<span id="earlystart-translate-status" style="margin-left: 10px; font-weight: bold;"></span>';
+        echo '<p class="description" style="margin-top: 5px;">' . __('Automatically translates the current English content and populates the fields above. Review before saving.', 'earlystart-excellence') . '</p>';
         echo '</div>';
 
+        // Diff Preview Modal
+        ?>
+        <div id="earlystart-diff-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:99999;">
+            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:30px; border-radius:8px; max-width:900px; width:90%; max-height:80vh; overflow:auto;">
+                <h2 style="margin-top:0;"><?php _e('Translation Diff Preview', 'earlystart-excellence'); ?></h2>
+                <div id="earlystart-diff-content" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                    <div>
+                        <h4>English (Original)</h4>
+                        <pre id="earlystart-diff-en" style="white-space:pre-wrap; background:#f5f5f5; padding:15px; border-radius:4px; max-height:300px; overflow:auto;"></pre>
+                    </div>
+                    <div>
+                        <h4>Spanish (Translation)</h4>
+                        <pre id="earlystart-diff-es" style="white-space:pre-wrap; background:#e8f5e9; padding:15px; border-radius:4px; max-height:300px; overflow:auto;"></pre>
+                    </div>
+                </div>
+                <div style="margin-top:20px; text-align:right;">
+                    <button type="button" id="earlystart-diff-close" class="button button-primary"><?php _e('Close', 'earlystart-excellence'); ?></button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Rollback Modal -->
+        <div id="earlystart-rollback-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:99999;">
+            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:30px; border-radius:8px; max-width:600px; width:90%;">
+                <h2 style="margin-top:0;"><?php _e('Translation History', 'earlystart-excellence'); ?></h2>
+                <div id="earlystart-rollback-list"></div>
+                <div style="margin-top:20px; text-align:right;">
+                    <button type="button" id="earlystart-rollback-close" class="button"><?php _e('Close', 'earlystart-excellence'); ?></button>
+                </div>
+            </div>
+        </div>
+        <?php
+
+        // JS for Translation
         ?>
         <script>
-            jQuery(document).ready(function ($) {
-                $('#earlystart-auto-translate-btn').click(function (e) {
-                    e.preventDefault();
-                    if (!confirm('This will overwrite any existing Spanish content. Continue?')) return;
-                    var btn = $(this);
-                    btn.prop('disabled', true).text('Translating...');
-                    $.post(ajaxurl, {
-                        action: 'earlystart_auto_translate_post',
-                        post_id: <?php echo $post->ID; ?>,
-                            nonce: '<?php echo wp_create_nonce('earlystart_seo_nonce'); ?>'
-                }, function (response) {
-                    btn.prop('disabled', false).text('Auto-Fill with AI Translation');
-                    if (response.success) {
-                        location.reload();
+        jQuery(document).ready(function($) {
+            $('#earlystart-auto-translate-btn').click(function(e) {
+                e.preventDefault();
+                var btn = $(this);
+                var spinner = $('#earlystart-translate-spinner');
+                var status = $('#earlystart-translate-status');
+                
+                if(!confirm('This will overwrite any existing Spanish content in the fields. Continue?')) {
+                    return;
+                }
+
+                btn.prop('disabled', true);
+                spinner.addClass('is-active');
+                status.text(' Translating... please wait.');
+
+                // Collect English Fields
+                // Note: We need to grab them from the editor if possible, or assume saved post data?
+                // Ideally, we translate what's currently on screen or in DB.
+                // For simplicity, let's trigger a server-side generation based on Post ID.
+ 
+                $.post(ajaxurl, {
+                    action: 'earlystart_auto_translate_post',
+                    post_id: <?php echo $post->ID; ?>,
+                    force: 'true',
+                    nonce: '<?php echo wp_create_nonce('earlystart_seo_nonce'); ?>'
+                }, function(response) {
+                    btn.prop('disabled', false);
+                    spinner.removeClass('is-active');
+                    
+                    if(response.success) {
+                        var data = response.data;
+                        status.text(' Done!').css('color', 'green');
+                        
+                        // Populate Fields
+                        if(data._earlystart_es_title) $('#_earlystart_es_title').val(data._earlystart_es_title);
+                        if(data._earlystart_es_content) $('#_earlystart_es_content').val(data._earlystart_es_content);
+                        if(data._earlystart_es_excerpt) $('#_earlystart_es_excerpt').val(data._earlystart_es_excerpt);
+                        
+                        // Location
+                        if(data._earlystart_es_location_city) $('#_earlystart_es_location_city').val(data._earlystart_es_location_city);
+                        if(data._earlystart_es_location_address) $('#_earlystart_es_location_address').val(data._earlystart_es_location_address);
+                        if(data._earlystart_es_location_hero_subtitle) $('#_earlystart_es_location_hero_subtitle').val(data._earlystart_es_location_hero_subtitle);
+                        if(data._earlystart_es_location_tagline) $('#_earlystart_es_location_tagline').val(data._earlystart_es_location_tagline);
+                        if(data._earlystart_es_location_description) $('#_earlystart_es_location_description').val(data._earlystart_es_location_description);
+                        if(data._earlystart_es_location_ages_served) $('#_earlystart_es_location_ages_served').val(data._earlystart_es_location_ages_served);
+                        if(data._earlystart_es_location_open_text) $('#_earlystart_es_location_open_text').val(data._earlystart_es_location_open_text);
+                        if(data._earlystart_es_location_director_bio) $('#_earlystart_es_location_director_bio').val(data._earlystart_es_location_director_bio);
+                        if(data._earlystart_es_location_hero_review_text) $('#_earlystart_es_location_hero_review_text').val(data._earlystart_es_location_hero_review_text);
+                        if(data._earlystart_es_location_hero_review_author) $('#_earlystart_es_location_hero_review_author').val(data._earlystart_es_location_hero_review_author);
+                        if(data._earlystart_es_location_seo_content_title) $('#_earlystart_es_location_seo_content_title').val(data._earlystart_es_location_seo_content_title);
+                        if(data._earlystart_es_location_seo_content_text) $('#_earlystart_es_location_seo_content_text').val(data._earlystart_es_location_seo_content_text);
+                        if(data._earlystart_es_location_school_pickups) $('#_earlystart_es_location_school_pickups').val(data._earlystart_es_location_school_pickups);
+                        
+                        // Program
+                        if(data._earlystart_es_program_age_range) $('#_earlystart_es_program_age_range').val(data._earlystart_es_program_age_range);
+                        if(data._earlystart_es_program_cta_text) $('#_earlystart_es_program_cta_text').val(data._earlystart_es_program_cta_text);
+                        if(data._earlystart_es_program_features) $('#_earlystart_es_program_features').val(data._earlystart_es_program_features);
+                        if(data._earlystart_es_program_hero_title) $('#_earlystart_es_program_hero_title').val(data._earlystart_es_program_hero_title);
+                        if(data._earlystart_es_program_hero_description) $('#_earlystart_es_program_hero_description').val(data._earlystart_es_program_hero_description);
+                        if(data._earlystart_es_program_prism_description) $('#_earlystart_es_program_prism_description').val(data._earlystart_es_program_prism_description);
+                        if(data._earlystart_es_program_prism_focus_items) $('#_earlystart_es_program_prism_focus_items').val(data._earlystart_es_program_prism_focus_items);
+                        if(data._earlystart_es_program_schedule_title) $('#_earlystart_es_program_schedule_title').val(data._earlystart_es_program_schedule_title);
+                        if(data._earlystart_es_program_schedule_items) $('#_earlystart_es_program_schedule_items').val(data._earlystart_es_program_schedule_items);
+
+                        // Generic Template Fields and others
+                        Object.keys(data).forEach(function(key) {
+                            if (key.startsWith('_earlystart_es_')) {
+                                var $field = $('#' + key);
+                                if ($field.length) {
+                                    $field.val(data[key]);
+                                }
+                            }
+                        });
+                        
                     } else {
-                        alert(response.data.message || 'Error');
+                        status.text(' Error: ' + (response.data.message || 'Unknown')).css('color', 'red');
+                    }
+                }).fail(function() {
+                     btn.prop('disabled', false);
+                     spinner.removeClass('is-active');
+                     status.text(' Request Failed').css('color', 'red');
+                });
+            });
+
+            // DIFF PREVIEW
+            $('#earlystart-diff-preview-btn').click(function() {
+                var enContent = '<?php echo esc_js($post->post_title); ?>\n\n<?php echo esc_js(substr($post->post_content, 0, 500)); ?>...';
+                var esContent = $('#_earlystart_es_title').val() + '\n\n' + $('#_earlystart_es_content').val().substring(0, 500) + '...';
+                
+                $('#earlystart-diff-en').text(enContent);
+                $('#earlystart-diff-es').text(esContent || '(No Spanish translation yet)');
+                $('#earlystart-diff-modal').fadeIn(200);
+            });
+
+            $('#earlystart-diff-close, #earlystart-diff-modal').click(function(e) {
+                if(e.target === this) $('#earlystart-diff-modal').fadeOut(200);
+            });
+
+            // ROLLBACK
+            $('#earlystart-rollback-btn').click(function() {
+                $.post(ajaxurl, {
+                    action: 'earlystart_get_translation_history',
+                    post_id: <?php echo $post->ID; ?>,
+                    nonce: '<?php echo wp_create_nonce('earlystart_seo_nonce'); ?>'
+                }, function(response) {
+                    if(response.success && response.data.history.length > 0) {
+                        var html = '<table class="wp-list-table widefat striped"><thead><tr><th>Date</th><th>Title</th><th></th></tr></thead><tbody>';
+                        response.data.history.forEach(function(item, idx) {
+                            html += '<tr><td>' + item.date + '</td><td>' + item.title.substring(0,50) + '...</td>';
+                            html += '<td><button type="button" class="button earlystart-restore-version" data-index="' + idx + '">Restore</button></td></tr>';
+                        });
+                        html += '</tbody></table>';
+                        $('#earlystart-rollback-list').html(html);
+                    } else {
+                        $('#earlystart-rollback-list').html('<p>No translation history available.</p>');
+                    }
+                    $('#earlystart-rollback-modal').fadeIn(200);
+                });
+            });
+
+            $('#earlystart-rollback-close, #earlystart-rollback-modal').click(function(e) {
+                if(e.target === this) $('#earlystart-rollback-modal').fadeOut(200);
+            });
+
+            $(document).on('click', '.earlystart-restore-version', function() {
+                var idx = $(this).data('index');
+                $.post(ajaxurl, {
+                    action: 'earlystart_restore_translation',
+                    post_id: <?php echo $post->ID; ?>,
+                    version_index: idx,
+                    nonce: '<?php echo wp_create_nonce('earlystart_seo_nonce'); ?>'
+                }, function(response) {
+                    if(response.success) {
+                        location.reload();
                     }
                 });
             });
-                });
+        });
         </script>
         <?php
     }
 
+    /**
+     * Render universal fields (Title, Content, Excerpt)
+     *
+     * @param WP_Post $post
+     */
     private function render_universal_fields($post)
     {
-        echo '<div class="earlystart-section-header"><h3>Core Content</h3></div>';
+        $es_title = get_post_meta($post->ID, '_earlystart_es_title', true);
+        $es_content = get_post_meta($post->ID, '_earlystart_es_content', true);
+        $es_excerpt = get_post_meta($post->ID, '_earlystart_es_excerpt', true);
+
+        echo '<div class="earlystart-section-header"><h3>' . __('Core Content', 'earlystart-excellence') . '</h3></div>';
+        echo '<p class="description">' . __('Provide Spanish translations for the main content areas. If left blank, the system may attempt to auto-translate or fallback to English.', 'earlystart-excellence') . '</p>';
+
         $this->render_text_field([
             'id' => '_earlystart_es_title',
-            'label' => 'Spanish Page Title',
-            'value' => get_post_meta($post->ID, '_earlystart_es_title', true),
+            'label' => __('Spanish Page Title', 'earlystart-excellence'),
+            'value' => $es_title,
             'placeholder' => get_the_title($post),
+            'description' => __('Translated title of the page.', 'earlystart-excellence'),
         ]);
+
+        // Editor for Content (Simulated with textarea for now, or use wp_editor if possible)
+        // Using wp_editor inside a meta box can be tricky with AJAX saves, but let's try a standard textarea first 
+        // to match the base class style, or just direct HTML output.
+        // Given existing base class, let's use a large textarea.
         $this->render_textarea_field([
             'id' => '_earlystart_es_content',
-            'label' => 'Spanish Main Content',
-            'value' => get_post_meta($post->ID, '_earlystart_es_content', true),
-            'rows' => 8,
+            'label' => __('Spanish Main Content', 'earlystart-excellence'),
+            'value' => $es_content,
+            'rows' => 12,
+            'description' => __('Translated main content (HTML supported).', 'earlystart-excellence'),
         ]);
+
         $this->render_textarea_field([
             'id' => '_earlystart_es_excerpt',
-            'label' => 'Spanish Excerpt',
-            'value' => get_post_meta($post->ID, '_earlystart_es_excerpt', true),
+            'label' => __('Spanish Excerpt/Introduction', 'earlystart-excellence'),
+            'value' => $es_excerpt,
+            'rows' => 4,
+            'description' => __('Short summary or intro text.', 'earlystart-excellence'),
+        ]);
+
+        // SEO-Specific Fields (#20)
+        echo '<div class="earlystart-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . __('Spanish SEO Fields', 'earlystart-excellence') . '</h3></div>';
+        
+        $es_seo_title = get_post_meta($post->ID, '_earlystart_es_seo_title', true);
+        $es_meta_desc = get_post_meta($post->ID, '_earlystart_es_meta_description', true);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_seo_title',
+            'label' => __('Spanish SEO Title', 'earlystart-excellence'),
+            'value' => $es_seo_title,
+            'placeholder' => $es_title ?: get_the_title($post),
+            'description' => __('Custom title for search results (60 chars max).', 'earlystart-excellence'),
+        ]);
+
+        $this->render_textarea_field([
+            'id' => '_earlystart_es_meta_description',
+            'label' => __('Spanish Meta Description', 'earlystart-excellence'),
+            'value' => $es_meta_desc,
             'rows' => 3,
+            'description' => __('Description for search results (160 chars max).', 'earlystart-excellence'),
         ]);
     }
 
+    /**
+     * Render specific fields for Locations
+     *
+     * @param WP_Post $post
+     */
     private function render_location_fields($post)
     {
-        echo '<div class="earlystart-section-header"><h3>Location Details</h3></div>';
+        $city_es = get_post_meta($post->ID, '_earlystart_es_location_city', true);
+        $address_es = get_post_meta($post->ID, '_earlystart_es_location_address', true);
+        $subtitle_es = get_post_meta($post->ID, '_earlystart_es_location_hero_subtitle', true);
+        $ages_es = get_post_meta($post->ID, '_earlystart_es_location_ages_served', true);
+        $open_text_es = get_post_meta($post->ID, '_earlystart_es_location_open_text', true);
+
+        echo '<div class="earlystart-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . __('Location Details', 'earlystart-excellence') . '</h3></div>';
+
         $this->render_text_field([
             'id' => '_earlystart_es_location_city',
-            'label' => 'City (Spanish)',
-            'value' => get_post_meta($post->ID, '_earlystart_es_location_city', true),
+            'label' => __('City (Spanish)', 'earlystart-excellence'),
+            'value' => $city_es,
+            'placeholder' => get_post_meta($post->ID, 'location_city', true),
         ]);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_location_address',
+            'label' => __('Address (Spanish)', 'earlystart-excellence'),
+            'value' => $address_es,
+            'placeholder' => get_post_meta($post->ID, 'location_address', true),
+            'description' => __('Only translate if necessary (e.g. "Calle" vs "Street").', 'earlystart-excellence'),
+        ]);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_location_hero_subtitle',
+            'label' => __('Hero Subtitle', 'earlystart-excellence'),
+            'value' => $subtitle_es,
+            'placeholder' => get_post_meta($post->ID, 'location_hero_subtitle', true),
+        ]);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_location_ages_served',
+            'label' => __('Ages Served', 'earlystart-excellence'),
+            'value' => $ages_es,
+            'placeholder' => get_post_meta($post->ID, 'location_ages_served', true),
+        ]);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_location_tagline',
+            'label' => __('Tagline (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_location_tagline', true),
+            'placeholder' => get_post_meta($post->ID, 'location_tagline', true),
+        ]);
+
         $this->render_textarea_field([
             'id' => '_earlystart_es_location_description',
-            'label' => 'Description (Spanish)',
+            'label' => __('Main Description (Spanish)', 'earlystart-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_location_description', true),
+            'rows' => 4,
+            'placeholder' => get_post_meta($post->ID, 'location_description', true),
+        ]);
+
+        $this->render_textarea_field([
+            'id' => '_earlystart_es_location_director_bio',
+            'label' => __('Director Bio (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_location_director_bio', true),
+            'rows' => 4,
+            'placeholder' => get_post_meta($post->ID, 'location_director_bio', true),
+        ]);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_location_hero_review_text',
+            'label' => __('Hero Review Text (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_location_hero_review_text', true),
+            'placeholder' => get_post_meta($post->ID, 'location_hero_review_text', true),
+        ]);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_location_hero_review_author',
+            'label' => __('Hero Review Author (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_location_hero_review_author', true),
+            'placeholder' => get_post_meta($post->ID, 'location_hero_review_author', true),
+        ]);
+
+        echo '<div class="earlystart-section-header" style="margin-top: 20px; border-top: 1px dotted #ccc;"><h4>' . __('SEO Content Section', 'earlystart-excellence') . '</h4></div>';
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_location_seo_content_title',
+            'label' => __('SEO Content Title (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_location_seo_content_title', true),
+            'placeholder' => get_post_meta($post->ID, 'location_seo_content_title', true),
+        ]);
+
+        $this->render_textarea_field([
+            'id' => '_earlystart_es_location_seo_content_text',
+            'label' => __('SEO Content Text (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_location_seo_content_text', true),
+            'rows' => 4,
+            'placeholder' => get_post_meta($post->ID, 'location_seo_content_text', true),
+        ]);
+
+        $this->render_textarea_field([
+            'id' => '_earlystart_es_location_school_pickups',
+            'label' => __('School Pickups (One per line)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_location_school_pickups', true),
+            'rows' => 4,
+            'placeholder' => get_post_meta($post->ID, 'location_school_pickups', true),
+        ]);
+        
+        $this->render_text_field([
+            'id' => '_earlystart_es_location_open_text',
+            'label' => __('Open Text (e.g. "Now Open")', 'earlystart-excellence'),
+            'value' => $open_text_es,
         ]);
     }
 
+    /**
+     * Render specific fields for Programs
+     *
+     * @param WP_Post $post
+     */
     private function render_program_fields($post)
     {
-        echo '<div class="earlystart-section-header"><h3>Program Details</h3></div>';
+        $age_range_es = get_post_meta($post->ID, '_earlystart_es_program_age_range', true);
+        $cta_text_es = get_post_meta($post->ID, '_earlystart_es_program_cta_text', true);
+        $features_es = get_post_meta($post->ID, '_earlystart_es_program_features', true);
+
+        echo '<div class="earlystart-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . __('Program Details', 'earlystart-excellence') . '</h3></div>';
+
         $this->render_text_field([
             'id' => '_earlystart_es_program_age_range',
-            'label' => 'Age Range (Spanish)',
-            'value' => get_post_meta($post->ID, '_earlystart_es_program_age_range', true),
+            'label' => __('Age Range', 'earlystart-excellence'),
+            'value' => $age_range_es,
+            'placeholder' => get_post_meta($post->ID, 'program_age_range', true),
+        ]);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_program_hero_title',
+            'label' => __('Hero Title (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_program_hero_title', true),
+            'placeholder' => get_post_meta($post->ID, 'program_hero_title', true),
+        ]);
+
+        $this->render_textarea_field([
+            'id' => '_earlystart_es_program_hero_description',
+            'label' => __('Hero Description (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_program_hero_description', true),
+            'rows' => 4,
+            'placeholder' => get_post_meta($post->ID, 'program_hero_description', true),
+        ]);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_program_prism_title',
+            'label' => __('Prismpath Title (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_program_prism_title', true),
+            'placeholder' => get_post_meta($post->ID, 'program_prism_title', true),
+        ]);
+
+        $this->render_textarea_field([
+            'id' => '_earlystart_es_program_prism_description',
+            'label' => __('Prismpath Description (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_program_prism_description', true),
+            'rows' => 4,
+            'placeholder' => get_post_meta($post->ID, 'program_prism_description', true),
+        ]);
+
+        $this->render_textarea_field([
+            'id' => '_earlystart_es_program_prism_focus_items',
+            'label' => __('Prism Focus Items (One per line)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_program_prism_focus_items', true),
+            'rows' => 4,
+            'placeholder' => get_post_meta($post->ID, 'program_prism_focus_items', true),
+        ]);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_program_schedule_title',
+            'label' => __('Schedule Title (Spanish)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_program_schedule_title', true),
+            'placeholder' => get_post_meta($post->ID, 'program_schedule_title', true),
+        ]);
+
+        $this->render_textarea_field([
+            'id' => '_earlystart_es_program_schedule_items',
+            'label' => __('Schedule Items (Time|Title|Copy, one per line)', 'earlystart-excellence'),
+            'value' => get_post_meta($post->ID, '_earlystart_es_program_schedule_items', true),
+            'rows' => 6,
+            'placeholder' => get_post_meta($post->ID, 'program_schedule_items', true),
+        ]);
+
+        $this->render_text_field([
+            'id' => '_earlystart_es_program_cta_text',
+            'label' => __('CTA Button Text', 'earlystart-excellence'),
+            'value' => $cta_text_es,
+            'placeholder' => get_post_meta($post->ID, 'program_cta_text', true),
+        ]);
+
+        $this->render_textarea_field([
+            'id' => '_earlystart_es_program_features',
+            'label' => __('Program Features (One per line)', 'earlystart-excellence'),
+            'value' => $features_es,
+            'rows' => 6,
+            'placeholder' => get_post_meta($post->ID, 'program_features', true),
         ]);
     }
 
-    public function save_fields($post_id)
+    /**
+     * Render fields for specific page templates
+     */
+    private function render_template_fields($post, $template)
     {
-        $fields = [
-            '_earlystart_es_title',
-            '_earlystart_es_content',
-            '_earlystart_es_excerpt',
-            '_earlystart_es_location_city',
-            '_earlystart_es_location_description',
-            '_earlystart_es_program_age_range'
-        ];
-        foreach ($fields as $field) {
-            if (isset($_POST[$field])) {
-                update_post_meta($post_id, $field, wp_kses_post($_POST[$field]));
+        $keys = earlystart_Translation_Engine::get_keys_for_template($template);
+        if (empty($keys)) return;
+
+        $template_name = str_replace(['page-', '.php'], '', $template);
+        $template_name = ucwords(str_replace('-', ' ', $template_name));
+
+        echo '<div class="earlystart-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . sprintf(__('%s Template Content', 'earlystart-excellence'), $template_name) . '</h3></div>';
+
+        foreach ($keys as $key) {
+            $es_key = '_earlystart_es_' . $key;
+            $value = get_post_meta($post->ID, $es_key, true);
+            $placeholder = get_post_meta($post->ID, $key, true);
+            $label = ucwords(str_replace(['_', 'careers', 'curriculum', 'about', 'contact', 'home'], [' ', '', '', '', '', ''], $key));
+
+            if (strpos($key, 'desc') !== false || strpos($key, 'text') !== false || strpos($key, 'content') !== false || strpos($key, 'bullet') !== false) {
+                $this->render_textarea_field([
+                    'id' => $es_key,
+                    'label' => $label,
+                    'value' => $value,
+                    'placeholder' => $placeholder,
+                    'rows' => 3
+                ]);
+            } else {
+                $this->render_text_field([
+                    'id' => $es_key,
+                    'label' => $label,
+                    'value' => $value,
+                    'placeholder' => $placeholder,
+                ]);
             }
         }
     }
 
+    /**
+     * Save the meta box fields
+     *
+     * @param int $post_id Post ID
+     */
+    public function save_fields($post_id)
+    {
+        // Universal
+        $fields = [
+            '_earlystart_es_title',
+            '_earlystart_es_content', // Note: Needs careful sanitization if HTML is allowed
+            '_earlystart_es_excerpt',
+            // Location
+            '_earlystart_es_location_city',
+            '_earlystart_es_location_address',
+            '_earlystart_es_location_hero_subtitle',
+            '_earlystart_es_location_tagline',
+            '_earlystart_es_location_description',
+            '_earlystart_es_location_ages_served',
+            '_earlystart_es_location_open_text',
+            '_earlystart_es_location_director_bio',
+            '_earlystart_es_location_hero_review_text',
+            '_earlystart_es_location_hero_review_author',
+            '_earlystart_es_location_seo_content_title',
+            '_earlystart_es_location_seo_content_text',
+            '_earlystart_es_location_school_pickups',
+            // Program
+            '_earlystart_es_program_age_range',
+            '_earlystart_es_program_cta_text',
+            '_earlystart_es_program_features',
+            '_earlystart_es_program_hero_title',
+            '_earlystart_es_program_hero_description',
+            '_earlystart_es_program_prism_title',
+            '_earlystart_es_program_prism_description',
+            '_earlystart_es_program_prism_focus_items',
+            '_earlystart_es_program_schedule_title',
+            '_earlystart_es_program_schedule_items',
+            // SEO Fields
+            '_earlystart_es_seo_title',
+            '_earlystart_es_meta_description',
+        ];
+
+        // Template-Specific Keys
+        $template = get_page_template_slug($post_id);
+        if (empty($template) && (int)$post_id === (int)get_option('page_on_front')) {
+            $template = 'front-page.php';
+        }
+        $template_keys = earlystart_Translation_Engine::get_keys_for_template($template);
+        foreach ($template_keys as $tkey) {
+            $fields[] = '_earlystart_es_' . $tkey;
+        }
+
+    foreach ($fields as $field) {
+            if (isset($_POST[$field])) {
+                // For content fields, we might want wp_kses_post
+                if ($field === '_earlystart_es_content') {
+                    update_post_meta($post_id, $field, wp_kses_post($_POST[$field]));
+                } else {
+                    update_post_meta($post_id, $field, sanitize_text_field($_POST[$field]));
+                }
+            }
+        }
+
+        // Store version history for rollback
+        $this->store_version_history($post_id);
+    }
+
+    /**
+     * Store translation version history
+     */
+    private function store_version_history($post_id)
+    {
+        $current = [
+            'date' => current_time('Y-m-d H:i:s'),
+            'title' => get_post_meta($post_id, '_earlystart_es_title', true),
+            'content' => get_post_meta($post_id, '_earlystart_es_content', true),
+            'excerpt' => get_post_meta($post_id, '_earlystart_es_excerpt', true),
+        ];
+
+        // Only store if we have content
+        if (empty($current['title']) && empty($current['content'])) return;
+
+        $history = get_post_meta($post_id, '_earlystart_es_history', true) ?: [];
+        
+        // Add to front; keep max 10 versions
+        array_unshift($history, $current);
+        $history = array_slice($history, 0, 10);
+        
+        update_post_meta($post_id, '_earlystart_es_history', $history);
+    }
+
+    /**
+     * Register AJAX handlers (call from bootstrap or init)
+     */
     public static function register_ajax_handlers()
     {
-        // Placeholder for AJAX handlers
+        add_action('wp_ajax_earlystart_get_translation_history', [__CLASS__, 'ajax_get_history']);
+        add_action('wp_ajax_earlystart_restore_translation', [__CLASS__, 'ajax_restore_translation']);
+    }
+
+    /**
+     * AJAX: Get translation history
+     */
+    public static function ajax_get_history()
+    {
+        check_ajax_referer('earlystart_seo_nonce', 'nonce');
+        if (!current_user_can('edit_posts')) wp_send_json_error();
+
+        $post_id = intval($_POST['post_id']);
+        $history = get_post_meta($post_id, '_earlystart_es_history', true) ?: [];
+
+        wp_send_json_success(['history' => $history]);
+    }
+
+    /**
+     * AJAX: Restore a translation version
+     */
+    public static function ajax_restore_translation()
+    {
+        check_ajax_referer('earlystart_seo_nonce', 'nonce');
+        if (!current_user_can('edit_posts')) wp_send_json_error();
+
+        $post_id = intval($_POST['post_id']);
+        $index = intval($_POST['version_index']);
+        
+        $history = get_post_meta($post_id, '_earlystart_es_history', true) ?: [];
+        
+        if (isset($history[$index])) {
+            $version = $history[$index];
+            update_post_meta($post_id, '_earlystart_es_title', $version['title'] ?? '');
+            update_post_meta($post_id, '_earlystart_es_content', $version['content'] ?? '');
+            update_post_meta($post_id, '_earlystart_es_excerpt', $version['excerpt'] ?? '');
+            
+            wp_send_json_success(['message' => 'Restored']);
+        }
+        
+        wp_send_json_error(['message' => 'Version not found']);
     }
 }
-new earlystart_Spanish_Content_Meta_Box();
+
+// Register AJAX handlers
 earlystart_Spanish_Content_Meta_Box::register_ajax_handlers();
+
+

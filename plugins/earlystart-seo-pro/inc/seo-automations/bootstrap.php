@@ -1,37 +1,81 @@
 <?php
 /**
- * SEO Automations - Bootstrap
+ * SEO Automations Bootstrap
+ * Loads all SEO automation classes
+ *
+ * @package earlystart_Excellence
+ * @since 1.0.0
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-// Global helper to load automation files
-if (!function_exists('earlystart_seo_load_automation')) {
-    function earlystart_seo_load_automation($file)
-    {
-        $path = __DIR__ . '/' . $file;
-        if (file_exists($path)) {
-            require_once $path;
-            return true;
-        }
-        return false;
-    }
-}
+// Phase 1: Internal Linking
+require_once __DIR__ . '/class-related-locations.php';
+require_once __DIR__ . '/class-related-programs.php';
+require_once __DIR__ . '/class-keyword-linker.php';
+require_once __DIR__ . '/class-footer-city-links.php';
 
-// Load Automations
-earlystart_seo_load_automation('class-entity-auto-linker.php');
-earlystart_seo_load_automation('class-keyword-auto-linker.php');
-earlystart_seo_load_automation('class-related-entities.php');
+// Phase 2: Auto-Generated Pages
+require_once __DIR__ . '/class-combo-page-generator.php';
+require_once __DIR__ . '/class-combo-page-data.php';
+
+require_once __DIR__ . '/class-combo-ai-generator.php';
+require_once __DIR__ . '/class-combo-internal-links.php';
+require_once __DIR__ . '/class-near-me-pages.php';
+
+// Phase 3: Technical SEO
+require_once __DIR__ . '/class-dynamic-titles.php';
+require_once __DIR__ . '/class-canonical-enforcer.php';
+require_once __DIR__ . '/class-author-tags.php';
+require_once __DIR__ . '/class-speculation-rules.php';
+require_once __DIR__ . '/class-indexnow.php';
+
+// Phase 4: Analysis
+require_once __DIR__ . '/class-link-equity-analyzer.php';
+
+// Phase 5: Advanced
+require_once __DIR__ . '/class-geographic-seo.php';
+require_once __DIR__ . '/class-credential-badges.php';
+require_once __DIR__ . '/class-entity-seo.php';
+require_once __DIR__ . '/class-accessibility-seo.php';
+require_once __DIR__ . '/class-schema-bulk-ops.php';
 
 /**
- * Initialize Automations
+ * Register default options
  */
-function earlystart_seo_automations_init()
-{
-    if (class_exists('earlystart_Entity_Auto_Linker')) {
-        (new earlystart_Entity_Auto_Linker())->init();
+add_action('after_setup_theme', function() {
+    // Set defaults if not already set
+    $defaults = [
+        'earlystart_seo_show_related_locations' => true,
+        'earlystart_seo_link_programs_locations' => true,
+        'earlystart_seo_enable_keyword_linking' => true,
+        'earlystart_seo_show_footer_cities' => true,
+        'earlystart_seo_enable_dynamic_titles' => true,
+        'earlystart_seo_enable_canonical' => true,
+        'earlystart_seo_trailing_slash' => true,
+        'earlystart_seo_show_author_meta' => true,
+        'earlystart_seo_show_author_box' => true,
+        'earlystart_seo_show_credential_badges' => true,
+        'earlystart_seo_enable_skip_nav' => true,
+        'earlystart_seo_enable_focus_indicators' => true,
+        'earlystart_enable_speculation_rules' => 'yes',
+        'earlystart_enable_indexnow' => 'yes'
+    ];
+    
+    foreach ($defaults as $key => $default) {
+        if (get_option($key) === false) {
+            update_option($key, $default);
+        }
     }
-}
-add_action('init', 'earlystart_seo_automations_init', 20);
+});
+
+/**
+ * Flush rewrite rules on activation (Plugin context)
+ */
+register_activation_hook(__FILE__, function() {
+    flush_rewrite_rules();
+});
+
+

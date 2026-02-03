@@ -16,26 +16,36 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
 {
     /**
      * Get the meta box ID
+     *
+     * @return string
      */
     abstract public function get_id();
 
     /**
      * Get the meta box title
+     *
+     * @return string
      */
     abstract public function get_title();
 
     /**
      * Get post types this meta box applies to
+     *
+     * @return array
      */
     abstract public function get_post_types();
 
     /**
      * Render the meta box fields
+     *
+     * @param WP_Post $post Current post object
      */
     abstract public function render_fields($post);
 
     /**
      * Save the meta box fields
+     *
+     * @param int $post_id Post ID
      */
     abstract public function save_fields($post_id);
 
@@ -65,6 +75,8 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
 
     /**
      * Render the meta box
+     *
+     * @param WP_Post $post Current post object
      */
     public function render($post)
     {
@@ -76,31 +88,41 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
 
     /**
      * Save the meta box
+     *
+     * @param int $post_id Post ID
+     * @param WP_Post $post Post object
      */
     public function save_meta_box($post_id, $post)
     {
+        // Check nonce
         $nonce_name = $this->get_id() . '_nonce';
         if (!isset($_POST[$nonce_name]) || !wp_verify_nonce($_POST[$nonce_name], $this->get_id() . '_save')) {
             return;
         }
 
+        // Check autosave
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
 
+        // Check permissions
         if (!current_user_can('edit_post', $post_id)) {
             return;
         }
 
+        // Check post type
         if (!in_array($post->post_type, $this->get_post_types())) {
             return;
         }
 
+        // Call child class save method
         $this->save_fields($post_id);
     }
 
     /**
      * Render a text input field
+     *
+     * @param array $args Field arguments
      */
     protected function render_text_field($args)
     {
@@ -119,7 +141,12 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
         if ($args['label']) {
             echo '<label for="' . esc_attr($args['id']) . '">' . esc_html($args['label']) . '</label>';
         }
-        echo '<input type="text" id="' . esc_attr($args['id']) . '" name="' . esc_attr($args['id']) . '" value="' . esc_attr($args['value']) . '" placeholder="' . esc_attr($args['placeholder']) . '" class="' . esc_attr($args['class']) . '" />';
+        echo '<input type="text" 
+			id="' . esc_attr($args['id']) . '" 
+			name="' . esc_attr($args['id']) . '" 
+			value="' . esc_attr($args['value']) . '" 
+			placeholder="' . esc_attr($args['placeholder']) . '"
+			class="' . esc_attr($args['class']) . '" />';
 
         if ($args['description']) {
             echo '<p class="description">' . esc_html($args['description']) . '</p>';
@@ -132,6 +159,8 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
 
     /**
      * Render a number input field
+     *
+     * @param array $args Field arguments
      */
     protected function render_number_field($args)
     {
@@ -153,7 +182,15 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
         if ($args['label']) {
             echo '<label for="' . esc_attr($args['id']) . '">' . esc_html($args['label']) . '</label>';
         }
-        echo '<input type="number" id="' . esc_attr($args['id']) . '" name="' . esc_attr($args['id']) . '" value="' . esc_attr($args['value']) . '" placeholder="' . esc_attr($args['placeholder']) . '" step="' . esc_attr($args['step']) . '" ' . ($args['min'] !== '' ? 'min="' . esc_attr($args['min']) . '"' : '') . ' ' . ($args['max'] !== '' ? 'max="' . esc_attr($args['max']) . '"' : '') . ' class="' . esc_attr($args['class']) . '" />';
+        echo '<input type="number" 
+			id="' . esc_attr($args['id']) . '" 
+			name="' . esc_attr($args['id']) . '" 
+			value="' . esc_attr($args['value']) . '" 
+			placeholder="' . esc_attr($args['placeholder']) . '"
+			step="' . esc_attr($args['step']) . '"
+			' . ($args['min'] !== '' ? 'min="' . esc_attr($args['min']) . '"' : '') . '
+			' . ($args['max'] !== '' ? 'max="' . esc_attr($args['max']) . '"' : '') . '
+			class="' . esc_attr($args['class']) . '" />';
 
         if ($args['description']) {
             echo '<p class="description">' . esc_html($args['description']) . '</p>';
@@ -166,6 +203,8 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
 
     /**
      * Render a textarea field
+     *
+     * @param array $args Field arguments
      */
     protected function render_textarea_field($args)
     {
@@ -185,7 +224,12 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
         if ($args['label']) {
             echo '<label for="' . esc_attr($args['id']) . '">' . esc_html($args['label']) . '</label>';
         }
-        echo '<textarea id="' . esc_attr($args['id']) . '" name="' . esc_attr($args['id']) . '" placeholder="' . esc_attr($args['placeholder']) . '" rows="' . esc_attr($args['rows']) . '" class="' . esc_attr($args['class']) . '">' . esc_textarea($args['value']) . '</textarea>';
+        echo '<textarea 
+			id="' . esc_attr($args['id']) . '" 
+			name="' . esc_attr($args['id']) . '" 
+			placeholder="' . esc_attr($args['placeholder']) . '"
+			rows="' . esc_attr($args['rows']) . '"
+			class="' . esc_attr($args['class']) . '">' . esc_textarea($args['value']) . '</textarea>';
 
         if ($args['description']) {
             echo '<p class="description">' . esc_html($args['description']) . '</p>';
@@ -198,6 +242,8 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
 
     /**
      * Render a repeater field
+     *
+     * @param array $args Field arguments
      */
     protected function render_repeater_field($args)
     {
@@ -235,3 +281,5 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
         echo '</div>';
     }
 }
+
+
