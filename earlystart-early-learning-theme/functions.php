@@ -13,12 +13,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Disable error reporting for production (TEMPORARILY ENABLED FOR DEBUGGING)
-// ini_set('display_errors', 0);
-// ini_set('display_startup_errors', 0);
-// error_reporting(0);
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// Disable error reporting for production
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
 
 // PROBE: Verify if PHP changes are live
 add_filter('body_class', function ($classes) {

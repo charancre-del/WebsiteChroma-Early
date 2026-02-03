@@ -1031,81 +1031,105 @@ function earlystart_home_locations_preview()
         }
 
         // If no dynamic locations exist, retain the previous static defaults.
-        if (empty($featured)) {
-                $map_points = array(
-                        array(
-                                'id' => 1,
-                                'name' => 'Marietta – East',
-                                'lat' => 33.975,
-                                'lng' => -84.507,
-                                'url' => '/locations/marietta-east',
-                                'city' => 'Marietta',
-                                'state' => 'GA',
-                        ),
-                        array(
-                                'id' => 2,
-                                'name' => 'Austell – Tramore',
-                                'lat' => 33.815,
-                                'lng' => -84.63,
-                                'url' => '/locations/austell-tramore',
-                                'city' => 'Austell',
-                                'state' => 'GA',
-                        ),
-                        array(
-                                'id' => 3,
-                                'name' => 'Lawrenceville',
-                                'lat' => 33.956,
-                                'lng' => -83.99,
-                                'url' => '/locations/lawrenceville',
-                                'city' => 'Lawrenceville',
-                                'state' => 'GA',
-                        ),
-                        array(
-                                'id' => 4,
-                                'name' => 'Johns Creek',
-                                'lat' => 34.028,
-                                'lng' => -84.198,
-                                'url' => '/locations/johns-creek',
-                                'city' => 'Johns Creek',
-                                'state' => 'GA',
-                        ),
-                );
+        $map_points = array(
+                array(
+                        'id' => 1,
+                        'name' => 'Johns Creek',
+                        'lat' => 34.028,
+                        'lng' => -84.198,
+                        'url' => '/locations/johns-creek',
+                        'city' => 'Johns Creek',
+                        'state' => 'GA',
+                ),
+                array(
+                        'id' => 2,
+                        'name' => 'Ellenwood',
+                        'lat' => 33.6,
+                        'lng' => -84.2,
+                        'url' => '/locations/ellenwood',
+                        'city' => 'Ellenwood',
+                        'state' => 'GA',
+                ),
+                array(
+                        'id' => 3,
+                        'name' => 'Duluth',
+                        'lat' => 34.0,
+                        'lng' => -84.14,
+                        'url' => '/locations/duluth',
+                        'city' => 'Duluth',
+                        'state' => 'GA',
+                ),
+                array(
+                        'id' => 4,
+                        'name' => 'Marietta',
+                        'lat' => 33.95,
+                        'lng' => -84.55,
+                        'url' => '/locations/marietta',
+                        'city' => 'Marietta',
+                        'state' => 'GA',
+                ),
+                array(
+                        'id' => 5,
+                        'name' => 'Tyrone',
+                        'lat' => 33.47,
+                        'lng' => -84.6,
+                        'url' => '/locations/tyrone',
+                        'city' => 'Tyrone',
+                        'state' => 'GA',
+                ),
+        );
 
-                $featured = array(
-                        array(
-                                'title' => 'Marietta – East',
-                                'city' => 'Marietta',
-                                'state' => 'GA',
-                                'address' => '2499 Shallowford Rd',
-                                'phone' => '(770) 555-1201',
-                                'url' => '/locations/marietta-east',
-                        ),
-                        array(
-                                'title' => 'Austell – Tramore',
-                                'city' => 'Austell',
-                                'state' => 'GA',
-                                'address' => '2081 Mesa Valley Rd',
-                                'phone' => '(770) 555-4432',
-                                'url' => '/locations/austell-tramore',
-                        ),
-                        array(
-                                'title' => 'Lawrenceville',
-                                'city' => 'Lawrenceville',
-                                'state' => 'GA',
-                                'address' => '3650 Club Dr NW',
-                                'phone' => '(770) 555-8890',
-                                'url' => '/locations/lawrenceville',
-                        ),
-                );
+        $featured = array(
+                array(
+                        'title' => 'Johns Creek',
+                        'city' => 'Johns Creek',
+                        'state' => 'GA',
+                        'address' => '3580 Old Alabama Rd',
+                        'phone' => '(770) 555-0101',
+                        'url' => '/locations/johns-creek',
+                ),
+                array(
+                        'title' => 'Ellenwood',
+                        'city' => 'Ellenwood',
+                        'state' => 'GA',
+                        'address' => '2765 E Atlanta Rd',
+                        'phone' => '(770) 555-0102',
+                        'url' => '/locations/ellenwood',
+                ),
+                array(
+                        'title' => 'Duluth',
+                        'city' => 'Duluth',
+                        'state' => 'GA',
+                        'address' => '3152 Creek Dr',
+                        'phone' => '(770) 555-0103',
+                        'url' => '/locations/duluth',
+                ),
+                array(
+                        'title' => 'Marietta',
+                        'city' => 'Marietta',
+                        'state' => 'GA',
+                        'address' => '2424 Powder Springs Rd',
+                        'phone' => '(770) 555-0104',
+                        'url' => '/locations/marietta',
+                ),
+                array(
+                        'title' => 'Tyrone',
+                        'city' => 'Tyrone',
+                        'state' => 'GA',
+                        'address' => '291 Jenkins Rd',
+                        'phone' => '(770) 555-0105',
+                        'url' => '/locations/tyrone',
+                ),
+        );
 
-                $grouped = array(
-                        'metro-atlanta' => array(
-                                'label' => 'Metro Atlanta',
-                                'slug' => 'metro-atlanta',
-                                'locations' => $featured,
-                        ),
-                );
-        }
+        $grouped = array(
+                'metro-atlanta' => array(
+                        'label' => 'Metro Atlanta',
+                        'slug' => 'metro-atlanta',
+                        'locations' => $featured,
+                ),
+        );
+
 
         foreach ($grouped as &$group) {
                 usort(

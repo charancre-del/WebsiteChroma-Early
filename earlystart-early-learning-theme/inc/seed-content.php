@@ -253,16 +253,93 @@ function earlystart_seed_core_content()
 
     // 5. Create Sample Locations
     $locations = array(
-        'alpharetta-center' => array(
-            'title' => 'Alpharetta Clinical Center',
+        'johns-creek' => array(
+            'title' => 'Johns Creek',
+            'region' => 'North Metro',
             'meta' => array(
-                'location_city' => 'Alpharetta',
+                'location_city' => 'Johns Creek',
                 'location_state' => 'GA',
-                'location_address' => '500 Alpha Way',
-                'location_phone' => '(770) 555-0100',
+                'location_zip' => '30022',
+                'location_address' => '3580 Old Alabama Rd',
+                'location_phone' => '(770) 555-0101',
+                'location_email' => 'johnscreek@earlystarttherapy.com',
                 'location_hours' => '8am - 6pm',
-                'location_tagline' => 'Excellence in North Fulton.',
-                'location_director_name' => 'Dr. Jane Smith',
+                'location_latitude' => '34.028',
+                'location_longitude' => '-84.198',
+                'location_tagline' => 'Serving Johns Creek families.',
+                'location_director_name' => 'Clinical Director',
+                'location_google_rating' => '5.0',
+            )
+        ),
+        'ellenwood' => array(
+            'title' => 'Ellenwood',
+            'region' => 'South Metro',
+            'meta' => array(
+                'location_city' => 'Ellenwood',
+                'location_state' => 'GA',
+                'location_zip' => '30264',
+                'location_address' => '2765 E Atlanta Rd',
+                'location_phone' => '(770) 555-0102',
+                'location_email' => 'ellenwood@earlystarttherapy.com',
+                'location_hours' => '8am - 6pm',
+                'location_latitude' => '33.600',
+                'location_longitude' => '-84.200',
+                'location_tagline' => 'Serving Ellenwood families.',
+                'location_director_name' => 'Clinical Director',
+                'location_google_rating' => '5.0',
+            )
+        ),
+        'duluth' => array(
+            'title' => 'Duluth',
+            'region' => 'Gwinnett',
+            'meta' => array(
+                'location_city' => 'Duluth',
+                'location_state' => 'GA',
+                'location_zip' => '30096',
+                'location_address' => '3152 Creek Dr',
+                'location_phone' => '(770) 555-0103',
+                'location_email' => 'duluth@earlystarttherapy.com',
+                'location_hours' => '8am - 6pm',
+                'location_latitude' => '34.000',
+                'location_longitude' => '-84.140',
+                'location_tagline' => 'Serving Duluth families.',
+                'location_director_name' => 'Clinical Director',
+                'location_google_rating' => '5.0',
+            )
+        ),
+        'marietta' => array(
+            'title' => 'Marietta',
+            'region' => 'West Metro',
+            'meta' => array(
+                'location_city' => 'Marietta',
+                'location_state' => 'GA',
+                'location_zip' => '30064',
+                'location_address' => '2424 Powder Springs Rd',
+                'location_phone' => '(770) 555-0104',
+                'location_email' => 'marietta@earlystarttherapy.com',
+                'location_hours' => '8am - 6pm',
+                'location_latitude' => '33.950',
+                'location_longitude' => '-84.550',
+                'location_tagline' => 'Serving Marietta families.',
+                'location_director_name' => 'Clinical Director',
+                'location_google_rating' => '5.0',
+            )
+        ),
+        'tyrone' => array(
+            'title' => 'Tyrone',
+            'region' => 'South Metro',
+            'meta' => array(
+                'location_city' => 'Tyrone',
+                'location_state' => 'GA',
+                'location_zip' => '30290',
+                'location_address' => '291 Jenkins Rd',
+                'location_phone' => '(770) 555-0105',
+                'location_email' => 'tyrone@earlystarttherapy.com',
+                'location_hours' => '8am - 6pm',
+                'location_latitude' => '33.470',
+                'location_longitude' => '-84.600',
+                'location_tagline' => 'Serving Tyrone families.',
+                'location_director_name' => 'Clinical Director',
                 'location_google_rating' => '5.0',
             )
         ),
@@ -277,9 +354,64 @@ function earlystart_seed_core_content()
                 'post_status' => 'publish',
                 'post_type' => 'location',
             ));
-            if (!is_wp_error($post_id) && !empty($data['meta'])) {
-                foreach ($data['meta'] as $key => $value)
-                    update_post_meta($post_id, $key, $value);
+            if (!is_wp_error($post_id)) {
+                // Set Meta
+                if (!empty($data['meta'])) {
+                    foreach ($data['meta'] as $key => $value) {
+                        update_post_meta($post_id, $key, $value);
+                    }
+                }
+                // Set Region Term
+                if (!empty($data['region'])) {
+                    wp_set_object_terms($post_id, $data['region'], 'location_region');
+                }
+            }
+        }
+    }
+
+    // 6. Seed Cities (GA Counties)
+    $ga_cities = array(
+        'Fayette' => array('Brooks', 'Fayetteville', 'Peachtree City', 'Tyrone', 'Woolsey'),
+        'Coweta' => array('Newnan', 'Senoia', 'Sharpsburg', 'Moreland', 'Grantville'),
+        'Cobb' => array('Acworth', 'Austell', 'Kennesaw', 'Mableton', 'Marietta', 'Powder Springs', 'Smyrna'),
+        'Fulton' => array('Alpharetta', 'Atlanta', 'Chattahoochee Hills', 'College Park', 'East Point', 'Fairburn', 'Hapeville', 'Johns Creek', 'Milton', 'Mountain Park', 'Palmetto', 'Roswell', 'Sandy Springs', 'South Fulton', 'Union City'),
+        'Gwinnett' => array('Auburn', 'Berkeley Lake', 'Braselton', 'Buford', 'Dacula', 'Duluth', 'Grayson', 'Lawrenceville', 'Lilburn', 'Loganville', 'Mulberry', 'Norcross', 'Peachtree Corners', 'Rest Haven', 'Snellville', 'Sugar Hill', 'Suwanee'),
+        'Henry' => array('Hampton', 'Locust Grove', 'McDonough', 'Stockbridge'),
+        'Cherokee' => array('Ball Ground', 'Canton', 'Holly Springs', 'Waleska', 'Woodstock'),
+        'Dekalb' => array('Avondale Estates', 'Brookhaven', 'Chamblee', 'Clarkston', 'Decatur', 'Doraville', 'Dunwoody', 'Lithonia', 'Pine Lake', 'Stone Mountain', 'Stonecrest', 'Tucker'),
+    );
+
+    foreach ($ga_cities as $county => $cities) {
+        foreach ($cities as $city_name) {
+            $slug = sanitize_title($city_name);
+            $slug_with_state = $slug . '-ga'; // Ensure generic names don't clash
+
+            // Check if exists
+            $existing = get_page_by_path($slug_with_state, OBJECT, 'city');
+            if (!$existing) {
+                // Try without state suffix
+                $existing = get_page_by_path($slug, OBJECT, 'city');
+            }
+
+            if (!$existing) {
+                $post_id = wp_insert_post(array(
+                    'post_title' => $city_name,
+                    'post_name' => $slug_with_state,
+                    'post_status' => 'publish',
+                    'post_type' => 'city',
+                ));
+
+                if (!is_wp_error($post_id)) {
+                    update_post_meta($post_id, 'city_state', 'GA');
+                    update_post_meta($post_id, 'city_county', $county);
+                    // Add generic content seed
+                    $content = sprintf(
+                        '<!-- wp:paragraph --><p>Welcome to our early learning resources for families in <strong>%s, GA</strong> (%s County). At Early Start, we are dedicated to providing compassionate, evidence-based therapy and support.</p><!-- /wp:paragraph -->',
+                        $city_name,
+                        $county
+                    );
+                    wp_update_post(array('ID' => $post_id, 'post_content' => $content));
+                }
             }
         }
     }
