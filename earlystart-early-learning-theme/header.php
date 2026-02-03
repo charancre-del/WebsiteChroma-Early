@@ -30,26 +30,34 @@
 							$logo_width_mobile = earlystart_get_theme_mod('earlystart_logo_width_mobile', 56);
 							?>
 							<style>
-								.site-logo-container {
+								.site-logo-wrapper {
 									width:
 										<?php echo intval($logo_width_mobile); ?>
 										px;
+									display: block;
+								}
+
+								.site-logo-wrapper .custom-logo-link {
+									display: block;
+									width: 100%;
+								}
+
+								.site-logo-wrapper img.custom-logo {
+									width: 100% !important;
+									height: auto !important;
+									max-width: 100% !important;
+									display: block;
 								}
 
 								@media (min-width: 768px) {
-									.site-logo-container {
+									.site-logo-wrapper {
 										width:
 											<?php echo intval($logo_width_desktop); ?>
 											px;
 									}
 								}
-
-								.site-logo-container img {
-									width: 100%;
-									height: auto;
-								}
 							</style>
-							<div class="site-logo-container block">
+							<div class="site-logo-wrapper flex-shrink-0">
 								<?php the_custom_logo(); ?>
 							</div>
 							<?php
