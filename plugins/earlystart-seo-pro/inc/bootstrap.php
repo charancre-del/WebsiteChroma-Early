@@ -175,8 +175,8 @@ if (!function_exists('earlystart_advanced_seo_init')) {
 	function earlystart_advanced_seo_init()
 	{
 		// Core Modules
-		if (class_exists('earlystart_SEO_Dashboard'))
-			(new earlystart_SEO_Dashboard())->init();
+		if (class_exists('EARLYSTART_SEO_Dashboard'))
+			(new EARLYSTART_SEO_Dashboard())->init();
 		if (class_exists('earlystart_Citation_Datasets'))
 			(new earlystart_Citation_Datasets())->init();
 		if (class_exists('earlystart_Image_Alt_Automation'))

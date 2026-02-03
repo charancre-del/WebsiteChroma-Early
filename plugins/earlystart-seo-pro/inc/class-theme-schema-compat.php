@@ -5,7 +5,7 @@
  * Contains schema functions migrated from theme's seo-engine.php.
  * These functions output schema for Location, City, Program, and general content pages.
  *
- * @package earlystart_SEO_Pro
+ * @package EARLYSTART_SEO_Pro
  * @since 1.0.0
  */
 

@@ -103,8 +103,8 @@ class earlystart_LLM_Admin_Settings
     public function enqueue_assets($hook) {
         if (strpos($hook, 'earlystart-llm') === false) return;
         
-        wp_enqueue_style('earlystart-llm-admin', earlystart_SEO_URL . 'assets/css/admin-llm.css', [], '1.0.0');
-        wp_enqueue_script('earlystart-llm-admin', earlystart_SEO_URL . 'assets/js/admin-llm.js', ['jquery'], '1.0.0', true);
+        wp_enqueue_style('earlystart-llm-admin', EARLYSTART_SEO_URL . 'assets/css/admin-llm.css', [], '1.0.0');
+        wp_enqueue_script('earlystart-llm-admin', EARLYSTART_SEO_URL . 'assets/js/admin-llm.js', ['jquery'], '1.0.0', true);
         
         wp_localize_script('earlystart-llm-admin', 'earlystartLLM', [
             'ajaxUrl' => admin_url('admin-ajax.php'),

@@ -33,14 +33,14 @@ class earlystart_Schema_Inspector
 
         // Only show on frontend or specific admin pages if needed
         if (is_admin()) {
-             // Optional: allow it in admin if needed, but primarily for frontend
+            // Optional: allow it in admin if needed, but primarily for frontend
         }
 
         $wp_admin_bar->add_node([
-            'id'    => 'earlystart-validate-schema',
+            'id' => 'earlystart-validate-schema',
             'title' => '<span class="ab-icon dashicons dashicons-yes-alt"></span> Validate Schema',
-            'href'  => '#',
-            'meta'  => [
+            'href' => '#',
+            'meta' => [
                 'class' => 'earlystart-inspector-trigger',
                 'title' => 'Validate Schema on this page'
             ]
@@ -59,28 +59,28 @@ class earlystart_Schema_Inspector
         // 1. Register Dummy Handle for Inline Data
         wp_register_script('earlystart-schema-inspector-data', false);
         wp_enqueue_script('earlystart-schema-inspector-data');
-        
+
         // 2. Add Inline Data
         wp_add_inline_script('earlystart-schema-inspector-data', sprintf(
             'const earlystartInspector = %s;',
             json_encode([
                 'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonce'   => wp_create_nonce('earlystart_schema_inspector_nonce')
+                'nonce' => wp_create_nonce('earlystart_schema_inspector_nonce')
             ])
         ));
 
         // 3. Enqueue Core JS (Dependent on jquery AND our data handle)
-        $js_path = earlystart_SEO_PATH . 'assets/js/schema-inspector.js';
+        $js_path = EARLYSTART_SEO_PATH . 'assets/js/schema-inspector.js';
         if (file_exists($js_path)) {
             wp_enqueue_script(
-                'earlystart-schema-inspector-core', 
-                earlystart_SEO_URL . 'assets/js/schema-inspector.js', 
-                ['jquery', 'earlystart-schema-inspector-data'], 
-                '1.0.1', 
+                'earlystart-schema-inspector-core',
+                EARLYSTART_SEO_URL . 'assets/js/schema-inspector.js',
+                ['jquery', 'earlystart-schema-inspector-data'],
+                '1.0.1',
                 true
             );
         }
-        
+
         // Add minimal CSS for the modal
         wp_add_inline_style('earlystart-schema-inspector-core', '
             #earlystart-schema-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px); }
@@ -129,7 +129,7 @@ class earlystart_Schema_Inspector
         foreach ($json_strings as $index => $json_str) {
             $json_str = wp_unslash($json_str);
             $validation = earlystart_Schema_Validator::validate_json_ld($json_str);
-            
+
             // Format result for frontend
             $results[] = [
                 'index' => $index,
@@ -170,7 +170,7 @@ class earlystart_Schema_Inspector
         }
 
         if (!method_exists($earlystart_llm_client, 'fix_schema_with_ai')) {
-             wp_send_json_error(['message' => 'AI Fix method not implemented yet']);
+            wp_send_json_error(['message' => 'AI Fix method not implemented yet']);
         }
 
         // Handle multiple schemas
@@ -179,7 +179,7 @@ class earlystart_Schema_Inspector
             foreach ($schemas_array as $raw_schema) {
                 $raw_schema = wp_unslash($raw_schema);
                 $fixed = $earlystart_llm_client->fix_schema_with_ai($raw_schema, $errors);
-                
+
                 if (is_wp_error($fixed)) {
                     wp_send_json_error(['message' => 'Failed to fix schema: ' . $fixed->get_error_message()]);
                 }
