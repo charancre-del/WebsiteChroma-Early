@@ -26,7 +26,33 @@
 					<div class="flex items-center flex-shrink-0">
 						<?php
 						if (has_custom_logo()) {
-							the_custom_logo();
+							$logo_width_desktop = earlystart_get_theme_mod('earlystart_logo_width_desktop', 70);
+							$logo_width_mobile = earlystart_get_theme_mod('earlystart_logo_width_mobile', 56);
+							?>
+							<style>
+								.site-logo-container {
+									width:
+										<?php echo intval($logo_width_mobile); ?>
+										px;
+								}
+
+								@media (min-width: 768px) {
+									.site-logo-container {
+										width:
+											<?php echo intval($logo_width_desktop); ?>
+											px;
+									}
+								}
+
+								.site-logo-container img {
+									width: 100%;
+									height: auto;
+								}
+							</style>
+							<div class="site-logo-container block">
+								<?php the_custom_logo(); ?>
+							</div>
+							<?php
 						} else {
 							?>
 							<a href="<?php echo esc_url(home_url('/')); ?>"
