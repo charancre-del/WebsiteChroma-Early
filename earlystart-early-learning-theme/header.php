@@ -26,32 +26,31 @@
 					<div class="flex items-center flex-shrink-0">
 						<?php
 						if (has_custom_logo()) {
-							$logo_width_desktop = earlystart_get_theme_mod('earlystart_logo_width_desktop', 70);
-							$logo_width_mobile = earlystart_get_theme_mod('earlystart_logo_width_mobile', 56);
 							$custom_logo_id = get_theme_mod('custom_logo');
 							$logo = wp_get_attachment_image_src($custom_logo_id, 'full');
 							$logo_url = $logo[0] ?? '';
 							?>
 							<style>
 								.site-logo-container {
-									width:
-										<?php echo intval($logo_width_mobile); ?>
-										px;
+									width: 56px; /* Mobile */
 									display: block;
 								}
-
 								@media (min-width: 768px) {
 									.site-logo-container {
-										width:
-											<?php echo intval($logo_width_desktop); ?>
-											px;
+										width: 70px; /* Tablet */
+									}
+								}
+								@media (min-width: 1024px) {
+									.site-logo-container {
+										width: 70px; /* Desktop */
 									}
 								}
 							</style>
 							<div class="site-logo-container flex-shrink-0">
 								<a href="<?php echo esc_url(home_url('/')); ?>" rel="home" class="block w-full">
-									<img src="<?php echo esc_url($logo_url); ?>"
-										alt="<?php echo esc_attr(get_bloginfo('name')); ?>" class="w-full h-auto block"
+									<img src="<?php echo esc_url($logo_url); ?>" 
+										alt="<?php echo esc_attr(get_bloginfo('name')); ?>"
+										class="w-full h-auto block"
 										style="display: block; width: 100% !important; height: auto !important; max-width: 100% !important;">
 								</a>
 							</div>
