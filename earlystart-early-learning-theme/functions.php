@@ -145,6 +145,7 @@ require_once earlystart_THEME_DIR . '/inc/nav-menus.php';
 require_once earlystart_THEME_DIR . '/inc/admin/class-menu-sync.php';
 require_once earlystart_THEME_DIR . '/inc/chroma-pdf-viewer.php';
 require_once earlystart_THEME_DIR . '/inc/chroma-booking-modal.php';
+// require_once earlystart_THEME_DIR . '/inc/update-content-fix.php'; // Temporary fix run - Disabled
 
 // Custom Post Types
 require_once earlystart_THEME_DIR . '/inc/cpt-programs.php';
