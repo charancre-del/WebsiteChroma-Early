@@ -23,71 +23,67 @@
 				<div class="flex justify-between items-center h-20">
 					<!-- Logo -->
 					<!-- Logo -->
-					<div class="flex items-center flex-shrink-0">
-						<?php
-						if (has_custom_logo()) {
-							$custom_logo_id = get_theme_mod('custom_logo');
-							$logo = wp_get_attachment_image_src($custom_logo_id, 'full');
-							$logo_url = $logo[0] ?? '';
-							?>
-							<style>
-								.site-logo-container {
-									width: 56px; /* Mobile */
-									display: block;
-								}
-								@media (min-width: 768px) {
+					<!-- Logo + Text Group -->
+					<a href="<?php echo esc_url(home_url('/')); ?>"
+						class="flex items-center gap-3 cursor-pointer group flex-shrink-0">
+
+						<!-- 1. The Logo Graphic (Image or Icon) -->
+						<div class="site-logo-graphic flex-shrink-0">
+							<?php if (has_custom_logo()):
+								$custom_logo_id = get_theme_mod('custom_logo');
+								$logo = wp_get_attachment_image_src($custom_logo_id, 'full');
+								$logo_url = $logo[0] ?? '';
+								?>
+								<style>
 									.site-logo-container {
-										width: 70px; /* Tablet */
+										width: 56px;
+										/* Mobile */
+										display: block;
 									}
-								}
-								@media (min-width: 1024px) {
-									.site-logo-container {
-										width: 70px; /* Desktop */
+
+									@media (min-width: 768px) {
+										.site-logo-container {
+											width: 70px;
+											/* Tablet/Desktop */
+										}
 									}
-								}
-							</style>
-							<div class="site-logo-container flex-shrink-0">
-								<a href="<?php echo esc_url(home_url('/')); ?>" rel="home" class="block w-full">
-									<img src="<?php echo esc_url($logo_url); ?>" 
-										alt="<?php echo esc_attr(get_bloginfo('name')); ?>"
-										class="w-full h-auto block"
+								</style>
+								<div class="site-logo-container">
+									<img src="<?php echo esc_url($logo_url); ?>"
+										alt="<?php echo esc_attr(get_bloginfo('name')); ?>" class="w-full h-auto block"
 										style="display: block; width: 100% !important; height: auto !important; max-width: 100% !important;">
-								</a>
-							</div>
-							<?php
-						} else {
-							?>
-							<a href="<?php echo esc_url(home_url('/')); ?>"
-								class="flex items-center space-x-3 cursor-pointer group">
+								</div>
+							<?php else: ?>
+								<!-- Default Icon Fallback -->
 								<div class="relative w-10 h-10 flex items-center justify-center">
 									<div
 										class="absolute inset-0 bg-rose-100 rounded-full opacity-80 group-hover:scale-110 transition-transform">
 									</div>
 									<i data-lucide="puzzle" class="w-6 h-6 text-rose-600 relative z-10"></i>
 								</div>
-								<div class="flex flex-col">
-									<?php
-									$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
-									$header_lines = explode("\n", $header_text_raw);
-									$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
-									$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
-									?>
-									<span
-										class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
-										<?php echo esc_html($primary_line); ?>
-									</span>
-									<?php if (!empty($secondary_line)): ?>
-										<span
-											class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
-											<?php echo esc_html($secondary_line); ?>
-										</span>
-									<?php endif; ?>
-								</div>
-							</a>
+							<?php endif; ?>
+						</div>
+
+						<!-- 2. The Text (Always Visible) -->
+						<div class="flex flex-col">
 							<?php
-						}
-						?>
-					</div>
+							$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
+							$header_lines = explode("\n", $header_text_raw);
+							$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
+							$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
+							?>
+							<span
+								class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
+								<?php echo esc_html($primary_line); ?>
+							</span>
+							<?php if (!empty($secondary_line)): ?>
+								<span
+									class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
+									<?php echo esc_html($secondary_line); ?>
+								</span>
+							<?php endif; ?>
+						</div>
+					</a>
 
 					<!-- Desktop Menu -->
 					<nav class="hidden xl:flex space-x-1 items-center">
