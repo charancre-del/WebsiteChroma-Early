@@ -517,6 +517,10 @@ function earlystart_home_default_faq_items()
                         'answer' => __('We specialize in early intervention and support for children typically ranging from 18 months to 12 years old.', 'earlystart-early-learning'),
                 ),
                 array(
+                        'question' => __('Where do you provide services?', 'earlystart-early-learning'),
+                        'answer' => __('We provide services At School, In Home and At Clinics to ensure your child receives support in the environment that works best for them.', 'earlystart-early-learning'),
+                ),
+                array(
                         'question' => __('How long are the therapy sessions?', 'earlystart-early-learning'),
                         'answer' => __('Session length vary based on the specific therapy and your child\'s needs, typically ranging from 30 to 60 minutes for speech/OT, and longer for comprehensive ABA programs.', 'earlystart-early-learning'),
                 ),
@@ -527,7 +531,7 @@ function earlystart_home_default_locations_preview()
 {
         return array(
                 'heading' => __('Serving Families Across <span class="italic text-rose-700">The Metro</span>', 'earlystart-early-learning'),
-                'subheading' => __('Find your nearest clinical center and join our community of growth.', 'earlystart-early-learning'),
+                'subheading' => __('Find your nearest clinical center and join our community of growth. Serving families At School, In Home and At Clinics.', 'earlystart-early-learning'),
                 'cta_label' => __('View All Locations', 'earlystart-early-learning'),
                 'cta_link' => '/locations/',
         );
