@@ -28,37 +28,32 @@
 						if (has_custom_logo()) {
 							$logo_width_desktop = earlystart_get_theme_mod('earlystart_logo_width_desktop', 70);
 							$logo_width_mobile = earlystart_get_theme_mod('earlystart_logo_width_mobile', 56);
+							$custom_logo_id = get_theme_mod('custom_logo');
+							$logo = wp_get_attachment_image_src($custom_logo_id, 'full');
+							$logo_url = $logo[0] ?? '';
 							?>
 							<style>
-								.site-logo-wrapper {
+								.site-logo-container {
 									width:
 										<?php echo intval($logo_width_mobile); ?>
 										px;
 									display: block;
 								}
 
-								.site-logo-wrapper .custom-logo-link {
-									display: block;
-									width: 100%;
-								}
-
-								.site-logo-wrapper img.custom-logo {
-									width: 100% !important;
-									height: auto !important;
-									max-width: 100% !important;
-									display: block;
-								}
-
 								@media (min-width: 768px) {
-									.site-logo-wrapper {
+									.site-logo-container {
 										width:
 											<?php echo intval($logo_width_desktop); ?>
 											px;
 									}
 								}
 							</style>
-							<div class="site-logo-wrapper flex-shrink-0">
-								<?php the_custom_logo(); ?>
+							<div class="site-logo-container flex-shrink-0">
+								<a href="<?php echo esc_url(home_url('/')); ?>" rel="home" class="block w-full">
+									<img src="<?php echo esc_url($logo_url); ?>"
+										alt="<?php echo esc_attr(get_bloginfo('name')); ?>" class="w-full h-auto block"
+										style="display: block; width: 100% !important; height: auto !important; max-width: 100% !important;">
+								</a>
 							</div>
 							<?php
 						} else {
