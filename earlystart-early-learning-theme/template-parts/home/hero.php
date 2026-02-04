@@ -28,7 +28,7 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                         class="text-rose-700 text-xs font-bold uppercase tracking-wider"><?php _e('Now Enrolling for 2026', 'earlystart-early-learning'); ?></span>
                 </div>
 
-                <h1 class="text-5xl lg:text-7xl font-extrabold text-stone-900 leading-tight tracking-tight">
+                <h1 class="text-5xl lg:text-7xl font-extrabold text-stone-900 leading-normal tracking-tight">
                     <?php echo $hero['heading']; // Already run through wp_kses_post ?>
                 </h1>
 
