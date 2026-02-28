@@ -44,7 +44,14 @@ while (have_posts()):
 	// Prismpath section
 	$prism_title = get_post_meta($program_id, 'program_prism_title', true) ?: __('Clinical & Developmental Focus', 'earlystart-early-learning');
 	$prism_description = get_post_meta($program_id, 'program_prism_description', true);
+	if (!$prism_description) {
+		$prism_description = __('Our program centers around evidence-based interventions tailored specifically to your child\'s unique developmental profile, emphasizing both structured learning and naturalistic play.', 'earlystart-early-learning');
+	}
+
 	$prism_focus_items = get_post_meta($program_id, 'program_prism_focus_items', true);
+	if (!$prism_focus_items) {
+		$prism_focus_items = "Individualized Treatment Plans\nFamily-Centered Coaching\nPlay-Based Naturalistic Teaching\nData-Driven Progress Tracking";
+	}
 
 	// Chart data (Fallback to default spread if empty)
 	$prism_physical = get_post_meta($program_id, 'program_prism_physical', true) ?: '60';
