@@ -101,6 +101,16 @@ while (have_posts()):
 							for ($i = 1; $i <= 3; $i++) {
 								$val = get_post_meta($page_id, "about_stat{$i}_value", true);
 								$lbl = get_post_meta($page_id, "about_stat{$i}_label", true);
+
+								// Intercept 'Clinical Centers' or 'Locations' label and inject dynamic count
+								if (stripos((string) $lbl, 'clinical center') !== false || stripos((string) $lbl, 'location') !== false) {
+									$location_count = wp_count_posts('location');
+									// Use the actual count if published locations exist, otherwise fallback
+									if (isset($location_count->publish) && $location_count->publish > 0) {
+										$val = (string) $location_count->publish;
+									}
+								}
+
 								if ($val): ?>
 									<div>
 										<span class="block text-4xl font-bold text-rose-700">
