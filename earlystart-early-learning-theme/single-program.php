@@ -46,12 +46,12 @@ while (have_posts()):
 	$prism_description = get_post_meta($program_id, 'program_prism_description', true);
 	$prism_focus_items = get_post_meta($program_id, 'program_prism_focus_items', true);
 
-	// Chart data
-	$prism_physical = get_post_meta($program_id, 'program_prism_physical', true) ?: '50';
-	$prism_emotional = get_post_meta($program_id, 'program_prism_emotional', true) ?: '50';
-	$prism_social = get_post_meta($program_id, 'program_prism_social', true) ?: '50';
-	$prism_academic = get_post_meta($program_id, 'program_prism_academic', true) ?: '50';
-	$prism_creative = get_post_meta($program_id, 'program_prism_creative', true) ?: '50';
+	// Chart data (Fallback to default spread if empty)
+	$prism_physical = get_post_meta($program_id, 'program_prism_physical', true) ?: '60';
+	$prism_emotional = get_post_meta($program_id, 'program_prism_emotional', true) ?: '85';
+	$prism_social = get_post_meta($program_id, 'program_prism_social', true) ?: '90';
+	$prism_academic = get_post_meta($program_id, 'program_prism_academic', true) ?: '40';
+	$prism_creative = get_post_meta($program_id, 'program_prism_creative', true) ?: '75';
 
 	// Schedule
 	$schedule_title = get_post_meta($program_id, 'program_schedule_title', true) ?: __('A Typical Therapeutic Day', 'earlystart-early-learning');
@@ -202,6 +202,12 @@ while (have_posts()):
 						<div class="space-y-4">
 							<?php
 							$faq_raw = get_post_meta($program_id, 'program_faq_items', true);
+
+							// Fallback FAQs if not seeded
+							if (!$faq_raw) {
+								$faq_raw = "How early can we start therapy?|We offer early intervention services starting as early as 18 months, depending on the specific program and your child's needs.\nDo you accept insurance?|Yes, we are in-network with most major insurance providers including Medicaid. Our admissions team will verify your benefits during the intake process.\nHow involved are parents in the therapy process?|Parent training is a core component of the Chroma Care Model. We require regular caregiver participation to ensure skills transfer to the home environment.\nHow long are the therapy sessions?|Session length varies by program and clinical recommendation, typically ranging from 2 to 4 hours for our early intervention models.";
+							}
+
 							if ($faq_raw):
 								$faqs = explode("\n", $faq_raw);
 								foreach ($faqs as $faq):
