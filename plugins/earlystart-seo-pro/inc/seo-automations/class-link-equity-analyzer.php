@@ -211,11 +211,11 @@ class earlystart_Link_Equity_Analyzer
      */
     public function add_dashboard_page() {
         add_submenu_page(
-            'earlystart-seo-dashboard',
+            'chroma-seo-dashboard',
             'Link Equity',
             'Link Equity',
             'manage_options',
-            'earlystart-link-equity',
+            'chroma-link-equity',
             [$this, 'render_dashboard']
         );
     }

@@ -145,7 +145,7 @@ class earlystart_Keyword_Linker
             $count++;
             $this->linked_this_post[$keyword] = ($this->linked_this_post[$keyword] ?? 0) + 1;
             
-            return '<a href="' . esc_url($url) . '" class="earlystart-auto-link">' . $matches[1] . '</a>';
+            return '<a href="' . esc_url($url) . '" class="chroma-auto-link">' . $matches[1] . '</a>';
         }, $content, $max);
         
         return $content;
@@ -156,11 +156,11 @@ class earlystart_Keyword_Linker
      */
     public function add_settings_page() {
         add_submenu_page(
-            'earlystart-seo-dashboard',
+            'chroma-seo-dashboard',
             'Keyword Linking',
             'Keyword Linking',
             'manage_options',
-            'earlystart-keyword-linking',
+            'chroma-keyword-linking',
             [$this, 'render_settings_page']
         );
     }

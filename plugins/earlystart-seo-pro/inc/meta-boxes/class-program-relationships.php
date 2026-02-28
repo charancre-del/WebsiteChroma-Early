@@ -31,7 +31,7 @@ class earlystart_Program_Relationships extends earlystart_Advanced_SEO_Meta_Box_
      */
     public function get_title()
     {
-        return __('Program Relationships & Availability', 'earlystart-excellence');
+        return __('Program Relationships & Availability', 'chroma-excellence');
     }
 
     /**
@@ -78,10 +78,10 @@ class earlystart_Program_Relationships extends earlystart_Advanced_SEO_Meta_Box_
         wp_nonce_field('earlystart_program_relationships_save', 'earlystart_program_relationships_nonce');
         ?>
 
-        <div class="earlystart-field-wrapper">
-            <label><?php _e('Available at Locations', 'earlystart-excellence'); ?></label>
+        <div class="chroma-field-wrapper">
+            <label><?php _e('Available at Locations', 'chroma-excellence'); ?></label>
             <p class="description">
-                <?php _e('Select which locations offer this program. This builds the "areaServed" and "provider" schema relationships.', 'earlystart-excellence'); ?>
+                <?php _e('Select which locations offer this program. This builds the "areaServed" and "provider" schema relationships.', 'chroma-excellence'); ?>
             </p>
 
             <div
@@ -95,15 +95,15 @@ class earlystart_Program_Relationships extends earlystart_Advanced_SEO_Meta_Box_
                         </label>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p><em><?php _e('No locations found.', 'earlystart-excellence'); ?></em></p>
+                    <p><em><?php _e('No locations found.', 'chroma-excellence'); ?></em></p>
                 <?php endif; ?>
             </div>
         </div>
 
-        <div class="earlystart-field-wrapper">
-            <label><?php _e('Prerequisites', 'earlystart-excellence'); ?></label>
+        <div class="chroma-field-wrapper">
+            <label><?php _e('Prerequisites', 'chroma-excellence'); ?></label>
             <p class="description">
-                <?php _e('Select programs that must be completed before this one (e.g., Preschool before Pre-K).', 'earlystart-excellence'); ?>
+                <?php _e('Select programs that must be completed before this one (e.g., Preschool before Pre-K).', 'chroma-excellence'); ?>
             </p>
 
             <select name="program_prerequisites[]" class="widefat" multiple style="height: 150px;">
@@ -113,13 +113,13 @@ class earlystart_Program_Relationships extends earlystart_Advanced_SEO_Meta_Box_
                     </option>
                 <?php endforeach; ?>
             </select>
-            <p class="description"><?php _e('Hold Ctrl/Cmd to select multiple.', 'earlystart-excellence'); ?></p>
+            <p class="description"><?php _e('Hold Ctrl/Cmd to select multiple.', 'chroma-excellence'); ?></p>
         </div>
 
-        <div class="earlystart-field-wrapper">
-            <label><?php _e('Related Programs', 'earlystart-excellence'); ?></label>
+        <div class="chroma-field-wrapper">
+            <label><?php _e('Related Programs', 'chroma-excellence'); ?></label>
             <p class="description">
-                <?php _e('Select semantically related programs (e.g., Summer Camp related to After School).', 'earlystart-excellence'); ?>
+                <?php _e('Select semantically related programs (e.g., Summer Camp related to After School).', 'chroma-excellence'); ?>
             </p>
 
             <select name="program_related[]" class="widefat" multiple style="height: 150px;">
@@ -129,7 +129,7 @@ class earlystart_Program_Relationships extends earlystart_Advanced_SEO_Meta_Box_
                     </option>
                 <?php endforeach; ?>
             </select>
-            <p class="description"><?php _e('Hold Ctrl/Cmd to select multiple.', 'earlystart-excellence'); ?></p>
+            <p class="description"><?php _e('Hold Ctrl/Cmd to select multiple.', 'chroma-excellence'); ?></p>
         </div>
 
         <?php

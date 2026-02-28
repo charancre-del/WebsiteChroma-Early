@@ -153,11 +153,11 @@ class earlystart_Combo_Page_Generator
         
         // Dynamic SEO Title (30-60 chars target)
         $program_title = get_the_title($program);
-        $seo_title = "{$program_title} in {$city_name}, {$state} | earlystart";
+        $seo_title = "{$program_title} in {$city_name}, {$state} | Chroma";
         
         // Truncate if too long (max 60 chars)
         if (strlen($seo_title) > 60) {
-            $seo_title = "{$program_title} in {$city_name} | earlystart";
+            $seo_title = "{$program_title} in {$city_name} | Chroma";
         }
         if (strlen($seo_title) > 60) {
             $seo_title = substr($seo_title, 0, 57) . '...';
@@ -242,7 +242,7 @@ class earlystart_Combo_Page_Generator
             'toddler-care' => "Quality Toddler Care in {$city_name}, {$state} for ages {$age_range}. Language-rich learning, guided play & caring teachers. Enroll now!",
             'preschool' => "Explore Preschool in {$city_name}, {$state} for ages {$age_range}. Hands-on learning, small classes & dedicated teachers. Schedule a tour!",
             'pre-k-prep' => "Pre-K Prep in {$city_name}, {$state} for ages {$age_range}. Kindergarten readiness, structured learning & social growth. Enroll today!",
-            'ga-pre-k' => "Free GA Pre-K in {$city_name} for 4-year-olds. State-funded, kindergarten-ready curriculum at earlystart. Limited spots—enroll now!",
+            'ga-pre-k' => "Free GA Pre-K in {$city_name} for 4-year-olds. State-funded, kindergarten-ready curriculum at Chroma. Limited spots—enroll now!",
             'after-school' => "After School program in {$city_name}, {$state} for ages {$age_range}. Homework help, enrichment activities & safe transportation. Join us!",
             'camp-summer-winter-fall' => "Summer & Holiday Camps in {$city_name}, {$state}. Fun activities, field trips & friendships for kids {$age_range}. Register today!",
             'parents-day-out' => "Parents Day Out in {$city_name}, {$state} for ages {$age_range}. Flexible care, engaging activities & peace of mind. Book your spot!",
@@ -257,7 +257,7 @@ class earlystart_Combo_Page_Generator
             if ($age_range) {
                 $description .= " for ages {$age_range}";
             }
-            $description .= ". Quality early learning with caring teachers at earlystart Early Learning. Schedule a tour today!";
+            $description .= ". Quality early learning with caring teachers at Chroma Early Learning. Schedule a tour today!";
         }
         
         // Handle empty age range
@@ -383,7 +383,7 @@ class earlystart_Combo_Page_Generator
         } else {
             // Default fallback logic
             $intro_text = sprintf(
-                __('Searching for the best %s near %s? At earlystart %s, we combine the safety you need with the enriching curriculum your child deserves.', 'earlystart-excellence'),
+                __('Searching for the best %s near %s? At Chroma %s, we combine the safety you need with the enriching curriculum your child deserves.', 'chroma-excellence'),
                 strtolower($program->post_title),
                 esc_html($neighborhoods[0] ?? $city_name),
                 esc_html($city_name)
@@ -403,73 +403,73 @@ class earlystart_Combo_Page_Generator
         $t_age_range = (string) $age_range;
         
         // Define translated strings - strictly using variables
-        $str_now_enrolling = sprintf(__('Now Enrolling: %s', 'earlystart-excellence'), $t_age_range);
-        $str_premier_title = sprintf(__('Premier %s in', 'earlystart-excellence'), $t_prog_title);
-        $str_schedule_visit = __('Schedule Visit', 'earlystart-excellence');
-        $str_serving_families = sprintf(__('Serving %s Families', 'earlystart-excellence'), $t_city_name);
-        $str_why_choose = sprintf(__('Why %s Parents Choose Our %s', 'earlystart-excellence'), $t_city_name, $t_prog_title);
-        $str_understanding = sprintf(__('We understand that choosing care in %s is a big decision. Here is what sets our %s apart.', 'earlystart-excellence'), $t_city_name, $t_prog_title);
-        $str_low_ratios = __('Low Ratios', 'earlystart-excellence');
-        $str_ratios_desc = sprintf(__('Our %s campus maintains strict teacher-to-student ratios, ensuring your child gets the individual attention they need.', 'earlystart-excellence'), $t_city_name);
-        $str_curriculum_title = __('Prismpath™ Curriculum', 'earlystart-excellence');
+        $str_now_enrolling = sprintf(__('Now Enrolling: %s', 'chroma-excellence'), $t_age_range);
+        $str_premier_title = sprintf(__('Premier %s in', 'chroma-excellence'), $t_prog_title);
+        $str_schedule_visit = __('Schedule Visit', 'chroma-excellence');
+        $str_serving_families = sprintf(__('Serving %s Families', 'chroma-excellence'), $t_city_name);
+        $str_why_choose = sprintf(__('Why %s Parents Choose Our %s', 'chroma-excellence'), $t_city_name, $t_prog_title);
+        $str_understanding = sprintf(__('We understand that choosing care in %s is a big decision. Here is what sets our %s apart.', 'chroma-excellence'), $t_city_name, $t_prog_title);
+        $str_low_ratios = __('Low Ratios', 'chroma-excellence');
+        $str_ratios_desc = sprintf(__('Our %s campus maintains strict teacher-to-student ratios, ensuring your child gets the individual attention they need.', 'chroma-excellence'), $t_city_name);
+        $str_curriculum_title = __('Prismpath™ Curriculum', 'chroma-excellence');
         
         // Handle ternary for age label safely
-        $t_early_learners = __('early learners', 'earlystart-excellence');
-        $str_curriculum_desc = sprintf(__('Specifically designed for %s, our curriculum balances play-based learning with school readiness.', 'earlystart-excellence'), $t_age_range ?: $t_early_learners);
+        $t_early_learners = __('early learners', 'chroma-excellence');
+        $str_curriculum_desc = sprintf(__('Specifically designed for %s, our curriculum balances play-based learning with school readiness.', 'chroma-excellence'), $t_age_range ?: $t_early_learners);
         
-        $str_updates_title = __('Real-Time Updates', 'earlystart-excellence');
-        $str_updates_desc = sprintf(__('Parents in %s love our app. Get photos and updates throughout the workday straight to your phone.', 'earlystart-excellence'), $t_city_name);
+        $str_updates_title = __('Real-Time Updates', 'chroma-excellence');
+        $str_updates_desc = sprintf(__('Parents in %s love our app. Get photos and updates throughout the workday straight to your phone.', 'chroma-excellence'), $t_city_name);
         
         // Neighborhood logic
         $t_neigh_0 = $neighborhoods[0] ?? $t_city_name;
-        $str_serving_header = sprintf(__('Serving Families in %s', 'earlystart-excellence'), $t_neigh_0);
+        $str_serving_header = sprintf(__('Serving Families in %s', 'chroma-excellence'), $t_neigh_0);
         
-        $str_locations_serving = sprintf(__('earlystart Locations Serving %s', 'earlystart-excellence'), $t_city_name);
-        $str_select_campus = __('Select the campus closest to your home or work.', 'earlystart-excellence');
-        $str_view_campus = __('View Campus', 'earlystart-excellence');
-        $str_visit_classroom = sprintf(__('Visit Our %s Classroom', 'earlystart-excellence'), $t_city_name);
-        $str_see_environment = sprintf(__('See the %s environment in person. Meet our Director and teachers.', 'earlystart-excellence'), $t_prog_title);
-        $str_more_options = sprintf(__('More Childcare Options in %s', 'earlystart-excellence'), $t_city_name);
+        $str_locations_serving = sprintf(__('Chroma Locations Serving %s', 'chroma-excellence'), $t_city_name);
+        $str_select_campus = __('Select the campus closest to your home or work.', 'chroma-excellence');
+        $str_view_campus = __('View Campus', 'chroma-excellence');
+        $str_visit_classroom = sprintf(__('Visit Our %s Classroom', 'chroma-excellence'), $t_city_name);
+        $str_see_environment = sprintf(__('See the %s environment in person. Meet our Director and teachers.', 'chroma-excellence'), $t_prog_title);
+        $str_more_options = sprintf(__('More Childcare Options in %s', 'chroma-excellence'), $t_city_name);
         
         // Location Text Logic
         $t_major_road = $major_road;
         $t_county = $county;
         
         if ($t_major_road) {
-            $str_location_intro = sprintf(__('Located conveniently off %s, our', 'earlystart-excellence'), '<strong>' . esc_html($t_major_road) . '</strong>');
+            $str_location_intro = sprintf(__('Located conveniently off %s, our', 'chroma-excellence'), '<strong>' . esc_html($t_major_road) . '</strong>');
         } else {
-            $str_location_intro = __('Our', 'earlystart-excellence');
+            $str_location_intro = __('Our', 'chroma-excellence');
         }
 
         $t_neighborhoods_html = '<strong>' . implode('</strong>, <strong>', array_map('esc_html', array_slice($neighborhoods, 0, 3))) . '</strong>';
-        $str_location_main = sprintf(__('%s campus is the preferred choice for families living in %s.', 'earlystart-excellence'), esc_html($t_city_name), $t_neighborhoods_html);
+        $str_location_main = sprintf(__('%s campus is the preferred choice for families living in %s.', 'chroma-excellence'), esc_html($t_city_name), $t_neighborhoods_html);
 
         if ($local_employers) {
-            $str_commute = sprintf(__('Whether you work at %s or commute via %s, our drop-off and pick-up hours (6:30 AM – 6:30 PM) are designed for working parents in %s County.', 'earlystart-excellence'), 
+            $str_commute = sprintf(__('Whether you work at %s or commute via %s, our drop-off and pick-up hours (6:30 AM – 6:30 PM) are designed for working parents in %s County.', 'chroma-excellence'), 
                 '<strong>' . esc_html($local_employers) . '</strong>', 
                 esc_html($t_major_road ?: 'GA-400'), 
                 esc_html($t_county)
             );
         } else {
-            $str_commute = sprintf(__('Our convenient hours (6:30 AM – 6:30 PM) are designed for working parents in %s County.', 'earlystart-excellence'), esc_html($t_county));
+            $str_commute = sprintf(__('Our convenient hours (6:30 AM – 6:30 PM) are designed for working parents in %s County.', 'chroma-excellence'), esc_html($t_county));
         }
         ?>
         <main class="combo-page bg-brand-cream">
             
             <!-- Hero Section -->
             <section class="relative pt-20 pb-24 bg-white overflow-hidden">
-                <div class="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-earlystart-blue/5 to-transparent -z-10"></div>
+                <div class="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-chroma-blue/5 to-transparent -z-10"></div>
                 <div class="max-w-7xl mx-auto px-4 lg:px-6 grid lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <?php if ($age_range): ?>
-                        <div class="inline-flex items-center gap-2 bg-earlystart-blue/10 text-earlystart-blue px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-6">
+                        <div class="inline-flex items-center gap-2 bg-chroma-blue/10 text-chroma-blue px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-6">
                             <?php echo esc_html($str_now_enrolling); ?>
                         </div>
                         <?php endif; ?>
                         
                         <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-ink mb-6 leading-tight">
                             <?php echo esc_html($str_premier_title); ?> 
-                            <span class="italic text-earlystart-blue"><?php echo esc_html($city_name); ?>, <?php echo esc_html($state); ?>.</span>
+                            <span class="italic text-chroma-blue"><?php echo esc_html($city_name); ?>, <?php echo esc_html($state); ?>.</span>
                         </h1>
                         
                         <p class="text-lg text-brand-ink/70 mb-8 leading-relaxed">
@@ -477,7 +477,7 @@ class earlystart_Combo_Page_Generator
                         </p>
                         
                         <div class="flex flex-wrap gap-4">
-                            <a href="#tour" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-earlystart-blue text-white text-xs font-bold uppercase tracking-[0.2em] shadow-soft hover:bg-brand-ink transition-all">
+                            <a href="#tour" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-chroma-blue text-white text-xs font-bold uppercase tracking-[0.2em] shadow-soft hover:bg-brand-ink transition-all">
                                 <?php echo esc_html($str_schedule_visit); ?>
                             </a>
                             <?php 
@@ -493,12 +493,12 @@ class earlystart_Combo_Page_Generator
 
                             <?php if ($show_loc_details && $loc_address): ?>
                             <span class="flex items-center gap-2 text-sm font-bold text-brand-ink/60 px-4 py-4">
-                                <svg class="w-4 h-4 text-earlystart-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                                <svg class="w-4 h-4 text-chroma-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
                                 <?php echo esc_html($loc_address); ?>
                             </span>
                             <?php else: ?>
                             <span class="flex items-center gap-2 text-sm font-bold text-brand-ink/60 px-4 py-4">
-                                <svg class="w-4 h-4 text-earlystart-blue" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
+                                <svg class="w-4 h-4 text-chroma-blue" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
                                 <?php echo esc_html($str_serving_families); ?>
                             </span>
                             <?php endif; ?>
@@ -512,7 +512,7 @@ class earlystart_Combo_Page_Generator
                                  alt="<?php echo esc_attr($program->post_title); ?> students in <?php echo esc_attr($city_name); ?>" 
                                  loading="eager">
                         <?php else: ?>
-                            <div class="w-full h-full bg-gradient-to-br from-earlystart-blue/20 to-earlystart-red/20 flex items-center justify-center">
+                            <div class="w-full h-full bg-gradient-to-br from-chroma-blue/20 to-chroma-red/20 flex items-center justify-center">
                                 <span class="text-6xl">🎨</span>
                             </div>
                         <?php endif; ?>
@@ -535,7 +535,7 @@ class earlystart_Combo_Page_Generator
                     <div class="grid md:grid-cols-3 gap-8">
                         <!-- Benefit 1: Low Ratios -->
                         <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-ink/5">
-                            <div class="w-12 h-12 bg-earlystart-red/10 text-earlystart-red rounded-xl flex items-center justify-center text-xl mb-4">
+                            <div class="w-12 h-12 bg-chroma-red/10 text-chroma-red rounded-xl flex items-center justify-center text-xl mb-4">
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
                             </div>
                             <h3 class="font-bold text-xl mb-2"><?php echo esc_html($str_low_ratios); ?></h3>
@@ -544,7 +544,7 @@ class earlystart_Combo_Page_Generator
                         
                         <!-- Benefit 2: Prismpath -->
                         <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-ink/5">
-                            <div class="w-12 h-12 bg-earlystart-yellow/10 text-earlystart-yellow rounded-xl flex items-center justify-center text-xl mb-4">
+                            <div class="w-12 h-12 bg-chroma-yellow/10 text-chroma-yellow rounded-xl flex items-center justify-center text-xl mb-4">
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                             </div>
                             <h3 class="font-bold text-xl mb-2"><?php echo esc_html($str_curriculum_title); ?></h3>
@@ -553,7 +553,7 @@ class earlystart_Combo_Page_Generator
                         
                         <!-- Benefit 3: Real-Time Updates -->
                         <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-ink/5">
-                            <div class="w-12 h-12 bg-earlystart-green/10 text-earlystart-green rounded-xl flex items-center justify-center text-xl mb-4">
+                            <div class="w-12 h-12 bg-chroma-green/10 text-chroma-green rounded-xl flex items-center justify-center text-xl mb-4">
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
                             </div>
                             <h3 class="font-bold text-xl mb-2"><?php echo esc_html($str_updates_title); ?></h3>
@@ -580,7 +580,7 @@ class earlystart_Combo_Page_Generator
             </section>
             
             <!-- Tour/Location Selection Section -->
-            <section id="tour" class="py-24 bg-earlystart-blueDark text-white">
+            <section id="tour" class="py-24 bg-chroma-blueDark text-white">
                 <div class="max-w-7xl mx-auto px-4 text-center">
                     <?php 
                     // Check for nearby locations from City Page
@@ -633,7 +633,7 @@ class earlystart_Combo_Page_Generator
                                 <?php endif; ?>
                                     <p class="text-xs font-bold uppercase tracking-widest mb-6 opacity-80"><?php echo esc_html($str_serving_families); ?></p>
                                 <div class="mt-auto">
-                                    <a href="<?php the_permalink(); ?>" class="block w-full py-3 bg-earlystart-blue text-white text-center rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-brand-ink transition-colors">
+                                    <a href="<?php the_permalink(); ?>" class="block w-full py-3 bg-chroma-blue text-white text-center rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-brand-ink transition-colors">
                                         <?php echo esc_html($str_view_campus); ?>
                                     </a>
                                 </div>
@@ -668,7 +668,7 @@ class earlystart_Combo_Page_Generator
                         foreach ($other_programs as $op): 
                             $link = home_url('/' . $op->post_name . '-in-' . $city_slug . '-' . strtolower($state) . '/');
                         ?>
-                        <a href="<?php echo esc_url($link); ?>" class="px-6 py-3 bg-white rounded-full text-sm font-bold text-brand-ink hover:bg-earlystart-blue hover:text-white transition-all shadow-sm border border-brand-ink/5">
+                        <a href="<?php echo esc_url($link); ?>" class="px-6 py-3 bg-white rounded-full text-sm font-bold text-brand-ink hover:bg-chroma-blue hover:text-white transition-all shadow-sm border border-brand-ink/5">
                             <?php echo esc_html($op->post_title); ?> in <?php echo esc_html($city_name); ?>
                         </a>
                         <?php endforeach; ?>
@@ -685,7 +685,7 @@ class earlystart_Combo_Page_Generator
                         <details class="group bg-brand-cream rounded-2xl p-6 shadow-sm border border-brand-ink/5 cursor-pointer">
                             <summary class="flex items-center justify-between font-bold text-brand-ink list-none">
                                 <span>What are the tuition rates for <?php echo esc_html($program->post_title); ?> in <?php echo esc_html($city_name); ?>?</span>
-                                <span class="text-earlystart-blue group-open:rotate-180 transition-transform">
+                                <span class="text-chroma-blue group-open:rotate-180 transition-transform">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 </span>
                             </summary>
@@ -697,7 +697,7 @@ class earlystart_Combo_Page_Generator
                         <details class="group bg-brand-cream rounded-2xl p-6 shadow-sm border border-brand-ink/5 cursor-pointer">
                             <summary class="flex items-center justify-between font-bold text-brand-ink list-none">
                                 <span>Is food included in the program?</span>
-                                <span class="text-earlystart-blue group-open:rotate-180 transition-transform">
+                                <span class="text-chroma-blue group-open:rotate-180 transition-transform">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 </span>
                             </summary>
@@ -709,7 +709,7 @@ class earlystart_Combo_Page_Generator
                         <details class="group bg-brand-cream rounded-2xl p-6 shadow-sm border border-brand-ink/5 cursor-pointer">
                             <summary class="flex items-center justify-between font-bold text-brand-ink list-none">
                                 <span>Are the teachers at <?php echo esc_html($city_name); ?> certified?</span>
-                                <span class="text-earlystart-blue group-open:rotate-180 transition-transform">
+                                <span class="text-chroma-blue group-open:rotate-180 transition-transform">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 </span>
                             </summary>
@@ -722,7 +722,7 @@ class earlystart_Combo_Page_Generator
                         <details class="group bg-brand-cream rounded-2xl p-6 shadow-sm border border-brand-ink/5 cursor-pointer">
                             <summary class="flex items-center justify-between font-bold text-brand-ink list-none">
                                 <span>What ages does the <?php echo esc_html($program->post_title); ?> program serve?</span>
-                                <span class="text-earlystart-blue group-open:rotate-180 transition-transform">
+                                <span class="text-chroma-blue group-open:rotate-180 transition-transform">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 </span>
                             </summary>
@@ -779,7 +779,7 @@ class earlystart_Combo_Page_Generator
             'serviceType' => $program->post_title,
             'provider' => [
                 '@type' => 'Preschool',
-                'name' => 'earlystart Early Learning Academy - ' . $city_name,
+                'name' => 'Chroma Early Learning Academy - ' . $city_name,
                 'address' => [
                     '@type' => 'PostalAddress',
                     'addressLocality' => $city_name,
@@ -952,11 +952,11 @@ class earlystart_Combo_Page_Generator
      */
     public function add_admin_page() {
         add_submenu_page(
-            'earlystart-seo-dashboard',
+            'chroma-seo-dashboard',
             'Auto Pages',
             'Auto Pages',
             'manage_options',
-            'earlystart-auto-pages',
+            'chroma-auto-pages',
             [$this, 'render_admin_page']
         );
     }
@@ -994,7 +994,7 @@ class earlystart_Combo_Page_Generator
         $display_combos = $per_page > 0 ? array_slice($combos, $offset, $per_page) : $combos;
         $showing_count = count($display_combos);
         
-        $base_url = admin_url('admin.php?page=earlystart-auto-pages');
+        $base_url = admin_url('admin.php?page=chroma-auto-pages');
         $auto_publish = get_option('earlystart_combo_auto_publish', false);
         $nonce = wp_create_nonce('earlystart_combo_ai');
         ?>
@@ -1039,7 +1039,7 @@ class earlystart_Combo_Page_Generator
                 
                 <div class="alignright" style="display: flex; gap: 10px; align-items: center;">
                     <form method="get" style="display: inline;">
-                        <input type="hidden" name="page" value="earlystart-auto-pages">
+                        <input type="hidden" name="page" value="chroma-auto-pages">
                         <label>Show: 
                             <select name="per_page" onchange="this.form.submit()">
                                 <option value="25" <?php selected($per_page, 25); ?>>25</option>

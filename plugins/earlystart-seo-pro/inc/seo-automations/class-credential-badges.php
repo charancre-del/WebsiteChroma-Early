@@ -83,7 +83,7 @@ class earlystart_Credential_Badges
         
         ob_start();
         ?>
-        <div class="earlystart-credential-badges style-<?php echo esc_attr($style); ?>">
+        <div class="chroma-credential-badges style-<?php echo esc_attr($style); ?>">
             <?php foreach ($credentials as $cred): 
                 $badge = self::$badges[$cred] ?? null;
                 if (!$badge && is_array($cred)) {
@@ -104,13 +104,13 @@ class earlystart_Credential_Badges
             <?php endforeach; ?>
         </div>
         <style>
-            .earlystart-credential-badges {
+            .chroma-credential-badges {
                 display: flex;
                 flex-wrap: wrap;
                 gap: 10px;
                 margin: 20px 0;
             }
-            .earlystart-credential-badges .badge {
+            .chroma-credential-badges .badge {
                 display: inline-flex;
                 align-items: center;
                 gap: 6px;
@@ -122,14 +122,14 @@ class earlystart_Credential_Badges
                 font-weight: 600;
                 color: var(--badge-color);
             }
-            .earlystart-credential-badges .badge-icon {
+            .chroma-credential-badges .badge-icon {
                 font-size: 16px;
             }
-            .earlystart-credential-badges.style-compact .badge {
+            .chroma-credential-badges.style-compact .badge {
                 padding: 5px 10px;
                 font-size: 11px;
             }
-            .earlystart-credential-badges.style-inline {
+            .chroma-credential-badges.style-inline {
                 display: inline-flex;
             }
         </style>
@@ -213,8 +213,9 @@ class earlystart_Credential_Badges
         echo '<script type="application/ld+json">';
         echo json_encode([
             '@context' => 'https://schema.org',
-            '@type' => 'LocalBusiness',
-            '@id' => get_permalink() . '#business',
+            '@type' => 'Organization',
+            '@id' => get_permalink() . '#organization',
+            'name' => get_the_title(get_the_ID()),
             'hasCredential' => $schema_credentials
         ], JSON_UNESCAPED_SLASHES);
         echo '</script>' . "\n";

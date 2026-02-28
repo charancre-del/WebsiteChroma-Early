@@ -153,7 +153,7 @@ class earlystart_Multilingual_Manager
         }
 
         // 2. Check Global Constant
-        if (defined('earlystart_CURRENT_LANG') && earlystart_CURRENT_LANG === 'es') {
+        if (defined('EARLYSTART_CURRENT_LANG') && EARLYSTART_CURRENT_LANG === 'es') {
             return true;
         }
         
@@ -435,7 +435,7 @@ class earlystart_Multilingual_Manager
         if (!self::is_spanish()) return;
         
         echo '<style>
-        .earlystart-lang-fallback-notice {
+        .chroma-lang-fallback-notice {
             background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
             border: 1px solid #ffc107;
             border-left: 4px solid #ffc107;
@@ -448,7 +448,7 @@ class earlystart_Multilingual_Manager
             align-items: center;
             gap: 8px;
         }
-        .earlystart-lang-fallback-notice .dashicons {
+        .chroma-lang-fallback-notice .dashicons {
             font-size: 18px;
             width: 18px;
             height: 18px;
@@ -513,7 +513,7 @@ class earlystart_Multilingual_Manager
         if ($es_seo_title) return $es_seo_title;
         
         $es_title = get_post_meta($post_id, '_earlystart_es_title', true);
-        if ($es_title) return $es_title . ' | earlystart';
+        if ($es_title) return $es_title . ' | Chroma';
         
         return $title;
     }
@@ -539,7 +539,7 @@ class earlystart_Multilingual_Manager
      * Filter gettext to handle dynamic translation of common UI strings
      */
     public function dynamic_translation_filter($translated, $text, $domain) {
-        if ($domain !== 'earlystart-excellence' || !self::is_spanish()) {
+        if ($domain !== 'chroma-excellence' || !self::is_spanish()) {
             return $translated;
         }
 
@@ -558,8 +558,8 @@ class earlystart_Multilingual_Manager
                 'Toggle menu' => 'Alternar menú',
                 'Close menu' => 'Cerrar menú',
                 'Premium childcare & early education across Metro Atlanta.' => 'Cuidado infantil premium y educación temprana en todo Metro Atlanta.',
-                'earlystart Early Learning Academy. All rights reserved.' => 'earlystart Early Learning Academy. Todos los derechos reservados.',
-                'Ready to experience the earlystart difference?' => '¿Listo para experimentar la diferencia earlystart?',
+                'Chroma Early Learning Academy. All rights reserved.' => 'Chroma Early Learning Academy. Todos los derechos reservados.',
+                'Ready to experience the Chroma difference?' => '¿Listo para experimentar la diferencia Chroma?',
                 'Schedule a Tour' => 'Agenda un Recorrido',
                 'Book a Tour' => 'Reserva un Recorrido',
                 'Early Learning Academy' => 'Academia de Educación Temprana', // Fallback if customizer is empty
@@ -570,8 +570,8 @@ class earlystart_Multilingual_Manager
                 
                 // About Page
                 'Established 2015' => 'Establecido en 2015',
-                'More than a school. <span class="text-earlystart-yellow italic">A second home.</span>' => 'Más que una escuela. <span class="text-earlystart-yellow italic">Un segundo hogar.</span>',
-                'We founded earlystart on a simple belief: Early education should be a perfect blend of rigorous cognitive development and the comforting warmth of family.' => 'Fundamos earlystart con una creencia simple: la educación temprana debe ser una combinación perfecta de desarrollo cognitivo riguroso y la calidez reconfortante de la familia.',
+                'More than a school. <span class="text-chroma-yellow italic">A second home.</span>' => 'Más que una escuela. <span class="text-chroma-yellow italic">Un segundo hogar.</span>',
+                'We founded Chroma on a simple belief: Early education should be a perfect blend of rigorous cognitive development and the comforting warmth of family.' => 'Fundamos Chroma con una creencia simple: la educación temprana debe ser una combinación perfecta de desarrollo cognitivo riguroso y la calidez reconfortante de la familia.',
                 '"To cultivate a vibrant community of lifelong learners by blending academic rigor with the nurturing warmth of home, ensuring every child feels seen, valued, and capable."' => '"Cultivar una comunidad vibrante de aprendices de por vida combinando el rigor académico con la calidez del hogar, asegurando que cada niño se sienta visto, valorado y capaz."',
                 'From one classroom to a community.' => 'De un aula a una comunidad.',
                 'Over the last decade, we have grown into a network of 19+ campuses across Metro Atlanta, yet each location retains the intimacy and personal touch of that very first school. We are locally owned, operated by educators, and driven by the success of our families.' => 'Durante la última década, hemos crecido hasta convertirnos en una red de más de 19 campus en Metro Atlanta, pero cada ubicación conserva la intimidad y el toque personal de esa primera escuela. Somos propiedad local, operados por educadores e impulsados por el éxito de nuestras familias.',
@@ -579,13 +579,13 @@ class earlystart_Multilingual_Manager
                 'Students' => 'Estudiantes',
                 'Educators' => 'Educadores',
                 'Licensed' => 'Licenciado',
-                'The Heart of earlystart.' => 'El Corazón de earlystart.',
+                'The Heart of Chroma.' => 'El Corazón de Chroma.',
                 'Our Educators' => 'Nuestros Educadores',
                 'We don\'t just hire supervisors; we hire career educators. Our teachers are the most valuable asset in our classrooms, selected for their passion, patience, and professional credentials.' => 'No solo contratamos supervisores; contratamos educadores de carrera. Nuestros maestros son el activo más valioso en nuestras aulas, seleccionados por su pasión, paciencia y credenciales profesionales.',
                 'Certified & Credentialed' => 'Certificado y Acreditado',
                 'Safety First' => 'Seguridad Primero',
                 'Continuous Growth' => 'Crecimiento Continuo',
-                'The earlystart Standard' => 'El Estándar earlystart',
+                'The Chroma Standard' => 'El Estándar Chroma',
                 'Unconditional Joy' => 'Alegría Incondicional',
                 'Radical Safety' => 'Seguridad Radical',
                 'Academic Excellence' => 'Excelencia Académica',
@@ -611,7 +611,7 @@ class earlystart_Multilingual_Manager
                 'Ruh-roh! This page is playing hide-and-seek.' => '¡Oh, no! Esta página está jugando a las escondidas.',
                 'We\'ve checked the toy bin, looked under the rugs, and even asked the goldfish, but we can\'t find this page anywhere. It must be really good at hiding!' => 'Hemos revisado la caja de juguetes, mirado debajo de las alfombras e incluso le hemos preguntado al pez dorado, pero no podemos encontrar esta página por ninguna parte. ¡Debe ser muy buena escondiéndose!',
                 'Go Home' => 'Ir a Inicio',
-                'Everything you need to manage your enrollment, stay connected, and engage with the earlystart community.' => 'Todo lo que necesita para administrar su inscripción, mantenerse conectado e interactuar con la comunidad earlystart.',
+                'Everything you need to manage your enrollment, stay connected, and engage with the Chroma community.' => 'Todo lo que necesita para administrar su inscripción, mantenerse conectado e interactuar con la comunidad Chroma.',
                 'Parent Essentials' => 'Esenciales para Padres',
                 'Procare Cloud' => 'Nube Procare',
                 'Daily reports, photos, and attendance tracking.' => 'Informes diarios, fotos y seguimiento de asistencia.',
@@ -648,10 +648,10 @@ class earlystart_Multilingual_Manager
                 'What is the sick child policy?' => '¿Cuál es la política de niños enfermos?',
                 'How do you handle inclement weather?' => '¿Cómo manejan el clima inclemente?',
                 'What is the late pickup policy?' => '¿Cuál es la política de recogida tardía?',
-                'Love the earlystart family?' => '¿Amas a la familia earlystart?',
+                'Love the Chroma family?' => '¿Amas a la familia Chroma?',
                 'Refer a friend and receive a <strong>$100 tuition credit</strong> when they enroll.' => 'Recomienda a un amigo y recibe un <strong>crédito de matrícula de $100</strong> cuando se inscriba.',
                 'Refer a Friend' => 'Recomendar a un Amigo',
-                'Life at earlystart' => 'Vida en earlystart',
+                'Life at Chroma' => 'Vida en Chroma',
                 'Moments of Joy' => 'Momentos de Alegría',
                 'Loading content...' => 'Cargando contenido...',
                 'Open in new tab' => 'Abrir en nueva pestaña',
@@ -704,13 +704,13 @@ class earlystart_Multilingual_Manager
                 
                 // City Pages
                 'Serving %s & %s County' => 'Sirviendo a %s y el Condado de %s',
-                'The Best Daycare in <span class="italic text-earlystart-blue">%s, %s.</span>' => 'La Mejor Guardería en <span class="italic text-earlystart-blue">%s, %s.</span>',
+                'The Best Daycare in <span class="italic text-chroma-blue">%s, %s.</span>' => 'La Mejor Guardería en <span class="italic text-chroma-blue">%s, %s.</span>',
                 'Are you looking for "daycare near me"? Discover the highest-rated early learning centers in the %s area, featuring the Prismpath™ curriculum and GA Pre-K.' => '¿Está buscando "guardería cerca de mí"? Descubra los centros de aprendizaje temprano mejor calificados en el área de %s, con el plan de estudios Prismpath™ y GA Pre-K.',
                 'See Locations in %s' => 'Ver Ubicaciones en %s',
-                'Early Education and <br> Care in <span class="text-earlystart-blue">%s, GA</span>' => 'Educación Temprana y <br> Cuidado en <span class="text-earlystart-blue">%s, GA</span>',
+                'Early Education and <br> Care in <span class="text-chroma-blue">%s, GA</span>' => 'Educación Temprana y <br> Cuidado en <span class="text-chroma-blue">%s, GA</span>',
                 'Our school is more than a daycare. Through purposeful play and nurturing guidance, we help lay the foundation for a lifelong love of learning.' => 'Nuestra escuela es más que una guardería. A través del juego con propósito y la guía cariñosa, ayudamos a sentar las bases para un amor por el aprendizaje de por vida.',
                 'Conveniently located near major highways and down the road from local landmarks and top-rated elementary schools, we are the convenient choice for %s working parents. Come by and see Prismpath™ in action at one of our nearby campuses.' => 'Convenientemente ubicado cerca de las principales autopistas y cerca de puntos de referencia locales y escuelas primarias de primera categoría, somos la opción conveniente para los padres trabajadores de %s. Ven a ver Prismpath™ en acción en uno de nuestros campus cercanos.',
-                'earlystart Locations Serving %s' => 'Ubicaciones de earlystart que Sirven a %s',
+                'Chroma Locations Serving %s' => 'Ubicaciones de Chroma que Sirven a %s',
                 'Select the campus closest to your home or work.' => 'Seleccione el campus más cercano a su hogar o trabajo.',
                 'Also proudly serving families in:' => 'También sirviendo orgullosamente a familias en:',
                 'Programs Available in %s' => 'Programas Disponibles en %s',
@@ -725,7 +725,7 @@ class earlystart_Multilingual_Manager
                 'The best way to start is by scheduling a tour at your preferred location. You can book online or call us directly. We\'ll walk you through the enrollment process and answer all your questions.' => 'La mejor manera de comenzar es programando un recorrido en su ubicación preferida. Puede reservar en línea o llamarnos directamente. Lo guiaremos a través del proceso de inscripción y responderemos todas sus preguntas.',
                 'Back to All Communities' => 'Volver a Todas las Comunidades',
                 'Communities' => 'Comunidades',
-                'Our <span class="text-earlystart-blue italic">Communities</span>' => 'Nuestras <span class="text-earlystart-blue italic">Comunidades</span>',
+                'Our <span class="text-chroma-blue italic">Communities</span>' => 'Nuestras <span class="text-chroma-blue italic">Comunidades</span>',
                 'Discover our network of excellence across Georgia\'s most vibrant neighborhoods. Select your city to find local campuses.' => 'Descubra nuestra red de excelencia en los barrios más vibrantes de Georgia. Seleccione su ciudad para encontrar campus locales.',
                 'Search for your city...' => 'Busca tu ciudad...',
                 'All' => 'Todos',
@@ -742,7 +742,7 @@ class earlystart_Multilingual_Manager
                 
                 // Program Archive
                 'Ages 6 weeks to 12 years' => 'Edades de 6 semanas a 12 años',
-                'Programs and Curriculum that grows <span class="text-earlystart-red italic">with them.</span>' => 'Programas y Currículo que crece <span class="text-earlystart-red italic">con ellos.</span>',
+                'Programs and Curriculum that grows <span class="text-chroma-red italic">with them.</span>' => 'Programas y Currículo que crece <span class="text-chroma-red italic">con ellos.</span>',
                 'From sensory discovery in our infant suites to the project-based learning of Pre-K, every program uses our proprietary Prismpath™ model to meet children exactly where they are.' => 'Desde el descubrimiento sensorial en nuestras suites para bebés hasta el aprendizaje basado en proyectos de Pre-K, cada programa utiliza nuestro modelo patentado Prismpath™ para encontrar a los niños exactamente donde están.',
                 'Schedule Tour' => 'Agendar Recorrido',
                 'No programs found. Please add programs from the WordPress admin.' => 'No se encontraron programas. Por favor agregue programas desde el administrador de WordPress.',
@@ -755,18 +755,18 @@ class earlystart_Multilingual_Manager
                 'Creative Expression' => 'Expresión Creativa',
                 'Our Methodology' => 'Nuestra Metodología',
                 'More than just daycare.' => 'Más que una simple guardería.',
-                'We believe that education isn\'t just about filling a bucket, but lighting a fire. Our curriculum ensures that by the time your child graduates from earlystart, they are not just "school ready"—they are life ready.' => 'Creemos que la educación no se trata solo de llenar un cubo, sino de encender un fuego. Nuestro currículo asegura que para cuando su hijo se gradúe de earlystart, no solo esté "listo para la escuela", sino listo para la vida.',
+                'We believe that education isn\'t just about filling a bucket, but lighting a fire. Our curriculum ensures that by the time your child graduates from Chroma, they are not just "school ready"—they are life ready.' => 'Creemos que la educación no se trata solo de llenar un cubo, sino de encender un fuego. Nuestro currículo asegura que para cuando su hijo se gradúe de Chroma, no solo esté "listo para la escuela", sino listo para la vida.',
                 'Cognitive Growth' => 'Crecimiento Cognitivo',
                 'Critical thinking & problem solving.' => 'Pensamiento crítico y resolución de problemas.',
                 'Emotional IQ' => 'Coeficiente Emocional',
                 'Empathy, regulation & kindness.' => 'Empatía, regulación y amabilidad.',
                 'Ready to find your fit?' => '¿Listo para encontrar su lugar?',
-                'Every campus offers tours so you can meet the teachers, see the classrooms, and experience the earlystart culture firsthand.' => 'Cada campus ofrece recorridos para que pueda conocer a los maestros, ver las aulas y experimentar la cultura earlystart de primera mano.',
+                'Every campus offers tours so you can meet the teachers, see the classrooms, and experience the Chroma culture firsthand.' => 'Cada campus ofrece recorridos para que pueda conocer a los maestros, ver las aulas y experimentar la cultura Chroma de primera mano.',
                 'Find a Location' => 'Buscar una Ubicación',
                 
                 // Stories / Blog
                 'The Blog' => 'El Blog',
-                'earlystart Stories' => 'Historias earlystart',
+                'Chroma Stories' => 'Historias Chroma',
                 'Parenting tips, classroom spotlights, and insights from our educators.' => 'Consejos de crianza, puntos destacados del aula y conocimientos de nuestros educadores.',
                 'Featured' => 'Destacado',
                 'Read Story' => 'Leer Historia',
@@ -776,7 +776,7 @@ class earlystart_Multilingual_Manager
                 'No stories found. Check back soon!' => 'No se encontraron historias. ¡Vuelve a consultar pronto!',
                 'Back to Stories' => 'Volver a Historias',
                 'Contributor' => 'Colaborador',
-                'More from earlystart' => 'Más de earlystart',
+                'More from Chroma' => 'Más de Chroma',
                 'Book Tour' => 'Agendar Recorrido',
                 'Uncategorized' => 'Sin Categoría',
                 
@@ -792,7 +792,7 @@ class earlystart_Multilingual_Manager
                 'HR Contact Name' => 'Nombre de Contacto de RR.HH.',
                 'Work Email' => 'Correo Electrónico de Trabajo',
                 'Request Info Kit' => 'Solicitar Kit de Información',
-                'Why Partner With earlystart?' => '¿Por qué Asociarse con earlystart?',
+                'Why Partner With Chroma?' => '¿Por qué Asociarse con Chroma?',
                 'Start the Conversation' => 'Iniciar la Conversación',
                 'Fill out the form below and our acquisitions team will be in touch.' => 'Complete el formulario a continuación y nuestro equipo de adquisiciones se pondrá en contacto.',
                 'Our Process' => 'Nuestro Proceso',
@@ -818,7 +818,7 @@ class earlystart_Multilingual_Manager
                 'A dedicated studio for science experiments, light table exploration, and early engineering projects.' => 'Un estudio dedicado a experimentos científicos, exploración de mesas de luz y proyectos de ingeniería temprana.',
                 'GA Lottery Pre-K' => 'Pre-K de la Lotería de GA',
                 'We are a proud partner of the Georgia Pre-K Program, offering tuition-free education for 4-year-olds.' => 'Somos un socio orgulloso del Programa Pre-K de Georgia, que ofrece educación gratuita para niños de 4 años.',
-                'Welcome to earlystart %s.' => 'Bienvenido a earlystart %s.',
+                'Welcome to Chroma %s.' => 'Bienvenido a Chroma %s.',
                 'Campus Director' => 'Director del Campus',
                 'Explore Our Campus' => 'Explore Nuestro Campus',
                 'Take a Virtual Tour' => 'Realice un Recorrido Virtual',
@@ -831,14 +831,14 @@ class earlystart_Multilingual_Manager
                 'Why Families Love Us' => 'Por Qué las Familias nos Aman',
                 'Parent Review' => 'Reseña de Padres',
                 'Do you offer tours?' => '¿Ofrecen recorridos?',
-                'Yes! We encourage all families to book a tour to see our classrooms, meet our directors, and experience the earlystart difference firsthand.' => '¡Sí! Alentamos a todas las familias a reservar un recorrido para ver nuestras aulas, conocer a nuestros directores y experimentar la diferencia de earlystart de primera mano.',
+                'Yes! We encourage all families to book a tour to see our classrooms, meet our directors, and experience the Chroma difference firsthand.' => '¡Sí! Alentamos a todas las familias a reservar un recorrido para ver nuestras aulas, conocer a nuestros directores y experimentar la diferencia de Chroma de primera mano.',
                 'What ages do you serve?' => '¿Qué edades atienden?',
                 'We typically serve children from 6 weeks (Infants) up to 12 years old (After School), though specific programs may vary by campus.' => 'Normalmente atendemos a niños desde las 6 semanas (bebés) hasta los 12 años (después de la escuela), aunque los programas específicos pueden variar según el campus.',
                 'Is food included?' => '¿Está incluida la comida?',
                 'Yes, we provide nutritious, child-friendly meals and snacks prepared fresh daily.' => 'Sí, proporcionamos comidas y refrigerios nutritivos y aptos para niños preparados frescos todos los días.',
                 'Visit Us' => 'Visítenos',
                 'Come see the magic in person.' => 'Venga a ver la magia en persona.',
-                'Tours are the best way to feel the earlystart difference.' => 'Los recorridos son la mejor manera de sentir la diferencia de earlystart.',
+                'Tours are the best way to feel the Chroma difference.' => 'Los recorridos son la mejor manera de sentir la diferencia de Chroma.',
                 'We are available for tours Monday through Friday' => 'Estamos disponibles para recorridos de lunes a viernes',
                 ' between %s and %s' => ' entre las %s y las %s',
                 '. We welcome little ones to accompany on a tour!' => '. ¡Damos la bienvenida a los más pequeños para que nos acompañen en un recorrido!',
@@ -865,7 +865,7 @@ class earlystart_Multilingual_Manager
                 'Menu' => 'Menú',
                 'Toggle menu' => 'Alternar menú',
                 'Close menu' => 'Cerrar menú',
-                'Ready to experience the earlystart difference?' => '¿Listo para experimentar la diferencia de earlystart?',
+                'Ready to experience the Chroma difference?' => '¿Listo para experimentar la diferencia de Chroma?',
                 'Schedule a Tour' => 'Programar un Recorrido',
                 'Ready to enroll in <strong>%s</strong>?' => '¿Listo para inscribirse en <strong>%s</strong>?',
                 'Ready to visit our <strong>%s</strong> campus?' => '¿Listo para visitar nuestro campus de <strong>%s</strong>?',
@@ -875,8 +875,8 @@ class earlystart_Multilingual_Manager
                 
                 // Location Archive & Page
                 'Campuses' => 'Campuses',
-                'Find your earlystart Community - Our Locations' => 'Encuentra tu Comunidad earlystart - Nuestras Ubicaciones',
-                'Find your earlystart <span class="text-earlystart-green italic">community.</span>' => 'Encuentra tu <span class="text-earlystart-green italic">comunidad</span> earlystart.',
+                'Find your Chroma Community - Our Locations' => 'Encuentra tu Comunidad Chroma - Nuestras Ubicaciones',
+                'Find your Chroma <span class="text-chroma-green italic">community.</span>' => 'Encuentra tu <span class="text-chroma-green italic">comunidad</span> Chroma.',
                 'Search by ZIP code or city name...' => 'Buscar por código postal o nombre de la ciudad...',
                 'Search by city, zip, or campus name...' => 'Buscar por ciudad, código postal o nombre del campus...',
                 'All Locations' => 'Todas las Ubicaciones',
@@ -911,8 +911,8 @@ class earlystart_Multilingual_Manager
                 "Don't see your role?" => '¿No ves tu puesto?',
 
                 // Curriculum / Prismpath
-                'The earlystart Difference' => 'La Diferencia earlystart',
-                'Scientific rigor. <br><span class="italic text-earlystart-green">Joyful delivery.</span>' => 'Rigor científico. <br><span class="italic text-earlystart-green">Entrega alegre.</span>',
+                'The Chroma Difference' => 'La Diferencia Chroma',
+                'Scientific rigor. <br><span class="italic text-chroma-green">Joyful delivery.</span>' => 'Rigor científico. <br><span class="italic text-chroma-green">Entrega alegre.</span>',
                 'The Prismpath™ Framework' => 'El Marco Prismpath™',
                 'Physical' => 'Físico',
                 'Emotional' => 'Emocional',
@@ -951,14 +951,14 @@ class earlystart_Multilingual_Manager
                 'Happy Parent' => 'Padre Feliz',
                 'Frequently Asked Questions' => 'Preguntas Frecuentes',
                 'Do you offer tours?' => '¿Ofrecen recorridos?',
-                'Yes! We encourage all families to book a tour to see our classrooms, meet our directors, and experience the earlystart difference firsthand.' => '¡Sí! Animamos a todas las familias a reservar un recorrido para ver nuestras aulas, conocer a nuestros directores y experimentar la diferencia de earlystart de primera mano.',
+                'Yes! We encourage all families to book a tour to see our classrooms, meet our directors, and experience the Chroma difference firsthand.' => '¡Sí! Animamos a todas las familias a reservar un recorrido para ver nuestras aulas, conocer a nuestros directores y experimentar la diferencia de Chroma de primera mano.',
                 'What ages do you serve?' => '¿A qué edades atienden?',
                 'We typically serve children from 6 weeks (Infants) up to 12 years old (After School), though specific programs may vary by campus.' => 'Normalmente atendemos a niños desde las 6 semanas (infantes) hasta los 12 años (después de la escuela), aunque los programas específicos pueden variar según el campus.',
                 'Is food included?' => '¿Está incluida la comida?',
                 'Yes, we provide nutritious, child-friendly meals and snacks prepared fresh daily.' => 'Sí, proporcionamos comidas y meriendas nutritivas y adecuadas para niños, preparadas frescas a diario.',
                 'Visit Us' => 'Visítenos',
                 'Come see the magic in person.' => 'Venga a ver la magia en persona.',
-                'Tours are the best way to feel the earlystart difference.' => 'Los recorridos son la mejor manera de sentir la diferencia de earlystart.',
+                'Tours are the best way to feel the Chroma difference.' => 'Los recorridos son la mejor manera de sentir la diferencia de Chroma.',
                 'We are available for tours Monday through Friday' => 'Estamos disponibles para recorridos de lunes a viernes',
                 ' between %s and %s' => ' entre las %s y las %s',
                 'We welcome little ones to accompany on a tour!' => '¡Damos la bienvenida a los más pequeños para que nos acompañen en el recorrido!',
@@ -982,7 +982,7 @@ class earlystart_Multilingual_Manager
                 'Mon - Fri' => 'Lun - Vie',
                 'Campus Features' => 'Características del Campus',
                 'Every corner of our %s campus is intentional—from the soft lighting in our infant suites to the collaborative stations in our Pre-K classrooms.' => 'Cada rincón de nuestro campus de %s es intencional, desde la suave iluminación en nuestras suites para infantes hasta las estaciones de colaboración en nuestras aulas de Pre-K.',
-                'Welcome to earlystart %s.' => 'Bienvenido a earlystart %s.',
+                'Welcome to Chroma %s.' => 'Bienvenido a Chroma %s.',
                 'Campus Director' => 'Directora del Campus',
                 'Walk through our %s campus from the comfort of your home. Explore our classrooms, outdoor play areas, and learning spaces.' => 'Recorra nuestro campus de %s desde la comodidad de su hogar. Explore nuestras aulas, áreas de juego al aire libre y espacios de aprendizaje.',
 
@@ -999,24 +999,24 @@ class earlystart_Multilingual_Manager
                 'Kindergarten Ready' => 'Preparado para el Jardín de Infantes',
                 'Comprehensive Prep' => 'Preparación Integral',
                 'Find the right program in 10 seconds' => 'Encuentre el programa adecuado en 10 segundos',
-                "Choose your child's age and we'll suggest the earlystart program designed for their development stage and your family's needs." => 'Elija la edad de su hijo y le sugeriremos el programa de earlystart diseñado para su etapa de desarrollo y las necesidades de su familia.',
+                "Choose your child's age and we'll suggest the Chroma program designed for their development stage and your family's needs." => 'Elija la edad de su hijo y le sugeriremos el programa de Chroma diseñado para su etapa de desarrollo y las necesidades de su familia.',
                 'Speak to an enrollment specialist' => 'Hable con un especialista en inscripciones',
                 'Program Preview' => 'Vista Previa del Programa',
                 'Start Over' => 'Empezar de Nuevo',
                 'What Parents Say' => 'Lo que dicen los padres',
                 'Trusted by thousands of Atlanta families' => 'Con la confianza de miles de familias de Atlanta',
-                "Don't just take our word for it. Here's what parents have to say about their experience with earlystart Early Learning." => 'No se quede solo con nuestra palabra. Esto es lo que los padres tienen que decir sobre su experiencia con earlystart Early Learning.',
+                "Don't just take our word for it. Here's what parents have to say about their experience with Chroma Early Learning." => 'No se quede solo con nuestra palabra. Esto es lo que los padres tienen que decir sobre su experiencia con Chroma Early Learning.',
                 'Go to review %d' => 'Ir a la reseña %d',
                 'Schedule a private tour' => 'Programar un recorrido privado',
-                'Why families choose earlystart' => 'Por qué las familias eligen earlystart',
+                'Why families choose Chroma' => 'Por qué las familias eligen Chroma',
                 'Warm, consistent teachers' => 'Maestros cálidos y consistentes',
                 'Daily parent communication' => 'Comunicación diaria con los padres',
                 'Healthy meals included' => 'Comidas saludables incluidas',
                 'Age-appropriate security' => 'Seguridad adecuada para la edad',
                 'GA Lottery Pre-K available' => 'Pre-K de la Lotería de GA disponible',
                 'Tour: 20–30 min' => 'Recorrido: 20–30 min',
-                'Please activate the "earlystart Tour Form" plugin.' => 'Por favor active el plugin "earlystart Tour Form".',
-                'The earlystart Standard' => 'El Estándar earlystart',
+                'Please activate the "Chroma Tour Form" plugin.' => 'Por favor active el plugin "Chroma Tour Form".',
+                'The Chroma Standard' => 'El Estándar Chroma',
                 'Designed for discovery.' => 'Diseñado para el descubrimiento.',
                 'GA Lottery Pre-K' => 'Pre-K de la Lotería de GA',
                 
@@ -1036,7 +1036,7 @@ class earlystart_Multilingual_Manager
                 'Our %s campus is the preferred choice for families living in' => 'Nuestro campus de %s es la opción preferida para familias que viven en',
                 'Whether you work at %s or commute via %s, our drop-off and pick-up hours (6:30 AM – 6:30 PM) are designed for working parents in %s County.' => 'Ya sea que trabaje en %s o viaje por %s, nuestros horarios de entrada y salida (6:30 AM – 6:30 PM) están diseñados para padres trabajadores en el Condado de %s.',
                 'Our convenient hours (6:30 AM – 6:30 PM) are designed for working parents in %s County.' => 'Nuestros horarios convenientes (6:30 AM – 6:30 PM) están diseñados para padres trabajadores en el Condado de %s.',
-                'earlystart Locations Serving %s' => 'Ubicaciones de earlystart que Sirven a %s',
+                'Chroma Locations Serving %s' => 'Ubicaciones de Chroma que Sirven a %s',
                 'Select the campus closest to your home or work.' => 'Seleccione el campus más cercano a su hogar o trabajo.',
                 'Visit Our %s Classroom' => 'Visite Nuestra Aula de %s',
                 'See the %s environment in person. Meet our Director and teachers.' => 'Vea el ambiente de %s en persona. Conozca a nuestra Directora y maestros.',
@@ -1044,7 +1044,7 @@ class earlystart_Multilingual_Manager
                 'Other locations in %s' => 'Otras ubicaciones en %s',
                 
                 // Homepage Hero
-                'The art of <span class="italic text-earlystart-red">growing up.</span>' => 'El arte de <span class="italic text-earlystart-red">crecer.</span>',
+                'The art of <span class="italic text-chroma-red">growing up.</span>' => 'El arte de <span class="italic text-chroma-red">crecer.</span>',
                 'Where accredited excellence meets the warmth of home. A modern sanctuary powered by our proprietary Prismpath™ learning model for children 6 weeks to 12 years.' => 'Donde la excelencia acreditada se encuentra con la calidez del hogar. Un santuario moderno impulsado por nuestro modelo de aprendizaje patentado Prismpath™ para niños de 6 semanas a 12 años.',
                 'View Programs' => 'Ver Programas',
                 '19+ Metro Atlanta Locations' => 'Más de 19 Ubicaciones en Metro Atlanta',
@@ -1083,14 +1083,14 @@ class earlystart_Multilingual_Manager
                 'Marietta Campus' => 'Campus de Marietta',
                 'Johns Creek Campus' => 'Campus de Johns Creek',
                 'Austell Campus' => 'Campus de Austell',
-                'Our daughter has flourished at earlystart. The teachers genuinely care, and the Prismpath curriculum has her excited to learn every day. We couldn\'t ask for a better early learning experience.' => 'Nuestra hija ha florecido en earlystart. Los maestros realmente se preocupan, y el currículo Prismpath la tiene emocionada por aprender todos los días. No podríamos pedir una mejor experiencia de aprendizaje temprano.',
-                'After touring several centers, earlystart stood out immediately. The transparency, the warmth, and the expert care made our decision easy. Our son has been there for two years and we\'ve never looked back.' => 'Después de recorrer varios centros, earlystart se destacó de inmediato. La transparencia, la calidez y el cuidado experto facilitaron nuestra decisión. Nuestro hijo ha estado allí durante dos años y nunca hemos mirado atrás.',
-                'The family-style meals, the daily communication, the beautiful facilities — everything exceeds expectations. earlystart feels like an extension of our family, and our twins are thriving.' => 'Las comidas al estilo familiar, la comunicación diaria, las hermosas instalaciones; todo supera las expectativas. earlystart se siente como una extensión de nuestra familia, y nuestros gemelos están prosperando.',
+                'Our daughter has flourished at Chroma. The teachers genuinely care, and the Prismpath curriculum has her excited to learn every day. We couldn\'t ask for a better early learning experience.' => 'Nuestra hija ha florecido en Chroma. Los maestros realmente se preocupan, y el currículo Prismpath la tiene emocionada por aprender todos los días. No podríamos pedir una mejor experiencia de aprendizaje temprano.',
+                'After touring several centers, Chroma stood out immediately. The transparency, the warmth, and the expert care made our decision easy. Our son has been there for two years and we\'ve never looked back.' => 'Después de recorrer varios centros, Chroma se destacó de inmediato. La transparencia, la calidez y el cuidado experto facilitaron nuestra decisión. Nuestro hijo ha estado allí durante dos años y nunca hemos mirado atrás.',
+                'The family-style meals, the daily communication, the beautiful facilities — everything exceeds expectations. Chroma feels like an extension of our family, and our twins are thriving.' => 'Las comidas al estilo familiar, la comunicación diaria, las hermosas instalaciones; todo supera las expectativas. Chroma se siente como una extensión de nuestra familia, y nuestros gemelos están prosperando.',
                 
                 // Featured Stories
                 'Inside the Prismpath™ Classroom' => 'Dentro del Aula Prismpath™',
                 'Take a peek at how our educators weave play and academics together each day.' => 'Eche un vistazo a cómo nuestros educadores entrelazan el juego y lo académico cada día.',
-                'Family-Style Dining at earlystart' => 'Cenas al Estilo Familiar en earlystart',
+                'Family-Style Dining at Chroma' => 'Cenas al Estilo Familiar en Chroma',
                 'Why shared meals matter for social-emotional growth and independence.' => 'Por qué las comidas compartidas son importantes para el crecimiento socioemocional y la independencia.',
                 'Partnering with Parents' => 'Asociación con los Padres',
                 'See how we communicate daily to keep families connected to the classroom.' => 'Vea cómo nos comunicamos diariamente para mantener a las familias conectadas con el aula.',
@@ -1114,16 +1114,16 @@ class earlystart_Multilingual_Manager
                 'Quick Links' => 'Enlaces Rápidos',
                 'Connect With Us' => 'Conéctate con Nosotros',
                 'Latest Blogs' => 'Últimos Blogs',
-                'earlystart Early Learning Academy. All rights reserved.' => 'earlystart Early Learning Academy. Todos los derechos reservados.',
+                'Chroma Early Learning Academy. All rights reserved.' => 'Chroma Early Learning Academy. Todos los derechos reservados.',
                 'Privacy Policy' => 'Política de Privacidad',
                 'Terms of Service' => 'Términos de Servicio',
-                'Ready to experience the earlystart difference?' => '¿Listo para experimentar la diferencia de earlystart?',
+                'Ready to experience the Chroma difference?' => '¿Listo para experimentar la diferencia de Chroma?',
                 'Ready to enroll in <strong>%s</strong>?' => '¿Listo para inscribirse en <strong>%s</strong>?',
                 'Ready to visit our <strong>%s</strong> campus?' => '¿Listo para visitar nuestro campus de <strong>%s</strong>?',
                 
                 // Program Wizard & Enhancements
                 'Find the right program in 10 seconds' => 'Encuentre el programa adecuado en 10 segundos',
-                'Choose your child\'s age and we\'ll suggest the earlystart program designed for their development stage and your family\'s needs.' => 'Elija la edad de su hijo y le sugeriremos el programa earlystart diseñado para su etapa de desarrollo y las necesidades de su familia.',
+                'Choose your child\'s age and we\'ll suggest the Chroma program designed for their development stage and your family\'s needs.' => 'Elija la edad de su hijo y le sugeriremos el programa Chroma diseñado para su etapa de desarrollo y las necesidades de su familia.',
                 'Speak to an enrollment specialist' => 'Hable con un especialista en inscripciones',
                 'Start Over' => 'Empezar de nuevo',
                 'Program Preview' => 'Vista previa del programa',
@@ -1144,8 +1144,8 @@ class earlystart_Multilingual_Manager
                 'See the curriculum in action.' => 'Vea el currículo en acción.',
                 'Schedule a tour to see our "Third Teacher" classrooms and meet the educators bringing Prismpath™ to life.' => 'Programe un recorrido para ver nuestras aulas del "Tercer Maestro" y conocer a los educadores que dan vida a Prismpath™.',
                 'Find a Location' => 'Encuentra una ubicación',
-                'The earlystart Difference' => 'La Diferencia earlystart',
-                'Scientific rigor. <br><span class="italic text-earlystart-green">Joyful delivery.</span>' => 'Rigor científico. <br><span class="italic text-earlystart-green">Entrega alegre.</span>',
+                'The Chroma Difference' => 'La Diferencia Chroma',
+                'Scientific rigor. <br><span class="italic text-chroma-green">Joyful delivery.</span>' => 'Rigor científico. <br><span class="italic text-chroma-green">Entrega alegre.</span>',
                 'Our proprietary Prismpath™ curriculum isn\'t just about ABCs. It\'s a comprehensive framework designed to build the critical thinking, emotional intelligence, and social skills needed for the 21st century.' => 'Nuestro currículo patentado Prismpath™ no se trata solo del ABC. Es un marco integral diseñado para desarrollar el pensamiento crítico, la inteligencia emocional y las habilidades sociales necesarias para el siglo XXI.',
                 'The Prismpath™ Framework' => 'El Marco Prismpath™',
                 'How learning evolves.' => 'Cómo evoluciona el aprendizaje.',

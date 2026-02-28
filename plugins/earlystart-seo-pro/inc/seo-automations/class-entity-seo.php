@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 class earlystart_Entity_SEO
 {
     public function __construct() {
-        // DISABLED - Moved to earlystart SEO Pro Plugin
+        // DISABLED - Moved to Early Start SEO Pro Plugin
         // add_action('wp_head', [$this, 'output_organization_schema']);
         add_filter('the_content', [$this, 'add_semantic_markup'], 5);
     }
@@ -28,9 +28,9 @@ class earlystart_Entity_SEO
         }
         
         $same_as = get_option('earlystart_seo_same_as_urls', [
-            'https://www.facebook.com/earlystartearlylearning',
-            'https://www.instagram.com/earlystartearlylearning',
-            'https://www.linkedin.com/company/earlystart-early-learning'
+            'https://www.facebook.com/chromaearlylearning',
+            'https://www.instagram.com/chromaearlylearning',
+            'https://www.linkedin.com/company/chroma-early-learning'
         ]);
         
         $schema = [

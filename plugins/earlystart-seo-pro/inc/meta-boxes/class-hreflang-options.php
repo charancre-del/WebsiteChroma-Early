@@ -31,7 +31,7 @@ class earlystart_Hreflang_Options extends earlystart_Advanced_SEO_Meta_Box_Base
      */
     public function get_title()
     {
-        return __('International SEO (Hreflang)', 'earlystart-excellence');
+        return __('International SEO (Hreflang)', 'chroma-excellence');
     }
 
     /**
@@ -54,25 +54,25 @@ class earlystart_Hreflang_Options extends earlystart_Advanced_SEO_Meta_Box_Base
         $alternate_en = get_post_meta($post->ID, 'alternate_url_en', true);
         $alternate_es = get_post_meta($post->ID, 'alternate_url_es', true);
         ?>
-        <div class="earlystart-field-wrapper">
+        <div class="chroma-field-wrapper">
             <p class="description">
-                <?php _e('Link this page to its translated counterpart. This tells Google that these are the same content in different languages.', 'earlystart-excellence'); ?>
+                <?php _e('Link this page to its translated counterpart. This tells Google that these are the same content in different languages.', 'chroma-excellence'); ?>
             </p>
 
             <div style="margin-bottom: 15px;">
-                <label for="alternate_url_en"><?php _e('English Version URL:', 'earlystart-excellence'); ?></label>
+                <label for="alternate_url_en"><?php _e('English Version URL:', 'chroma-excellence'); ?></label>
                 <input type="url" id="alternate_url_en" name="alternate_url_en" value="<?php echo esc_url($alternate_en); ?>"
                     class="widefat" placeholder="https://..." />
                 <p class="description">
-                    <?php _e('If this IS the English page, leave blank or enter self-ref.', 'earlystart-excellence'); ?></p>
+                    <?php _e('If this IS the English page, leave blank or enter self-ref.', 'chroma-excellence'); ?></p>
             </div>
 
             <div style="margin-bottom: 15px;">
-                <label for="alternate_url_es"><?php _e('Spanish Version URL:', 'earlystart-excellence'); ?></label>
+                <label for="alternate_url_es"><?php _e('Spanish Version URL:', 'chroma-excellence'); ?></label>
                 <input type="url" id="alternate_url_es" name="alternate_url_es" value="<?php echo esc_url($alternate_es); ?>"
                     class="widefat" placeholder="https://..." />
                 <p class="description">
-                    <?php _e('Enter the full URL of the Spanish version of this page.', 'earlystart-excellence'); ?></p>
+                    <?php _e('Enter the full URL of the Spanish version of this page.', 'chroma-excellence'); ?></p>
             </div>
         </div>
         <?php

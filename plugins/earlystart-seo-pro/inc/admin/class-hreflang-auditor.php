@@ -21,11 +21,11 @@ class earlystart_Hreflang_Auditor
     public function register_menu()
     {
         add_submenu_page(
-            'earlystart-seo-dashboard',
+            'chroma-seo-dashboard',
             'Hreflang Auditor',
             'Hreflang Auditor',
             'manage_options',
-            'earlystart-hreflang-auditor',
+            'chroma-hreflang-auditor',
             [$this, 'render_page']
         );
     }
@@ -87,7 +87,7 @@ class earlystart_Hreflang_Auditor
         }
 
         ?>
-        <div class="wrap earlystart-seo-dashboard">
+        <div class="wrap chroma-seo-dashboard">
             <h1>🔍 Hreflang Auditor</h1>
             <p>Validates hreflang implementation across your site.</p>
 

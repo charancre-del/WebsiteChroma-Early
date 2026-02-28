@@ -40,15 +40,15 @@ class earlystart_Dynamic_Titles
      */
     private function get_default_patterns() {
         return [
-            'location' => '{title} | Daycare in {city}, {state} | earlystart',
-            'program' => '{title} Program | Ages {age_range} | earlystart',
-            'post' => '{title} | Parenting Tips | earlystart Blog',
-            'page' => '{title} | earlystart Early Learning',
-            'team_member' => '{title} | Meet Our Team | earlystart',
-            'archive_location' => 'Our Daycare Locations | earlystart Early Learning',
-            'archive_program' => 'Early Learning Programs | earlystart',
-            'home' => 'earlystart Early Learning | Quality Childcare & Preschool',
-            'search' => 'Search Results for "{query}" | earlystart'
+            'location' => '{title} | Daycare in {city}, {state} | Chroma',
+            'program' => '{title} Program | Ages {age_range} | Chroma',
+            'post' => '{title} | Parenting Tips | Chroma Blog',
+            'page' => '{title} | Chroma Early Learning',
+            'team_member' => '{title} | Meet Our Team | Chroma',
+            'archive_location' => 'Our Daycare Locations | Chroma Early Learning',
+            'archive_program' => 'Early Learning Programs | Chroma',
+            'home' => 'Chroma Early Learning | Quality Childcare & Preschool',
+            'search' => 'Search Results for "{query}" | Chroma'
         ];
     }
     
@@ -141,7 +141,7 @@ class earlystart_Dynamic_Titles
         
         // Author
         $author = get_the_author_meta('display_name', $post->post_author);
-        $placeholders['author'] = $author ?: 'earlystart Team';
+        $placeholders['author'] = $author ?: 'Chroma Team';
         
         // Date
         $placeholders['year'] = get_the_date('Y', $post_id);
@@ -159,11 +159,11 @@ class earlystart_Dynamic_Titles
      */
     public function add_settings_page() {
         add_submenu_page(
-            'earlystart-seo-dashboard',
+            'chroma-seo-dashboard',
             'Title Patterns',
             'Title Patterns',
             'manage_options',
-            'earlystart-title-patterns',
+            'chroma-title-patterns',
             [$this, 'render_settings_page']
         );
     }

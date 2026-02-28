@@ -21,7 +21,7 @@ class earlystart_Location_LLM_Prompt_Meta_Box extends earlystart_Advanced_SEO_Me
 
     public function get_title()
     {
-        return __('LLM Description & Recommendations', 'earlystart-excellence');
+        return __('LLM Description & Recommendations', 'chroma-excellence');
     }
 
     public function get_post_types()
@@ -43,11 +43,11 @@ class earlystart_Location_LLM_Prompt_Meta_Box extends earlystart_Advanced_SEO_Me
         echo '</div>';
 
         // LLM Description
-        echo '<h4>' . __('Natural Language Description', 'earlystart-excellence') . '</h4>';
+        echo '<h4>' . __('Natural Language Description', 'chroma-excellence') . '</h4>';
 
         $this->render_textarea_field([
             'id' => 'seo_llm_description',
-            'label' => __('LLM-Optimized Description', 'earlystart-excellence'),
+            'label' => __('LLM-Optimized Description', 'chroma-excellence'),
             'value' => $llm_description,
             'description' => 'A natural, conversational description LLMs will use when citing this location',
             'fallback_notice' => empty($llm_description) ? $fallback_description : '',
@@ -55,7 +55,7 @@ class earlystart_Location_LLM_Prompt_Meta_Box extends earlystart_Advanced_SEO_Me
         ]);
 
         // When to recommend
-        echo '<h4 style="margin-top: 20px;">' . __('"When to Recommend" Criteria', 'earlystart-excellence') . '</h4>';
+        echo '<h4 style="margin-top: 20px;">' . __('"When to Recommend" Criteria', 'chroma-excellence') . '</h4>';
         echo '<p class="description">Explicit scenarios when LLMs should suggest this location.</p>';
 
         $this->render_repeater_field([

@@ -9,7 +9,7 @@
  * - Single output point for all schemas
  * - Debug visibility for admins
  *
- * @package EARLYSTART_SEO_Pro
+ * @package earlystart_SEO_Pro
  * @since 1.1.0
  */
 
@@ -58,11 +58,8 @@ class earlystart_Schema_Registry
         // Output all registered schemas at priority 99 (late, after all registrations)
         add_action('wp_head', [__CLASS__, 'output_all_schemas'], 99);
 
-        // Add debug output in footer for admins
-        add_action('wp_footer', [__CLASS__, 'output_debug_panel'], 999);
-
-        // Add admin bar indicator
-        add_action('admin_bar_menu', [__CLASS__, 'admin_bar_indicator'], 999);
+        // Frontend schema debug/admin-bar UI is intentionally disabled.
+        // Debug and validation should run from the dedicated admin dashboard.
     }
 
     /**
@@ -77,7 +74,7 @@ class earlystart_Schema_Registry
     public static function register($schema, $options = [])
     {
         $source = isset($options['source']) ? $options['source'] : 'unknown';
-
+        
         if (self::$output_done) {
             self::$blocked[] = [
                 'type' => 'unknown',
@@ -93,7 +90,7 @@ class earlystart_Schema_Registry
 
         // Get schema type
         $type = isset($schema['@type']) ? $schema['@type'] : null;
-
+        
         // Handle array types (e.g., ["ChildCare", "LocalBusiness"])
         if (is_array($type)) {
             $type = $type[0]; // Use first type for dedup key
@@ -211,12 +208,12 @@ class earlystart_Schema_Registry
         $graph = [];
         foreach (self::$schemas as $item) {
             $schema = $item['schema'];
-
+            
             // Add @context if missing
             if (!isset($schema['@context'])) {
                 $schema['@context'] = 'https://schema.org';
             }
-
+            
             $graph[] = $schema;
         }
 
@@ -256,48 +253,38 @@ class earlystart_Schema_Registry
         ">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <h3 style="margin: 0; color: #00a32a;">🔍 Schema Registry Debug</h3>
-                <button onclick="this.parentElement.parentElement.remove()"
-                    style="background: #d63638; color: white; border: none; padding: 5px 10px; cursor: pointer;">Close</button>
+                <button onclick="this.parentElement.parentElement.remove()" style="background: #d63638; color: white; border: none; padding: 5px 10px; cursor: pointer;">Close</button>
             </div>
-
+            
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <!-- Registered Schemas -->
                 <div>
                     <h4 style="color: #00a32a; margin: 0 0 10px;">✅ Registered (<?php echo count($registered); ?>)</h4>
                     <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
-                        <tr style="background: #333;">
-                            <th style="text-align: left; padding: 5px;">Type</th>
-                            <th style="text-align: left; padding: 5px;">Source</th>
-                        </tr>
+                        <tr style="background: #333;"><th style="text-align: left; padding: 5px;">Type</th><th style="text-align: left; padding: 5px;">Source</th></tr>
                         <?php foreach ($registered as $item): ?>
-                            <tr style="border-bottom: 1px solid #444;">
-                                <td style="padding: 5px; color: #4fc3f7;"><?php echo esc_html($item['type']); ?></td>
-                                <td style="padding: 5px; color: #aaa;"><?php echo esc_html($item['source']); ?></td>
-                            </tr>
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #4fc3f7;"><?php echo esc_html($item['type']); ?></td>
+                            <td style="padding: 5px; color: #aaa;"><?php echo esc_html($item['source']); ?></td>
+                        </tr>
                         <?php endforeach; ?>
                     </table>
                 </div>
-
+                
                 <!-- Blocked Schemas -->
                 <div>
                     <h4 style="color: #d63638; margin: 0 0 10px;">🚫 Blocked (<?php echo count($blocked); ?>)</h4>
                     <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
-                        <tr style="background: #333;">
-                            <th style="text-align: left; padding: 5px;">Type</th>
-                            <th style="text-align: left; padding: 5px;">Reason</th>
-                            <th style="text-align: left; padding: 5px;">Source</th>
-                        </tr>
+                        <tr style="background: #333;"><th style="text-align: left; padding: 5px;">Type</th><th style="text-align: left; padding: 5px;">Reason</th><th style="text-align: left; padding: 5px;">Source</th></tr>
                         <?php foreach ($blocked as $item): ?>
-                            <tr style="border-bottom: 1px solid #444;">
-                                <td style="padding: 5px; color: #ff8a80;"><?php echo esc_html($item['type']); ?></td>
-                                <td style="padding: 5px; color: #ffcc80;"><?php echo esc_html($item['reason']); ?></td>
-                                <td style="padding: 5px; color: #aaa;"><?php echo esc_html($item['source']); ?></td>
-                            </tr>
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ff8a80;"><?php echo esc_html($item['type']); ?></td>
+                            <td style="padding: 5px; color: #ffcc80;"><?php echo esc_html($item['reason']); ?></td>
+                            <td style="padding: 5px; color: #aaa;"><?php echo esc_html($item['source']); ?></td>
+                        </tr>
                         <?php endforeach; ?>
                         <?php if (empty($blocked)): ?>
-                            <tr>
-                                <td colspan="3" style="padding: 10px; color: #aaa;">No schemas blocked</td>
-                            </tr>
+                        <tr><td colspan="3" style="padding: 10px; color: #aaa;">No schemas blocked</td></tr>
                         <?php endif; ?>
                     </table>
                 </div>
@@ -317,7 +304,7 @@ class earlystart_Schema_Registry
 
         $count = count(self::$schemas);
         $blocked_count = count(self::$blocked);
-
+        
         $title = sprintf('Schema: %d', $count);
         if ($blocked_count > 0) {
             $title .= sprintf(' <span style="color:#ff6b6b;">(%d blocked)</span>', $blocked_count);

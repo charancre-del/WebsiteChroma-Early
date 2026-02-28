@@ -1,6 +1,6 @@
 <?php
 /**
- * earlystart WP-CLI Commands
+ * Chroma WP-CLI Commands
  * Adds translation management commands to WP-CLI.
  *
  * @package earlystart_Excellence
@@ -27,7 +27,7 @@ class earlystart_CLI_Commands
      *
      * ## EXAMPLES
      *
-     *     wp earlystart translate 123
+     *     wp chroma translate 123
      *
      * @when after_wp_load
      */
@@ -78,7 +78,7 @@ class earlystart_CLI_Commands
      *
      * ## EXAMPLES
      *
-     *     wp earlystart translate-all --post-type=location
+     *     wp chroma translate-all --post-type=location
      *
      * @when after_wp_load
      */
@@ -134,7 +134,7 @@ class earlystart_CLI_Commands
      *
      * ## EXAMPLES
      *
-     *     wp earlystart flush-cache
+     *     wp chroma flush-cache
      *
      * @when after_wp_load
      */
@@ -162,7 +162,7 @@ class earlystart_CLI_Commands
      *
      * ## EXAMPLES
      *
-     *     wp earlystart stats
+     *     wp chroma stats
      *
      * @when after_wp_load
      */
@@ -206,6 +206,6 @@ class earlystart_CLI_Commands
     }
 }
 
-WP_CLI::add_command('earlystart', 'earlystart_CLI_Commands');
+WP_CLI::add_command('chroma', 'earlystart_CLI_Commands');
 
 

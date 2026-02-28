@@ -40,12 +40,70 @@ if (!function_exists('earlystart_safe_require')) {
  * @param string $prefix Optional prefix for the log message
  */
 if (!function_exists('earlystart_debug_log')) {
-	function earlystart_debug_log($message, $prefix = 'earlystart SEO')
-	{
+	function earlystart_debug_log($message, $prefix = 'Chroma SEO') {
 		if (defined('WP_DEBUG') && WP_DEBUG && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
 			$log_message = is_string($message) ? $message : print_r($message, true);
 			error_log('[' . $prefix . '] ' . $log_message);
 		}
+	}
+}
+
+/**
+ * Helper: Post-level capability check.
+ *
+ * @param int $post_id
+ * @return bool
+ */
+if (!function_exists('earlystart_seo_can_edit_post')) {
+	function earlystart_seo_can_edit_post($post_id) {
+		$post_id = absint($post_id);
+		return $post_id > 0 && current_user_can('edit_post', $post_id);
+	}
+}
+
+/**
+ * Helper: Validate outbound URLs for SSRF protection.
+ *
+ * @param string $url
+ * @param bool $allow_external
+ * @return string|false Normalized URL or false when blocked.
+ */
+if (!function_exists('earlystart_seo_validate_remote_url')) {
+	function earlystart_seo_validate_remote_url($url, $allow_external = false) {
+		$url = esc_url_raw($url, ['http', 'https']);
+		if (empty($url) || !wp_http_validate_url($url)) {
+			return false;
+		}
+
+		$host = strtolower((string) wp_parse_url($url, PHP_URL_HOST));
+		if ($host === '' || in_array($host, ['localhost', '127.0.0.1', '::1'], true)) {
+			return false;
+		}
+
+		$resolved_ip = $host;
+		if (!filter_var($host, FILTER_VALIDATE_IP)) {
+			$resolved_ip = gethostbyname($host);
+		}
+
+		if (filter_var($resolved_ip, FILTER_VALIDATE_IP)) {
+			$is_public_ip = filter_var(
+				$resolved_ip,
+				FILTER_VALIDATE_IP,
+				FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+			);
+			if ($is_public_ip === false) {
+				return false;
+			}
+		}
+
+		if (!$allow_external) {
+			$site_host = strtolower((string) wp_parse_url(home_url('/'), PHP_URL_HOST));
+			if ($site_host !== '' && $host !== $site_host) {
+				return false;
+			}
+		}
+
+		return $url;
 	}
 }
 
@@ -75,8 +133,6 @@ earlystart_safe_require(__DIR__ . '/class-advanced-features.php');
 earlystart_safe_require(__DIR__ . '/class-multilingual-manager.php');
 earlystart_safe_require(__DIR__ . '/class-validation-cache.php');
 earlystart_safe_require(__DIR__ . '/class-validation-logger.php');
-earlystart_safe_require(__DIR__ . '/class-facts-generator.php');
-
 
 // Load Admin UI
 earlystart_safe_require(__DIR__ . '/admin/class-llm-admin-settings.php');
@@ -101,7 +157,6 @@ earlystart_safe_require(__DIR__ . '/seo-automations/bootstrap.php');
 
 // Load Editor Metabox
 earlystart_safe_require(__DIR__ . '/meta-boxes/class-schema-editor-metabox.php');
-
 
 // Initialize LLM Client
 global $earlystart_llm_client;
@@ -172,245 +227,243 @@ foreach ($schema_builders as $file) {
  * Initialize Modules
  */
 if (!function_exists('earlystart_advanced_seo_init')) {
-	function earlystart_advanced_seo_init()
-	{
-		// Core Modules
-		if (class_exists('EARLYSTART_SEO_Dashboard'))
-			(new EARLYSTART_SEO_Dashboard())->init();
-		if (class_exists('earlystart_Citation_Datasets'))
-			(new earlystart_Citation_Datasets())->init();
-		if (class_exists('earlystart_Image_Alt_Automation'))
-			(new earlystart_Image_Alt_Automation())->init();
-		if (class_exists('earlystart_Admin_Help'))
-			(new earlystart_Admin_Help())->init();
-		if (class_exists('earlystart_Breadcrumbs'))
-			(new earlystart_Breadcrumbs())->init();
-		if (class_exists('earlystart_Multilingual_Manager'))
-			(new earlystart_Multilingual_Manager())->init();
-		if (class_exists('earlystart_Translation_Engine'))
-			earlystart_Translation_Engine::init();
-		if (class_exists('earlystart_Theme_Translator'))
-			(new earlystart_Theme_Translator())->init();
-		if (class_exists('earlystart_Content_Inspector'))
-			(new earlystart_Content_Inspector())->init();
-		if (class_exists('earlystart_Sitemap_Integrator'))
-			(new earlystart_Sitemap_Integrator())->init();
-		if (class_exists('earlystart_Hreflang_Auditor'))
-			(new earlystart_Hreflang_Auditor())->init();
-		if (class_exists('earlystart_Translation_API'))
-			(new earlystart_Translation_API())->init();
-		if (class_exists('earlystart_LLMs_Txt_Generator'))
-			(new earlystart_LLMs_Txt_Generator())->init();
-		if (class_exists('earlystart_Validation_Logger'))
-			(new earlystart_Validation_Logger())->init();
-		if (class_exists('earlystart_Career_Sync'))
-			earlystart_Career_Sync::init();
-		if (class_exists('earlystart_Facts_Generator'))
-			(new earlystart_Facts_Generator())->init();
+function earlystart_advanced_seo_init()
+{
+	// Core Modules
+	if (class_exists('earlystart_SEO_Dashboard'))
+		(new earlystart_SEO_Dashboard())->init();
+	if (class_exists('earlystart_Citation_Datasets'))
+		(new earlystart_Citation_Datasets())->init();
+	if (class_exists('earlystart_Image_Alt_Automation'))
+		(new earlystart_Image_Alt_Automation())->init();
+	if (class_exists('earlystart_Admin_Help'))
+		(new earlystart_Admin_Help())->init();
+	if (class_exists('earlystart_Breadcrumbs'))
+		(new earlystart_Breadcrumbs())->init();
+	if (class_exists('earlystart_Multilingual_Manager'))
+		(new earlystart_Multilingual_Manager())->init();
+	if (class_exists('earlystart_Translation_Engine'))
+		earlystart_Translation_Engine::init();
+	if (class_exists('earlystart_Theme_Translator'))
+		(new earlystart_Theme_Translator())->init();
+	if (class_exists('earlystart_Content_Inspector'))
+		(new earlystart_Content_Inspector())->init();
+	if (class_exists('earlystart_Sitemap_Integrator'))
+		(new earlystart_Sitemap_Integrator())->init();
+	if (class_exists('earlystart_Hreflang_Auditor'))
+		(new earlystart_Hreflang_Auditor())->init();
+	if (class_exists('earlystart_Translation_API'))
+		(new earlystart_Translation_API())->init();
+    if (class_exists('earlystart_LLMs_Txt_Generator'))
+        (new earlystart_LLMs_Txt_Generator())->init();
+    if (class_exists('earlystart_Validation_Logger'))
+        (new earlystart_Validation_Logger())->init();
+    if (class_exists('earlystart_Career_Sync'))
+        earlystart_Career_Sync::init();
 
+	// Meta Boxes
+	$meta_classes = [
+		'earlystart_Location_Citation_Facts',
+		'earlystart_Location_Events',
+		'earlystart_Location_HowTo',
+		'earlystart_General_LLM_Context', // Renamed
+		'earlystart_General_LLM_Prompt',  // Renamed
+		'earlystart_Location_Media',
+		'earlystart_Location_Pricing',
+		'earlystart_Location_Reviews',
+		'earlystart_Location_Service_Area',
+		'earlystart_Program_Relationships',
+		'earlystart_Universal_FAQ',
+		'earlystart_Hreflang_Options',
+		'earlystart_City_Landing_Meta',
+		'earlystart_Post_Newsroom',
+		'earlystart_Location_Advanced_Schema', // Tier 5: License, CID, Open House, Event Venue
+		'earlystart_Spanish_Content_Meta_Box'
+	];
 
-		// Meta Boxes
-		$meta_classes = [
-			'earlystart_Location_Citation_Facts',
-			'earlystart_Location_Events',
-			'earlystart_Location_HowTo',
-			'earlystart_General_LLM_Context', // Renamed
-			'earlystart_General_LLM_Prompt',  // Renamed
-			'earlystart_Location_Media',
-			'earlystart_Location_Pricing',
-			'earlystart_Location_Reviews',
-			'earlystart_Location_Service_Area',
-			'earlystart_Program_Relationships',
-			'earlystart_Universal_FAQ',
-			'earlystart_Hreflang_Options',
-			'earlystart_City_Landing_Meta',
-			'earlystart_Post_Newsroom',
-			'earlystart_Location_Advanced_Schema', // Tier 5: License, CID, Open House, Event Venue
-			'earlystart_Spanish_Content_Meta_Box'
-		];
+	// Fallback for class names if files haven't been updated yet
+	if (!class_exists('earlystart_General_LLM_Context') && class_exists('earlystart_Location_LLM_Context')) {
+		$meta_classes[] = 'earlystart_Location_LLM_Context';
+	}
+	if (!class_exists('earlystart_General_LLM_Prompt') && class_exists('earlystart_Location_LLM_Prompt')) {
+		$meta_classes[] = 'earlystart_Location_LLM_Prompt';
+	}
 
-
-		// Fallback for class names if files haven't been updated yet
-		if (!class_exists('earlystart_General_LLM_Context') && class_exists('earlystart_Location_LLM_Context')) {
-			$meta_classes[] = 'earlystart_Location_LLM_Context';
-		}
-		if (!class_exists('earlystart_General_LLM_Prompt') && class_exists('earlystart_Location_LLM_Prompt')) {
-			$meta_classes[] = 'earlystart_Location_LLM_Prompt';
-		}
-
-		foreach ($meta_classes as $class) {
-			if (class_exists($class)) {
-				(new $class())->register();
-			}
-		}
-
-		// Schema Builders (Hooks)
-		if (class_exists('earlystart_Event_Schema_Builder'))
-			add_action('wp_head', ['earlystart_Event_Schema_Builder', 'output']);
-		if (class_exists('earlystart_HowTo_Schema_Builder'))
-			add_action('wp_head', ['earlystart_HowTo_Schema_Builder', 'output']);
-		if (class_exists('earlystart_Schema_Injector'))
-			add_action('wp_head', ['earlystart_Schema_Injector', 'output_person_schema']);
-		if (class_exists('earlystart_Schema_Injector'))
-			add_action('wp_head', ['earlystart_Schema_Injector', 'output_job_posting_schema']);
-		if (class_exists('earlystart_Schema_Injector'))
-			add_action('wp_head', ['earlystart_Schema_Injector', 'output_course_schema']);
-		if (class_exists('earlystart_Universal_FAQ_Builder'))
-			add_action('wp_head', ['earlystart_Universal_FAQ_Builder', 'output']);
-		if (class_exists('earlystart_Page_Type_Builder'))
-			add_action('wp_head', ['earlystart_Page_Type_Builder', 'output']);
-		if (class_exists('earlystart_Schema_Injector'))
-			add_action('wp_head', ['earlystart_Schema_Injector', 'output_website_schema']);
-		if (class_exists('earlystart_Archive_ItemList_Builder'))
-			add_action('wp_head', ['earlystart_Archive_ItemList_Builder', 'output']);
-		if (class_exists('earlystart_Article_Builder'))
-			add_action('wp_head', ['earlystart_Article_Builder', 'output']);
-
-		// Advanced Schema (New Builders)
-		if (class_exists('earlystart_Special_Announcement_Builder'))
-			add_action('wp_head', ['earlystart_Special_Announcement_Builder', 'output']);
-		if (class_exists('earlystart_Learning_Resource_Builder'))
-			add_action('wp_head', ['earlystart_Learning_Resource_Builder', 'output']);
-
-		// Modular Schemas from Schema Builder (stored in _earlystart_post_schemas meta)
-		if (class_exists('earlystart_Schema_Injector'))
-			add_action('wp_head', ['earlystart_Schema_Injector', 'output_modular_schemas'], 20);
-
-		// Flush Rewrite Rules if KML rule is missing (One-time check)
-		if (get_option('earlystart_seo_flush_rewrite_v6') !== 'done') {
-			flush_rewrite_rules();
-			update_option('earlystart_seo_flush_rewrite_v6', 'done');
+	foreach ($meta_classes as $class) {
+		if (class_exists($class)) {
+			(new $class())->register();
 		}
 	}
-	add_action('init', 'earlystart_advanced_seo_init');
+
+	// Schema Builders (Hooks)
+	if (class_exists('earlystart_Event_Schema_Builder'))
+		add_action('wp_head', ['earlystart_Event_Schema_Builder', 'output']);
+	if (class_exists('earlystart_HowTo_Schema_Builder'))
+		add_action('wp_head', ['earlystart_HowTo_Schema_Builder', 'output']);
+	if (class_exists('earlystart_Schema_Injector'))
+		add_action('wp_head', ['earlystart_Schema_Injector', 'output_person_schema']);
+	if (class_exists('earlystart_Schema_Injector'))
+		add_action('wp_head', ['earlystart_Schema_Injector', 'output_profile_page_schema']);
+	if (class_exists('earlystart_Schema_Injector'))
+		add_action('wp_head', ['earlystart_Schema_Injector', 'output_job_posting_schema']);
+	if (class_exists('earlystart_Schema_Injector'))
+		add_action('wp_head', ['earlystart_Schema_Injector', 'output_course_schema']);
+	// FAQ schema auto-injection intentionally disabled.
+	// FAQPage should only come from explicit modular/builder schema entries.
+	if (class_exists('earlystart_Page_Type_Builder'))
+		add_action('wp_head', ['earlystart_Page_Type_Builder', 'output']);
+	if (class_exists('earlystart_Schema_Injector'))
+		add_action('wp_head', ['earlystart_Schema_Injector', 'output_website_schema']);
+	if (class_exists('earlystart_Archive_ItemList_Builder'))
+		add_action('wp_head', ['earlystart_Archive_ItemList_Builder', 'output']);
+	if (class_exists('earlystart_Article_Builder'))
+		add_action('wp_head', ['earlystart_Article_Builder', 'output']);
+	
+	// Advanced Schema (New Builders)
+	if (class_exists('earlystart_Special_Announcement_Builder'))
+		add_action('wp_head', ['earlystart_Special_Announcement_Builder', 'output']);
+	if (class_exists('earlystart_Learning_Resource_Builder'))
+		add_action('wp_head', ['earlystart_Learning_Resource_Builder', 'output']);
+	
+	// Modular Schemas from Schema Builder (stored in _earlystart_post_schemas meta)
+	if (class_exists('earlystart_Schema_Injector'))
+		add_action('wp_head', ['earlystart_Schema_Injector', 'output_modular_schemas'], 20);
+
+	// Flush Rewrite Rules if KML rule is missing (One-time check)
+	if (get_option('earlystart_seo_flush_rewrite_v6') !== 'done') {
+		flush_rewrite_rules();
+		update_option('earlystart_seo_flush_rewrite_v6', 'done');
+	}
+}
+add_action('init', 'earlystart_advanced_seo_init');
 }
 
 /**
  * Admin Assets
  */
 if (!function_exists('earlystart_advanced_seo_admin_assets')) {
-	function earlystart_advanced_seo_admin_assets($hook)
-	{
-		// Only load on SEO Dashboard or Post Edit screens
-		$screen = get_current_screen();
-		$allowed_post_types = ['location', 'program', 'page', 'post', 'city'];
+function earlystart_advanced_seo_admin_assets($hook)
+{
+	// Only load on SEO Dashboard or Post Edit screens
+	$screen = get_current_screen();
+	$allowed_post_types = ['location', 'program', 'page', 'post', 'city'];
 
-		$is_dashboard = (isset($_GET['page']) && $_GET['page'] === 'earlystart-seo-dashboard');
-		$is_post_edit = ($hook === 'post.php' || $hook === 'post-new.php');
-		$is_allowed_type = ($screen && in_array($screen->post_type, $allowed_post_types));
+	$is_dashboard = (isset($_GET['page']) && $_GET['page'] === 'chroma-seo-dashboard');
+	$is_post_edit = ($hook === 'post.php' || $hook === 'post-new.php');
+	$is_allowed_type = ($screen && in_array($screen->post_type, $allowed_post_types));
 
-		if (!$is_dashboard && !($is_post_edit && $is_allowed_type)) {
-			return;
-		}
-
-		?>
-		<style>
-			.earlystart-seo-meta-box {
-				background: #fff;
-			}
-
-			.earlystart-section-title {
-				font-size: 14px;
-				font-weight: 600;
-				margin: 15px 0 10px;
-				border-bottom: 1px solid #eee;
-				padding: 10px 0;
-			}
-
-			.earlystart-field-wrapper {
-				margin-bottom: 20px;
-			}
-
-			.earlystart-field-wrapper label {
-				display: block;
-				font-weight: 600;
-				margin-bottom: 5px;
-			}
-
-			.earlystart-field-wrapper .description {
-				margin-top: 5px;
-				font-style: normal;
-				color: #666;
-			}
-
-			.earlystart-field-wrapper .fallback-notice {
-				color: #2271b1;
-				font-style: italic;
-			}
-
-			.earlystart-repeater-field {
-				border: 1px solid #ddd;
-				padding: 15px;
-				background: #f9f9f9;
-			}
-
-			.earlystart-repeater-items {
-				margin-bottom: 10px;
-			}
-
-			.earlystart-repeater-item {
-				display: flex;
-				gap: 10px;
-				margin-bottom: 8px;
-				align-items: center;
-			}
-
-			.earlystart-repeater-item input {
-				flex: 1;
-			}
-
-			.earlystart-remove-item {
-				color: #b32d2e;
-			}
-		</style>
-		<script>
-			jQuery(document).ready(function ($) {
-				// Repeater Add
-				$(document).on('click', '.earlystart-add-item', function (e) {
-					e.preventDefault();
-					var $wrapper = $(this).closest('.earlystart-repeater-field');
-					var $items = $wrapper.find('.earlystart-repeater-items');
-					var $clone = $items.find('.earlystart-repeater-item').first().clone();
-					$clone.find('input, textarea').val('');
-					$items.append($clone);
-				});
-
-				// Repeater Remove
-				$(document).on('click', '.earlystart-remove-item', function (e) {
-					e.preventDefault();
-					if ($(this).closest('.earlystart-repeater-items').find('.earlystart-repeater-item').length > 1) {
-						$(this).closest('.earlystart-repeater-item').remove();
-					} else {
-						$(this).closest('.earlystart-repeater-item').find('input, textarea').val('');
-					}
-				});
-			});
-		</script>
-		<?php
+	if (!$is_dashboard && !($is_post_edit && $is_allowed_type)) {
+		return;
 	}
 
-	add_action('admin_enqueue_scripts', 'earlystart_advanced_seo_admin_assets');
+	?>
+	<style>
+		.chroma-seo-meta-box {
+			background: #fff;
+		}
+
+		.chroma-section-title {
+			font-size: 14px;
+			font-weight: 600;
+			margin: 15px 0 10px;
+			border-bottom: 1px solid #eee;
+			padding: 10px 0;
+		}
+
+		.chroma-field-wrapper {
+			margin-bottom: 20px;
+		}
+
+		.chroma-field-wrapper label {
+			display: block;
+			font-weight: 600;
+			margin-bottom: 5px;
+		}
+
+		.chroma-field-wrapper .description {
+			margin-top: 5px;
+			font-style: normal;
+			color: #666;
+		}
+
+		.chroma-field-wrapper .fallback-notice {
+			color: #2271b1;
+			font-style: italic;
+		}
+
+		.chroma-repeater-field {
+			border: 1px solid #ddd;
+			padding: 15px;
+			background: #f9f9f9;
+		}
+
+		.chroma-repeater-items {
+			margin-bottom: 10px;
+		}
+
+		.chroma-repeater-item {
+			display: flex;
+			gap: 10px;
+			margin-bottom: 8px;
+			align-items: center;
+		}
+
+		.chroma-repeater-item input {
+			flex: 1;
+		}
+
+		.chroma-remove-item {
+			color: #b32d2e;
+		}
+	</style>
+	<script>
+		jQuery(document).ready(function ($) {
+			// Repeater Add
+			$(document).on('click', '.chroma-add-item', function (e) {
+				e.preventDefault();
+				var $wrapper = $(this).closest('.chroma-repeater-field');
+				var $items = $wrapper.find('.chroma-repeater-items');
+				var $clone = $items.find('.chroma-repeater-item').first().clone();
+				$clone.find('input, textarea').val('');
+				$items.append($clone);
+			});
+
+			// Repeater Remove
+			$(document).on('click', '.chroma-remove-item', function (e) {
+				e.preventDefault();
+				if ($(this).closest('.chroma-repeater-items').find('.chroma-repeater-item').length > 1) {
+					$(this).closest('.chroma-repeater-item').remove();
+				} else {
+					$(this).closest('.chroma-repeater-item').find('input, textarea').val('');
+				}
+			});
+		});
+	</script>
+	<?php
+}
+
+add_action('admin_enqueue_scripts', 'earlystart_advanced_seo_admin_assets');
 } // Close function_exists for earlystart_advanced_seo_admin_assets
 
 /**
  * Admin Notice for Missing Files
  */
 if (!function_exists('earlystart_seo_missing_files_notice')) {
-	function earlystart_seo_missing_files_notice()
-	{
-		global $earlystart_missing_seo_files;
-		if (!empty($earlystart_missing_seo_files) && current_user_can('manage_options')) {
-			echo '<div class="notice notice-warning is-dismissible">';
-			echo '<p><strong>Advanced SEO Module Warning:</strong> The following files are missing and could not be loaded:</p>';
-			echo '<ul>';
-			foreach ($earlystart_missing_seo_files as $file) {
-				echo '<li>' . esc_html($file) . '</li>';
-			}
-			echo '</ul>';
-			echo '<p>Please ensure all files are uploaded to <code>inc/advanced-seo-llm/</code>.</p>';
-			echo '</div>';
+function earlystart_seo_missing_files_notice()
+{
+	global $earlystart_missing_seo_files;
+	if (!empty($earlystart_missing_seo_files) && current_user_can('manage_options')) {
+		echo '<div class="notice notice-warning is-dismissible">';
+		echo '<p><strong>Advanced SEO Module Warning:</strong> The following files are missing and could not be loaded:</p>';
+		echo '<ul>';
+		foreach ($earlystart_missing_seo_files as $file) {
+			echo '<li>' . esc_html($file) . '</li>';
 		}
+		echo '</ul>';
+		echo '<p>Please ensure all files are uploaded to <code>inc/advanced-seo-llm/</code>.</p>';
+		echo '</div>';
 	}
-	add_action('admin_notices', 'earlystart_seo_missing_files_notice');
+}
+add_action('admin_notices', 'earlystart_seo_missing_files_notice');
 }
 

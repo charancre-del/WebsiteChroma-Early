@@ -147,7 +147,7 @@ class earlystart_LLM_Bulk_Processor
                 $amenities = $earlystart_llm_client->generate_amenities_data($post_id);
                 
                 if (is_wp_error($amenities)) {
-                     earlystart_debug_log('[earlystart Bulk] Amenities Error: ' . $amenities->get_error_message());
+                     earlystart_debug_log('[Chroma Bulk] Amenities Error: ' . $amenities->get_error_message());
                      return false;
                 }
                 
@@ -157,7 +157,7 @@ class earlystart_LLM_Bulk_Processor
                 }
             }
         } catch (Exception $e) {
-            earlystart_debug_log('[earlystart Bulk] Error processing post ' . $post_id . ': ' . $e->getMessage());
+            earlystart_debug_log('[Chroma Bulk] Error processing post ' . $post_id . ': ' . $e->getMessage());
         }
         
         return false;

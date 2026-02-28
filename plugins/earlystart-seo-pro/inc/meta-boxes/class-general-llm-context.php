@@ -21,7 +21,7 @@ class earlystart_General_LLM_Context extends earlystart_Advanced_SEO_Meta_Box_Ba
 
     public function get_title()
     {
-        return __('LLM Context & Targeting', 'earlystart-excellence');
+        return __('LLM Context & Targeting', 'chroma-excellence');
     }
 
     public function get_post_types()
@@ -53,8 +53,8 @@ class earlystart_General_LLM_Context extends earlystart_Advanced_SEO_Meta_Box_Ba
             'navigational' => 'Navigational (Find Campus / Contact)'
         ];
 
-        echo '<div class="earlystart-meta-field-row" style="margin-bottom: 15px;">';
-        echo '<label for="seo_llm_primary_intent" style="display: block; font-weight: bold; margin-bottom: 5px;">' . __('Primary Intent', 'earlystart-excellence') . '</label>';
+        echo '<div class="chroma-meta-field-row" style="margin-bottom: 15px;">';
+        echo '<label for="seo_llm_primary_intent" style="display: block; font-weight: bold; margin-bottom: 5px;">' . __('Primary Intent', 'chroma-excellence') . '</label>';
         echo '<select id="seo_llm_primary_intent" name="seo_llm_primary_intent" class="widefat" style="max-width: 400px;">';
         foreach ($intent_options as $val => $label) {
             echo '<option value="' . esc_attr($val) . '" ' . selected($primary_intent, $val, false) . '>' . esc_html($label) . '</option>';
@@ -64,7 +64,7 @@ class earlystart_General_LLM_Context extends earlystart_Advanced_SEO_Meta_Box_Ba
         echo '</div>';
 
         // Target queries
-        echo '<h4 style="margin-top: 20px;">' . __('Target Queries', 'earlystart-excellence') . '</h4>';
+        echo '<h4 style="margin-top: 20px;">' . __('Target Queries', 'chroma-excellence') . '</h4>';
         echo '<p class="description">Natural language queries where LLMs should recommend this content.</p>';
 
         if (!empty($fallback_queries) && empty($target_queries)) {
@@ -80,7 +80,7 @@ class earlystart_General_LLM_Context extends earlystart_Advanced_SEO_Meta_Box_Ba
         ]);
 
         // Key differentiators
-        echo '<h4 style="margin-top: 20px;">' . __('Key Differentiators', 'earlystart-excellence') . '</h4>';
+        echo '<h4 style="margin-top: 20px;">' . __('Key Differentiators', 'chroma-excellence') . '</h4>';
         echo '<p class="description">What makes this content unique? LLMs use these as talking points.</p>';
 
         if (!empty($fallback_differentiators) && empty($key_differentiators)) {

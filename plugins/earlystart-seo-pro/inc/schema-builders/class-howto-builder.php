@@ -40,8 +40,8 @@ class earlystart_HowTo_Schema_Builder
         return [
             '@context' => 'https://schema.org',
             '@type' => 'HowTo',
-            'name' => sprintf(__('How to Enroll at %s', 'earlystart-excellence'), get_the_title($post_id)),
-            'description' => sprintf(__('Step-by-step guide to enrolling your child at %s.', 'earlystart-excellence'), get_the_title($post_id)),
+            'name' => sprintf(__('How to Enroll at %s', 'chroma-excellence'), get_the_title($post_id)),
+            'description' => sprintf(__('Step-by-step guide to enrolling your child at %s.', 'chroma-excellence'), get_the_title($post_id)),
             'step' => $step_objects,
         ];
     }

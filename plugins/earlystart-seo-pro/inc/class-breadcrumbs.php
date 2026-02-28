@@ -41,7 +41,7 @@ class earlystart_Breadcrumbs
 
         $items = $this->get_breadcrumb_items();
         
-        echo '<nav class="earlystart-breadcrumbs max-w-7xl mx-auto px-4 lg:px-6 py-4 text-sm text-gray-500" aria-label="Breadcrumb">';
+        echo '<nav class="chroma-breadcrumbs max-w-7xl mx-auto px-4 lg:px-6 py-4 text-sm text-gray-500" aria-label="Breadcrumb">';
         echo '<ol class="list-none p-0 inline-flex flex-wrap gap-2 items-center">';
         
         foreach ($items as $index => $item) {
@@ -53,9 +53,9 @@ class earlystart_Breadcrumbs
             }
             
             if ($is_last) {
-                echo '<span class="text-earlystart-blue" aria-current="page">' . esc_html($item['label']) . '</span>';
+                echo '<span class="text-chroma-blue" aria-current="page">' . esc_html($item['label']) . '</span>';
             } else {
-                echo '<a href="' . esc_url($item['url']) . '" class="text-brand-ink/60 hover:text-earlystart-blue transition-colors">' . esc_html($item['label']) . '</a>';
+                echo '<a href="' . esc_url($item['url']) . '" class="text-brand-ink/60 hover:text-chroma-blue transition-colors">' . esc_html($item['label']) . '</a>';
             }
             echo '</li>';
         }
@@ -295,7 +295,7 @@ class earlystart_Breadcrumbs
         $enabled = get_option('earlystart_breadcrumbs_enabled', 'yes');
         $home_text = get_option('earlystart_breadcrumbs_home_text', 'Home');
         ?>
-        <div class="earlystart-seo-card">
+        <div class="chroma-seo-card">
             <h2>Breadcrumbs Configuration</h2>
             <p>Manage how breadcrumbs appear on your site.</p>
             
@@ -344,16 +344,16 @@ class earlystart_Breadcrumbs
             </table>
 
             <p class="submit">
-                <button id="earlystart-save-breadcrumbs" class="button button-primary">Save Settings</button>
+                <button id="chroma-save-breadcrumbs" class="button button-primary">Save Settings</button>
             </p>
         </div>
 
-        <div class="earlystart-seo-card" style="margin-top: 20px;">
+        <div class="chroma-seo-card" style="margin-top: 20px;">
             <h2>🔍 Breadcrumbs Preview</h2>
             <p>Select a page type and then a specific page to preview.</p>
             
             <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
-                <select id="earlystart-breadcrumb-type-select" style="min-width: 150px;">
+                <select id="chroma-breadcrumb-type-select" style="min-width: 150px;">
                     <option value="">-- Select Type --</option>
                     <option value="location">Locations</option>
                     <option value="program">Programs</option>
@@ -362,27 +362,29 @@ class earlystart_Breadcrumbs
                     <option value="combo">Combo Page (Simulated)</option>
                 </select>
 
-                <select id="earlystart-breadcrumb-preview-select" style="min-width: 250px;" disabled>
+                <select id="chroma-breadcrumb-preview-select" style="min-width: 250px;" disabled>
                     <option value="">-- Select Page --</option>
                 </select>
 
-                <button id="earlystart-preview-breadcrumbs-btn" class="button button-secondary" disabled>Preview</button>
-                <span id="earlystart-breadcrumb-spinner" class="spinner"></span>
+                <button id="chroma-preview-breadcrumbs-btn" class="button button-secondary" disabled>Preview</button>
+                <span id="chroma-breadcrumb-spinner" class="spinner"></span>
             </div>
             
-            <div id="earlystart-breadcrumb-preview-result" style="display: none; border: 1px solid #ddd; padding: 15px; background: #f9f9f9;">
+            <div id="chroma-breadcrumb-preview-result" style="display: none; border: 1px solid #ddd; padding: 15px; background: #f9f9f9;">
                 <h4>Visual Preview:</h4>
-                <div id="earlystart-breadcrumb-visual" style="padding: 10px; background: #fff; border: 1px solid #eee; margin-bottom: 15px;"></div>
+                <div id="chroma-breadcrumb-visual" style="padding: 10px; background: #fff; border: 1px solid #eee; margin-bottom: 15px;"></div>
                 
                 <h4>JSON-LD Schema Output:</h4>
-                <pre id="earlystart-breadcrumb-json" style="background: #2d2d2d; color: #fff; padding: 10px; overflow: auto; font-size: 12px;"></pre>
+                <pre id="chroma-breadcrumb-json" style="background: #2d2d2d; color: #fff; padding: 10px; overflow: auto; font-size: 12px;"></pre>
             </div>
         </div>
 
         <script>
         jQuery(document).ready(function($) {
+            var chromaBreadcrumbNonce = '<?php echo esc_js(wp_create_nonce('earlystart_breadcrumbs_nonce')); ?>';
+
             // Save Settings
-            $('#earlystart-save-breadcrumbs').on('click', function(e) {
+            $('#chroma-save-breadcrumbs').on('click', function(e) {
                 e.preventDefault();
                 var btn = $(this);
                 btn.prop('disabled', true).text('Saving...');
@@ -393,7 +395,8 @@ class earlystart_Breadcrumbs
                     home_text: $('#earlystart_breadcrumbs_home_text').val(),
                     max_length: $('#earlystart_breadcrumbs_max_length').val(),
                     truncate_suffix: $('#earlystart_breadcrumbs_truncate_suffix').val(),
-                    strip_html: $('#earlystart_breadcrumbs_strip_html').is(':checked') ? '1' : ''
+                    strip_html: $('#earlystart_breadcrumbs_strip_html').is(':checked') ? '1' : '',
+                    nonce: chromaBreadcrumbNonce
                 }, function(response) {
                     btn.prop('disabled', false).text('Save Settings');
                     if(response.success) {
@@ -405,10 +408,10 @@ class earlystart_Breadcrumbs
             });
 
             // Load Posts on Type Change
-            $('#earlystart-breadcrumb-type-select').on('change', function() {
+            $('#chroma-breadcrumb-type-select').on('change', function() {
                 var type = $(this).val();
-                var target = $('#earlystart-breadcrumb-preview-select');
-                var btn = $('#earlystart-preview-breadcrumbs-btn');
+                var target = $('#chroma-breadcrumb-preview-select');
+                var btn = $('#chroma-preview-breadcrumbs-btn');
                 
                 target.html('<option value="">-- Select Page --</option>').prop('disabled', true);
                 btn.prop('disabled', true);
@@ -423,13 +426,14 @@ class earlystart_Breadcrumbs
                     return;
                 }
 
-                $('#earlystart-breadcrumb-spinner').addClass('is-active');
+                $('#chroma-breadcrumb-spinner').addClass('is-active');
 
                 $.post(ajaxurl, {
                     action: 'earlystart_get_preview_posts',
-                    post_type: type
+                    post_type: type,
+                    nonce: chromaBreadcrumbNonce
                 }, function(response) {
-                    $('#earlystart-breadcrumb-spinner').removeClass('is-active');
+                    $('#chroma-breadcrumb-spinner').removeClass('is-active');
                     if(response.success) {
                         target.prop('disabled', false);
                         $.each(response.data, function(id, title) {
@@ -439,20 +443,20 @@ class earlystart_Breadcrumbs
                         alert('Error: ' + (response.data && response.data.message ? response.data.message : 'Unknown error'));
                     }
                 }).fail(function(xhr, status, error) {
-                    $('#earlystart-breadcrumb-spinner').removeClass('is-active');
+                    $('#chroma-breadcrumb-spinner').removeClass('is-active');
                     alert('Server Error: ' + error);
                 });
             });
 
             // Enable Preview Button
-            $('#earlystart-breadcrumb-preview-select').on('change', function() {
-                $('#earlystart-preview-breadcrumbs-btn').prop('disabled', !$(this).val());
+            $('#chroma-breadcrumb-preview-select').on('change', function() {
+                $('#chroma-preview-breadcrumbs-btn').prop('disabled', !$(this).val());
             });
 
             // Preview
-            $('#earlystart-preview-breadcrumbs-btn').on('click', function(e) {
+            $('#chroma-preview-breadcrumbs-btn').on('click', function(e) {
                 e.preventDefault();
-                var id = $('#earlystart-breadcrumb-preview-select').val();
+                var id = $('#chroma-breadcrumb-preview-select').val();
                 if(!id) return;
                 
                 var btn = $(this);
@@ -460,13 +464,14 @@ class earlystart_Breadcrumbs
                 
                 $.post(ajaxurl, {
                     action: 'earlystart_preview_breadcrumbs',
-                    post_id: id
+                    post_id: id,
+                    nonce: chromaBreadcrumbNonce
                 }, function(response) {
                     btn.prop('disabled', false).text('Preview');
                     if(response.success) {
-                        $('#earlystart-breadcrumb-preview-result').show();
-                        $('#earlystart-breadcrumb-visual').html(response.data.html);
-                        $('#earlystart-breadcrumb-json').text(JSON.stringify(response.data.json, null, 2));
+                        $('#chroma-breadcrumb-preview-result').show();
+                        $('#chroma-breadcrumb-visual').html(response.data.html);
+                        $('#chroma-breadcrumb-json').text(JSON.stringify(response.data.json, null, 2));
                     } else {
                         alert('Error generating preview.');
                     }
@@ -482,8 +487,8 @@ class earlystart_Breadcrumbs
      */
     public function ajax_save_settings()
     {
-        // Check nonce (we need to pass this from JS)
-        // For now, at least check permissions
+        check_ajax_referer('earlystart_breadcrumbs_nonce', 'nonce');
+
         if (!current_user_can('manage_options')) {
             wp_send_json_error();
         }
@@ -508,7 +513,12 @@ class earlystart_Breadcrumbs
      */
     public function ajax_preview_breadcrumbs()
     {
-        // Ideally check nonce here too
+        check_ajax_referer('earlystart_breadcrumbs_nonce', 'nonce');
+
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error(['message' => 'Permission denied']);
+        }
+
         $post_id = intval($_POST['post_id']);
         if(!$post_id) wp_send_json_error();
         
@@ -535,7 +545,7 @@ class earlystart_Breadcrumbs
         
         // Generate HTML
         ob_start();
-        echo '<nav class="earlystart-breadcrumbs" aria-label="Breadcrumb"><ol class="list-none p-0 inline-flex flex-wrap gap-2 items-center">';
+        echo '<nav class="chroma-breadcrumbs" aria-label="Breadcrumb"><ol class="list-none p-0 inline-flex flex-wrap gap-2 items-center">';
         foreach ($items as $index => $item) {
             $is_last = $index === count($items) - 1;
             echo '<li class="flex items-center">';
@@ -577,6 +587,8 @@ class earlystart_Breadcrumbs
      */
     public function ajax_get_preview_posts()
     {
+        check_ajax_referer('earlystart_breadcrumbs_nonce', 'nonce');
+
         // Permission check
         if (!current_user_can('edit_posts')) {
             wp_send_json_error(['message' => 'Permission denied']);
@@ -585,6 +597,11 @@ class earlystart_Breadcrumbs
         $post_type = sanitize_text_field($_POST['post_type']);
         if (!$post_type) {
             wp_send_json_error(['message' => 'Missing post type']);
+        }
+
+        $allowed_post_types = ['location', 'program', 'page', 'post'];
+        if (!in_array($post_type, $allowed_post_types, true)) {
+            wp_send_json_error(['message' => 'Invalid post type']);
         }
 
         $posts = get_posts([

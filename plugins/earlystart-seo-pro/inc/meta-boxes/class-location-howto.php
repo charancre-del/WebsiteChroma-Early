@@ -31,7 +31,7 @@ class earlystart_Location_HowTo_Meta_Box extends earlystart_Advanced_SEO_Meta_Bo
      */
     public function get_title()
     {
-        return __('How to Enroll (HowTo Schema)', 'earlystart-excellence');
+        return __('How to Enroll (HowTo Schema)', 'chroma-excellence');
     }
 
     /**
@@ -57,16 +57,16 @@ class earlystart_Location_HowTo_Meta_Box extends earlystart_Advanced_SEO_Meta_Bo
         }
 
         ?>
-        <div class="earlystart-meta-section">
+        <div class="chroma-meta-section">
             <p class="description">
-                <?php _e('Define the enrollment process steps. Google uses this to generate "HowTo" rich snippets.', 'earlystart-excellence'); ?>
+                <?php _e('Define the enrollment process steps. Google uses this to generate "HowTo" rich snippets.', 'chroma-excellence'); ?>
             </p>
 
-            <div class="earlystart-repeater-field" data-field-id="location_enrollment_steps">
-                <div class="earlystart-repeater-items">
+            <div class="chroma-repeater-field" data-field-id="location_enrollment_steps">
+                <div class="chroma-repeater-items">
                     <?php if (!empty($steps)): ?>
                         <?php foreach ($steps as $step): ?>
-                            <div class="earlystart-repeater-item" style="align-items: flex-start;">
+                            <div class="chroma-repeater-item" style="align-items: flex-start;">
                                 <div style="flex: 1; display: flex; gap: 10px; flex-direction: column;">
                                     <input type="text" name="location_enrollment_steps[title][]"
                                         value="<?php echo esc_attr($step['title']); ?>" class="widefat"
@@ -76,31 +76,31 @@ class earlystart_Location_HowTo_Meta_Box extends earlystart_Advanced_SEO_Meta_Bo
                                     <input type="url" name="location_enrollment_steps[url][]"
                                         value="<?php echo esc_url($step['url']); ?>" class="widefat" placeholder="URL (Optional)" />
                                 </div>
-                                <button type="button" class="button earlystart-remove-item">Remove</button>
+                                <button type="button" class="button chroma-remove-item">Remove</button>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
                 <button type="button"
-                    class="button earlystart-add-item-howto"><?php _e('Add Step', 'earlystart-excellence'); ?></button>
+                    class="button chroma-add-item-howto"><?php _e('Add Step', 'chroma-excellence'); ?></button>
             </div>
         </div>
 
         <script>
             jQuery(document).ready(function ($) {
                 // Custom handler for HowTo repeater because it has multiple inputs per item
-                $(document).on('click', '.earlystart-add-item-howto', function (e) {
+                $(document).on('click', '.chroma-add-item-howto', function (e) {
                     e.preventDefault();
-                    var $wrapper = $(this).closest('.earlystart-repeater-field');
-                    var $items = $wrapper.find('.earlystart-repeater-items');
+                    var $wrapper = $(this).closest('.chroma-repeater-field');
+                    var $items = $wrapper.find('.chroma-repeater-items');
 
-                    var $newItem = $('<div class="earlystart-repeater-item" style="align-items: flex-start;">' +
+                    var $newItem = $('<div class="chroma-repeater-item" style="align-items: flex-start;">' +
                         '<div style="flex: 1; display: flex; gap: 10px; flex-direction: column;">' +
                         '<input type="text" name="location_enrollment_steps[title][]" class="widefat" placeholder="Step Title" />' +
                         '<textarea name="location_enrollment_steps[text][]" class="widefat" rows="2" placeholder="Step Description"></textarea>' +
                         '<input type="url" name="location_enrollment_steps[url][]" class="widefat" placeholder="URL (Optional)" />' +
                         '</div>' +
-                        '<button type="button" class="button earlystart-remove-item">Remove</button>' +
+                        '<button type="button" class="button chroma-remove-item">Remove</button>' +
                         '</div>');
 
                     $items.append($newItem);

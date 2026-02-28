@@ -124,7 +124,7 @@ class earlystart_Combo_Internal_Links
                     $links[] = '<a href="' . esc_url($url) . '">' . esc_html($city['city']) . '</a>';
                 }
                 
-                $content .= '<div class="earlystart-combo-links" style="margin-top: 2rem; padding: 1.5rem; background: #f8f8f8; border-radius: 8px;">';
+                $content .= '<div class="chroma-combo-links" style="margin-top: 2rem; padding: 1.5rem; background: #f8f8f8; border-radius: 8px;">';
                 $content .= '<h3 style="margin: 0 0 1rem;">Find ' . esc_html($post->post_title) . ' Near You</h3>';
                 $content .= '<p>' . implode(' &bull; ', $links) . '</p>';
                 $content .= '</div>';
@@ -144,7 +144,7 @@ class earlystart_Combo_Internal_Links
                     $links[] = '<a href="' . esc_url($url) . '">' . esc_html($program->post_title) . '</a>';
                 }
                 
-                $content .= '<div class="earlystart-combo-links" style="margin-top: 2rem; padding: 1.5rem; background: #f8f8f8; border-radius: 8px;">';
+                $content .= '<div class="chroma-combo-links" style="margin-top: 2rem; padding: 1.5rem; background: #f8f8f8; border-radius: 8px;">';
                 $content .= '<h3 style="margin: 0 0 1rem;">Programs in ' . esc_html($city_name) . '</h3>';
                 $content .= '<p>' . implode(' &bull; ', $links) . '</p>';
                 $content .= '</div>';

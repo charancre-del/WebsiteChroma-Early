@@ -78,7 +78,7 @@ class earlystart_Author_Tags
         
         ob_start();
         ?>
-        <div class="earlystart-author-box">
+        <div class="chroma-author-box">
             <?php if ($author['avatar']): ?>
                 <img src="<?php echo esc_url($author['avatar']); ?>" alt="<?php echo esc_attr($author['name']); ?>" class="author-avatar">
             <?php endif; ?>
@@ -100,7 +100,7 @@ class earlystart_Author_Tags
             </div>
         </div>
         <style>
-            .earlystart-author-box {
+            .chroma-author-box {
                 display: flex;
                 gap: 20px;
                 padding: 25px;

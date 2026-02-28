@@ -99,7 +99,7 @@ class earlystart_Footer_City_Links
         }
         
         ?>
-        <div class="earlystart-footer-cities">
+        <div class="chroma-footer-cities">
             <div class="footer-cities-container">
                 <?php foreach ($by_state as $state => $state_cities): ?>
                 <div class="footer-cities-group">
@@ -118,7 +118,7 @@ class earlystart_Footer_City_Links
             </div>
         </div>
         <style>
-            .earlystart-footer-cities {
+            .chroma-footer-cities {
                 background: #1a1a1a;
                 padding: 20px 0;
                 text-align: center;

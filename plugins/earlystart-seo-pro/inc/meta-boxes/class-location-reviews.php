@@ -21,7 +21,7 @@ class earlystart_Location_Reviews_Meta_Box extends earlystart_Advanced_SEO_Meta_
 
     public function get_title()
     {
-        return __('Reviews & Rating', 'earlystart-excellence');
+        return __('Reviews & Rating', 'chroma-excellence');
     }
 
     public function get_post_types()
@@ -43,11 +43,11 @@ class earlystart_Location_Reviews_Meta_Box extends earlystart_Advanced_SEO_Meta_
         echo '</div>';
 
         // Aggregate Rating
-        echo '<h4>' . __('Aggregate Rating', 'earlystart-excellence') . '</h4>';
+        echo '<h4>' . __('Aggregate Rating', 'chroma-excellence') . '</h4>';
 
         $this->render_number_field([
             'id' => 'seo_llm_aggregate_rating_value',
-            'label' => __('Rating Value (0-5)', 'earlystart-excellence'),
+            'label' => __('Rating Value (0-5)', 'chroma-excellence'),
             'value' => $rating_value,
             'step' => '0.1',
             'min' => '0',
@@ -58,7 +58,7 @@ class earlystart_Location_Reviews_Meta_Box extends earlystart_Advanced_SEO_Meta_
 
         $this->render_number_field([
             'id' => 'seo_llm_aggregate_rating_count',
-            'label' => __('Review Count', 'earlystart-excellence'),
+            'label' => __('Review Count', 'chroma-excellence'),
             'value' => $rating_count,
             'step' => '1',
             'min' => '0',
@@ -68,7 +68,7 @@ class earlystart_Location_Reviews_Meta_Box extends earlystart_Advanced_SEO_Meta_
 
         $this->render_number_field([
             'id' => 'seo_llm_aggregate_rating_best',
-            'label' => __('Best Rating', 'earlystart-excellence'),
+            'label' => __('Best Rating', 'chroma-excellence'),
             'value' => $rating_best,
             'step' => '1',
             'min' => '1',
@@ -79,7 +79,7 @@ class earlystart_Location_Reviews_Meta_Box extends earlystart_Advanced_SEO_Meta_
 
         $this->render_number_field([
             'id' => 'seo_llm_aggregate_rating_worst',
-            'label' => __('Worst Rating', 'earlystart-excellence'),
+            'label' => __('Worst Rating', 'chroma-excellence'),
             'value' => $rating_worst,
             'step' => '1',
             'min' => '1',

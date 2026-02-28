@@ -22,11 +22,11 @@ class earlystart_Content_Inspector
     public function register_menu()
     {
         add_submenu_page(
-            'earlystart-seo-dashboard',
+            'chroma-seo-dashboard',
             'Content Inspector',
             'Content Inspector',
             'manage_options',
-            'earlystart-content-inspector',
+            'chroma-content-inspector',
             [$this, 'render_page']
         );
     }
@@ -81,7 +81,7 @@ class earlystart_Content_Inspector
         $percent = $total > 0 ? round(($translated / $total) * 100) : 0;
 
         ?>
-        <div class="wrap earlystart-seo-dashboard">
+        <div class="wrap chroma-seo-dashboard">
             <h1>🌎 Content Translation Inspector</h1>
             <p>Overview of English content and their Spanish counterparts.</p>
 
@@ -107,7 +107,7 @@ class earlystart_Content_Inspector
                 
                 <?php if (count($untranslated_ids) > 0): ?>
                 <div style="margin-top: 15px;">
-                    <button id="earlystart-bulk-translate-all" class="button button-primary button-large">
+                    <button id="chroma-bulk-translate-all" class="button button-primary button-large">
                         <span class="dashicons dashicons-translation" style="line-height: 28px;"></span>
                         Translate All Missing (<?php echo count($untranslated_ids); ?> pages)
                     </button>
@@ -115,7 +115,7 @@ class earlystart_Content_Inspector
                 </div>
                 <?php endif; ?>
                 <?php if (!empty($untranslated_ids)): ?>
-                    <script>window.earlystartUntranslated = <?php echo json_encode($untranslated_ids); ?>;</script>
+                    <script>window.chromaUntranslated = <?php echo json_encode($untranslated_ids); ?>;</script>
                 <?php endif; ?>
             </div>
             </div>
@@ -195,7 +195,7 @@ class earlystart_Content_Inspector
                             </td>
                             <td style="text-align:center;" class="status-cell" data-post-id="<?php echo $post->ID; ?>"><?php echo $status_icon; ?></td>
                             <td style="text-align:center;">
-                                <button type="button" class="button earlystart-translate-single" data-post-id="<?php echo $post->ID; ?>" title="<?php esc_attr_e('Force AI Translation', 'earlystart-excellence'); ?>">
+                                <button type="button" class="button chroma-translate-single" data-post-id="<?php echo $post->ID; ?>" title="<?php esc_attr_e('Force AI Translation', 'chroma-excellence'); ?>">
                                     <span class="dashicons dashicons-translation" style="line-height: 28px;"></span> AI Translate
                                 </button>
                             </td>
@@ -214,7 +214,7 @@ class earlystart_Content_Inspector
                 <h2 style="display: flex; align-items: center; gap: 10px;">
                     <span class="dashicons dashicons-admin-links"></span>
                     Dynamic Combo Pages (<?php echo count($combos); ?>)
-                    <button type="button" id="earlystart-bulk-translate-combos" class="button button-secondary button-small" style="margin-left: 10px;">
+                    <button type="button" id="chroma-bulk-translate-combos" class="button button-secondary button-small" style="margin-left: 10px;">
                         <span class="dashicons dashicons-translation" style="line-height: 26px;"></span> Translate All Combos
                     </button>
                     <span id="bulk-combo-status" style="margin-left: 10px; font-weight: normal; font-size: 13px;"></span>
@@ -241,7 +241,7 @@ class earlystart_Content_Inspector
                                     <td><a href="<?php echo esc_url($en_url); ?>" target="_blank">View EN</a></td>
                                     <td><a href="<?php echo esc_url($es_url); ?>" target="_blank">View ES</a></td>
                                     <td style="text-align: center;">
-                                        <button type="button" class="button earlystart-combo-translate" 
+                                        <button type="button" class="button chroma-combo-translate" 
                                             data-program="<?php echo esc_attr($combo['program']->post_name); ?>"
                                             data-city="<?php echo esc_attr($combo['city']); ?>"
                                             data-state="<?php echo esc_attr($combo['state']); ?>"
@@ -265,8 +265,8 @@ class earlystart_Content_Inspector
         <script>
         jQuery(document).ready(function($) {
             // BULK ALL
-            $('#earlystart-bulk-translate-all').click(function() {
-                var untranslated = window.earlystartUntranslated || [];
+            $('#chroma-bulk-translate-all').click(function() {
+                var untranslated = window.chromaUntranslated || [];
                 if (untranslated.length === 0) return;
                 
                 if (!confirm('This will use AI tokens to translate ' + untranslated.length + ' pages. Continue?')) return;
@@ -294,7 +294,7 @@ class earlystart_Content_Inspector
             });
 
             // SINGLE ROW TRANSLATE (Event Delegation)
-            $(document).on('click', '.earlystart-translate-single', function() {
+            $(document).on('click', '.chroma-translate-single', function() {
                 var btn = $(this);
                 var postId = btn.data('post-id');
                 
@@ -335,7 +335,7 @@ class earlystart_Content_Inspector
         });
 
         // Combo Page Translate Handler
-        $(document).on('click', '.earlystart-combo-translate', function() {
+        $(document).on('click', '.chroma-combo-translate', function() {
             var btn = $(this);
             var program = btn.data('program');
             var city = btn.data('city');
@@ -365,8 +365,8 @@ class earlystart_Content_Inspector
             });
         });
         // Bulk Combo Translate
-        $('#earlystart-bulk-translate-combos').click(function() {
-            var $allBtns = $('.earlystart-combo-translate:not(:disabled)');
+        $('#chroma-bulk-translate-combos').click(function() {
+            var $allBtns = $('.chroma-combo-translate:not(:disabled)');
             if ($allBtns.length === 0) {
                 alert('No untranslated combo pages found (or all are disabled).');
                 return;

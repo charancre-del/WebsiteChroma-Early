@@ -31,7 +31,7 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
      */
     public function get_title()
     {
-        return __('Spanish Content Overrides', 'earlystart-excellence');
+        return __('Spanish Content Overrides', 'chroma-excellence');
     }
 
     /**
@@ -73,48 +73,48 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         
         // AI Auto-Fill Button
         echo '<div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #ddd;">';
-        echo '<button type="button" id="earlystart-auto-translate-btn" class="button button-primary button-large">';
-        echo '<span class="dashicons dashicons-translation" style="line-height: 28px; margin-right: 5px;"></span> ' . __('Auto-Fill with AI Translation', 'earlystart-excellence');
+        echo '<button type="button" id="chroma-auto-translate-btn" class="button button-primary button-large">';
+        echo '<span class="dashicons dashicons-translation" style="line-height: 28px; margin-right: 5px;"></span> ' . __('Auto-Fill with AI Translation', 'chroma-excellence');
         echo '</button>';
-        echo ' <button type="button" id="earlystart-diff-preview-btn" class="button button-secondary">';
-        echo '<span class="dashicons dashicons-controls-repeat"></span> ' . __('Diff Preview', 'earlystart-excellence');
+        echo ' <button type="button" id="chroma-diff-preview-btn" class="button button-secondary">';
+        echo '<span class="dashicons dashicons-controls-repeat"></span> ' . __('Diff Preview', 'chroma-excellence');
         echo '</button>';
-        echo ' <button type="button" id="earlystart-rollback-btn" class="button button-secondary">';
-        echo '<span class="dashicons dashicons-backup"></span> ' . __('Rollback', 'earlystart-excellence');
+        echo ' <button type="button" id="chroma-rollback-btn" class="button button-secondary">';
+        echo '<span class="dashicons dashicons-backup"></span> ' . __('Rollback', 'chroma-excellence');
         echo '</button>';
-        echo '<span class="spinner" id="earlystart-translate-spinner" style="float: none; margin-left: 10px;"></span>';
-        echo '<span id="earlystart-translate-status" style="margin-left: 10px; font-weight: bold;"></span>';
-        echo '<p class="description" style="margin-top: 5px;">' . __('Automatically translates the current English content and populates the fields above. Review before saving.', 'earlystart-excellence') . '</p>';
+        echo '<span class="spinner" id="chroma-translate-spinner" style="float: none; margin-left: 10px;"></span>';
+        echo '<span id="chroma-translate-status" style="margin-left: 10px; font-weight: bold;"></span>';
+        echo '<p class="description" style="margin-top: 5px;">' . __('Automatically translates the current English content and populates the fields above. Review before saving.', 'chroma-excellence') . '</p>';
         echo '</div>';
 
         // Diff Preview Modal
         ?>
-        <div id="earlystart-diff-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:99999;">
+        <div id="chroma-diff-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:99999;">
             <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:30px; border-radius:8px; max-width:900px; width:90%; max-height:80vh; overflow:auto;">
-                <h2 style="margin-top:0;"><?php _e('Translation Diff Preview', 'earlystart-excellence'); ?></h2>
-                <div id="earlystart-diff-content" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                <h2 style="margin-top:0;"><?php _e('Translation Diff Preview', 'chroma-excellence'); ?></h2>
+                <div id="chroma-diff-content" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
                     <div>
                         <h4>English (Original)</h4>
-                        <pre id="earlystart-diff-en" style="white-space:pre-wrap; background:#f5f5f5; padding:15px; border-radius:4px; max-height:300px; overflow:auto;"></pre>
+                        <pre id="chroma-diff-en" style="white-space:pre-wrap; background:#f5f5f5; padding:15px; border-radius:4px; max-height:300px; overflow:auto;"></pre>
                     </div>
                     <div>
                         <h4>Spanish (Translation)</h4>
-                        <pre id="earlystart-diff-es" style="white-space:pre-wrap; background:#e8f5e9; padding:15px; border-radius:4px; max-height:300px; overflow:auto;"></pre>
+                        <pre id="chroma-diff-es" style="white-space:pre-wrap; background:#e8f5e9; padding:15px; border-radius:4px; max-height:300px; overflow:auto;"></pre>
                     </div>
                 </div>
                 <div style="margin-top:20px; text-align:right;">
-                    <button type="button" id="earlystart-diff-close" class="button button-primary"><?php _e('Close', 'earlystart-excellence'); ?></button>
+                    <button type="button" id="chroma-diff-close" class="button button-primary"><?php _e('Close', 'chroma-excellence'); ?></button>
                 </div>
             </div>
         </div>
         
         <!-- Rollback Modal -->
-        <div id="earlystart-rollback-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:99999;">
+        <div id="chroma-rollback-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:99999;">
             <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:30px; border-radius:8px; max-width:600px; width:90%;">
-                <h2 style="margin-top:0;"><?php _e('Translation History', 'earlystart-excellence'); ?></h2>
-                <div id="earlystart-rollback-list"></div>
+                <h2 style="margin-top:0;"><?php _e('Translation History', 'chroma-excellence'); ?></h2>
+                <div id="chroma-rollback-list"></div>
                 <div style="margin-top:20px; text-align:right;">
-                    <button type="button" id="earlystart-rollback-close" class="button"><?php _e('Close', 'earlystart-excellence'); ?></button>
+                    <button type="button" id="chroma-rollback-close" class="button"><?php _e('Close', 'chroma-excellence'); ?></button>
                 </div>
             </div>
         </div>
@@ -124,11 +124,11 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         ?>
         <script>
         jQuery(document).ready(function($) {
-            $('#earlystart-auto-translate-btn').click(function(e) {
+            $('#chroma-auto-translate-btn').click(function(e) {
                 e.preventDefault();
                 var btn = $(this);
-                var spinner = $('#earlystart-translate-spinner');
-                var status = $('#earlystart-translate-status');
+                var spinner = $('#chroma-translate-spinner');
+                var status = $('#chroma-translate-status');
                 
                 if(!confirm('This will overwrite any existing Spanish content in the fields. Continue?')) {
                     return;
@@ -208,21 +208,21 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
             });
 
             // DIFF PREVIEW
-            $('#earlystart-diff-preview-btn').click(function() {
+            $('#chroma-diff-preview-btn').click(function() {
                 var enContent = '<?php echo esc_js($post->post_title); ?>\n\n<?php echo esc_js(substr($post->post_content, 0, 500)); ?>...';
                 var esContent = $('#_earlystart_es_title').val() + '\n\n' + $('#_earlystart_es_content').val().substring(0, 500) + '...';
                 
-                $('#earlystart-diff-en').text(enContent);
-                $('#earlystart-diff-es').text(esContent || '(No Spanish translation yet)');
-                $('#earlystart-diff-modal').fadeIn(200);
+                $('#chroma-diff-en').text(enContent);
+                $('#chroma-diff-es').text(esContent || '(No Spanish translation yet)');
+                $('#chroma-diff-modal').fadeIn(200);
             });
 
-            $('#earlystart-diff-close, #earlystart-diff-modal').click(function(e) {
-                if(e.target === this) $('#earlystart-diff-modal').fadeOut(200);
+            $('#chroma-diff-close, #chroma-diff-modal').click(function(e) {
+                if(e.target === this) $('#chroma-diff-modal').fadeOut(200);
             });
 
             // ROLLBACK
-            $('#earlystart-rollback-btn').click(function() {
+            $('#chroma-rollback-btn').click(function() {
                 $.post(ajaxurl, {
                     action: 'earlystart_get_translation_history',
                     post_id: <?php echo $post->ID; ?>,
@@ -232,22 +232,22 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
                         var html = '<table class="wp-list-table widefat striped"><thead><tr><th>Date</th><th>Title</th><th></th></tr></thead><tbody>';
                         response.data.history.forEach(function(item, idx) {
                             html += '<tr><td>' + item.date + '</td><td>' + item.title.substring(0,50) + '...</td>';
-                            html += '<td><button type="button" class="button earlystart-restore-version" data-index="' + idx + '">Restore</button></td></tr>';
+                            html += '<td><button type="button" class="button chroma-restore-version" data-index="' + idx + '">Restore</button></td></tr>';
                         });
                         html += '</tbody></table>';
-                        $('#earlystart-rollback-list').html(html);
+                        $('#chroma-rollback-list').html(html);
                     } else {
-                        $('#earlystart-rollback-list').html('<p>No translation history available.</p>');
+                        $('#chroma-rollback-list').html('<p>No translation history available.</p>');
                     }
-                    $('#earlystart-rollback-modal').fadeIn(200);
+                    $('#chroma-rollback-modal').fadeIn(200);
                 });
             });
 
-            $('#earlystart-rollback-close, #earlystart-rollback-modal').click(function(e) {
-                if(e.target === this) $('#earlystart-rollback-modal').fadeOut(200);
+            $('#chroma-rollback-close, #chroma-rollback-modal').click(function(e) {
+                if(e.target === this) $('#chroma-rollback-modal').fadeOut(200);
             });
 
-            $(document).on('click', '.earlystart-restore-version', function() {
+            $(document).on('click', '.chroma-restore-version', function() {
                 var idx = $(this).data('index');
                 $.post(ajaxurl, {
                     action: 'earlystart_restore_translation',
@@ -276,15 +276,15 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         $es_content = get_post_meta($post->ID, '_earlystart_es_content', true);
         $es_excerpt = get_post_meta($post->ID, '_earlystart_es_excerpt', true);
 
-        echo '<div class="earlystart-section-header"><h3>' . __('Core Content', 'earlystart-excellence') . '</h3></div>';
-        echo '<p class="description">' . __('Provide Spanish translations for the main content areas. If left blank, the system may attempt to auto-translate or fallback to English.', 'earlystart-excellence') . '</p>';
+        echo '<div class="chroma-section-header"><h3>' . __('Core Content', 'chroma-excellence') . '</h3></div>';
+        echo '<p class="description">' . __('Provide Spanish translations for the main content areas. If left blank, the system may attempt to auto-translate or fallback to English.', 'chroma-excellence') . '</p>';
 
         $this->render_text_field([
             'id' => '_earlystart_es_title',
-            'label' => __('Spanish Page Title', 'earlystart-excellence'),
+            'label' => __('Spanish Page Title', 'chroma-excellence'),
             'value' => $es_title,
             'placeholder' => get_the_title($post),
-            'description' => __('Translated title of the page.', 'earlystart-excellence'),
+            'description' => __('Translated title of the page.', 'chroma-excellence'),
         ]);
 
         // Editor for Content (Simulated with textarea for now, or use wp_editor if possible)
@@ -293,40 +293,40 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         // Given existing base class, let's use a large textarea.
         $this->render_textarea_field([
             'id' => '_earlystart_es_content',
-            'label' => __('Spanish Main Content', 'earlystart-excellence'),
+            'label' => __('Spanish Main Content', 'chroma-excellence'),
             'value' => $es_content,
             'rows' => 12,
-            'description' => __('Translated main content (HTML supported).', 'earlystart-excellence'),
+            'description' => __('Translated main content (HTML supported).', 'chroma-excellence'),
         ]);
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_excerpt',
-            'label' => __('Spanish Excerpt/Introduction', 'earlystart-excellence'),
+            'label' => __('Spanish Excerpt/Introduction', 'chroma-excellence'),
             'value' => $es_excerpt,
             'rows' => 4,
-            'description' => __('Short summary or intro text.', 'earlystart-excellence'),
+            'description' => __('Short summary or intro text.', 'chroma-excellence'),
         ]);
 
         // SEO-Specific Fields (#20)
-        echo '<div class="earlystart-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . __('Spanish SEO Fields', 'earlystart-excellence') . '</h3></div>';
+        echo '<div class="chroma-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . __('Spanish SEO Fields', 'chroma-excellence') . '</h3></div>';
         
         $es_seo_title = get_post_meta($post->ID, '_earlystart_es_seo_title', true);
         $es_meta_desc = get_post_meta($post->ID, '_earlystart_es_meta_description', true);
 
         $this->render_text_field([
             'id' => '_earlystart_es_seo_title',
-            'label' => __('Spanish SEO Title', 'earlystart-excellence'),
+            'label' => __('Spanish SEO Title', 'chroma-excellence'),
             'value' => $es_seo_title,
             'placeholder' => $es_title ?: get_the_title($post),
-            'description' => __('Custom title for search results (60 chars max).', 'earlystart-excellence'),
+            'description' => __('Custom title for search results (60 chars max).', 'chroma-excellence'),
         ]);
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_meta_description',
-            'label' => __('Spanish Meta Description', 'earlystart-excellence'),
+            'label' => __('Spanish Meta Description', 'chroma-excellence'),
             'value' => $es_meta_desc,
             'rows' => 3,
-            'description' => __('Description for search results (160 chars max).', 'earlystart-excellence'),
+            'description' => __('Description for search results (160 chars max).', 'chroma-excellence'),
         ]);
     }
 
@@ -343,47 +343,47 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         $ages_es = get_post_meta($post->ID, '_earlystart_es_location_ages_served', true);
         $open_text_es = get_post_meta($post->ID, '_earlystart_es_location_open_text', true);
 
-        echo '<div class="earlystart-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . __('Location Details', 'earlystart-excellence') . '</h3></div>';
+        echo '<div class="chroma-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . __('Location Details', 'chroma-excellence') . '</h3></div>';
 
         $this->render_text_field([
             'id' => '_earlystart_es_location_city',
-            'label' => __('City (Spanish)', 'earlystart-excellence'),
+            'label' => __('City (Spanish)', 'chroma-excellence'),
             'value' => $city_es,
             'placeholder' => get_post_meta($post->ID, 'location_city', true),
         ]);
 
         $this->render_text_field([
             'id' => '_earlystart_es_location_address',
-            'label' => __('Address (Spanish)', 'earlystart-excellence'),
+            'label' => __('Address (Spanish)', 'chroma-excellence'),
             'value' => $address_es,
             'placeholder' => get_post_meta($post->ID, 'location_address', true),
-            'description' => __('Only translate if necessary (e.g. "Calle" vs "Street").', 'earlystart-excellence'),
+            'description' => __('Only translate if necessary (e.g. "Calle" vs "Street").', 'chroma-excellence'),
         ]);
 
         $this->render_text_field([
             'id' => '_earlystart_es_location_hero_subtitle',
-            'label' => __('Hero Subtitle', 'earlystart-excellence'),
+            'label' => __('Hero Subtitle', 'chroma-excellence'),
             'value' => $subtitle_es,
             'placeholder' => get_post_meta($post->ID, 'location_hero_subtitle', true),
         ]);
 
         $this->render_text_field([
             'id' => '_earlystart_es_location_ages_served',
-            'label' => __('Ages Served', 'earlystart-excellence'),
+            'label' => __('Ages Served', 'chroma-excellence'),
             'value' => $ages_es,
             'placeholder' => get_post_meta($post->ID, 'location_ages_served', true),
         ]);
 
         $this->render_text_field([
             'id' => '_earlystart_es_location_tagline',
-            'label' => __('Tagline (Spanish)', 'earlystart-excellence'),
+            'label' => __('Tagline (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_location_tagline', true),
             'placeholder' => get_post_meta($post->ID, 'location_tagline', true),
         ]);
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_location_description',
-            'label' => __('Main Description (Spanish)', 'earlystart-excellence'),
+            'label' => __('Main Description (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_location_description', true),
             'rows' => 4,
             'placeholder' => get_post_meta($post->ID, 'location_description', true),
@@ -391,7 +391,7 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_location_director_bio',
-            'label' => __('Director Bio (Spanish)', 'earlystart-excellence'),
+            'label' => __('Director Bio (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_location_director_bio', true),
             'rows' => 4,
             'placeholder' => get_post_meta($post->ID, 'location_director_bio', true),
@@ -399,30 +399,30 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
 
         $this->render_text_field([
             'id' => '_earlystart_es_location_hero_review_text',
-            'label' => __('Hero Review Text (Spanish)', 'earlystart-excellence'),
+            'label' => __('Hero Review Text (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_location_hero_review_text', true),
             'placeholder' => get_post_meta($post->ID, 'location_hero_review_text', true),
         ]);
 
         $this->render_text_field([
             'id' => '_earlystart_es_location_hero_review_author',
-            'label' => __('Hero Review Author (Spanish)', 'earlystart-excellence'),
+            'label' => __('Hero Review Author (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_location_hero_review_author', true),
             'placeholder' => get_post_meta($post->ID, 'location_hero_review_author', true),
         ]);
 
-        echo '<div class="earlystart-section-header" style="margin-top: 20px; border-top: 1px dotted #ccc;"><h4>' . __('SEO Content Section', 'earlystart-excellence') . '</h4></div>';
+        echo '<div class="chroma-section-header" style="margin-top: 20px; border-top: 1px dotted #ccc;"><h4>' . __('SEO Content Section', 'chroma-excellence') . '</h4></div>';
 
         $this->render_text_field([
             'id' => '_earlystart_es_location_seo_content_title',
-            'label' => __('SEO Content Title (Spanish)', 'earlystart-excellence'),
+            'label' => __('SEO Content Title (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_location_seo_content_title', true),
             'placeholder' => get_post_meta($post->ID, 'location_seo_content_title', true),
         ]);
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_location_seo_content_text',
-            'label' => __('SEO Content Text (Spanish)', 'earlystart-excellence'),
+            'label' => __('SEO Content Text (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_location_seo_content_text', true),
             'rows' => 4,
             'placeholder' => get_post_meta($post->ID, 'location_seo_content_text', true),
@@ -430,7 +430,7 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_location_school_pickups',
-            'label' => __('School Pickups (One per line)', 'earlystart-excellence'),
+            'label' => __('School Pickups (One per line)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_location_school_pickups', true),
             'rows' => 4,
             'placeholder' => get_post_meta($post->ID, 'location_school_pickups', true),
@@ -438,7 +438,7 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         
         $this->render_text_field([
             'id' => '_earlystart_es_location_open_text',
-            'label' => __('Open Text (e.g. "Now Open")', 'earlystart-excellence'),
+            'label' => __('Open Text (e.g. "Now Open")', 'chroma-excellence'),
             'value' => $open_text_es,
         ]);
     }
@@ -454,25 +454,25 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         $cta_text_es = get_post_meta($post->ID, '_earlystart_es_program_cta_text', true);
         $features_es = get_post_meta($post->ID, '_earlystart_es_program_features', true);
 
-        echo '<div class="earlystart-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . __('Program Details', 'earlystart-excellence') . '</h3></div>';
+        echo '<div class="chroma-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . __('Program Details', 'chroma-excellence') . '</h3></div>';
 
         $this->render_text_field([
             'id' => '_earlystart_es_program_age_range',
-            'label' => __('Age Range', 'earlystart-excellence'),
+            'label' => __('Age Range', 'chroma-excellence'),
             'value' => $age_range_es,
             'placeholder' => get_post_meta($post->ID, 'program_age_range', true),
         ]);
 
         $this->render_text_field([
             'id' => '_earlystart_es_program_hero_title',
-            'label' => __('Hero Title (Spanish)', 'earlystart-excellence'),
+            'label' => __('Hero Title (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_program_hero_title', true),
             'placeholder' => get_post_meta($post->ID, 'program_hero_title', true),
         ]);
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_program_hero_description',
-            'label' => __('Hero Description (Spanish)', 'earlystart-excellence'),
+            'label' => __('Hero Description (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_program_hero_description', true),
             'rows' => 4,
             'placeholder' => get_post_meta($post->ID, 'program_hero_description', true),
@@ -480,14 +480,14 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
 
         $this->render_text_field([
             'id' => '_earlystart_es_program_prism_title',
-            'label' => __('Prismpath Title (Spanish)', 'earlystart-excellence'),
+            'label' => __('Prismpath Title (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_program_prism_title', true),
             'placeholder' => get_post_meta($post->ID, 'program_prism_title', true),
         ]);
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_program_prism_description',
-            'label' => __('Prismpath Description (Spanish)', 'earlystart-excellence'),
+            'label' => __('Prismpath Description (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_program_prism_description', true),
             'rows' => 4,
             'placeholder' => get_post_meta($post->ID, 'program_prism_description', true),
@@ -495,7 +495,7 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_program_prism_focus_items',
-            'label' => __('Prism Focus Items (One per line)', 'earlystart-excellence'),
+            'label' => __('Prism Focus Items (One per line)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_program_prism_focus_items', true),
             'rows' => 4,
             'placeholder' => get_post_meta($post->ID, 'program_prism_focus_items', true),
@@ -503,14 +503,14 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
 
         $this->render_text_field([
             'id' => '_earlystart_es_program_schedule_title',
-            'label' => __('Schedule Title (Spanish)', 'earlystart-excellence'),
+            'label' => __('Schedule Title (Spanish)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_program_schedule_title', true),
             'placeholder' => get_post_meta($post->ID, 'program_schedule_title', true),
         ]);
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_program_schedule_items',
-            'label' => __('Schedule Items (Time|Title|Copy, one per line)', 'earlystart-excellence'),
+            'label' => __('Schedule Items (Time|Title|Copy, one per line)', 'chroma-excellence'),
             'value' => get_post_meta($post->ID, '_earlystart_es_program_schedule_items', true),
             'rows' => 6,
             'placeholder' => get_post_meta($post->ID, 'program_schedule_items', true),
@@ -518,14 +518,14 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
 
         $this->render_text_field([
             'id' => '_earlystart_es_program_cta_text',
-            'label' => __('CTA Button Text', 'earlystart-excellence'),
+            'label' => __('CTA Button Text', 'chroma-excellence'),
             'value' => $cta_text_es,
             'placeholder' => get_post_meta($post->ID, 'program_cta_text', true),
         ]);
 
         $this->render_textarea_field([
             'id' => '_earlystart_es_program_features',
-            'label' => __('Program Features (One per line)', 'earlystart-excellence'),
+            'label' => __('Program Features (One per line)', 'chroma-excellence'),
             'value' => $features_es,
             'rows' => 6,
             'placeholder' => get_post_meta($post->ID, 'program_features', true),
@@ -543,7 +543,7 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         $template_name = str_replace(['page-', '.php'], '', $template);
         $template_name = ucwords(str_replace('-', ' ', $template_name));
 
-        echo '<div class="earlystart-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . sprintf(__('%s Template Content', 'earlystart-excellence'), $template_name) . '</h3></div>';
+        echo '<div class="chroma-section-header" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;"><h3>' . sprintf(__('%s Template Content', 'chroma-excellence'), $template_name) . '</h3></div>';
 
         foreach ($keys as $key) {
             $es_key = '_earlystart_es_' . $key;

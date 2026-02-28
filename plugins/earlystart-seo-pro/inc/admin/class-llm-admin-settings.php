@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 class earlystart_LLM_Admin_Settings
 {
-    const MENU_SLUG = 'earlystart-llm-settings';
+    const MENU_SLUG = 'chroma-llm-settings';
     
     public function __construct() {
         add_action('admin_menu', [$this, 'add_menu_page'], 15); // Priority 15 - register submenus after parent
@@ -27,7 +27,7 @@ class earlystart_LLM_Admin_Settings
     public function add_menu_page() {
         // Add as submenu under SEO & LLM dashboard
         add_submenu_page(
-            'earlystart-seo-dashboard',     // Parent slug
+            'chroma-seo-dashboard',     // Parent slug
             'LLM Settings',
             'LLM Settings',
             'manage_options',
@@ -36,29 +36,29 @@ class earlystart_LLM_Admin_Settings
         );
         
         add_submenu_page(
-            'earlystart-seo-dashboard',
+            'chroma-seo-dashboard',
             'LLM Usage',
             'LLM Usage',
             'manage_options',
-            'earlystart-llm-usage',
+            'chroma-llm-usage',
             [$this, 'render_usage_page']
         );
         
         add_submenu_page(
-            'earlystart-seo-dashboard',
+            'chroma-seo-dashboard',
             'Bulk Operations',
             'Bulk Operations',
             'manage_options',
-            'earlystart-llm-bulk',
+            'chroma-llm-bulk',
             [$this, 'render_bulk_page']
         );
         
         add_submenu_page(
-            'earlystart-seo-dashboard',
+            'chroma-seo-dashboard',
             'Review Queue',
             'Review Queue',
             'manage_options',
-            'earlystart-llm-review',
+            'chroma-llm-review',
             [$this, 'render_review_page']
         );
     }
@@ -101,12 +101,12 @@ class earlystart_LLM_Admin_Settings
      * Enqueue admin assets
      */
     public function enqueue_assets($hook) {
-        if (strpos($hook, 'earlystart-llm') === false) return;
+        if (strpos($hook, 'chroma-llm') === false) return;
         
-        wp_enqueue_style('earlystart-llm-admin', EARLYSTART_SEO_URL . 'assets/css/admin-llm.css', [], '1.0.0');
-        wp_enqueue_script('earlystart-llm-admin', EARLYSTART_SEO_URL . 'assets/js/admin-llm.js', ['jquery'], '1.0.0', true);
+        wp_enqueue_style('chroma-llm-admin', EARLYSTART_SEO_URL . 'assets/css/admin-llm.css', [], '1.0.0');
+        wp_enqueue_script('chroma-llm-admin', EARLYSTART_SEO_URL . 'assets/js/admin-llm.js', ['jquery'], '1.0.0', true);
         
-        wp_localize_script('earlystart-llm-admin', 'earlystartLLM', [
+        wp_localize_script('chroma-llm-admin', 'chromaLLM', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('earlystart_seo_nonce')
         ]);
@@ -164,11 +164,11 @@ class earlystart_LLM_Admin_Settings
                                     <option value="<?php echo esc_attr($m); ?>" <?php selected($current, $m); ?>><?php echo esc_html($label); ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <button type="button" id="earlystart-fetch-models" class="button button-secondary">
+                            <button type="button" id="chroma-fetch-models" class="button button-secondary">
                                 <span class="dashicons dashicons-update" style="line-height: 28px;"></span>
                                 Fetch Available Models
                             </button>
-                            <span id="earlystart-fetch-models-status" style="margin-left: 10px;"></span>
+                            <span id="chroma-fetch-models-status" style="margin-left: 10px;"></span>
                             <p class="description">Click "Fetch" to load models from your Gemini API (requires valid API key)</p>
                         </td>
                     </tr>
@@ -186,9 +186,9 @@ class earlystart_LLM_Admin_Settings
                 
                 <script>
                 jQuery(document).ready(function($) {
-                    $('#earlystart-fetch-models').on('click', function() {
+                    $('#chroma-fetch-models').on('click', function() {
                         var $btn = $(this);
-                        var $status = $('#earlystart-fetch-models-status');
+                        var $status = $('#chroma-fetch-models-status');
                         var $select = $('#earlystart_llm_model');
                         
                         $btn.prop('disabled', true);
@@ -279,7 +279,7 @@ class earlystart_LLM_Admin_Settings
                 <h2>Schema Conflicts & Compatibility</h2>
                 <table class="form-table">
                     <tr>
-                        <th>Disable earlystart FAQ Schema</th>
+                        <th>Disable Chroma FAQ Schema</th>
                         <td>
                             <label>
                                 <input type="hidden" name="earlystart_faq_schema_disabled" value="no">
@@ -290,7 +290,7 @@ class earlystart_LLM_Admin_Settings
                         </td>
                     </tr>
                     <tr>
-                        <th>Disable earlystart Breadcrumbs</th>
+                        <th>Disable Chroma Breadcrumbs</th>
                         <td>
                             <label>
                                 <input type="hidden" name="earlystart_breadcrumbs_schema_disabled" value="no">
@@ -319,20 +319,20 @@ class earlystart_LLM_Admin_Settings
         <div class="wrap">
             <h1>📊 Usage Dashboard</h1>
             
-            <div class="earlystart-usage-grid">
-                <div class="earlystart-stat-card">
+            <div class="chroma-usage-grid">
+                <div class="chroma-stat-card">
                     <h3>This Month</h3>
                     <div class="stat-value"><?php echo number_format($stats['total_tokens']); ?></div>
                     <div class="stat-label">Total Tokens</div>
                 </div>
                 
-                <div class="earlystart-stat-card">
+                <div class="chroma-stat-card">
                     <h3>Requests</h3>
                     <div class="stat-value"><?php echo number_format($stats['requests']); ?></div>
                     <div class="stat-label">API Calls</div>
                 </div>
                 
-                <div class="earlystart-stat-card">
+                <div class="chroma-stat-card">
                     <h3>Est. Cost</h3>
                     <div class="stat-value">$<?php echo number_format($cost, 4); ?></div>
                     <div class="stat-label">Based on <?php echo esc_html($model); ?></div>
@@ -396,7 +396,7 @@ class earlystart_LLM_Admin_Settings
                     <strong>Processing:</strong> 
                     <?php echo $status['completed']; ?> / <?php echo $status['total']; ?> completed
                     (<?php echo $status['failed']; ?> failed)
-                    <button class="button" id="earlystart-cancel-bulk">Cancel</button>
+                    <button class="button" id="chroma-cancel-bulk">Cancel</button>
                 </p>
             </div>
             <?php endif; ?>
@@ -428,10 +428,10 @@ class earlystart_LLM_Admin_Settings
             </table>
             
             <p>
-                <button class="button button-primary" id="earlystart-generate-selected">
+                <button class="button button-primary" id="chroma-generate-selected">
                     Generate Schema for Selected
                 </button>
-                <button class="button" id="earlystart-sync-gmb-selected">
+                <button class="button" id="chroma-sync-gmb-selected">
                     Sync GMB Data for Selected
                 </button>
             </p>
@@ -443,7 +443,7 @@ class earlystart_LLM_Admin_Settings
                 $('.gap-checkbox').prop('checked', $(this).is(':checked'));
             });
             
-            $('#earlystart-generate-selected').on('click', function() {
+            $('#chroma-generate-selected').on('click', function() {
                 var selected = $('.gap-checkbox:checked').map(function() { 
                     return $(this).val(); 
                 }).get();
@@ -453,9 +453,9 @@ class earlystart_LLM_Admin_Settings
                     return;
                 }
                 
-                $.post(earlystartLLM.ajaxUrl, {
+                $.post(chromaLLM.ajaxUrl, {
                     action: 'earlystart_bulk_generate_start',
-                    nonce: earlystartLLM.nonce,
+                    nonce: chromaLLM.nonce,
                     post_ids: selected,
                     type: 'schema'
                 }, function(response) {
@@ -469,7 +469,7 @@ class earlystart_LLM_Admin_Settings
             });
             
             // GMB Sync for selected posts
-            $('#earlystart-sync-gmb-selected').on('click', function() {
+            $('#chroma-sync-gmb-selected').on('click', function() {
                 var selected = $('.gap-checkbox:checked').map(function() { 
                     return $(this).val(); 
                 }).get();
@@ -499,9 +499,9 @@ class earlystart_LLM_Admin_Settings
                         return;
                     }
                     
-                    $.post(earlystartLLM.ajaxUrl, {
+                    $.post(chromaLLM.ajaxUrl, {
                         action: 'earlystart_sync_gmb_data',
-                        nonce: earlystartLLM.nonce,
+                        nonce: chromaLLM.nonce,
                         post_id: selected[index]
                     }, function(response) {
                         if (response.success) {
@@ -570,9 +570,9 @@ class earlystart_LLM_Admin_Settings
             <script>
             jQuery('.approve-btn').on('click', function() {
                 var postId = jQuery(this).data('post');
-                jQuery.post(earlystartLLM.ajaxUrl, {
+                jQuery.post(chromaLLM.ajaxUrl, {
                     action: 'earlystart_review_schema',
-                    nonce: earlystartLLM.nonce,
+                    nonce: chromaLLM.nonce,
                     post_id: postId,
                     review_action: 'approve'
                 }, function() {

@@ -31,7 +31,7 @@ class earlystart_Location_Events_Meta_Box extends earlystart_Advanced_SEO_Meta_B
      */
     public function get_title()
     {
-        return __('Upcoming Events (Open Houses)', 'earlystart-excellence');
+        return __('Upcoming Events (Open Houses)', 'chroma-excellence');
     }
 
     /**
@@ -57,16 +57,16 @@ class earlystart_Location_Events_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         }
 
         ?>
-        <div class="earlystart-meta-section">
+        <div class="chroma-meta-section">
             <p class="description">
-                <?php _e('Add upcoming open houses or parent nights. These will be marked up with Event schema.', 'earlystart-excellence'); ?>
+                <?php _e('Add upcoming open houses or parent nights. These will be marked up with Event schema.', 'chroma-excellence'); ?>
             </p>
 
-            <div class="earlystart-repeater-field" data-field-id="location_events">
-                <div class="earlystart-repeater-items">
+            <div class="chroma-repeater-field" data-field-id="location_events">
+                <div class="chroma-repeater-items">
                     <?php if (!empty($events)): ?>
                         <?php foreach ($events as $event): ?>
-                            <div class="earlystart-repeater-item" style="align-items: flex-start;">
+                            <div class="chroma-repeater-item" style="align-items: flex-start;">
                                 <div style="flex: 1; display: flex; gap: 10px; flex-direction: column;">
                                     <div style="display: flex; gap: 10px;">
                                         <input type="text" name="location_events[name][]"
@@ -83,25 +83,25 @@ class earlystart_Location_Events_Meta_Box extends earlystart_Advanced_SEO_Meta_B
                                             class="widefat" placeholder="RSVP URL (Optional)" />
                                     </div>
                                 </div>
-                                <button type="button" class="button earlystart-remove-item">Remove</button>
+                                <button type="button" class="button chroma-remove-item">Remove</button>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
                 <button type="button"
-                    class="button earlystart-add-item-event"><?php _e('Add Event', 'earlystart-excellence'); ?></button>
+                    class="button chroma-add-item-event"><?php _e('Add Event', 'chroma-excellence'); ?></button>
             </div>
         </div>
 
         <script>
             jQuery(document).ready(function ($) {
                 // Custom handler for Event repeater
-                $(document).on('click', '.earlystart-add-item-event', function (e) {
+                $(document).on('click', '.chroma-add-item-event', function (e) {
                     e.preventDefault();
-                    var $wrapper = $(this).closest('.earlystart-repeater-field');
-                    var $items = $wrapper.find('.earlystart-repeater-items');
+                    var $wrapper = $(this).closest('.chroma-repeater-field');
+                    var $items = $wrapper.find('.chroma-repeater-items');
 
-                    var $newItem = $('<div class="earlystart-repeater-item" style="align-items: flex-start;">' +
+                    var $newItem = $('<div class="chroma-repeater-item" style="align-items: flex-start;">' +
                         '<div style="flex: 1; display: flex; gap: 10px; flex-direction: column;">' +
                         '<div style="display: flex; gap: 10px;">' +
                         '<input type="text" name="location_events[name][]" class="widefat" placeholder="Event Name" />' +
@@ -112,7 +112,7 @@ class earlystart_Location_Events_Meta_Box extends earlystart_Advanced_SEO_Meta_B
                         '<input type="url" name="location_events[url][]" class="widefat" placeholder="RSVP URL (Optional)" />' +
                         '</div>' +
                         '</div>' +
-                        '<button type="button" class="button earlystart-remove-item">Remove</button>' +
+                        '<button type="button" class="button chroma-remove-item">Remove</button>' +
                         '</div>');
 
                     $items.append($newItem);

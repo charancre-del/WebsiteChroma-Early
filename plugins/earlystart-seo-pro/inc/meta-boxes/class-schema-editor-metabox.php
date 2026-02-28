@@ -46,7 +46,7 @@ class earlystart_Schema_Editor_Metabox
         $confidence = get_post_meta($post->ID, '_earlystart_schema_confidence', true);
         ?>
         
-        <div class="earlystart-schema-tools">
+        <div class="chroma-schema-tools">
             <!-- Status -->
             <div class="schema-status">
                 <?php if ($has_schema): ?>
@@ -74,12 +74,12 @@ class earlystart_Schema_Editor_Metabox
             
             <!-- Actions -->
             <div class="schema-actions">
-                <button type="button" class="button button-primary" id="earlystart-generate-schema" data-post="<?php echo $post->ID; ?>">
+                <button type="button" class="button button-primary" id="chroma-generate-schema" data-post="<?php echo $post->ID; ?>">
                     🤖 Generate Schema
                 </button>
                 
                 <?php if (get_post_type($post) === 'location'): ?>
-                <button type="button" class="button" id="earlystart-sync-gmb" data-post="<?php echo $post->ID; ?>">
+                <button type="button" class="button" id="chroma-sync-gmb" data-post="<?php echo $post->ID; ?>">
                     📍 Sync from GMB
                 </button>
                 <?php endif; ?>
@@ -98,11 +98,11 @@ class earlystart_Schema_Editor_Metabox
             
             <!-- Preview Toggle -->
             <hr>
-            <button type="button" class="button" id="earlystart-toggle-preview">
+            <button type="button" class="button" id="chroma-toggle-preview">
                 👁 Show SERP Preview
             </button>
             
-            <div id="earlystart-serp-preview" style="display:none; margin-top:10px;">
+            <div id="chroma-serp-preview" style="display:none; margin-top:10px;">
                 <div class="serp-mock">
                     <div class="serp-title"><?php echo esc_html(get_the_title($post)); ?></div>
                     <div class="serp-url"><?php echo esc_url(get_permalink($post)); ?></div>
@@ -149,7 +149,7 @@ class earlystart_Schema_Editor_Metabox
             <!-- Image Analysis -->
             <?php if (has_post_thumbnail($post)): ?>
             <hr>
-            <button type="button" class="button" id="earlystart-analyze-image" data-post="<?php echo $post->ID; ?>">
+            <button type="button" class="button" id="chroma-analyze-image" data-post="<?php echo $post->ID; ?>">
                 🖼️ Analyze Featured Image
             </button>
             <div id="image-analysis-result" style="display:none; margin-top:10px; font-size:12px;"></div>
@@ -157,8 +157,8 @@ class earlystart_Schema_Editor_Metabox
         </div>
         
         <style>
-            .earlystart-schema-tools { font-size: 13px; }
-            .earlystart-schema-tools .schema-status { margin-bottom: 10px; }
+            .chroma-schema-tools { font-size: 13px; }
+            .chroma-schema-tools .schema-status { margin-bottom: 10px; }
             .status-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; margin-right: 5px; }
             .status-badge.good { background: #d4edda; color: #155724; }
             .status-badge.warning { background: #fff3cd; color: #856404; }
@@ -184,13 +184,13 @@ class earlystart_Schema_Editor_Metabox
         <script>
         jQuery(function($) {
             // Toggle preview
-            $('#earlystart-toggle-preview').on('click', function() {
-                $('#earlystart-serp-preview').toggle();
+            $('#chroma-toggle-preview').on('click', function() {
+                $('#chroma-serp-preview').toggle();
                 $(this).text($(this).text().includes('Show') ? '👁 Hide SERP Preview' : '👁 Show SERP Preview');
             });
             
             // Generate schema
-            $('#earlystart-generate-schema').on('click', function() {
+            $('#chroma-generate-schema').on('click', function() {
                 var $btn = $(this);
                 $btn.prop('disabled', true).text('Generating...');
                 
@@ -211,7 +211,7 @@ class earlystart_Schema_Editor_Metabox
             });
             
             // Sync GMB
-            $('#earlystart-sync-gmb').on('click', function() {
+            $('#chroma-sync-gmb').on('click', function() {
                 var $btn = $(this);
                 $btn.prop('disabled', true).text('Syncing...');
                 
@@ -231,7 +231,7 @@ class earlystart_Schema_Editor_Metabox
             });
             
             // Analyze image
-            $('#earlystart-analyze-image').on('click', function() {
+            $('#chroma-analyze-image').on('click', function() {
                 var $btn = $(this);
                 var $result = $('#image-analysis-result');
                 $btn.prop('disabled', true).text('Analyzing...');

@@ -28,7 +28,7 @@ class earlystart_Admin_Help
      */
     public function add_tab()
     {
-        echo '<a href="?page=earlystart-seo-dashboard&tab=help" class="nav-tab ' . ($this->is_active() ? 'nav-tab-active' : '') . '">' . __('Help & Guides', 'earlystart-excellence') . '</a>';
+        echo '<a href="?page=chroma-seo-dashboard&tab=help" class="nav-tab ' . ($this->is_active() ? 'nav-tab-active' : '') . '">' . __('Help & Guides', 'chroma-excellence') . '</a>';
     }
 
     /**
@@ -48,13 +48,13 @@ class earlystart_Admin_Help
             return;
         }
         ?>
-        <div class="earlystart-seo-card">
-            <h2><?php _e('Advanced SEO & LLM Guide', 'earlystart-excellence'); ?></h2>
+        <div class="chroma-seo-card">
+            <h2><?php _e('Advanced SEO & LLM Guide', 'chroma-excellence'); ?></h2>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
 
                 <!-- Quick Start -->
-                <div class="earlystart-doc-section">
+                <div class="chroma-doc-section">
                     <h3>🚀 Quick Start</h3>
                     <ul>
                         <li><strong>Page Inspector:</strong> Go to any page/post and look for the "SEO & LLM Inspector" meta box
@@ -67,7 +67,7 @@ class earlystart_Admin_Help
                 </div>
 
                 <!-- City Pages -->
-                <div class="earlystart-doc-section">
+                <div class="chroma-doc-section">
                     <h3>🏙️ City Landing Pages</h3>
                     <p>To create a hyperlocal page (e.g., "Childcare in Canton"):</p>
                     <ol>
@@ -79,7 +79,7 @@ class earlystart_Admin_Help
                 </div>
 
                 <!-- KML & Geo -->
-                <div class="earlystart-doc-section">
+                <div class="chroma-doc-section">
                     <h3>🌍 Geo-Optimization</h3>
                     <p>Your KML file is automatically generated at:</p>
                     <code><?php echo home_url('/locations.kml'); ?></code>
@@ -87,7 +87,7 @@ class earlystart_Admin_Help
                 </div>
 
                 <!-- Schema Builder -->
-                <div class="earlystart-doc-section">
+                <div class="chroma-doc-section">
                     <h3>📊 Schema Builder</h3>
                     <p><strong>New Feature!</strong> Each page now has intelligent default schemas.</p>
                     <ul>
@@ -99,7 +99,7 @@ class earlystart_Admin_Help
                 </div>
 
                 <!-- LLM Targeting Tab -->
-                <div class="earlystart-doc-section">
+                <div class="chroma-doc-section">
                     <h3>🎯 LLM Targeting Tab</h3>
                     <p>Centralized control for how AI assistants recommend your pages.</p>
                     <ul>
@@ -111,7 +111,7 @@ class earlystart_Admin_Help
                 </div>
 
                 <!-- LLM Optimization -->
-                <div class="earlystart-doc-section">
+                <div class="chroma-doc-section">
                     <h3>🤖 LLM Optimization Tips</h3>
                     <ul>
                         <li><strong>Be Specific:</strong> In the "LLM Context" box on locations, define exactly *who* should go
@@ -126,26 +126,26 @@ class earlystart_Admin_Help
         </div>
 
         <style>
-            .earlystart-doc-section {
+            .chroma-doc-section {
                 background: #fff;
                 padding: 20px;
                 border: 1px solid #ddd;
                 border-radius: 5px;
             }
 
-            .earlystart-doc-section h3 {
+            .chroma-doc-section h3 {
                 margin-top: 0;
                 color: #2271b1;
                 border-bottom: 1px solid #eee;
                 padding-bottom: 10px;
             }
 
-            .earlystart-doc-section ul,
-            .earlystart-doc-section ol {
+            .chroma-doc-section ul,
+            .chroma-doc-section ol {
                 margin-left: 20px;
             }
 
-            .earlystart-doc-section li {
+            .chroma-doc-section li {
                 margin-bottom: 8px;
             }
         </style>

@@ -39,7 +39,7 @@ class earlystart_Job_Posting_Builder
         if (empty($description)) {
             $location_str = get_post_meta($post_id, '_career_location', true) ?: 'our center';
             $description = sprintf(
-                __('We are looking for a dedicated %1$s to join our team in %2$s. At earlystart, we invest in educators and provide a supportive community to help you change lives. Click apply to view full job details and requirements.', 'earlystart-excellence'),
+                __('We are looking for a dedicated %1$s to join our team in %2$s. At Chroma, we invest in educators and provide a supportive community to help you change lives. Click apply to view full job details and requirements.', 'chroma-excellence'),
                 $title,
                 $location_str
             );

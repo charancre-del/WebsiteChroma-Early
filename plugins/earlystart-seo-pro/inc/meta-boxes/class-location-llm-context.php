@@ -21,7 +21,7 @@ class earlystart_Location_LLM_Context_Meta_Box extends earlystart_Advanced_SEO_M
 
     public function get_title()
     {
-        return __('LLM Context & Targeting', 'earlystart-excellence');
+        return __('LLM Context & Targeting', 'chroma-excellence');
     }
 
     public function get_post_types()
@@ -47,7 +47,7 @@ class earlystart_Location_LLM_Context_Meta_Box extends earlystart_Advanced_SEO_M
         // Primary intent
         $this->render_text_field([
             'id' => 'seo_llm_primary_intent',
-            'label' => __('Primary Intent', 'earlystart-excellence'),
+            'label' => __('Primary Intent', 'chroma-excellence'),
             'value' => $primary_intent,
             'placeholder' => 'childcare_discovery',
             'description' => 'What is the primary search intent this location serves?',
@@ -56,7 +56,7 @@ class earlystart_Location_LLM_Context_Meta_Box extends earlystart_Advanced_SEO_M
         ]);
 
         // Target queries
-        echo '<h4 style="margin-top: 20px;">' . __('Target Queries', 'earlystart-excellence') . '</h4>';
+        echo '<h4 style="margin-top: 20px;">' . __('Target Queries', 'chroma-excellence') . '</h4>';
         echo '<p class="description">Natural language queries where LLMs should recommend this location.</p>';
 
         if (!empty($fallback_queries) && empty($target_queries)) {
@@ -72,7 +72,7 @@ class earlystart_Location_LLM_Context_Meta_Box extends earlystart_Advanced_SEO_M
         ]);
 
         // Key differentiators
-        echo '<h4 style="margin-top: 20px;">' . __('Key Differentiators', 'earlystart-excellence') . '</h4>';
+        echo '<h4 style="margin-top: 20px;">' . __('Key Differentiators', 'chroma-excellence') . '</h4>';
         echo '<p class="description">What makes this location stand out? LLMs use these as talking points.</p>';
 
         if (!empty($fallback_differentiators) && empty($key_differentiators)) {

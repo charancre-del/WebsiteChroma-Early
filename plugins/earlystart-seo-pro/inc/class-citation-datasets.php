@@ -39,7 +39,7 @@ class earlystart_Citation_Datasets
             'Citation Datasets',
             'Citation Datasets',
             'manage_options',
-            'earlystart-citation-datasets',
+            'chroma-citation-datasets',
             [$this, 'render_page']
         );
     }
@@ -83,17 +83,17 @@ class earlystart_Citation_Datasets
         $facts = get_option(self::OPTION_NAME, []);
         ?>
         <div class="wrap">
-            <h1><?php _e('Citation Datasets & Global Facts', 'earlystart-excellence'); ?></h1>
+            <h1><?php _e('Citation Datasets & Global Facts', 'chroma-excellence'); ?></h1>
             <p class="description">
-                <?php _e('Manage global facts about your organization. These are exposed via JSON for AI bots (ChatGPT, Perplexity) to cite as truth.', 'earlystart-excellence'); ?>
+                <?php _e('Manage global facts about your organization. These are exposed via JSON for AI bots (ChatGPT, Perplexity) to cite as truth.', 'chroma-excellence'); ?>
             </p>
 
             <div class="card" style="max-width: 100%; margin-top: 20px; padding: 20px;">
-                <h3><?php _e('AI Data Endpoint', 'earlystart-excellence'); ?></h3>
+                <h3><?php _e('AI Data Endpoint', 'chroma-excellence'); ?></h3>
                 <p>
-                    <?php _e('Your structured data is available at:', 'earlystart-excellence'); ?>
+                    <?php _e('Your structured data is available at:', 'chroma-excellence'); ?>
                     <br>
-                    <code><?php echo esc_url(rest_url('earlystart/v1/citation-facts')); ?></code>
+                    <code><?php echo esc_url(rest_url('chroma/v1/citation-facts')); ?></code>
                 </p>
             </div>
 
@@ -110,7 +110,7 @@ class earlystart_Citation_Datasets
                             <th style="width: 60px;"></th>
                         </tr>
                     </thead>
-                    <tbody id="earlystart-facts-list">
+                    <tbody id="chroma-facts-list">
                         <?php if (!empty($facts)): ?>
                             <?php foreach ($facts as $fact): ?>
                                 <tr>
@@ -122,13 +122,13 @@ class earlystart_Citation_Datasets
                                             value="<?php echo esc_url($fact['source']); ?>" class="widefat"></td>
                                     <td><input type="date" name="<?php echo self::OPTION_NAME; ?>[date][]"
                                             value="<?php echo esc_attr($fact['date']); ?>" class="widefat"></td>
-                                    <td><button type="button" class="button earlystart-remove-fact">×</button></td>
+                                    <td><button type="button" class="button chroma-remove-fact">×</button></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
 
                         <!-- Empty Row Template -->
-                        <tr class="earlystart-fact-template">
+                        <tr class="chroma-fact-template">
                             <td><input type="text" name="<?php echo self::OPTION_NAME; ?>[label][]" class="widefat"
                                     placeholder="Fact Label"></td>
                             <td><input type="text" name="<?php echo self::OPTION_NAME; ?>[value][]" class="widefat"
@@ -136,28 +136,28 @@ class earlystart_Citation_Datasets
                             <td><input type="url" name="<?php echo self::OPTION_NAME; ?>[source][]" class="widefat"
                                     placeholder="https://..."></td>
                             <td><input type="date" name="<?php echo self::OPTION_NAME; ?>[date][]" class="widefat"></td>
-                            <td><button type="button" class="button earlystart-remove-fact">×</button></td>
+                            <td><button type="button" class="button chroma-remove-fact">×</button></td>
                         </tr>
                     </tbody>
                 </table>
 
                 <p><button type="button" class="button"
-                        id="earlystart-add-fact"><?php _e('+ Add Fact', 'earlystart-excellence'); ?></button></p>
+                        id="chroma-add-fact"><?php _e('+ Add Fact', 'chroma-excellence'); ?></button></p>
 
                 <?php submit_button(); ?>
             </form>
 
             <script>
                 jQuery(document).ready(function ($) {
-                    $('#earlystart-add-fact').on('click', function () {
-                        var $row = $('.earlystart-fact-template').first().clone();
-                        $row.removeClass('earlystart-fact-template');
+                    $('#chroma-add-fact').on('click', function () {
+                        var $row = $('.chroma-fact-template').first().clone();
+                        $row.removeClass('chroma-fact-template');
                         $row.find('input').val('');
-                        $('#earlystart-facts-list').append($row);
+                        $('#chroma-facts-list').append($row);
                     });
 
-                    $(document).on('click', '.earlystart-remove-fact', function () {
-                        if ($('#earlystart-facts-list tr').length > 1) {
+                    $(document).on('click', '.chroma-remove-fact', function () {
+                        if ($('#chroma-facts-list tr').length > 1) {
                             $(this).closest('tr').remove();
                         } else {
                             $(this).closest('tr').find('input').val('');
@@ -174,7 +174,7 @@ class earlystart_Citation_Datasets
      */
     public function register_api_endpoint()
     {
-        register_rest_route('earlystart/v1', '/citation-facts', [
+        register_rest_route('chroma/v1', '/citation-facts', [
             'methods' => 'GET',
             'callback' => [$this, 'get_facts_json'],
             'permission_callback' => '__return_true',

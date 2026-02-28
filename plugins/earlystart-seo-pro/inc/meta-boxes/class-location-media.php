@@ -31,7 +31,7 @@ class earlystart_Location_Media_Meta_Box extends earlystart_Advanced_SEO_Meta_Bo
      */
     public function get_title()
     {
-        return __('Media & Availability (Video/Tour)', 'earlystart-excellence');
+        return __('Media & Availability (Video/Tour)', 'chroma-excellence');
     }
 
     /**
@@ -61,26 +61,26 @@ class earlystart_Location_Media_Meta_Box extends earlystart_Advanced_SEO_Meta_Bo
         $spots_available = get_post_meta($post->ID, 'location_spots_available', true);
 
         ?>
-        <div class="earlystart-meta-section">
-            <h4><?php _e('Virtual Tour Video', 'earlystart-excellence'); ?></h4>
+        <div class="chroma-meta-section">
+            <h4><?php _e('Virtual Tour Video', 'chroma-excellence'); ?></h4>
             <p class="description">
-                <?php _e('Adding a video tour increases search visibility and engagement.', 'earlystart-excellence'); ?></p>
+                <?php _e('Adding a video tour increases search visibility and engagement.', 'chroma-excellence'); ?></p>
 
-            <div class="earlystart-meta-field">
-                <label for="location_video_tour_url"><?php _e('Video URL (YouTube/Vimeo)', 'earlystart-excellence'); ?></label>
+            <div class="chroma-meta-field">
+                <label for="location_video_tour_url"><?php _e('Video URL (YouTube/Vimeo)', 'chroma-excellence'); ?></label>
                 <input type="url" id="location_video_tour_url" name="location_video_tour_url"
                     value="<?php echo esc_url($video_url); ?>" class="widefat" placeholder="https://youtube.com/watch?v=..." />
             </div>
 
-            <div class="earlystart-meta-field-row" style="display: flex; gap: 15px;">
+            <div class="chroma-meta-field-row" style="display: flex; gap: 15px;">
                 <div style="flex: 1;">
-                    <label for="location_video_duration"><?php _e('Duration (ISO 8601)', 'earlystart-excellence'); ?></label>
+                    <label for="location_video_duration"><?php _e('Duration (ISO 8601)', 'chroma-excellence'); ?></label>
                     <input type="text" id="location_video_duration" name="location_video_duration"
                         value="<?php echo esc_attr($video_duration); ?>" placeholder="PT2M30S" />
-                    <small><?php _e('Format: PT#M#S (e.g., PT2M30S for 2 min 30 sec)', 'earlystart-excellence'); ?></small>
+                    <small><?php _e('Format: PT#M#S (e.g., PT2M30S for 2 min 30 sec)', 'chroma-excellence'); ?></small>
                 </div>
                 <div style="flex: 1;">
-                    <label for="location_video_thumbnail"><?php _e('Thumbnail URL', 'earlystart-excellence'); ?></label>
+                    <label for="location_video_thumbnail"><?php _e('Thumbnail URL', 'chroma-excellence'); ?></label>
                     <input type="url" id="location_video_thumbnail" name="location_video_thumbnail"
                         value="<?php echo esc_url($video_thumbnail); ?>" class="widefat" />
                 </div>
@@ -89,23 +89,23 @@ class earlystart_Location_Media_Meta_Box extends earlystart_Advanced_SEO_Meta_Bo
 
         <hr>
 
-        <div class="earlystart-meta-section">
-            <h4><?php _e('Real-Time Availability', 'earlystart-excellence'); ?></h4>
+        <div class="chroma-meta-section">
+            <h4><?php _e('Real-Time Availability', 'chroma-excellence'); ?></h4>
 
-            <div class="earlystart-meta-field-row" style="display: flex; gap: 15px;">
+            <div class="chroma-meta-field-row" style="display: flex; gap: 15px;">
                 <div style="flex: 1;">
-                    <label for="location_availability_status"><?php _e('Status', 'earlystart-excellence'); ?></label>
+                    <label for="location_availability_status"><?php _e('Status', 'chroma-excellence'); ?></label>
                     <select id="location_availability_status" name="location_availability_status" class="widefat">
                         <option value="InStock" <?php selected($availability_status, 'InStock'); ?>>
-                            <?php _e('Spots Available', 'earlystart-excellence'); ?></option>
+                            <?php _e('Spots Available', 'chroma-excellence'); ?></option>
                         <option value="LimitedAvailability" <?php selected($availability_status, 'LimitedAvailability'); ?>>
-                            <?php _e('Limited Spots', 'earlystart-excellence'); ?></option>
+                            <?php _e('Limited Spots', 'chroma-excellence'); ?></option>
                         <option value="OutOfStock" <?php selected($availability_status, 'OutOfStock'); ?>>
-                            <?php _e('Waitlist Only', 'earlystart-excellence'); ?></option>
+                            <?php _e('Waitlist Only', 'chroma-excellence'); ?></option>
                     </select>
                 </div>
                 <div style="flex: 1;">
-                    <label for="location_spots_available"><?php _e('Spots Count (Optional)', 'earlystart-excellence'); ?></label>
+                    <label for="location_spots_available"><?php _e('Spots Count (Optional)', 'chroma-excellence'); ?></label>
                     <input type="number" id="location_spots_available" name="location_spots_available"
                         value="<?php echo esc_attr($spots_available); ?>" />
                 </div>

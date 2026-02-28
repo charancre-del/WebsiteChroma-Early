@@ -33,10 +33,10 @@ class earlystart_Homepage_Translation_Admin {
     public function add_admin_page() {
         add_submenu_page(
             'themes.php',
-            __('Homepage Translation', 'earlystart-excellence'),
-            __('Homepage Translation (ES)', 'earlystart-excellence'),
+            __('Homepage Translation', 'chroma-excellence'),
+            __('Homepage Translation (ES)', 'chroma-excellence'),
             'manage_options',
-            'earlystart-homepage-translation',
+            'chroma-homepage-translation',
             [$this, 'render_admin_page']
         );
     }
@@ -73,7 +73,7 @@ class earlystart_Homepage_Translation_Admin {
     private function get_fields() {
         return [
             'hero' => [
-                'title' => __('Hero Section', 'earlystart-excellence'),
+                'title' => __('Hero Section', 'chroma-excellence'),
                 'fields' => [
                     'earlystart_home_hero_heading' => ['label' => 'Heading', 'type' => 'textarea', 'rows' => 3],
                     'earlystart_home_hero_subheading' => ['label' => 'Subheading', 'type' => 'textarea', 'rows' => 2],
@@ -82,7 +82,7 @@ class earlystart_Homepage_Translation_Admin {
                 ]
             ],
             'prismpath' => [
-                'title' => __('Prismpath Section', 'earlystart-excellence'),
+                'title' => __('Prismpath Section', 'chroma-excellence'),
                 'fields' => [
                     'earlystart_home_prismpath_eyebrow' => ['label' => 'Eyebrow', 'type' => 'text'],
                     'earlystart_home_prismpath_heading' => ['label' => 'Heading', 'type' => 'text'],
@@ -91,7 +91,7 @@ class earlystart_Homepage_Translation_Admin {
                 ]
             ],
             'locations' => [
-                'title' => __('Locations Section', 'earlystart-excellence'),
+                'title' => __('Locations Section', 'chroma-excellence'),
                 'fields' => [
                     'earlystart_home_locations_heading' => ['label' => 'Heading', 'type' => 'text'],
                     'earlystart_home_locations_subheading' => ['label' => 'Subheading', 'type' => 'textarea', 'rows' => 2],
@@ -99,7 +99,7 @@ class earlystart_Homepage_Translation_Admin {
                 ]
             ],
             'faq' => [
-                'title' => __('FAQ Section', 'earlystart-excellence'),
+                'title' => __('FAQ Section', 'chroma-excellence'),
                 'fields' => [
                     'earlystart_home_faq_heading' => ['label' => 'Heading', 'type' => 'text'],
                     'earlystart_home_faq_subheading' => ['label' => 'Subheading', 'type' => 'textarea', 'rows' => 2],
@@ -116,16 +116,16 @@ class earlystart_Homepage_Translation_Admin {
         $sections = $this->get_fields();
         ?>
         <div class="wrap">
-            <h1><?php _e('Homepage Translation (Spanish)', 'earlystart-excellence'); ?></h1>
-            <p class="description"><?php _e('Translate the homepage content for Spanish visitors (/es/). Leave fields blank to use the default English content.', 'earlystart-excellence'); ?></p>
+            <h1><?php _e('Homepage Translation (Spanish)', 'chroma-excellence'); ?></h1>
+            <p class="description"><?php _e('Translate the homepage content for Spanish visitors (/es/). Leave fields blank to use the default English content.', 'chroma-excellence'); ?></p>
             
             <div style="margin: 20px 0; padding: 15px; background: #f0f6fc; border-left: 4px solid #0073aa;">
-                <button type="button" id="earlystart-auto-translate-homepage" class="button button-primary button-large">
+                <button type="button" id="chroma-auto-translate-homepage" class="button button-primary button-large">
                     <span class="dashicons dashicons-translation" style="line-height: 28px; margin-right: 5px;"></span>
-                    <?php _e('Auto-Fill with AI Translation', 'earlystart-excellence'); ?>
+                    <?php _e('Auto-Fill with AI Translation', 'chroma-excellence'); ?>
                 </button>
-                <span class="spinner" id="earlystart-translate-spinner" style="float: none; margin-left: 10px;"></span>
-                <span id="earlystart-translate-status" style="margin-left: 10px; font-weight: bold;"></span>
+                <span class="spinner" id="chroma-translate-spinner" style="float: none; margin-left: 10px;"></span>
+                <span id="chroma-translate-status" style="margin-left: 10px; font-weight: bold;"></span>
             </div>
 
             <form method="post" action="options.php">
@@ -176,17 +176,17 @@ class earlystart_Homepage_Translation_Admin {
                     <?php endforeach; ?>
                 </div>
                 
-                <?php submit_button(__('Save Spanish Translations', 'earlystart-excellence')); ?>
+                <?php submit_button(__('Save Spanish Translations', 'chroma-excellence')); ?>
             </form>
         </div>
         
         <script>
         jQuery(document).ready(function($) {
-            $('#earlystart-auto-translate-homepage').click(function(e) {
+            $('#chroma-auto-translate-homepage').click(function(e) {
                 e.preventDefault();
                 var btn = $(this);
-                var spinner = $('#earlystart-translate-spinner');
-                var status = $('#earlystart-translate-status');
+                var spinner = $('#chroma-translate-spinner');
+                var status = $('#chroma-translate-status');
                 
                 if(!confirm('This will translate all homepage fields to Spanish using AI. Continue?')) {
                     return;

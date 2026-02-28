@@ -21,7 +21,7 @@ class earlystart_Location_Service_Area_Meta_Box extends earlystart_Advanced_SEO_
 
     public function get_title()
     {
-        return __('Service Area & Geo Targeting', 'earlystart-excellence');
+        return __('Service Area & Geo Targeting', 'chroma-excellence');
     }
 
     public function get_post_types()
@@ -47,7 +47,7 @@ class earlystart_Location_Service_Area_Meta_Box extends earlystart_Advanced_SEO_
         echo '</div>';
 
         // Circle center coordinates
-        echo '<h4>' . __('Service Circle', 'earlystart-excellence') . '</h4>';
+        echo '<h4>' . __('Service Circle', 'chroma-excellence') . '</h4>';
 
         $fallback_notice = '';
         if ($fallback_circle && empty($lat)) {
@@ -60,7 +60,7 @@ class earlystart_Location_Service_Area_Meta_Box extends earlystart_Advanced_SEO_
 
         $this->render_number_field([
             'id' => 'seo_llm_service_area_lat',
-            'label' => __('Circle Center Latitude', 'earlystart-excellence'),
+            'label' => __('Circle Center Latitude', 'chroma-excellence'),
             'value' => $lat,
             'step' => '0.000001',
             'placeholder' => $fallback_circle ? $fallback_circle['lat'] : '',
@@ -70,7 +70,7 @@ class earlystart_Location_Service_Area_Meta_Box extends earlystart_Advanced_SEO_
 
         $this->render_number_field([
             'id' => 'seo_llm_service_area_lng',
-            'label' => __('Circle Center Longitude', 'earlystart-excellence'),
+            'label' => __('Circle Center Longitude', 'chroma-excellence'),
             'value' => $lng,
             'step' => '0.000001',
             'placeholder' => $fallback_circle ? $fallback_circle['lng'] : '',
@@ -79,7 +79,7 @@ class earlystart_Location_Service_Area_Meta_Box extends earlystart_Advanced_SEO_
 
         $this->render_number_field([
             'id' => 'seo_llm_service_area_radius',
-            'label' => __('Radius (miles)', 'earlystart-excellence'),
+            'label' => __('Radius (miles)', 'chroma-excellence'),
             'value' => $radius,
             'step' => '0.5',
             'min' => '0',
@@ -89,7 +89,7 @@ class earlystart_Location_Service_Area_Meta_Box extends earlystart_Advanced_SEO_
         ]);
 
         // Cities served
-        echo '<h4 style="margin-top: 20px;">' . __('Cities Served', 'earlystart-excellence') . '</h4>';
+        echo '<h4 style="margin-top: 20px;">' . __('Cities Served', 'chroma-excellence') . '</h4>';
 
         $cities_fallback_notice = '';
         if (!empty($fallback_cities) && empty($cities)) {
@@ -102,7 +102,7 @@ class earlystart_Location_Service_Area_Meta_Box extends earlystart_Advanced_SEO_
 
         $this->render_repeater_field([
             'id' => 'seo_llm_service_area_cities',
-            'label' => __('City Names', 'earlystart-excellence'),
+            'label' => __('City Names', 'chroma-excellence'),
             'values' => $cities,
             'description' => 'Add cities within your service area (e.g., Canton, Holly Springs, Woodstock)',
             'placeholder' => 'City name',
@@ -112,7 +112,7 @@ class earlystart_Location_Service_Area_Meta_Box extends earlystart_Advanced_SEO_
         // State
         $this->render_text_field([
             'id' => 'seo_llm_service_area_state',
-            'label' => __('State', 'earlystart-excellence'),
+            'label' => __('State', 'chroma-excellence'),
             'value' => $state,
             'placeholder' => 'Georgia',
             'description' => 'State name for service area',

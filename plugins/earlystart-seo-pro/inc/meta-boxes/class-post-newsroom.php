@@ -51,7 +51,7 @@ class earlystart_Post_Newsroom extends earlystart_Advanced_SEO_Meta_Box_Base
     {
         $show_in_newsroom = get_post_meta($post->ID, '_earlystart_show_in_newsroom', true);
         ?>
-        <div class="earlystart-field-wrapper">
+        <div class="chroma-field-wrapper">
             <label for="earlystart_show_in_newsroom">
                 <input type="checkbox" id="earlystart_show_in_newsroom" name="earlystart_show_in_newsroom" value="1" <?php checked($show_in_newsroom, '1'); ?>>
                 Show in Newsroom

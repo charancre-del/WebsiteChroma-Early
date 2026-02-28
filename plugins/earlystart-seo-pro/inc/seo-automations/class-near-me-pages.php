@@ -112,6 +112,7 @@ class earlystart_Near_Me_Pages
                 'url' => get_permalink($loc),
                 'city' => get_post_meta($loc->ID, 'location_city', true),
                 'state' => get_post_meta($loc->ID, 'location_state', true),
+                'zip' => get_post_meta($loc->ID, 'location_zip', true),
                 'address' => get_post_meta($loc->ID, 'location_address', true),
                 'phone' => get_post_meta($loc->ID, 'location_phone', true),
                 'lat' => floatval($lat),
@@ -136,7 +137,7 @@ class earlystart_Near_Me_Pages
             $city_name = ucwords(str_replace('-', ' ', $city_slug));
             $page_title = $keyword_label . ' Near ' . $city_name . ', ' . $state;
         } else {
-            $page_title = $keyword_label . ' ' . __( 'Near Me', 'earlystart-excellence' );
+            $page_title = $keyword_label . ' ' . __( 'Near Me', 'chroma-excellence' );
         }
         
         get_header();
@@ -144,10 +145,10 @@ class earlystart_Near_Me_Pages
         <main class="near-me-page bg-brand-cream min-h-screen">
             <!-- Hero Section -->
             <section class="relative pt-16 pb-12 lg:pt-24 lg:pb-20 bg-white overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-earlystart-greenLight/40 via-transparent to-transparent"></div>
+                <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-chroma-greenLight/40 via-transparent to-transparent"></div>
                 <div class="max-w-7xl mx-auto px-4 lg:px-6 relative z-10 text-center">
-                    <div class="inline-flex items-center gap-2 bg-white border border-earlystart-green/30 px-4 py-1.5 rounded-full text-[11px] uppercase tracking-[0.2em] font-bold text-earlystart-green shadow-sm mb-6">
-                        <i class="fa-solid fa-map-pin"></i> <?php echo count($locations); ?>+ <?php _e('Locations Found', 'earlystart-excellence'); ?>
+                    <div class="inline-flex items-center gap-2 bg-white border border-chroma-green/30 px-4 py-1.5 rounded-full text-[11px] uppercase tracking-[0.2em] font-bold text-chroma-green shadow-sm mb-6">
+                        <i class="fa-solid fa-map-pin"></i> <?php echo count($locations); ?>+ <?php _e('Locations Found', 'chroma-excellence'); ?>
                     </div>
 
                     <h1 class="font-serif text-[2.8rem] md:text-6xl text-brand-ink mb-6">
@@ -155,16 +156,16 @@ class earlystart_Near_Me_Pages
                     </h1>
 
                     <p class="text-lg text-brand-ink/80 max-w-2xl mx-auto mb-10">
-                        <?php printf( esc_html__( 'Find high-quality %s programs near you. Serving Atlanta families with premium curriculum and care.', 'earlystart-excellence' ), esc_html( strtolower( $keyword_label ) ) ); ?>
+                        <?php printf( esc_html__( 'Find high-quality %s programs near you. Serving Atlanta families with premium curriculum and care.', 'chroma-excellence' ), esc_html( strtolower( $keyword_label ) ) ); ?>
                     </p>
                     
-                    <div id="nearest-highlight" class="inline-flex items-center gap-4 bg-earlystart-blueLight/30 border border-earlystart-blue/10 px-6 py-3 rounded-full shadow-sm" style="display:none;">
-                        <span class="flex items-center gap-2 text-xs font-bold text-earlystart-blueDark uppercase tracking-wider">
-                            <span class="w-2 h-2 rounded-full bg-earlystart-blue animate-pulse"></span>
-                            📍 <?php esc_html_e( 'Nearest:', 'earlystart-excellence' ); ?>
+                    <div id="nearest-highlight" class="inline-flex items-center gap-4 bg-chroma-blueLight/30 border border-chroma-blue/10 px-6 py-3 rounded-full shadow-sm" style="display:none;">
+                        <span class="flex items-center gap-2 text-xs font-bold text-chroma-blueDark uppercase tracking-wider">
+                            <span class="w-2 h-2 rounded-full bg-chroma-blue animate-pulse"></span>
+                            📍 <?php esc_html_e( 'Nearest:', 'chroma-excellence' ); ?>
                         </span>
                         <strong id="nearest-name" class="font-serif text-brand-ink"></strong>
-                        <span id="nearest-distance" class="text-xs font-bold text-earlystart-blue"></span>
+                        <span id="nearest-distance" class="text-xs font-bold text-chroma-blue"></span>
                     </div>
                 </div>
             </section>
@@ -177,7 +178,7 @@ class earlystart_Near_Me_Pages
                             $regions = wp_get_post_terms($loc['id'], 'location_region');
                             $region_term = !empty($regions) && !is_wp_error($regions) ? $regions[0] : null;
                             $colors = $region_term ? earlystart_get_region_color_from_term($region_term->term_id) : array(
-                                'bg' => 'earlystart-blueLight', 'text' => 'earlystart-blue', 'border' => 'earlystart-blue'
+                                'bg' => 'chroma-blueLight', 'text' => 'chroma-blue', 'border' => 'chroma-blue'
                             );
                             
                             $is_decal = get_post_meta($loc['id'], 'location_decal_licensed', true);
@@ -194,7 +195,7 @@ class earlystart_Near_Me_Pages
                                     <?php if ($loc['image']): ?>
                                         <img src="<?php echo esc_url($loc['image']); ?>" alt="<?php echo esc_attr($loc['title']); ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                     <?php endif; ?>
-                                    <div class="distance-display absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-earlystart-blue uppercase tracking-wider shadow-sm" style="display:none;"></div>
+                                    <div class="distance-display absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-chroma-blue uppercase tracking-wider shadow-sm" style="display:none;"></div>
                                 </div>
 
                                 <h2 class="font-serif text-2xl font-bold text-brand-ink mb-2 group-hover:text-<?php echo esc_attr($colors['text']); ?> transition-colors">
@@ -209,21 +210,21 @@ class earlystart_Near_Me_Pages
                                 </p>
 
                                 <div class="flex flex-wrap gap-2 mb-8">
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-earlystart-blueLight/50 text-earlystart-blueDark text-[9px] font-bold uppercase rounded-full">
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-chroma-blueLight/50 text-chroma-blueDark text-[9px] font-bold uppercase rounded-full">
                                         <i class="fa-solid fa-graduation-cap"></i> DECAL
                                     </span>
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-earlystart-yellowLight/50 text-earlystart-yellowDark text-[9px] font-bold uppercase rounded-full">
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-chroma-yellowLight/50 text-chroma-yellowDark text-[9px] font-bold uppercase rounded-full">
                                         <i class="fa-solid fa-star"></i> Quality Rated
                                     </span>
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-3 mt-auto">
-                                    <a href="<?php echo esc_url($loc['url']); ?>" class="flex items-center justify-center py-4 rounded-2xl bg-brand-ink text-white text-[10px] font-bold uppercase tracking-widest hover:bg-earlystart-blueDark transition-colors">
-                                        <?php _e('View Campus', 'earlystart-excellence'); ?>
+                                    <a href="<?php echo esc_url($loc['url']); ?>" class="flex items-center justify-center py-4 rounded-2xl bg-brand-ink text-white text-[10px] font-bold uppercase tracking-widest hover:bg-chroma-blueDark transition-colors">
+                                        <?php _e('View Campus', 'chroma-excellence'); ?>
                                     </a>
                                     <?php if ($loc['phone']): ?>
                                         <a href="tel:<?php echo esc_attr($loc['phone']); ?>" class="flex items-center justify-center py-4 rounded-2xl border border-brand-ink/10 text-brand-ink text-[10px] font-bold uppercase tracking-widest hover:bg-brand-cream/50 transition-colors">
-                                            <i class="fa-solid fa-phone mr-1.5"></i> <?php _e('Call', 'earlystart-excellence'); ?>
+                                            <i class="fa-solid fa-phone mr-1.5"></i> <?php _e('Call', 'chroma-excellence'); ?>
                                         </a>
                                     <?php endif; ?>
                                 </div>
@@ -238,7 +239,7 @@ class earlystart_Near_Me_Pages
         <style>
             .shadow-card { box-shadow: 0 10px 30px -5px rgba(0,0,0,0.05), 0 5px 15px -3px rgba(0,0,0,0.02); }
             .font-serif { font-family: "Playfair Display", Georgia, serif; }
-            .location-card.nearest .bg-white { border: 2px solid var(--earlystart-blue, #0066cc); box-shadow: 0 20px 40px -10px rgba(0,102,204,0.15); }
+            .location-card.nearest .bg-white { border: 2px solid var(--chroma-blue, #0066cc); box-shadow: 0 20px 40px -10px rgba(0,102,204,0.15); }
         </style>
         
         <!-- Location data for JS -->
@@ -268,8 +269,8 @@ class earlystart_Near_Me_Pages
      * Get personalization JS
      */
     private function get_personalization_script() {
-        $miles_away_text = __( 'miles away', 'earlystart-excellence' );
-        $mi_text = __( 'mi', 'earlystart-excellence' );
+        $miles_away_text = __( 'miles away', 'chroma-excellence' );
+        $mi_text = __( 'mi', 'chroma-excellence' );
         
         return "
         document.addEventListener('DOMContentLoaded', function() {
@@ -360,7 +361,14 @@ class earlystart_Near_Me_Pages
                 'item' => [
                     '@type' => 'LocalBusiness',
                     'name' => $loc['title'],
-                    'address' => $loc['address'],
+                    'address' => [
+                        '@type' => 'PostalAddress',
+                        'streetAddress' => $loc['address'],
+                        'addressLocality' => $loc['city'],
+                        'addressRegion' => $loc['state'],
+                        'postalCode' => $loc['zip'],
+                        'addressCountry' => 'US',
+                    ],
                     'url' => $loc['url']
                 ]
             ];

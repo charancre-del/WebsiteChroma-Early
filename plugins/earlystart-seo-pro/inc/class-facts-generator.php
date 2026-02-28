@@ -1,6 +1,6 @@
 <?php
 /**
- * earlystart Facts Generator
+ * Chroma Facts Generator
  * Generates machine-readable (JSON) and human-readable (HTML) fact sheets for AI compliance.
  *
  * @package earlystart_Excellence
@@ -145,28 +145,28 @@ class earlystart_Facts_Generator
         get_header(); 
         ?>
         <style>
-            .earlystart-facts-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; font-family: system-ui, -apple-system, sans-serif; }
-            .earlystart-facts-table { width: 100%; border-collapse: collapse; margin-top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-            .earlystart-facts-table th, .earlystart-facts-table td { text-align: left; padding: 12px 15px; border-bottom: 1px solid #e0e0e0; }
-            .earlystart-facts-table th { background-color: #f8f9fa; font-weight: 600; color: #333; position: sticky; top: 0; }
-            .earlystart-facts-table tr:hover { background-color: #f5f5f5; }
-            .earlystart-check-yes { color: #2e7d32; font-weight: bold; }
-            .earlystart-check-no { color: #d32f2f; opacity: 0.6; }
-            .earlystart-meta-header { margin-bottom: 30px; }
-            .earlystart-meta-header h1 { margin-bottom: 10px; }
-            .earlystart-download-link { float: right; text-decoration: none; background: #0073aa; color: white; padding: 8px 15px; border-radius: 4px; font-size: 14px; }
+            .chroma-facts-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; font-family: system-ui, -apple-system, sans-serif; }
+            .chroma-facts-table { width: 100%; border-collapse: collapse; margin-top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+            .chroma-facts-table th, .chroma-facts-table td { text-align: left; padding: 12px 15px; border-bottom: 1px solid #e0e0e0; }
+            .chroma-facts-table th { background-color: #f8f9fa; font-weight: 600; color: #333; position: sticky; top: 0; }
+            .chroma-facts-table tr:hover { background-color: #f5f5f5; }
+            .chroma-check-yes { color: #2e7d32; font-weight: bold; }
+            .chroma-check-no { color: #d32f2f; opacity: 0.6; }
+            .chroma-meta-header { margin-bottom: 30px; }
+            .chroma-meta-header h1 { margin-bottom: 10px; }
+            .chroma-download-link { float: right; text-decoration: none; background: #0073aa; color: white; padding: 8px 15px; border-radius: 4px; font-size: 14px; }
         </style>
 
-        <div class="earlystart-facts-container">
-            <a href="/facts.json" class="earlystart-download-link" target="_blank">Download JSON</a>
+        <div class="chroma-facts-container">
+            <a href="/facts.json" class="chroma-download-link" target="_blank">Download JSON</a>
             
-            <div class="earlystart-meta-header">
+            <div class="chroma-meta-header">
                 <h1>Official Location Facts</h1>
                 <p>Verified data for AI agents, auditors, and parents. Last updated: <?php echo date('F j, Y'); ?></p>
             </div>
 
             <div style="overflow-x: auto;">
-                <table class="earlystart-facts-table">
+                <table class="chroma-facts-table">
                     <thead>
                         <tr>
                             <th>Location</th>
@@ -188,13 +188,13 @@ class earlystart_Facts_Generator
                                 <strong>Quality Rated:</strong> <?php echo esc_html($row['quality_rated_level']); ?>
                             </td>
                             <td>
-                                <strong>CAPS:</strong> <span class="<?php echo $row['accepts_caps_subsidies'] === 'Yes' ? 'earlystart-check-yes' : 'earlystart-check-no'; ?>"><?php echo $row['accepts_caps_subsidies']; ?></span><br>
-                                <strong>Pre-K:</strong> <span class="<?php echo $row['offers_ga_pre_k'] === 'Yes' ? 'earlystart-check-yes' : 'earlystart-check-no'; ?>"><?php echo $row['offers_ga_pre_k']; ?></span><br>
+                                <strong>CAPS:</strong> <span class="<?php echo $row['accepts_caps_subsidies'] === 'Yes' ? 'chroma-check-yes' : 'chroma-check-no'; ?>"><?php echo $row['accepts_caps_subsidies']; ?></span><br>
+                                <strong>Pre-K:</strong> <span class="<?php echo $row['offers_ga_pre_k'] === 'Yes' ? 'chroma-check-yes' : 'chroma-check-no'; ?>"><?php echo $row['offers_ga_pre_k']; ?></span><br>
                                 <hr style="margin: 4px 0; border:0; border-top:1px solid #eee;">
                                 <span style="font-size: 0.85em;"><?php echo esc_html($row['programs_offered']); ?></span>
                             </td>
                             <td>
-                                <strong>Cameras:</strong> <span class="<?php echo $row['has_security_cameras'] === 'Yes' ? 'earlystart-check-yes' : 'earlystart-check-no'; ?>"><?php echo $row['has_security_cameras']; ?></span>
+                                <strong>Cameras:</strong> <span class="<?php echo $row['has_security_cameras'] === 'Yes' ? 'chroma-check-yes' : 'chroma-check-no'; ?>"><?php echo $row['has_security_cameras']; ?></span>
                             </td>
                             <td>
                                 <?php echo esc_html($row['phone']); ?>

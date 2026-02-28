@@ -3,10 +3,10 @@
  * Critical CSS Injection
  * Inlines essential above-the-fold styles to prevent render-blocking
  *
- * @package EarlyStart_Early_Start
+ * @package Chroma_Excellence
  */
 
-function earlystart_print_critical_css()
+function chroma_print_critical_css()
 {
     ?>
     <style id="chroma-critical-css">
@@ -14,24 +14,11 @@ function earlystart_print_critical_css()
         @font-face {
             font-family: 'Outfit';
             font-style: normal;
-            font-weight: 300;
-            font-display: swap;
-            src: url('<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Light.woff2') format('woff2');
-        }
-        @font-face {
-            font-family: 'Outfit';
-            font-style: normal;
             font-weight: 400;
             font-display: swap;
             src: url('<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Regular.woff2') format('woff2');
         }
-        @font-face {
-            font-family: 'Outfit';
-            font-style: normal;
-            font-weight: 500;
-            font-display: swap;
-            src: url('<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Medium.woff2') format('woff2');
-        }
+
         @font-face {
             font-family: 'Outfit';
             font-style: normal;
@@ -39,6 +26,7 @@ function earlystart_print_critical_css()
             font-display: swap;
             src: url('<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-SemiBold.woff2') format('woff2');
         }
+
         @font-face {
             font-family: 'Outfit';
             font-style: normal;
@@ -46,6 +34,7 @@ function earlystart_print_critical_css()
             font-display: swap;
             src: url('<?php echo get_template_directory_uri(); ?>/assets/webfonts/Outfit-Bold.woff2') format('woff2');
         }
+
         @font-face {
             font-family: 'Playfair Display';
             font-style: normal;
@@ -53,19 +42,13 @@ function earlystart_print_critical_css()
             font-display: swap;
             src: url('<?php echo get_template_directory_uri(); ?>/assets/webfonts/PlayfairDisplay-SemiBold.woff2') format('woff2');
         }
+
         @font-face {
             font-family: 'Playfair Display';
             font-style: normal;
             font-weight: 700;
             font-display: swap;
             src: url('<?php echo get_template_directory_uri(); ?>/assets/webfonts/PlayfairDisplay-Bold.woff2') format('woff2');
-        }
-        @font-face {
-            font-family: 'Playfair Display';
-            font-style: normal;
-            font-weight: 800;
-            font-display: swap;
-            src: url('<?php echo get_template_directory_uri(); ?>/assets/webfonts/PlayfairDisplay-ExtraBold.woff2') format('woff2');
         }
 
         /* Critical Reset & Base */
@@ -85,32 +68,55 @@ function earlystart_print_critical_css()
         body {
             margin: 0;
             line-height: inherit;
-           	/* Font Metric Overrides to prevent CLS */
-	@font-face {
-		font-family: 'Outfit-Fallback';
-		src: local('Arial');
-		ascent-override: 98%;
-		descent-override: 24%;
-		line-gap-override: 0%;
-		size-adjust: 100%;
-	}
-	@font-face {
-		font-family: 'Playfair-Fallback';
-		src: local('Georgia');
-		ascent-override: 95%;
-		descent-override: 20%;
-		line-gap-override: 0%;
-		size-adjust: 100%;
-	}
-
-	body {
-		font-family: Outfit, "Outfit-Fallback", system-ui, sans-serif;
-	}
-
-	h1, h2, h3, h4, h5, h6, .font-serif {
-		font-family: "Playfair Display", "Playfair-Fallback", serif;
-	}
+            font-family: var(--cqa-font-body, Outfit, 'Outfit-Fallback', system-ui, sans-serif);
             overflow-x: hidden
+        }
+
+        /* Font Metric Overrides to prevent CLS */
+        @font-face {
+            font-family: 'Outfit-Fallback';
+            src: local('Arial');
+            ascent-override: 98%;
+            descent-override: 24%;
+            line-gap-override: 0%;
+            size-adjust: 100%;
+        }
+
+        @font-face {
+            font-family: 'Playfair-Fallback';
+            src: local('Georgia');
+            ascent-override: 95%;
+            descent-override: 20%;
+            line-gap-override: 0%;
+            size-adjust: 100%;
+        }
+
+        /* Reserve hero space early to prevent large CLS before main CSS loads */
+        .chroma-hero-lock {
+            min-height: 400px;
+            aspect-ratio: 4 / 3;
+        }
+
+        @media (min-width: 640px) {
+            .chroma-hero-lock {
+                min-height: 420px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .chroma-hero-lock {
+                min-height: 500px;
+            }
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-serif {
+            font-family: var(--cqa-font-heading, 'Playfair Display', 'Playfair-Fallback', serif);
         }
 
         /* Critical Layout */
@@ -157,7 +163,7 @@ function earlystart_print_critical_css()
 
         /* Critical Colors */
         .bg-brand-cream {
-            background-color: rgb(255 252 248)
+            background-color: var(--cqa-bg)
         }
 
         .bg-white {
@@ -169,11 +175,11 @@ function earlystart_print_critical_css()
         }
 
         .bg-brand-ink {
-            background-color: rgb(38 50 56)
+            background-color: var(--cqa-ink)
         }
 
         .text-brand-ink {
-            color: rgb(38 50 56)
+            color: var(--cqa-ink)
         }
 
         .text-white {
@@ -181,11 +187,11 @@ function earlystart_print_critical_css()
         }
 
         .text-chroma-blue {
-            color: rgb(74 108 124)
+            color: var(--cqa-primary)
         }
 
         .bg-chroma-blue {
-            background-color: rgb(74 108 124)
+            background-color: var(--cqa-primary)
         }
 
         .bg-chroma-green {
@@ -193,7 +199,7 @@ function earlystart_print_critical_css()
         }
 
         .border-chroma-blue\/10 {
-            border-color: rgba(74, 108, 124, .1)
+            border-color: rgba(var(--cqa-primary-rgb), .1)
         }
 
         /* Critical Header */
@@ -316,7 +322,7 @@ function earlystart_print_critical_css()
             .lg\:pt-24 {
                 padding-top: 6rem
             }
-        
+
             .lg\:block {
                 display: block
             }
@@ -329,6 +335,7 @@ function earlystart_print_critical_css()
                 display: none
             }
         }
+
         .font-bold {
             font-weight: 700
         }
@@ -428,7 +435,7 @@ function earlystart_print_critical_css()
             .lg\:pt-24 {
                 padding-top: 6rem
             }
-        
+
             .lg\:block {
                 display: block
             }
@@ -450,10 +457,6 @@ function earlystart_print_critical_css()
         @media(min-width:768px) {
             .md\:grid-cols-12 {
                 grid-template-columns: repeat(12, minmax(0, 1fr))
-            }
-
-            .md\:grid-rows-2 {
-                grid-template-rows: repeat(2, minmax(0, 1fr))
             }
 
             .md\:col-span-3 {
@@ -494,13 +497,16 @@ function earlystart_print_critical_css()
             .sm\:mt-0 {
                 margin-top: 0
             }
+
             .sm\:inset-y-0 {
                 top: 0;
                 bottom: 0
             }
+
             .sm\:left-12 {
                 left: 3rem
             }
+
             .sm\:right-0 {
                 right: 0
             }
@@ -510,6 +516,7 @@ function earlystart_print_critical_css()
             .lg\:grid-cols-2 {
                 grid-template-columns: repeat(2, minmax(0, 1fr))
             }
+
             .lg\:left-16 {
                 left: 4rem
             }
@@ -530,7 +537,7 @@ function earlystart_print_critical_css()
         .right-0 {
             right: 0
         }
-        
+
         .rounded-full {
             border-radius: 9999px
         }
@@ -613,9 +620,11 @@ function earlystart_print_critical_css()
         }
 
         /* Critical Icons (Prevent CLS) */
-        .fa-solid, .fas {
+        .fa-solid,
+        .fas {
             display: inline-block;
-            width: 1.25em; /* Default width for standard icons */
+            width: 1.25em;
+            /* Default width for standard icons */
             height: 1em;
             overflow: visible;
             vertical-align: -0.125em;
@@ -637,7 +646,5 @@ function earlystart_print_critical_css()
     <?php
 }
 // Critical CSS enabled to support main.css deferral
-add_action('wp_head', 'earlystart_print_critical_css', 1);
-
-
+add_action('wp_head', 'chroma_print_critical_css', 1);
 

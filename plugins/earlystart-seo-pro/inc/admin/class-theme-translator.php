@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 class earlystart_Theme_Translator
 {
-    private $text_domain = 'earlystart-excellence';
+    private $text_domain = 'chroma-excellence';
     private $option_key = 'earlystart_theme_translations_es';
 
     public function init()
@@ -23,10 +23,11 @@ class earlystart_Theme_Translator
         add_action('wp_ajax_earlystart_save_string_translations', [$this, 'ajax_save_translations']);
         add_action('wp_ajax_earlystart_bulk_translate_strings', [$this, 'ajax_bulk_translate_strings']);
         add_action('wp_ajax_earlystart_export_po', [$this, 'ajax_export_po']);
-        
-        // TEMP DEBUG
-        add_action('wp_ajax_earlystart_debug_meta', [$this, 'ajax_debug_meta']);
-        add_action('wp_ajax_nopriv_earlystart_debug_meta', [$this, 'ajax_debug_meta']);
+
+        // Debug endpoint is admin-only and only available in debug mode.
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            add_action('wp_ajax_earlystart_debug_meta', [$this, 'ajax_debug_meta']);
+        }
 
         // Runtime Translation Hook
         add_filter('gettext', [$this, 'filter_gettext'], 10, 3);
@@ -35,11 +36,11 @@ class earlystart_Theme_Translator
     public function register_menu()
     {
         add_submenu_page(
-            'earlystart-seo-dashboard',
+            'chroma-seo-dashboard',
             'Theme Translator',
             'Theme Translator',
             'manage_options',
-            'earlystart-theme-translator',
+            'chroma-theme-translator',
             [$this, 'render_page']
         );
     }
@@ -48,28 +49,28 @@ class earlystart_Theme_Translator
     {
         $existing_translations = get_option($this->option_key, []);
         ?>
-        <div class="wrap earlystart-seo-dashboard">
+        <div class="wrap chroma-seo-dashboard">
             <h1>🎨 Theme String Translator</h1>
             <p>Scan your theme for translatable strings and use AI to generate Spanish translations.</p>
             
             <div class="card" style="padding: 20px; max-width: 1200px;">
                 <div class="actions" style="margin-bottom: 20px;">
-                     <button id="earlystart-scan-btn" class="button button-primary button-large">
+                     <button id="chroma-scan-btn" class="button button-primary button-large">
                         <span class="dashicons dashicons-search"></span> Scan Theme Files
                      </button>
-                     <button id="earlystart-bulk-translate-btn" class="button button-secondary button-large" disabled>
+                     <button id="chroma-bulk-translate-btn" class="button button-secondary button-large" disabled>
                         <span class="dashicons dashicons-translation"></span> AI Translate Missing
                      </button>
-                     <button id="earlystart-save-translations-btn" class="button button-secondary button-large" disabled>
+                     <button id="chroma-save-translations-btn" class="button button-secondary button-large" disabled>
                         <span class="dashicons dashicons-saved"></span> Save Changes
                      </button>
-                     <button id="earlystart-export-po-btn" class="button button-secondary button-large">
+                     <button id="chroma-export-po-btn" class="button button-secondary button-large">
                         <span class="dashicons dashicons-download"></span> Export .PO File
                      </button>
-                     <span id="earlystart-status" style="margin-left: 10px; font-weight: bold;"></span>
+                     <span id="chroma-status" style="margin-left: 10px; font-weight: bold;"></span>
                 </div>
 
-                <div id="earlystart-scan-results" style="display: none;">
+                <div id="chroma-scan-results" style="display: none;">
                     <table class="wp-list-table widefat fixed striped">
                         <thead>
                             <tr>
@@ -77,7 +78,7 @@ class earlystart_Theme_Translator
                                 <th style="width: 60%;">Spanish Translation</th>
                             </tr>
                         </thead>
-                        <tbody id="earlystart-strings-body">
+                        <tbody id="chroma-strings-body">
                             <!-- Populated via JS -->
                         </tbody>
                     </table>
@@ -86,7 +87,7 @@ class earlystart_Theme_Translator
             
             <!-- Hidden Store for existing translations -->
             <script>
-                window.earlystartExistingTranslations = <?php echo json_encode($existing_translations); ?>;
+                window.chromaExistingTranslations = <?php echo json_encode($existing_translations); ?>;
             </script>
             
             <style>
@@ -96,13 +97,13 @@ class earlystart_Theme_Translator
             <script>
             jQuery(document).ready(function($) {
                 var scannedStrings = [];
-                var existingTranslations = window.earlystartExistingTranslations || {};
+                var existingTranslations = window.chromaExistingTranslations || {};
 
                 // SCAN
-                $('#earlystart-scan-btn').click(function() {
+                $('#chroma-scan-btn').click(function() {
                     var btn = $(this);
                     btn.prop('disabled', true).text('Scanning...');
-                    $('#earlystart-status').text('Scanning theme files...');
+                    $('#chroma-status').text('Scanning theme files...');
                     
                     $.post(ajaxurl, {
                         action: 'earlystart_scan_theme_strings',
@@ -113,12 +114,12 @@ class earlystart_Theme_Translator
                         if(response.success) {
                             scannedStrings = response.data;
                             renderTable();
-                            $('#earlystart-scan-results').show();
-                            $('#earlystart-bulk-translate-btn').prop('disabled', false);
-                            $('#earlystart-save-translations-btn').prop('disabled', false);
-                            $('#earlystart-status').text('Found ' + scannedStrings.length + ' strings.');
+                            $('#chroma-scan-results').show();
+                            $('#chroma-bulk-translate-btn').prop('disabled', false);
+                            $('#chroma-save-translations-btn').prop('disabled', false);
+                            $('#chroma-status').text('Found ' + scannedStrings.length + ' strings.');
                         } else {
-                            $('#earlystart-status').text('Error: ' + response.data.message);
+                            $('#chroma-status').text('Error: ' + response.data.message);
                         }
                     });
                 });
@@ -132,7 +133,7 @@ class earlystart_Theme_Translator
                         html += '<td><textarea class="translation-input" data-original="' + escapeHtml(str) + '">' + escapeHtml(val) + '</textarea></td>';
                         html += '</tr>';
                     });
-                    $('#earlystart-strings-body').html(html);
+                    $('#chroma-strings-body').html(html);
                 }
                 
                 function escapeHtml(text) {
@@ -146,12 +147,12 @@ class earlystart_Theme_Translator
                 }
 
                 // BULK TRANSLATE
-                $('#earlystart-bulk-translate-btn').click(function() {
+                $('#chroma-bulk-translate-btn').click(function() {
                     if(!confirm('This will use AI tokens to translate empty fields. Continue?')) return;
                     
                     var btn = $(this);
                     btn.prop('disabled', true).text('Translating...');
-                    $('#earlystart-status').text('AI is working... this may take a moment.');
+                    $('#chroma-status').text('AI is working... this may take a moment.');
                     
                     // Collect missing strings
                     var missing = {};
@@ -185,15 +186,15 @@ class earlystart_Theme_Translator
                                    $(this).val(results[original]);
                                }
                            });
-                           $('#earlystart-status').text('Translation complete! Review and Save.');
+                           $('#chroma-status').text('Translation complete! Review and Save.');
                        } else {
-                           $('#earlystart-status').text('Error: ' + (response.data.message || 'Unknown'));
+                           $('#chroma-status').text('Error: ' + (response.data.message || 'Unknown'));
                        }
                     });
                 });
 
                 // SAVE
-                $('#earlystart-save-translations-btn').click(function() {
+                $('#chroma-save-translations-btn').click(function() {
                     var btn = $(this);
                     btn.prop('disabled', true).text('Saving...');
                     
@@ -211,16 +212,16 @@ class earlystart_Theme_Translator
                     }, function(response) {
                          btn.prop('disabled', false).text('Save Changes');
                          if(response.success) {
-                             $('#earlystart-status').text('Saved successfully.').css('color', 'green');
+                             $('#chroma-status').text('Saved successfully.').css('color', 'green');
                              existingTranslations = data;
                          } else {
-                             $('#earlystart-status').text('Save failed.').css('color', 'red');
+                             $('#chroma-status').text('Save failed.').css('color', 'red');
                          }
                     });
                 });
 
                 // EXPORT PO
-                $('#earlystart-export-po-btn').click(function() {
+                $('#chroma-export-po-btn').click(function() {
                     $.post(ajaxurl, {
                         action: 'earlystart_export_po',
                         nonce: '<?php echo wp_create_nonce('earlystart_seo_nonce'); ?>'
@@ -236,9 +237,9 @@ class earlystart_Theme_Translator
                             a.click();
                             document.body.removeChild(a);
                             window.URL.revokeObjectURL(url);
-                            $('#earlystart-status').text('Exported ' + response.data.count + ' strings.').css('color', 'green');
+                            $('#chroma-status').text('Exported ' + response.data.count + ' strings.').css('color', 'green');
                         } else {
-                            $('#earlystart-status').text('Export failed.').css('color', 'red');
+                            $('#chroma-status').text('Export failed.').css('color', 'red');
                         }
                     });
                 });
@@ -391,12 +392,12 @@ class earlystart_Theme_Translator
         $translations = get_option($this->option_key, []);
         
         // Generate PO file content
-        $po_content = "# Spanish translations for earlystart Excellence theme.\n";
-        $po_content .= "# Generated by earlystart SEO Pro\n";
+        $po_content = "# Spanish translations for Chroma Excellence theme.\n";
+        $po_content .= "# Generated by Early Start SEO Pro\n";
         $po_content .= "# " . date('Y-m-d H:i:s') . "\n";
         $po_content .= "msgid \"\"\n";
         $po_content .= "msgstr \"\"\n";
-        $po_content .= "\"Project-Id-Version: earlystart-excellence\\n\"\n";
+        $po_content .= "\"Project-Id-Version: chroma-excellence\\n\"\n";
         $po_content .= "\"Report-Msgid-Bugs-To: \\n\"\n";
         $po_content .= "\"POT-Creation-Date: " . date('Y-m-d H:i:sO') . "\\n\"\n";
         $po_content .= "\"PO-Revision-Date: " . date('Y-m-d H:i:sO') . "\\n\"\n";
@@ -418,12 +419,22 @@ class earlystart_Theme_Translator
 
         wp_send_json_success([
             'content' => $po_content,
-            'filename' => 'earlystart-excellence-es_ES.po',
+            'filename' => 'chroma-excellence-es_ES.po',
             'count' => count($translations)
         ]);
     }
 
     public function ajax_debug_meta() {
+        if (!defined('WP_DEBUG') || !WP_DEBUG) {
+            wp_send_json_error(['message' => 'Not available']);
+        }
+
+        check_ajax_referer('earlystart_seo_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Permission denied']);
+        }
+
         $page = get_page_by_path('about');
         if (!$page) $page = get_page_by_path('about-us');
         
@@ -433,8 +444,7 @@ class earlystart_Theme_Translator
                 'id' => $page->ID,
                 'title' => $page->post_title,
                 'es_content' => $meta['_earlystart_es_content'][0] ?? 'MISSING',
-                'es_title' => $meta['_earlystart_es_title'][0] ?? 'MISSING',
-                'all_meta' => $meta
+                'es_title' => $meta['_earlystart_es_title'][0] ?? 'MISSING'
             ]);
         }
         wp_send_json_error('Page not found');

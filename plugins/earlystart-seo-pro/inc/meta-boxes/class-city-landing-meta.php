@@ -31,7 +31,7 @@ class earlystart_City_Landing_Meta extends earlystart_Advanced_SEO_Meta_Box_Base
      */
     public function get_title()
     {
-        return __('City Landing Configuration', 'earlystart-excellence');
+        return __('City Landing Configuration', 'chroma-excellence');
     }
 
     /**
@@ -70,7 +70,7 @@ class earlystart_City_Landing_Meta extends earlystart_Advanced_SEO_Meta_Box_Base
 
         // Available counties in Metro Atlanta
         $counties = [
-            '' => __('Select County...', 'earlystart-excellence'),
+            '' => __('Select County...', 'chroma-excellence'),
             'Cobb' => 'Cobb County',
             'Gwinnett' => 'Gwinnett County',
             'Fulton' => 'Fulton County (North)',
@@ -86,13 +86,13 @@ class earlystart_City_Landing_Meta extends earlystart_Advanced_SEO_Meta_Box_Base
             'Other' => 'Other Areas'
         ];
         ?>
-        <div class="earlystart-field-wrapper">
+        <div class="chroma-field-wrapper">
             <p class="description">
-                <?php _e('Configure this page as a Hyperlocal City Landing Page. Select the locations that serve this city.', 'earlystart-excellence'); ?>
+                <?php _e('Configure this page as a Hyperlocal City Landing Page. Select the locations that serve this city.', 'chroma-excellence'); ?>
             </p>
 
             <div style="margin-bottom: 20px;">
-                <label for="city_county"><strong><?php _e('County:', 'earlystart-excellence'); ?></strong></label>
+                <label for="city_county"><strong><?php _e('County:', 'chroma-excellence'); ?></strong></label>
                 <select id="city_county" name="city_county" class="widefat" style="max-width: 300px;">
                     <?php foreach ($counties as $value => $label): ?>
                         <option value="<?php echo esc_attr($value); ?>" <?php selected($city_county, $value); ?>>
@@ -101,21 +101,21 @@ class earlystart_City_Landing_Meta extends earlystart_Advanced_SEO_Meta_Box_Base
                     <?php endforeach; ?>
                 </select>
                 <p class="description">
-                    <?php _e('Select the county this city belongs to. Used for grouping on the Communities archive page.', 'earlystart-excellence'); ?>
+                    <?php _e('Select the county this city belongs to. Used for grouping on the Communities archive page.', 'chroma-excellence'); ?>
                 </p>
             </div>
 
             <div style="margin-bottom: 20px;">
-                <label for="city_intro_text"><?php _e('Local Intro Text (SEO Optimized):', 'earlystart-excellence'); ?></label>
+                <label for="city_intro_text"><?php _e('Local Intro Text (SEO Optimized):', 'chroma-excellence'); ?></label>
                 <textarea id="city_intro_text" name="city_intro_text" rows="5" class="widefat"
-                    placeholder="<?php _e('Example: Parents in Canton trust earlystart for...', 'earlystart-excellence'); ?>"><?php echo esc_textarea($intro_text); ?></textarea>
+                    placeholder="<?php _e('Example: Parents in Canton trust Chroma for...', 'chroma-excellence'); ?>"><?php echo esc_textarea($intro_text); ?></textarea>
                 <p class="description">
-                    <?php _e('Write a unique introduction about childcare in this specific city.', 'earlystart-excellence'); ?>
+                    <?php _e('Write a unique introduction about childcare in this specific city.', 'chroma-excellence'); ?>
                 </p>
             </div>
 
             <div style="margin-bottom: 20px;">
-                <label><?php _e('Nearby Locations to Display:', 'earlystart-excellence'); ?></label>
+                <label><?php _e('Nearby Locations to Display:', 'chroma-excellence'); ?></label>
                 <div style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; background: #fff;">
                     <?php foreach ($locations as $location): ?>
                         <div style="margin-bottom: 5px;">
@@ -127,7 +127,7 @@ class earlystart_City_Landing_Meta extends earlystart_Advanced_SEO_Meta_Box_Base
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <p class="description"><?php _e('Select the locations that are relevant to this city.', 'earlystart-excellence'); ?>
+                <p class="description"><?php _e('Select the locations that are relevant to this city.', 'chroma-excellence'); ?>
                 </p>
             </div>
         </div>

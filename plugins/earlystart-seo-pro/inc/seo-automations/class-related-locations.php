@@ -124,9 +124,9 @@ class earlystart_Related_Locations
      */
     private function render_related_locations($locations) {
         ?>
-        <section class="earlystart-related-locations py-16 border-t border-brand-ink/5 bg-brand-cream/30 mt-16">
+        <section class="chroma-related-locations py-16 border-t border-brand-ink/5 bg-brand-cream/30 mt-16">
             <div class="max-w-7xl mx-auto px-4 lg:px-6">
-                <h2 class="font-serif text-3xl font-bold text-brand-ink mb-10"><?php _e('Other Locations Near You', 'earlystart-excellence'); ?></h2>
+                <h2 class="font-serif text-3xl font-bold text-brand-ink mb-10"><?php _e('Other Locations Near You', 'chroma-excellence'); ?></h2>
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <?php foreach ($locations as $loc): 
                         $location_id = $loc->ID;
@@ -137,7 +137,7 @@ class earlystart_Related_Locations
                         $regions = wp_get_post_terms($location_id, 'location_region');
                         $region_term = !empty($regions) && !is_wp_error($regions) ? $regions[0] : null;
                         $colors = $region_term ? earlystart_get_region_color_from_term($region_term->term_id) : array(
-                            'bg' => 'earlystart-blueLight', 'text' => 'earlystart-blue', 'border' => 'earlystart-blue'
+                            'bg' => 'chroma-blueLight', 'text' => 'chroma-blue', 'border' => 'chroma-blue'
                         );
 
                         // Badges
@@ -162,17 +162,17 @@ class earlystart_Related_Locations
                             <?php endif; ?>
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-earlystart-blueLight/50 text-earlystart-blueDark text-[10px] font-bold uppercase rounded-full border border-earlystart-blueDark/10">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-chroma-blueLight/50 text-chroma-blueDark text-[10px] font-bold uppercase rounded-full border border-chroma-blueDark/10">
                                     <i class="fa-solid fa-building-columns"></i> GA DECAL Licensed
                                 </span>
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-earlystart-yellowLight/50 text-earlystart-yellowDark text-[10px] font-bold uppercase rounded-full border border-earlystart-yellowDark/10">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-chroma-yellowLight/50 text-chroma-yellowDark text-[10px] font-bold uppercase rounded-full border border-chroma-yellowDark/10">
                                     <i class="fa-solid fa-check"></i> Quality Rated
                                 </span>
                             </div>
 
                             <div class="mt-auto flex items-center justify-between">
                                 <?php if ($distance !== null): ?>
-                                    <span class="text-[11px] font-bold text-earlystart-blue uppercase tracking-wider"><?php echo $distance; ?> miles away</span>
+                                    <span class="text-[11px] font-bold text-chroma-blue uppercase tracking-wider"><?php echo $distance; ?> miles away</span>
                                 <?php endif; ?>
                                 <a href="<?php echo get_permalink($loc); ?>" class="text-[10px] font-bold text-brand-ink/40 uppercase tracking-widest group-hover:text-<?php echo esc_attr($colors['text']); ?> transition-colors">
                                     Details <i class="fa-solid fa-arrow-right ml-1"></i>

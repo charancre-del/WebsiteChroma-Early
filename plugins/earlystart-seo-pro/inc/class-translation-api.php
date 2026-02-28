@@ -20,7 +20,7 @@ class earlystart_Translation_API
 
     public function register_routes()
     {
-        register_rest_route('earlystart/v1', '/translations/(?P<id>\d+)', [
+        register_rest_route('chroma/v1', '/translations/(?P<id>\d+)', [
             [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_translation'],
@@ -45,19 +45,19 @@ class earlystart_Translation_API
             ]
         ]);
 
-        register_rest_route('earlystart/v1', '/translations', [
+        register_rest_route('chroma/v1', '/translations', [
             'methods' => 'GET',
             'callback' => [$this, 'get_all_translations'],
             'permission_callback' => [$this, 'check_permissions'],
         ]);
 
-        register_rest_route('earlystart/v1', '/translate', [
+        register_rest_route('chroma/v1', '/translate', [
             'methods' => 'POST',
             'callback' => [$this, 'auto_translate'],
             'permission_callback' => [$this, 'check_permissions'],
         ]);
 
-        register_rest_route('earlystart/v1', '/stats', [
+        register_rest_route('chroma/v1', '/stats', [
             'methods' => 'GET',
             'callback' => [$this, 'get_stats'],
             'permission_callback' => [$this, 'check_permissions'],
@@ -70,7 +70,7 @@ class earlystart_Translation_API
     }
 
     /**
-     * GET /earlystart/v1/translations/{id}
+     * GET /chroma/v1/translations/{id}
      */
     public function get_translation($request)
     {
@@ -79,6 +79,10 @@ class earlystart_Translation_API
 
         if (!$post) {
             return new WP_Error('not_found', 'Post not found', ['status' => 404]);
+        }
+
+        if (!current_user_can('edit_post', $post_id)) {
+            return new WP_Error('forbidden', 'Permission denied for this post', ['status' => 403]);
         }
 
         $alternates = [];
@@ -101,12 +105,16 @@ class earlystart_Translation_API
     }
 
     /**
-     * POST /earlystart/v1/translations/{id}
+     * POST /chroma/v1/translations/{id}
      */
     public function save_translation($request)
     {
         $post_id = $request['id'];
         $body = $request->get_json_params();
+
+        if (!current_user_can('edit_post', $post_id)) {
+            return new WP_Error('forbidden', 'Permission denied for this post', ['status' => 403]);
+        }
 
         if (isset($body['title_es'])) {
             update_post_meta($post_id, '_earlystart_es_title', sanitize_text_field($body['title_es']));
@@ -126,11 +134,15 @@ class earlystart_Translation_API
     }
 
     /**
-     * DELETE /earlystart/v1/translations/{id}
+     * DELETE /chroma/v1/translations/{id}
      */
     public function delete_translation($request)
     {
         $post_id = $request['id'];
+
+        if (!current_user_can('edit_post', $post_id)) {
+            return new WP_Error('forbidden', 'Permission denied for this post', ['status' => 403]);
+        }
 
         delete_post_meta($post_id, '_earlystart_es_title');
         delete_post_meta($post_id, '_earlystart_es_content');
@@ -144,12 +156,17 @@ class earlystart_Translation_API
     }
 
     /**
-     * GET /earlystart/v1/translations
+     * GET /chroma/v1/translations
      */
     public function get_all_translations($request)
     {
-        $post_type = $request->get_param('post_type') ?? 'page';
+        $post_type = sanitize_key($request->get_param('post_type') ?? 'page');
         $status = $request->get_param('status'); // translated, untranslated, all
+
+        $allowed_post_types = ['page', 'post', 'location', 'program', 'city', 'team_member'];
+        if (!in_array($post_type, $allowed_post_types, true)) {
+            $post_type = 'page';
+        }
 
         $posts = get_posts([
             'post_type' => $post_type,
@@ -159,6 +176,10 @@ class earlystart_Translation_API
 
         $results = [];
         foreach ($posts as $post) {
+            if (!current_user_can('edit_post', $post->ID)) {
+                continue;
+            }
+
             $has_translation = !empty(get_post_meta($post->ID, '_earlystart_es_content', true));
 
             if ($status === 'translated' && !$has_translation) continue;
@@ -177,7 +198,7 @@ class earlystart_Translation_API
     }
 
     /**
-     * POST /earlystart/v1/translate
+     * POST /chroma/v1/translate
      */
     public function auto_translate($request)
     {
@@ -191,6 +212,10 @@ class earlystart_Translation_API
         $post = get_post($post_id);
         if (!$post) {
             return new WP_Error('not_found', 'Post not found', ['status' => 404]);
+        }
+
+        if (!current_user_can('edit_post', $post_id)) {
+            return new WP_Error('forbidden', 'Permission denied for this post', ['status' => 403]);
         }
 
         $fields = [
@@ -220,7 +245,7 @@ class earlystart_Translation_API
     }
 
     /**
-     * GET /earlystart/v1/stats
+     * GET /chroma/v1/stats
      */
     public function get_stats($request)
     {

@@ -31,7 +31,7 @@ class earlystart_Universal_FAQ extends earlystart_Advanced_SEO_Meta_Box_Base
      */
     public function get_title()
     {
-        return __('FAQ Schema (LLM Optimized)', 'earlystart-excellence');
+        return __('FAQ Schema (LLM Optimized)', 'chroma-excellence');
     }
 
     /**
@@ -56,61 +56,61 @@ class earlystart_Universal_FAQ extends earlystart_Advanced_SEO_Meta_Box_Base
             $faqs = [];
         }
         ?>
-        <div class="earlystart-field-wrapper">
+        <div class="chroma-field-wrapper">
             <p class="description">
-                <?php _e('Add Questions and Answers here. They will be output as <strong>FAQPage Schema</strong>, which is highly visible to Google and LLMs.', 'earlystart-excellence'); ?>
+                <?php _e('Add Questions and Answers here. They will be output as <strong>FAQPage Schema</strong>, which is highly visible to Google and LLMs.', 'chroma-excellence'); ?>
             </p>
 
-            <div class="earlystart-repeater-field">
-                <div class="earlystart-repeater-items">
+            <div class="chroma-repeater-field">
+                <div class="chroma-repeater-items">
                     <?php if (!empty($faqs)): ?>
                         <?php foreach ($faqs as $faq): ?>
-                            <div class="earlystart-repeater-item"
+                            <div class="chroma-repeater-item"
                                 style="display:block; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:10px;">
                                 <div style="margin-bottom:5px;">
-                                    <label><?php _e('Question:', 'earlystart-excellence'); ?></label>
+                                    <label><?php _e('Question:', 'chroma-excellence'); ?></label>
                                     <input type="text" name="earlystart_faq_question[]" value="<?php echo esc_attr($faq['question']); ?>"
                                         class="widefat" />
                                 </div>
                                 <div style="display:flex; gap:10px; align-items:flex-start;">
                                     <div style="flex:1;">
-                                        <label><?php _e('Answer:', 'earlystart-excellence'); ?></label>
+                                        <label><?php _e('Answer:', 'chroma-excellence'); ?></label>
                                         <textarea name="earlystart_faq_answer[]" rows="2"
                                             class="widefat"><?php echo esc_textarea($faq['answer']); ?></textarea>
                                     </div>
-                                    <button class="button earlystart-remove-item" style="margin-top:20px;">&times;</button>
+                                    <button class="button chroma-remove-item" style="margin-top:20px;">&times;</button>
                                 </div>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <div class="earlystart-repeater-item"
+                        <div class="chroma-repeater-item"
                             style="display:block; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:10px;">
                             <div style="margin-bottom:5px;">
-                                <label><?php _e('Question:', 'earlystart-excellence'); ?></label>
+                                <label><?php _e('Question:', 'chroma-excellence'); ?></label>
                                 <input type="text" name="earlystart_faq_question[]" class="widefat" />
                             </div>
                             <div style="display:flex; gap:10px; align-items:flex-start;">
                                 <div style="flex:1;">
-                                    <label><?php _e('Answer:', 'earlystart-excellence'); ?></label>
+                                    <label><?php _e('Answer:', 'chroma-excellence'); ?></label>
                                     <textarea name="earlystart_faq_answer[]" rows="2" class="widefat"></textarea>
                                 </div>
-                                <button class="button earlystart-remove-item" style="margin-top:20px;">&times;</button>
+                                <button class="button chroma-remove-item" style="margin-top:20px;">&times;</button>
                             </div>
                         </div>
                     <?php endif; ?>
                 </div>
-                <button class="button earlystart-add-item"><?php _e('Add Question', 'earlystart-excellence'); ?></button>
+                <button class="button chroma-add-item"><?php _e('Add Question', 'chroma-excellence'); ?></button>
             </div>
         </div>
 
         <script>
             jQuery(document).ready(function ($) {
                 // Enhanced repeater for block-style items
-                $('.earlystart-add-item').off('click').on('click', function (e) {
+                $('.chroma-add-item').off('click').on('click', function (e) {
                     e.preventDefault();
-                    var $wrapper = $(this).closest('.earlystart-repeater-field');
-                    var $items = $wrapper.find('.earlystart-repeater-items');
-                    var $clone = $items.find('.earlystart-repeater-item').first().clone();
+                    var $wrapper = $(this).closest('.chroma-repeater-field');
+                    var $items = $wrapper.find('.chroma-repeater-items');
+                    var $clone = $items.find('.chroma-repeater-item').first().clone();
                     $clone.find('input, textarea').val('');
                     $items.append($clone);
                 });

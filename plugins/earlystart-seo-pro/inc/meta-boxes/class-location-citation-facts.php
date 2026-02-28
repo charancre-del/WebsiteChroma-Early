@@ -21,7 +21,7 @@ class earlystart_Location_Citation_Facts_Meta_Box extends earlystart_Advanced_SE
 
     public function get_title()
     {
-        return __('Citation Facts (LLM)', 'earlystart-excellence');
+        return __('Citation Facts (LLM)', 'chroma-excellence');
     }
 
     public function get_post_types()
@@ -112,27 +112,27 @@ class earlystart_Location_Citation_Facts_Meta_Box extends earlystart_Advanced_SE
         <div class="citation-fact-item"
             style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; background: #f9f9f9;">
             <div style="margin-bottom: 10px;">
-                <label><?php _e('Fact Label', 'earlystart-excellence'); ?></label>
+                <label><?php _e('Fact Label', 'chroma-excellence'); ?></label>
                 <input type="text" name="seo_llm_citation_facts[<?php echo $index; ?>][label]"
                     value="<?php echo esc_attr($label); ?>" class="regular-text" placeholder="State Quality Rating" />
             </div>
             <div style="margin-bottom: 10px;">
-                <label><?php _e('Value', 'earlystart-excellence'); ?></label>
+                <label><?php _e('Value', 'chroma-excellence'); ?></label>
                 <input type="text" name="seo_llm_citation_facts[<?php echo $index; ?>][value]"
                     value="<?php echo esc_attr($value); ?>" class="regular-text" placeholder="3-Star Quality Rated" />
             </div>
             <div style="margin-bottom: 10px;">
-                <label><?php _e('Source (optional)', 'earlystart-excellence'); ?></label>
+                <label><?php _e('Source (optional)', 'chroma-excellence'); ?></label>
                 <input type="text" name="seo_llm_citation_facts[<?php echo $index; ?>][source]"
                     value="<?php echo esc_attr($source); ?>" class="regular-text"
                     placeholder="Georgia DECAL Bright from the Start" />
             </div>
             <div style="margin-bottom: 10px;">
-                <label><?php _e('Context (optional)', 'earlystart-excellence'); ?></label>
+                <label><?php _e('Context (optional)', 'chroma-excellence'); ?></label>
                 <textarea name="seo_llm_citation_facts[<?php echo $index; ?>][context]" rows="2"
                     class="large-text"><?php echo esc_textarea($context); ?></textarea>
             </div>
-            <button type="button" class="button citation-fact-remove"><?php _e('Remove Fact', 'earlystart-excellence'); ?></button>
+            <button type="button" class="button citation-fact-remove"><?php _e('Remove Fact', 'chroma-excellence'); ?></button>
         </div>
         <?php
     }

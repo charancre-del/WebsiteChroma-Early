@@ -15,8 +15,6 @@ class earlystart_Schema_Inspector
 {
     public function __construct()
     {
-        add_action('admin_bar_menu', [$this, 'add_admin_bar_menu'], 100);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
         add_action('wp_ajax_earlystart_validate_page_schema', [$this, 'ajax_validate_schema']);
         add_action('wp_ajax_earlystart_fix_schema_with_ai', [$this, 'ajax_fix_schema']);
@@ -33,15 +31,15 @@ class earlystart_Schema_Inspector
 
         // Only show on frontend or specific admin pages if needed
         if (is_admin()) {
-            // Optional: allow it in admin if needed, but primarily for frontend
+             // Optional: allow it in admin if needed, but primarily for frontend
         }
 
         $wp_admin_bar->add_node([
-            'id' => 'earlystart-validate-schema',
+            'id'    => 'chroma-validate-schema',
             'title' => '<span class="ab-icon dashicons dashicons-yes-alt"></span> Validate Schema',
-            'href' => '#',
-            'meta' => [
-                'class' => 'earlystart-inspector-trigger',
+            'href'  => '#',
+            'meta'  => [
+                'class' => 'chroma-inspector-trigger',
                 'title' => 'Validate Schema on this page'
             ]
         ]);
@@ -52,20 +50,24 @@ class earlystart_Schema_Inspector
      */
     public function enqueue_scripts()
     {
-        if (!current_user_can('edit_posts')) {
+        if (!is_admin() || !current_user_can('manage_options')) {
+            return;
+        }
+
+        if (!isset($_GET['page']) || sanitize_key($_GET['page']) !== 'chroma-seo-dashboard') {
             return;
         }
 
         // 1. Register Dummy Handle for Inline Data
-        wp_register_script('earlystart-schema-inspector-data', false);
-        wp_enqueue_script('earlystart-schema-inspector-data');
-
+        wp_register_script('chroma-schema-inspector-data', false);
+        wp_enqueue_script('chroma-schema-inspector-data');
+        
         // 2. Add Inline Data
-        wp_add_inline_script('earlystart-schema-inspector-data', sprintf(
-            'const earlystartInspector = %s;',
+        wp_add_inline_script('chroma-schema-inspector-data', sprintf(
+            'const ChromaInspector = %s;',
             json_encode([
                 'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('earlystart_schema_inspector_nonce')
+                'nonce'   => wp_create_nonce('earlystart_schema_inspector_nonce')
             ])
         ));
 
@@ -73,37 +75,37 @@ class earlystart_Schema_Inspector
         $js_path = EARLYSTART_SEO_PATH . 'assets/js/schema-inspector.js';
         if (file_exists($js_path)) {
             wp_enqueue_script(
-                'earlystart-schema-inspector-core',
-                EARLYSTART_SEO_URL . 'assets/js/schema-inspector.js',
-                ['jquery', 'earlystart-schema-inspector-data'],
-                '1.0.1',
+                'chroma-schema-inspector-core', 
+                EARLYSTART_SEO_URL . 'assets/js/schema-inspector.js', 
+                ['jquery', 'chroma-schema-inspector-data'], 
+                '1.0.1', 
                 true
             );
         }
-
+        
         // Add minimal CSS for the modal
-        wp_add_inline_style('earlystart-schema-inspector-core', '
-            #earlystart-schema-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px); }
-            #earlystart-schema-modal .earlystart-modal-content { background-color: #fefefe; margin: 5% auto; padding: 0; border: 1px solid #888; width: 80%; max-width: 900px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; }
-            #earlystart-schema-modal-header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; border-radius: 8px 8px 0 0; }
-            #earlystart-schema-modal-header h2 { margin: 0; font-size: 18px; color: #333; }
-            #earlystart-schema-close { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
-            #earlystart-schema-close:hover { color: #000; }
-            #earlystart-schema-modal-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
-            .earlystart-schema-item { border: 1px solid #ddd; margin-bottom: 15px; border-radius: 6px; overflow: hidden; }
-            .earlystart-schema-header { padding: 10px 15px; background: #f1f1f1; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-            .earlystart-schema-header.valid { border-left: 5px solid #46b450; }
-            .earlystart-schema-header.invalid { border-left: 5px solid #dc3232; }
-            .earlystart-schema-header.warning { border-left: 5px solid #ffb900; }
-            .earlystart-schema-details { padding: 15px; display: none; border-top: 1px solid #eee; }
-            .earlystart-error-list { color: #dc3232; margin: 0 0 10px; padding-left: 20px; }
-            .earlystart-warning-list { color: #d69e00; margin: 0 0 10px; padding-left: 20px; }
-            .earlystart-json-pre { background: #282c34; color: #abb2bf; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; line-height: 1.5; white-space: pre-wrap; margin-top: 10px; }
-            .earlystart-fix-btn { background: #2271b1; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; }
-            .earlystart-fix-btn:hover { background: #135e96; }
-            .earlystart-fix-btn:disabled { opacity: 0.6; cursor: wait; }
-            .earlystart-copy-btn { background: #f0f0f1; border: 1px solid #ccc; padding: 4px 8px; border-radius: 3px; font-size: 12px; cursor: pointer; margin-top: 5px; }
-            .earlystart-spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0,0,0,.1); border-radius: 50%; border-top-color: #2271b1; animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 8px; }
+        wp_add_inline_style('chroma-schema-inspector-core', '
+            #chroma-schema-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px); }
+            #chroma-schema-modal .chroma-modal-content { background-color: #fefefe; margin: 5% auto; padding: 0; border: 1px solid #888; width: 80%; max-width: 900px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; }
+            #chroma-schema-modal-header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; border-radius: 8px 8px 0 0; }
+            #chroma-schema-modal-header h2 { margin: 0; font-size: 18px; color: #333; }
+            #chroma-schema-close { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
+            #chroma-schema-close:hover { color: #000; }
+            #chroma-schema-modal-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
+            .chroma-schema-item { border: 1px solid #ddd; margin-bottom: 15px; border-radius: 6px; overflow: hidden; }
+            .chroma-schema-header { padding: 10px 15px; background: #f1f1f1; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+            .chroma-schema-header.valid { border-left: 5px solid #46b450; }
+            .chroma-schema-header.invalid { border-left: 5px solid #dc3232; }
+            .chroma-schema-header.warning { border-left: 5px solid #ffb900; }
+            .chroma-schema-details { padding: 15px; display: none; border-top: 1px solid #eee; }
+            .chroma-error-list { color: #dc3232; margin: 0 0 10px; padding-left: 20px; }
+            .chroma-warning-list { color: #d69e00; margin: 0 0 10px; padding-left: 20px; }
+            .chroma-json-pre { background: #282c34; color: #abb2bf; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; line-height: 1.5; white-space: pre-wrap; margin-top: 10px; }
+            .chroma-fix-btn { background: #2271b1; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+            .chroma-fix-btn:hover { background: #135e96; }
+            .chroma-fix-btn:disabled { opacity: 0.6; cursor: wait; }
+            .chroma-copy-btn { background: #f0f0f1; border: 1px solid #ccc; padding: 4px 8px; border-radius: 3px; font-size: 12px; cursor: pointer; margin-top: 5px; }
+            .chroma-spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0,0,0,.1); border-radius: 50%; border-top-color: #2271b1; animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 8px; }
             @keyframes spin { to { transform: rotate(360deg); } }
         ');
     }
@@ -129,7 +131,7 @@ class earlystart_Schema_Inspector
         foreach ($json_strings as $index => $json_str) {
             $json_str = wp_unslash($json_str);
             $validation = earlystart_Schema_Validator::validate_json_ld($json_str);
-
+            
             // Format result for frontend
             $results[] = [
                 'index' => $index,
@@ -170,7 +172,7 @@ class earlystart_Schema_Inspector
         }
 
         if (!method_exists($earlystart_llm_client, 'fix_schema_with_ai')) {
-            wp_send_json_error(['message' => 'AI Fix method not implemented yet']);
+             wp_send_json_error(['message' => 'AI Fix method not implemented yet']);
         }
 
         // Handle multiple schemas
@@ -179,7 +181,7 @@ class earlystart_Schema_Inspector
             foreach ($schemas_array as $raw_schema) {
                 $raw_schema = wp_unslash($raw_schema);
                 $fixed = $earlystart_llm_client->fix_schema_with_ai($raw_schema, $errors);
-
+                
                 if (is_wp_error($fixed)) {
                     wp_send_json_error(['message' => 'Failed to fix schema: ' . $fixed->get_error_message()]);
                 }

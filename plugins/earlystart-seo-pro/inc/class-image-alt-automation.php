@@ -53,19 +53,19 @@ class earlystart_Image_Alt_Automation
         if ($post_type === 'location') {
             $city = get_post_meta($post_id, 'location_city', true);
             $auto_alt = sprintf(
-                __('Childcare facility at %s in %s - Quality Rated learning environment', 'earlystart-excellence'),
+                __('Childcare facility at %s in %s - Quality Rated learning environment', 'chroma-excellence'),
                 $title,
                 $city ? $city : 'Georgia'
             );
         } elseif ($post_type === 'program') {
             $auto_alt = sprintf(
-                __('%s program for early childhood education - Hands-on learning activities', 'earlystart-excellence'),
+                __('%s program for early childhood education - Hands-on learning activities', 'chroma-excellence'),
                 $title
             );
         } else {
             // Generic fallback using site name
             $auto_alt = sprintf(
-                __('%s - Early Childhood Education Center', 'earlystart-excellence'),
+                __('%s - Early Childhood Education Center', 'chroma-excellence'),
                 get_bloginfo('name')
             );
         }

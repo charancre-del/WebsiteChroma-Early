@@ -81,7 +81,7 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
     public function render($post)
     {
         wp_nonce_field($this->get_id() . '_save', $this->get_id() . '_nonce');
-        echo '<div class="earlystart-advanced-seo-meta-box">';
+        echo '<div class="chroma-advanced-seo-meta-box">';
         $this->render_fields($post);
         echo '</div>';
     }
@@ -137,7 +137,7 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
         ];
         $args = wp_parse_args($args, $defaults);
 
-        echo '<div class="earlystart-field-wrapper">';
+        echo '<div class="chroma-field-wrapper">';
         if ($args['label']) {
             echo '<label for="' . esc_attr($args['id']) . '">' . esc_html($args['label']) . '</label>';
         }
@@ -178,7 +178,7 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
         ];
         $args = wp_parse_args($args, $defaults);
 
-        echo '<div class="earlystart-field-wrapper">';
+        echo '<div class="chroma-field-wrapper">';
         if ($args['label']) {
             echo '<label for="' . esc_attr($args['id']) . '">' . esc_html($args['label']) . '</label>';
         }
@@ -220,7 +220,7 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
         ];
         $args = wp_parse_args($args, $defaults);
 
-        echo '<div class="earlystart-field-wrapper">';
+        echo '<div class="chroma-field-wrapper">';
         if ($args['label']) {
             echo '<label for="' . esc_attr($args['id']) . '">' . esc_html($args['label']) . '</label>';
         }
@@ -257,23 +257,23 @@ abstract class earlystart_Advanced_SEO_Meta_Box_Base
         ];
         $args = wp_parse_args($args, $defaults);
 
-        echo '<div class="earlystart-field-wrapper earlystart-repeater-field" data-field-id="' . esc_attr($args['id']) . '">';
+        echo '<div class="chroma-field-wrapper chroma-repeater-field" data-field-id="' . esc_attr($args['id']) . '">';
         if ($args['label']) {
             echo '<label>' . esc_html($args['label']) . '</label>';
         }
 
-        echo '<div class="earlystart-repeater-items">';
+        echo '<div class="chroma-repeater-items">';
         if (!empty($args['values'])) {
             foreach ($args['values'] as $index => $value) {
-                echo '<div class="earlystart-repeater-item">';
+                echo '<div class="chroma-repeater-item">';
                 echo '<input type="text" name="' . esc_attr($args['id']) . '[]" value="' . esc_attr($value) . '" class="regular-text" placeholder="' . esc_attr($args['placeholder']) . '" />';
-                echo '<button type="button" class="button earlystart-remove-item">Remove</button>';
+                echo '<button type="button" class="button chroma-remove-item">Remove</button>';
                 echo '</div>';
             }
         }
         echo '</div>';
 
-        echo '<button type="button" class="button earlystart-add-item">' . esc_html($args['button_text']) . '</button>';
+        echo '<button type="button" class="button chroma-add-item">' . esc_html($args['button_text']) . '</button>';
 
         if ($args['description']) {
             echo '<p class="description">' . esc_html($args['description']) . '</p>';

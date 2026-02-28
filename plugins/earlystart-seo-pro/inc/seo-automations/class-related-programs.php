@@ -65,17 +65,17 @@ class earlystart_Related_Programs
         }
         
         $color_map = array(
-            'infant' => array('bg' => 'earlystart-redLight', 'text' => 'earlystart-red', 'border' => 'earlystart-red/30'),
-            'toddler' => array('bg' => 'earlystart-blueLight', 'text' => 'earlystart-blue', 'border' => 'earlystart-blue/30'),
-            'preschool' => array('bg' => 'earlystart-yellowLight', 'text' => 'earlystart-yellow', 'border' => 'earlystart-yellow/30'),
-            'prek' => array('bg' => 'earlystart-greenLight', 'text' => 'earlystart-green', 'border' => 'earlystart-green/30'),
-            'afterschool' => array('bg' => 'earlystart-blueLight', 'text' => 'earlystart-blue', 'border' => 'earlystart-blue/30'),
+            'infant' => array('bg' => 'chroma-redLight', 'text' => 'chroma-red', 'border' => 'chroma-red/30'),
+            'toddler' => array('bg' => 'chroma-blueLight', 'text' => 'chroma-blue', 'border' => 'chroma-blue/30'),
+            'preschool' => array('bg' => 'chroma-yellowLight', 'text' => 'chroma-yellow', 'border' => 'chroma-yellow/30'),
+            'prek' => array('bg' => 'chroma-greenLight', 'text' => 'chroma-green', 'border' => 'chroma-green/30'),
+            'afterschool' => array('bg' => 'chroma-blueLight', 'text' => 'chroma-blue', 'border' => 'chroma-blue/30'),
         );
 
         ob_start();
         ?>
-        <section class="earlystart-related-programs py-12 border-t border-brand-ink/5 mt-16">
-            <h2 class="font-serif text-3xl font-bold text-brand-ink mb-8"><?php _e('Programs at This Location', 'earlystart-excellence'); ?></h2>
+        <section class="chroma-related-programs py-12 border-t border-brand-ink/5 mt-16">
+            <h2 class="font-serif text-3xl font-bold text-brand-ink mb-8"><?php _e('Programs at This Location', 'chroma-excellence'); ?></h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <?php foreach ($programs as $prog): 
                     $prog_id = is_object($prog) ? $prog->ID : $prog;
@@ -142,9 +142,9 @@ class earlystart_Related_Programs
         
         ob_start();
         ?>
-        <section class="earlystart-locations-with-program py-16 border-t border-brand-ink/5 bg-brand-cream/30 mt-16">
+        <section class="chroma-locations-with-program py-16 border-t border-brand-ink/5 bg-brand-cream/30 mt-16">
             <div class="max-w-7xl mx-auto px-4 lg:px-6">
-                <h2 class="font-serif text-3xl font-bold text-brand-ink mb-10"><?php _e('Locations Offering This Program', 'earlystart-excellence'); ?></h2>
+                <h2 class="font-serif text-3xl font-bold text-brand-ink mb-10"><?php _e('Locations Offering This Program', 'chroma-excellence'); ?></h2>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <?php foreach ($locations as $loc): 
                         $location_id = $loc->ID;
@@ -155,7 +155,7 @@ class earlystart_Related_Programs
                         $regions = wp_get_post_terms($location_id, 'location_region');
                         $region_term = !empty($regions) && !is_wp_error($regions) ? $regions[0] : null;
                         $colors = $region_term ? earlystart_get_region_color_from_term($region_term->term_id) : array(
-                            'bg' => 'earlystart-blueLight', 'text' => 'earlystart-blue', 'border' => 'earlystart-blue'
+                            'bg' => 'chroma-blueLight', 'text' => 'chroma-blue', 'border' => 'chroma-blue'
                         );
                     ?>
                     <div class="location-card group">
@@ -176,12 +176,12 @@ class earlystart_Related_Programs
                             <?php endif; ?>
 
                             <div class="mt-auto grid grid-cols-2 gap-3">
-                                <a href="<?php echo get_permalink($loc); ?>" class="flex items-center justify-center py-4 rounded-2xl bg-brand-ink text-white text-[10px] font-bold uppercase tracking-widest hover:bg-earlystart-blueDark transition-colors">
-                                    <?php _e('View Campus', 'earlystart-excellence'); ?>
+                                <a href="<?php echo get_permalink($loc); ?>" class="flex items-center justify-center py-4 rounded-2xl bg-brand-ink text-white text-[10px] font-bold uppercase tracking-widest hover:bg-chroma-blueDark transition-colors">
+                                    <?php _e('View Campus', 'chroma-excellence'); ?>
                                 </a>
                                 <?php if ($phone): ?>
                                     <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>" class="flex items-center justify-center py-4 rounded-2xl border border-brand-ink/10 text-brand-ink text-[10px] font-bold uppercase tracking-widest hover:bg-brand-cream/50 transition-colors">
-                                        <i class="fa-solid fa-phone mr-1.5"></i> <?php _e('Call', 'earlystart-excellence'); ?>
+                                        <i class="fa-solid fa-phone mr-1.5"></i> <?php _e('Call', 'chroma-excellence'); ?>
                                     </a>
                                 <?php endif; ?>
                             </div>

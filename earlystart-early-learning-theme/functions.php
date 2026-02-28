@@ -164,6 +164,11 @@ require_once earlystart_THEME_DIR . '/inc/api/class-earlystart-ghl.php';
 require_once earlystart_THEME_DIR . '/inc/location-schema.php';
 require_once earlystart_THEME_DIR . '/inc/analytics-tracking.php';
 
+// Performance & Cleanup
+require_once earlystart_THEME_DIR . '/inc/performance-optimizations.php';
+require_once earlystart_THEME_DIR . '/inc/critical-css.php';
+require_once earlystart_THEME_DIR . '/inc/cleanup.php';
+
 // Page Meta Boxes
 if (is_admin()) {
     require_once earlystart_THEME_DIR . '/inc/about-page-meta.php';

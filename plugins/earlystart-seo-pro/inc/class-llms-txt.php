@@ -40,6 +40,24 @@ class earlystart_LLMs_Txt_Generator
             return;
         }
 
+        if (wp_doing_ajax()) {
+            $action = sanitize_text_field($_POST['action'] ?? '');
+            if ($action !== 'earlystart_save_llm_targeting') {
+                return;
+            }
+
+            if (!current_user_can('edit_posts')) {
+                return;
+            }
+
+            // Keep this callback independently secure, even if another callback validates first.
+            if (!check_ajax_referer('earlystart_seo_dashboard_nonce', 'nonce', false)) {
+                return;
+            }
+        } elseif (!current_user_can('manage_options')) {
+            return;
+        }
+
         $file_path = ABSPATH . 'llms.txt';
         $content = $this->generate_content();
 
@@ -266,7 +284,7 @@ class earlystart_LLMs_Txt_Generator
         }
 
         $output .= "## About Us\n\n";
-        $output .= "earlystart Early Learning Academy is a network of premium childcare and early education centers across Metro Atlanta.\n";
+        $output .= "Chroma Early Learning Academy is a network of premium childcare and early education centers across Metro Atlanta.\n";
         $output .= "We use the Prismpath™ curriculum, focusing on physical, emotional, social, academic, and creative development.\n";
 
         return $output;
