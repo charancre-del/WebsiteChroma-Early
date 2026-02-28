@@ -85,7 +85,16 @@ function earlystart_seed_core_content()
                 'home_locations_cta_label' => 'View All Locations',
                 'home_faq_heading' => 'Frequently <span class="italic text-rose-700">Asked</span> Questions',
                 'home_faq_subheading' => 'Common questions from parents',
-                'home_services_json' => json_encode($home_services), // Seed the services tabs
+                'home_services_json' => json_encode($home_services),
+                'home_faq_items_json' => json_encode(array(
+                    array('question' => 'What is ABA therapy?', 'answer' => 'Applied Behavior Analysis (ABA) is a scientifically validated approach to understanding behavior and how it is affected by the environment. At Chroma Early Start, we focus on assent-based, play-led ABA to build essential life skills safely and joyfully.'),
+                    array('question' => 'How many hours of ABA are recommended?', 'answer' => 'Recommendations vary based on each child\'s unique needs and the initial assessment, typically ranging from 10 to 40 hours per week. Our goal is to prescribe the exact amount needed for meaningful progress, not a universally rigid schedule.'),
+                    array('question' => 'What is parent involvement like?', 'answer' => 'Parents are our most critical partners. We provide regular parent training sessions, transparent data sharing, and open-door policies at all our clinics so you can seamlessly integrate strategies at home.'),
+                    array('question' => 'When should a child start Speech Therapy?', 'answer' => 'Early intervention is key. If you notice your child isn\'t meeting speech milestones, struggles to communicate their needs, or if their speech isn\'t easily understood by others, an initial evaluation is highly recommended.'),
+                    array('question' => 'Does Speech Therapy help with social skills?', 'answer' => 'Absolutely! Speech Therapy addresses social communication (pragmatics), helping children navigate conversations, read social cues, and build meaningful relationships with peers.'),
+                    array('question' => 'What is the difference between fine motor and sensory OT?', 'answer' => 'Fine motor OT focuses on the small muscles used for tasks like writing, buttoning, and using utensils. Sensory OT helps children process and respond appropriately to their environment (e.g., sound, touch, movement). We seamlessly integrate both as needed.'),
+                    array('question' => 'What is the age range for your OT services?', 'answer' => 'We provide specialized pediatric Occupational Therapy for children from 6 months up to 12 years of age, ensuring developmental support during their most critical years of growth.'),
+                )),
             )
         ),
         'about' => array(
@@ -208,6 +217,7 @@ function earlystart_seed_core_content()
                 'program_age_range' => '2y - 12y',
                 'program_color_scheme' => 'blue',
                 'program_hero_title' => 'Unlocking Every Voice.',
+                'program_hero_description' => 'Our specialized Speech Therapy program focuses on articulation, language comprehension, and social communication milestones to give your child the tools they need to connect.',
                 'program_prism_title' => 'Communication Core',
                 'program_prism_physical' => 20,
                 'program_prism_emotional' => 70,
@@ -224,6 +234,7 @@ function earlystart_seed_core_content()
                 'program_age_range' => '6mo - 12y',
                 'program_color_scheme' => 'yellow',
                 'program_hero_title' => 'Developing Independence.',
+                'program_hero_description' => 'We help children build fine motor skills, integrate sensory experiences, and develop self-regulation tools necessary for daily life and self-confident play.',
                 'program_prism_title' => 'Motor & Sensory Core',
                 'program_prism_physical' => 90,
                 'program_prism_emotional' => 60,
@@ -253,42 +264,6 @@ function earlystart_seed_core_content()
 
     // 5. Create Sample Locations
     $locations = array(
-        'johns-creek' => array(
-            'title' => 'Johns Creek',
-            'region' => 'North Metro',
-            'meta' => array(
-                'location_city' => 'Johns Creek',
-                'location_state' => 'GA',
-                'location_zip' => '30022',
-                'location_address' => '3580 Old Alabama Rd',
-                'location_phone' => '(770) 555-0101',
-                'location_email' => 'johnscreek@earlystarttherapy.com',
-                'location_hours' => '8am - 6pm',
-                'location_latitude' => '34.028',
-                'location_longitude' => '-84.198',
-                'location_tagline' => 'Serving Johns Creek families.',
-                'location_director_name' => 'Clinical Director',
-                'location_google_rating' => '5.0',
-            )
-        ),
-        'ellenwood' => array(
-            'title' => 'Ellenwood',
-            'region' => 'South Metro',
-            'meta' => array(
-                'location_city' => 'Ellenwood',
-                'location_state' => 'GA',
-                'location_zip' => '30264',
-                'location_address' => '2765 E Atlanta Rd',
-                'location_phone' => '(770) 555-0102',
-                'location_email' => 'ellenwood@earlystarttherapy.com',
-                'location_hours' => '8am - 6pm',
-                'location_latitude' => '33.600',
-                'location_longitude' => '-84.200',
-                'location_tagline' => 'Serving Ellenwood families.',
-                'location_director_name' => 'Clinical Director',
-                'location_google_rating' => '5.0',
-            )
-        ),
         'duluth' => array(
             'title' => 'Duluth',
             'region' => 'Gwinnett',
@@ -297,13 +272,12 @@ function earlystart_seed_core_content()
                 'location_state' => 'GA',
                 'location_zip' => '30096',
                 'location_address' => '3152 Creek Dr',
-                'location_phone' => '(770) 555-0103',
+                'location_phone' => '(470) 470-3436',
                 'location_email' => 'duluth@earlystarttherapy.com',
                 'location_hours' => '8am - 6pm',
-                'location_latitude' => '34.000',
-                'location_longitude' => '-84.140',
+                'location_latitude' => '33.9961',
+                'location_longitude' => '-84.1508',
                 'location_tagline' => 'Serving Duluth families.',
-                'location_director_name' => 'Clinical Director',
                 'location_google_rating' => '5.0',
             )
         ),
@@ -314,14 +288,30 @@ function earlystart_seed_core_content()
                 'location_city' => 'Marietta',
                 'location_state' => 'GA',
                 'location_zip' => '30064',
-                'location_address' => '2424 Powder Springs Rd',
-                'location_phone' => '(770) 555-0104',
+                'location_address' => '2424 Powder Springs Rd SW',
+                'location_phone' => '(470) 928-5659',
                 'location_email' => 'marietta@earlystarttherapy.com',
                 'location_hours' => '8am - 6pm',
-                'location_latitude' => '33.950',
-                'location_longitude' => '-84.550',
-                'location_tagline' => 'Serving Marietta families.',
-                'location_director_name' => 'Clinical Director',
+                'location_latitude' => '33.9056',
+                'location_longitude' => '-84.5985',
+                'location_tagline' => 'Serving West Cobb families.',
+                'location_google_rating' => '5.0',
+            )
+        ),
+        'johns-creek' => array(
+            'title' => 'Johns Creek',
+            'region' => 'North Metro',
+            'meta' => array(
+                'location_city' => 'Johns Creek',
+                'location_state' => 'GA',
+                'location_zip' => '30022',
+                'location_address' => '3580 Old Alabama Rd',
+                'location_phone' => '(470) 719-1154',
+                'location_email' => 'johnscreek@earlystarttherapy.com',
+                'location_hours' => '8am - 6pm',
+                'location_latitude' => '34.0289',
+                'location_longitude' => '-84.1986',
+                'location_tagline' => 'Serving North Fulton families.',
                 'location_google_rating' => '5.0',
             )
         ),
@@ -333,13 +323,29 @@ function earlystart_seed_core_content()
                 'location_state' => 'GA',
                 'location_zip' => '30290',
                 'location_address' => '291 Jenkins Rd',
-                'location_phone' => '(770) 555-0105',
+                'location_phone' => '(470) 450-1130',
                 'location_email' => 'tyrone@earlystarttherapy.com',
                 'location_hours' => '8am - 6pm',
-                'location_latitude' => '33.470',
-                'location_longitude' => '-84.600',
-                'location_tagline' => 'Serving Tyrone families.',
-                'location_director_name' => 'Clinical Director',
+                'location_latitude' => '33.4735',
+                'location_longitude' => '-84.5938',
+                'location_tagline' => 'Serving Fayette County families.',
+                'location_google_rating' => '5.0',
+            )
+        ),
+        'ellenwood' => array(
+            'title' => 'Ellenwood',
+            'region' => 'South Metro',
+            'meta' => array(
+                'location_city' => 'Ellenwood',
+                'location_state' => 'GA',
+                'location_zip' => '30294',
+                'location_address' => '2765 E Atlanta Rd',
+                'location_phone' => '(470) 684-6067',
+                'location_email' => 'ellenwood@earlystarttherapy.com',
+                'location_hours' => '8am - 6pm',
+                'location_latitude' => '33.6190',
+                'location_longitude' => '-84.2816',
+                'location_tagline' => 'Serving Henry County families.',
                 'location_google_rating' => '5.0',
             )
         ),
@@ -369,7 +375,55 @@ function earlystart_seed_core_content()
         }
     }
 
-    // 6. Seed Cities (GA Counties)
+    // 6. Create Sample Team Members
+    $team_members = array(
+        'charanjeev-singh' => array(
+            'title' => 'Charanjeev Singh',
+            'meta' => array(
+                'team_member_title' => 'Chief Executive Officer',
+            )
+        ),
+        'pam-rossman' => array(
+            'title' => 'Pam Rossman',
+            'meta' => array(
+                'team_member_title' => 'Chief Operating Officer',
+            )
+        ),
+        'jazmine-johnson' => array(
+            'title' => 'Jazmine Johnson',
+            'content' => 'Jazmine Johnson, BCBA, LBA, is a Licensed Board Certified Behavior Analyst specializing in autism services, early intervention, behavior reduction, and comprehensive caregiver and staff training. With extensive experience across home, clinic, and school settings, she is dedicated to delivering high-quality, evidence-based Applied Behavior Analysis (ABA) services that create meaningful and lasting change.',
+            'meta' => array(
+                'team_member_title' => 'BCBA, LBA',
+            )
+        ),
+        'tymichia-mcgill' => array(
+            'title' => 'Tymichia Mcgill',
+            'content' => '',
+            'meta' => array(
+                'team_member_title' => 'BCBA',
+            )
+        ),
+    );
+
+    foreach ($team_members as $slug => $data) {
+        $existing = get_page_by_path($slug, OBJECT, 'team_member');
+        if (!$existing) {
+            $post_id = wp_insert_post(array(
+                'post_title' => $data['title'],
+                'post_name' => $slug,
+                'post_content' => $data['content'] ?? '',
+                'post_status' => 'publish',
+                'post_type' => 'team_member',
+            ));
+            if (!is_wp_error($post_id) && !empty($data['meta'])) {
+                foreach ($data['meta'] as $key => $value) {
+                    update_post_meta($post_id, $key, $value);
+                }
+            }
+        }
+    }
+
+    // 7. Seed Cities (GA Counties)
     $ga_cities = array(
         'Fayette' => array('Brooks', 'Fayetteville', 'Peachtree City', 'Tyrone', 'Woolsey'),
         'Coweta' => array('Newnan', 'Senoia', 'Sharpsburg', 'Moreland', 'Grantville'),

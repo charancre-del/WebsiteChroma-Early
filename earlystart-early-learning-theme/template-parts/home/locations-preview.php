@@ -32,62 +32,68 @@ $grouped = $locations_data['grouped'] ?? array();
             </a>
         </div>
 
-        <!-- Map Section -->
-        <?php if (!empty($locations_data['map_points'])): ?>
-            <div class="mb-16 rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 h-[400px] lg:h-[500px] w-full relative z-10 fade-in-up"
-                data-chroma-map="true"
-                data-chroma-locations="<?php echo esc_attr(json_encode($locations_data['map_points'])); ?>">
-            </div>
-        <?php endif; ?>
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Map Section (Left, larger) -->
+            <?php if (!empty($locations_data['map_points'])): ?>
+                <div class="w-full lg:w-2/3">
+                    <div class="rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 h-[500px] lg:h-[700px] relative z-10 fade-in-up"
+                        data-chroma-map="true"
+                        data-chroma-locations="<?php echo esc_attr(json_encode($locations_data['map_points'])); ?>">
+                    </div>
+                </div>
+            <?php endif; ?>
 
-        <?php if (!empty($grouped)): ?>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <?php
-                $count = 0;
-                foreach ($grouped as $group):
-                    foreach ($group['locations'] as $location):
-                        $count++;
-
-                        $image = get_the_post_thumbnail_url($location['id'] ?? 0, 'large') ?: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp';
-                        ?>
-                        <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border border-stone-100 group fade-in-up"
-                            style="transition-delay: <?php echo min($count * 100, 1000); ?>ms">
-                            <div class="relative h-64 overflow-hidden">
-                                <?php echo earlystart_responsive_unsplash(
-                                    $image,
-                                    $location['title'],
-                                    'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
-                                    '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
-                                ); ?>
-                                <div
-                                    class="absolute top-4 right-4 bg-rose-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                                    <?php _e('Clinics Open', 'earlystart-early-learning'); ?>
-                                </div>
-                            </div>
-                            <div class="p-8">
-                                <h3 class="text-2xl font-bold text-stone-900 mb-2"><?php echo esc_html($location['title']); ?></h3>
-                                <div class="space-y-3 mb-6">
-                                    <div class="flex items-center text-stone-700 text-sm font-medium">
-                                        <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-rose-700"></i>
-                                        <?php echo esc_html($location['address']); ?>
-                                    </div>
-                                    <div class="flex items-center text-stone-700 text-sm font-medium">
-                                        <i data-lucide="phone" class="w-4 h-4 mr-2 text-rose-700"></i>
-                                        <?php echo esc_html($location['phone']); ?>
-                                    </div>
-                                </div>
-                                <a href="<?php echo esc_url($location['url']); ?>"
-                                    class="flex items-center justify-center w-full bg-stone-50 group-hover:bg-rose-600 group-hover:text-white text-stone-900 font-bold py-4 rounded-2xl transition-all">
-                                    <?php _e('View Center', 'earlystart-early-learning'); ?>
-                                    <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
-                                </a>
-                            </div>
-                        </div>
+            <!-- Locations List Section (Right, scrollable) -->
+            <div class="w-full <?php echo !empty($locations_data['map_points']) ? 'lg:w-1/3' : ''; ?>">
+                <?php if (!empty($grouped)): ?>
+                    <div class="flex flex-col gap-4 overflow-y-auto pr-2" style="max-height: 700px;">
                         <?php
-                    endforeach;
-                endforeach;
-                ?>
+                        $count = 0;
+                        foreach ($grouped as $group):
+                            // Optional: Could output $group['term_name'] here if you wanted region headers
+                            foreach ($group['locations'] as $location):
+                                $count++;
+                                $image = get_the_post_thumbnail_url($location['id'] ?? 0, 'thumbnail') ?: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&fm=webp?w=200&fit=crop&q=80&fm=webp';
+                                ?>
+                                <a href="<?php echo esc_url($location['url']); ?>" class="block group">
+                                    <div class="bg-white rounded-3xl p-4 shadow-md border border-stone-100 hover:border-rose-300 hover:shadow-xl transition-all flex items-center gap-4 fade-in-up"
+                                        style="transition-delay: <?php echo min($count * 50, 500); ?>ms"
+                                        data-lat="<?php echo esc_attr($location['lat'] ?? ''); ?>"
+                                        data-lng="<?php echo esc_attr($location['lng'] ?? ''); ?>">
+
+                                        <!-- Small Thumbnail -->
+                                        <div class="w-20 h-20 rounded-2xl overflow-hidden shrink-0">
+                                            <img src="<?php echo esc_url($image); ?>"
+                                                alt="<?php echo esc_attr($location['title']); ?>"
+                                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                        </div>
+
+                                        <!-- Details -->
+                                        <div class="flex-grow">
+                                            <h3
+                                                class="text-lg font-bold text-stone-900 group-hover:text-rose-600 transition-colors">
+                                                <?php echo esc_html($location['title']); ?></h3>
+                                            <?php if (!empty($location['address'])): ?>
+                                                <div class="flex items-start text-stone-600 text-xs mt-1">
+                                                    <i data-lucide="map-pin" class="w-3 h-3 mr-1 mt-0.5 text-rose-500 shrink-0"></i>
+                                                    <span class="leading-tight"><?php echo esc_html($location['address']); ?></span>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <!-- Arrow -->
+                                        <div class="shrink-0 text-stone-300 group-hover:text-rose-600 transition-colors">
+                                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <?php
+                            endforeach;
+                        endforeach;
+                        ?>
+                    </div>
+                <?php endif; ?>
             </div>
-        <?php endif; ?>
+        </div>
     </div>
 </section>

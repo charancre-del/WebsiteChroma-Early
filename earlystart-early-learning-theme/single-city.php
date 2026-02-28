@@ -37,7 +37,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                         <?php printf(__('Top-Rated Clinical Care in <span class="text-rose-700">%s.</span>', 'earlystart-early-learning'), esc_html($city)); ?>
                     </h1>
                     <p class="text-xl text-stone-700 leading-relaxed mb-10 max-w-xl">
-                        <?php printf(__('Are you looking for specialized pediatric therapy near you? Discover Early Start’s clinical excellence in the %s area, featuring the PrismaPath™ model.', 'earlystart-early-learning'), esc_html($city)); ?>
+                        <?php printf(__('Are you looking for specialized pediatric therapy near you? Discover Early Start’s clinical excellence in the %s area, featuring the Chroma Care Model.', 'earlystart-early-learning'), esc_html($city)); ?>
                     </p>
 
                     <a href="#locations"

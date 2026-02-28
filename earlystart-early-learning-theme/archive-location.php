@@ -45,7 +45,7 @@ $locations_query = earlystart_cached_query(
 			</h1>
 
 			<p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed mb-12 fade-in-up">
-				<?php _e('Explore our state-of-the-art campuses across Georgia. Each location features premium clinical environments, PrismaPath™ curriculum, and expert care.', 'earlystart-early-learning'); ?>
+				<?php _e('Explore our state-of-the-art campuses across Georgia. Each location features premium clinical environments, the Chroma Care Model, and expert care.', 'earlystart-early-learning'); ?>
 			</p>
 
 			<!-- Filter Bar -->

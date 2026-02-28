@@ -160,7 +160,9 @@ require_once earlystart_THEME_DIR . '/inc/cpt-careers.php';
 require_once earlystart_THEME_DIR . '/inc/class-amp-blog.php';
 
 // API Handlers
-
+require_once earlystart_THEME_DIR . '/inc/api/class-earlystart-ghl.php';
+require_once earlystart_THEME_DIR . '/inc/location-schema.php';
+require_once earlystart_THEME_DIR . '/inc/analytics-tracking.php';
 
 // Page Meta Boxes
 if (is_admin()) {
@@ -471,7 +473,7 @@ function earlystart_dequeue_leadconnector_plugin()
     wp_deregister_script('tailwindcss');
     wp_dequeue_style('tailwindcss');
 }
-add_action('wp_enqueue_scripts', 'earlystart_dequeue_leadconnector_plugin', 9999);
+// add_action('wp_enqueue_scripts', 'earlystart_dequeue_leadconnector_plugin', 9999); // Re-enabled for Launch
 
 
 

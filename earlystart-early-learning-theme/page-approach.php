@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Our Approach
- * Displays the PrismaPath™ clinical model and therapeutic philosophy.
+ * Displays the Chroma Care Model and therapeutic philosophy.
  *
  * @package EarlyStart_Early_Start
  */
@@ -32,7 +32,7 @@ while (have_posts()):
                             </span>
                         </h1>
                         <p class="text-xl text-stone-700 leading-relaxed mb-10">
-                            <?php _e('At Early Start, we use PrismaPath™—our signature assent-based ABA model. We prioritize the child\'s happiness and willingness to participate above all else.', 'earlystart-early-learning'); ?>
+                            <?php _e('At Early Start, we use the Chroma Care Model—our signature assent-based ABA model. We prioritize the child\'s happiness and willingness to participate above all else.', 'earlystart-early-learning'); ?>
                         </p>
                         <div class="flex flex-wrap gap-4">
                             <a href="#model"
@@ -45,7 +45,7 @@ while (have_posts()):
                         <div
                             class="aspect-square rounded-[3rem] bg-stone-50 overflow-hidden shadow-2xl border-8 border-white p-4">
                             <img src="https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?q=80&w=1000&auto=format&fit=crop&q=80&fm=webp"
-                                class="w-full h-full object-cover rounded-[2rem]" alt="PrismaPath">
+                                class="w-full h-full object-cover rounded-[2rem]" alt="Chroma Care Model">
                         </div>
                         <div class="absolute -bottom-8 -right-8 w-48 h-48 bg-amber-50 rounded-full blur-3xl -z-10"></div>
                     </div>
@@ -76,36 +76,40 @@ while (have_posts()):
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-rose-500 mb-2">1:1</span>
                         <p class="text-stone-700 text-sm font-bold uppercase tracking-widest">
-                            <?php _e('Intensive Ratio', 'earlystart-early-learning'); ?></p>
+                            <?php _e('Intensive Ratio', 'earlystart-early-learning'); ?>
+                        </p>
                     </div>
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-orange-500 mb-2">100%</span>
                         <p class="text-stone-700 text-sm font-bold uppercase tracking-widest">
-                            <?php _e('Assent-Based', 'earlystart-early-learning'); ?></p>
+                            <?php _e('Assent-Based', 'earlystart-early-learning'); ?>
+                        </p>
                     </div>
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-amber-500 mb-2">Daily</span>
                         <p class="text-stone-700 text-sm font-bold uppercase tracking-widest">
-                            <?php _e('Data Insights', 'earlystart-early-learning'); ?></p>
+                            <?php _e('Data Insights', 'earlystart-early-learning'); ?>
+                        </p>
                     </div>
                     <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
                         <span class="block text-4xl font-bold text-rose-500 mb-2">19+</span>
                         <p class="text-stone-700 text-sm font-bold uppercase tracking-widest">
-                            <?php _e('Care Hubs', 'earlystart-early-learning'); ?></p>
+                            <?php _e('Care Hubs', 'earlystart-early-learning'); ?>
+                        </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- The PrismaPath Model -->
+        <!-- The Chroma Care Model -->
         <section id="model" class="py-24 bg-stone-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-20 fade-in-up">
                     <h2 class="text-4xl font-bold text-stone-900 mb-6">
-                        <?php _e('What is PrismaPath™?', 'earlystart-early-learning'); ?>
+                        <?php _e('What is the Chroma Care Model?', 'earlystart-early-learning'); ?>
                     </h2>
                     <p class="text-xl text-stone-700">
-                        <?php _e('PrismaPath™ is more than a curriculum; it\'s a philosophy of care that integrates modern ABA with developmental milestones and emotional security.', 'earlystart-early-learning'); ?>
+                        <?php _e('The Chroma Care Model is more than a curriculum; it\'s a philosophy of care that integrates modern ABA with developmental milestones and emotional security.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
 
@@ -232,7 +236,7 @@ while (have_posts()):
                     </div>
                     <div class="bg-rose-50 p-10 rounded-[2rem] border border-rose-100 fade-in-up">
                         <h4 class="text-rose-700 font-bold uppercase tracking-widest text-xs mb-6">
-                            <?php _e('PrismaPath™ Model', 'earlystart-early-learning'); ?>
+                            <?php _e('Chroma Care Model', 'earlystart-early-learning'); ?>
                         </h4>
                         <ul class="space-y-4 text-stone-700">
                             <li class="flex items-start"><i data-lucide="check-circle-2"
@@ -261,7 +265,7 @@ while (have_posts()):
         <section class="py-24 bg-stone-900 text-white text-center">
             <div class="max-w-4xl mx-auto px-4 fade-in-up">
                 <h2 class="text-4xl font-bold mb-6">
-                    <?php _e('See the PrismaPath™ in action.', 'earlystart-early-learning'); ?>
+                    <?php _e('See the Chroma Care Model in action.', 'earlystart-early-learning'); ?>
                 </h2>
                 <p class="text-xl text-stone-300 mb-10 leading-relaxed">
                     <?php _e('Schedule a personal tour to see how our clinicians engage with children and how our clinics are designed for discovery.', 'earlystart-early-learning'); ?>

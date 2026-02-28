@@ -20,10 +20,9 @@ get_header();
 <?php get_template_part('template-parts/home/services-tabs'); ?>
 
 <!-- Why Early Start (Bento Grid) -->
-<?php get_template_part('template-parts/home/prismpath-expertise'); ?>
+<?php get_template_part('template-parts/home/chroma-care-model'); ?>
 
-<!-- Clinical Team Section -->
-<?php get_template_part('template-parts/home/clinical-team'); ?>
+<!-- Clinical Team Section (Removed for Launch) -->
 
 <!-- FAQ Section -->
 <?php get_template_part('template-parts/home/faq'); ?>

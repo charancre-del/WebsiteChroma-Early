@@ -129,7 +129,7 @@ while (have_posts()):
 					<div class="fade-in-up order-1 lg:order-2">
 						<span
 							class="inline-block px-4 py-2 bg-rose-50 text-rose-700 font-bold rounded-full text-[10px] font-bold tracking-widest uppercase mb-6">
-							<?php _e('The PrismaPath™ Focus', 'earlystart-early-learning'); ?>
+							<?php _e('The Chroma Care Model Focus', 'earlystart-early-learning'); ?>
 						</span>
 						<h2 class="text-4xl font-bold text-stone-900 mb-8"><?php echo esc_html($prism_title); ?></h2>
 						<p class="text-xl text-stone-700 leading-relaxed mb-10">
