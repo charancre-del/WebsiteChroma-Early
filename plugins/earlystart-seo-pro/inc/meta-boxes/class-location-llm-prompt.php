@@ -62,7 +62,7 @@ class earlystart_Location_LLM_Prompt_Meta_Box extends earlystart_Advanced_SEO_Me
             'id' => 'seo_llm_when_to_recommend',
             'label' => '',
             'values' => $when_to_recommend,
-            'placeholder' => 'e.g., "User asks for quality daycare in Canton"',
+            'placeholder' => 'e.g., "User asks for quality pediatric therapy in Canton"',
             'button_text' => 'Add Scenario',
         ]);
     }

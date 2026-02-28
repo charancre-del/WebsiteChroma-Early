@@ -62,12 +62,12 @@ class earlystart_Keyword_Linker
             $city = get_post_meta($loc->ID, 'location_city', true);
             if ($city) {
                 $keywords[] = [
-                    'keyword' => strtolower($city . ' daycare'),
+                    'keyword' => strtolower($city . ' pediatric therapy'),
                     'url' => get_permalink($loc),
                     'max' => 1
                 ];
                 $keywords[] = [
-                    'keyword' => strtolower('daycare in ' . $city),
+                    'keyword' => strtolower('pediatric therapy in ' . $city),
                     'url' => get_permalink($loc),
                     'max' => 1
                 ];

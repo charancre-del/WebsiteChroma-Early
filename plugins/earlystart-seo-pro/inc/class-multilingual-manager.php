@@ -37,42 +37,42 @@ class earlystart_Multilingual_Manager
     {
         add_action('init', [$this, 'setup_rewrites']);
         add_filter('query_vars', [$this, 'add_query_vars']);
-        
+
         // URL Filters
         add_filter('home_url', [$this, 'filter_home_url'], 10, 2);
         add_filter('page_link', [$this, 'filter_permalink'], 10, 2);
         add_filter('post_link', [$this, 'filter_permalink'], 10, 2);
         add_filter('post_type_link', [$this, 'filter_permalink'], 10, 2);
         add_filter('term_link', [$this, 'filter_term_link'], 10, 3);
-        
+
         // Add body class for language
         add_filter('body_class', [$this, 'add_body_class']);
-        
+
         // Language Attributes
         add_filter('language_attributes', [$this, 'filter_language_attributes']);
 
         // Hreflang Tags
         add_action('wp_head', [$this, 'output_hreflang_tags'], 1);
-        
+
         // Frontend Content Swapping (Option A with fallback banner)
         add_filter('the_title', [$this, 'swap_title'], 10, 2);
         add_filter('the_content', [$this, 'swap_content'], 10);
         add_filter('the_excerpt', [$this, 'swap_excerpt'], 10);
-        
+
         // SEO Metadata Localization
         add_filter('pre_get_document_title', [$this, 'localize_seo_title'], 30);
         add_action('wp_head', [$this, 'localize_meta_description'], 1); // Run early to potentially preempt other meta tags
-        
+
         // Internal Link Rewriting
         add_filter('the_content', [$this, 'rewrite_content_urls'], 20);
         add_filter('nav_menu_link_attributes', [$this, 'filter_nav_menu_link'], 10, 4);
-        
+
         // Canonical URL Correction
         add_filter('get_canonical_url', [$this, 'filter_canonical_url'], 10, 2);
-        
+
         // Fallback Banner CSS
         add_action('wp_head', [$this, 'output_fallback_css']);
-        
+
         // Browser Language Detection (Auto-redirect to /es/)
         // add_action('template_redirect', [$this, 'detect_browser_language']);
 
@@ -96,7 +96,7 @@ class earlystart_Multilingual_Manager
         }
 
         $alternates = self::get_alternates($post_id);
-        
+
         if (empty($alternates['en']) || empty($alternates['es'])) {
             return;
         }
@@ -120,7 +120,7 @@ class earlystart_Multilingual_Manager
         // Custom Post Type Archives
         add_rewrite_rule('^es/locations/?$', 'index.php?post_type=location&earlystart_lang=es', 'top');
         add_rewrite_rule('^es/programs/?$', 'index.php?post_type=program&earlystart_lang=es', 'top');
-        
+
         // Single Custom Post Types
         add_rewrite_rule('^es/locations/(.+?)/?$', 'index.php?location=$matches[1]&earlystart_lang=es', 'top');
         add_rewrite_rule('^es/programs/(.+?)/?$', 'index.php?program=$matches[1]&earlystart_lang=es', 'top');
@@ -146,7 +146,7 @@ class earlystart_Multilingual_Manager
     public static function is_spanish()
     {
         // PURE PHP IMPLEMENTATION (No WP Functions to avoid Recursion/Crash)
-        
+
         // 1. Check Query Var (Safe if $_GET is accessible)
         if (isset($_GET['earlystart_lang']) && $_GET['earlystart_lang'] === 'es') {
             return true;
@@ -156,11 +156,11 @@ class earlystart_Multilingual_Manager
         if (defined('EARLYSTART_CURRENT_LANG') && EARLYSTART_CURRENT_LANG === 'es') {
             return true;
         }
-        
+
         // 3. Robust URL Check (Pure PHP)
         if (isset($_SERVER['REQUEST_URI'])) {
             $uri = $_SERVER['REQUEST_URI'];
-            
+
             // Check for /es/ segment or trailing /es
             // Matches: /es/, /es, /subdir/es/, /subdir/es
             if (strpos($uri, '/es/') !== false || substr($uri, -3) === '/es') {
@@ -187,10 +187,10 @@ class earlystart_Multilingual_Manager
     {
         if (self::is_spanish() && !is_admin()) {
             // Prevent infinite loop by using site_url/get_option instead of home_url()
-            
+
             // Clean paths
             $path = ltrim($path, '/');
-            
+
             // Check if URL or Path already contains /es/
             if (strpos($url, '/es/') !== false || strpos($path, 'es/') === 0 || $path === 'es') {
                 return $url;
@@ -198,7 +198,7 @@ class earlystart_Multilingual_Manager
 
             // Construct safe base
             $home = rtrim(get_option('home'), '/');
-            
+
             return $home . '/es/' . $path;
         }
         return $url;
@@ -239,22 +239,24 @@ class earlystart_Multilingual_Manager
         }
         return $url;
     }
-    
+
     /**
      * Add body class
      */
-    public function add_body_class($classes) {
+    public function add_body_class($classes)
+    {
         if (self::is_spanish()) {
             $classes[] = 'lang-es';
             $classes[] = 'translate-spanish';
         }
         return $classes;
     }
-    
+
     /**
      * Filter language attributes (<html> tag)
      */
-    public function filter_language_attributes($output) {
+    public function filter_language_attributes($output)
+    {
         if (self::is_spanish()) {
             return 'lang="es-US"';
         }
@@ -299,15 +301,16 @@ class earlystart_Multilingual_Manager
         $base_home = rtrim(get_option('home'), '/');
         $en_url = str_replace($base_home . '/es/', $base_home . '/', $en_url);
         if (substr($en_url, -3) === '/es') {
-             $en_url = substr($en_url, 0, -3);
+            $en_url = substr($en_url, 0, -3);
         }
 
         // 3. Handle Manual Overrides for singular posts
         if ($post_id || is_singular()) {
             $id = $post_id ?: get_the_ID();
             $manual_en = get_post_meta($id, 'alternate_url_en', true);
-            if ($manual_en) $en_url = $manual_en;
-            
+            if ($manual_en)
+                $en_url = $manual_en;
+
             $manual_es = get_post_meta($id, 'alternate_url_es', true);
             if ($manual_es) {
                 return ['en' => $en_url, 'es' => $manual_es];
@@ -317,11 +320,11 @@ class earlystart_Multilingual_Manager
         // 4. Construct Spanish URL
         $path = str_replace($base_home, '', $en_url);
         $path = ltrim($path, '/');
-        
+
         $es_url = $base_home . '/es/' . $path;
 
         return [
-            'en' => $en_url, 
+            'en' => $en_url,
             'es' => $es_url
         ];
     }
@@ -331,10 +334,13 @@ class earlystart_Multilingual_Manager
      */
     public function swap_title($title, $post_id = null)
     {
-        if (!self::is_spanish() || is_admin()) return $title;
-        if (!$post_id) $post_id = get_the_ID();
-        if (!$post_id) return $title;
-        
+        if (!self::is_spanish() || is_admin())
+            return $title;
+        if (!$post_id)
+            $post_id = get_the_ID();
+        if (!$post_id)
+            return $title;
+
         $es_title = get_post_meta($post_id, '_earlystart_es_title', true);
         return $es_title ?: $title;
     }
@@ -344,18 +350,20 @@ class earlystart_Multilingual_Manager
      */
     public function swap_content($content)
     {
-        if (!self::is_spanish() || is_admin()) return $content;
-        
+        if (!self::is_spanish() || is_admin())
+            return $content;
+
         $post_id = get_the_ID();
-        if (!$post_id) return $content;
-        
+        if (!$post_id)
+            return $content;
+
         $es_content = get_post_meta($post_id, '_earlystart_es_content', true);
-        
+
         if (empty($es_content)) {
             // Option A: Just show English content (Silent Fallback)
             return $content;
         }
-        
+
         return $es_content;
     }
 
@@ -364,11 +372,13 @@ class earlystart_Multilingual_Manager
      */
     public function swap_excerpt($excerpt)
     {
-        if (!self::is_spanish() || is_admin()) return $excerpt;
-        
+        if (!self::is_spanish() || is_admin())
+            return $excerpt;
+
         $post_id = get_the_ID();
-        if (!$post_id) return $excerpt;
-        
+        if (!$post_id)
+            return $excerpt;
+
         $es_excerpt = get_post_meta($post_id, '_earlystart_es_excerpt', true);
         return $es_excerpt ?: $excerpt;
     }
@@ -378,14 +388,15 @@ class earlystart_Multilingual_Manager
      */
     public function rewrite_content_urls($content)
     {
-        if (!self::is_spanish() || is_admin()) return $content;
-        
+        if (!self::is_spanish() || is_admin())
+            return $content;
+
         $site_url = preg_quote(rtrim(get_option('home'), '/'), '/');
-        
+
         // Match href="https://site.com/path" but not href="https://site.com/es/path"
         $pattern = '/href=["\'](' . $site_url . ')(?!\/es\/)([^"\']*)["\']/i';
         $replacement = 'href="$1/es$2"';
-        
+
         return preg_replace($pattern, $replacement, $content);
     }
 
@@ -394,19 +405,20 @@ class earlystart_Multilingual_Manager
      */
     public function filter_nav_menu_link($atts, $item, $args, $depth)
     {
-        if (!self::is_spanish() || is_admin()) return $atts;
-        
+        if (!self::is_spanish() || is_admin())
+            return $atts;
+
         if (!empty($atts['href'])) {
             $href = $atts['href'];
             $site_url = rtrim(get_option('home'), '/');
-            
+
             // Only modify internal links that don't already have /es/
             if (strpos($href, $site_url) === 0 && strpos($href, $site_url . '/es/') !== 0) {
                 $path = substr($href, strlen($site_url));
                 $atts['href'] = $site_url . '/es' . $path;
             }
         }
-        
+
         return $atts;
     }
 
@@ -415,15 +427,16 @@ class earlystart_Multilingual_Manager
      */
     public function filter_canonical_url($canonical_url, $post)
     {
-        if (!self::is_spanish()) return $canonical_url;
-        
+        if (!self::is_spanish())
+            return $canonical_url;
+
         // Ensure canonical points to /es/ version
         $site_url = rtrim(get_option('home'), '/');
         if (strpos($canonical_url, $site_url . '/es/') !== 0) {
             $path = substr($canonical_url, strlen($site_url));
             return $site_url . '/es' . $path;
         }
-        
+
         return $canonical_url;
     }
 
@@ -432,8 +445,9 @@ class earlystart_Multilingual_Manager
      */
     public function output_fallback_css()
     {
-        if (!self::is_spanish()) return;
-        
+        if (!self::is_spanish())
+            return;
+
         echo '<style>
         .chroma-lang-fallback-notice {
             background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
@@ -463,35 +477,38 @@ class earlystart_Multilingual_Manager
     public function detect_browser_language()
     {
         // Skip if already on Spanish or in admin
-        if (self::is_spanish() || is_admin()) return;
-        
+        if (self::is_spanish() || is_admin())
+            return;
+
         // Skip if user has opted out
-        if (isset($_COOKIE['earlystart_lang_pref'])) return;
-        
+        if (isset($_COOKIE['earlystart_lang_pref']))
+            return;
+
         // Skip bots
-        if (defined('DOING_CRON') || defined('REST_REQUEST')) return;
-        
+        if (defined('DOING_CRON') || defined('REST_REQUEST'))
+            return;
+
         // Check Accept-Language header
         $accept_lang = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
-        
+
         // Parse language preferences
         $languages = [];
         if ($accept_lang) {
             preg_match_all('/([a-z]{2})(?:-[a-zA-Z]+)?(?:;q=([0-9.]+))?/', strtolower($accept_lang), $matches, PREG_SET_ORDER);
             foreach ($matches as $match) {
                 $lang = $match[1];
-                $quality = isset($match[2]) ? (float)$match[2] : 1.0;
+                $quality = isset($match[2]) ? (float) $match[2] : 1.0;
                 $languages[$lang] = $quality;
             }
             arsort($languages);
         }
-        
+
         // Check if Spanish is preferred language
         $preferred = array_keys($languages);
         if (!empty($preferred) && $preferred[0] === 'es') {
             // Set cookie to remember we've redirected (24 hour expiry)
             setcookie('earlystart_lang_pref', 'auto', time() + DAY_IN_SECONDS, '/');
-            
+
             // Get Spanish URL
             $alternates = self::get_alternates(get_the_ID());
             if (!empty($alternates['es'])) {
@@ -503,30 +520,38 @@ class earlystart_Multilingual_Manager
     /**
      * Localize SEO Title
      */
-    public function localize_seo_title($title) {
-        if (!self::is_spanish()) return $title;
-        
+    public function localize_seo_title($title)
+    {
+        if (!self::is_spanish())
+            return $title;
+
         $post_id = get_the_ID();
-        if (!$post_id) return $title;
-        
+        if (!$post_id)
+            return $title;
+
         $es_seo_title = get_post_meta($post_id, '_earlystart_es_seo_title', true);
-        if ($es_seo_title) return $es_seo_title;
-        
+        if ($es_seo_title)
+            return $es_seo_title;
+
         $es_title = get_post_meta($post_id, '_earlystart_es_title', true);
-        if ($es_title) return $es_title . ' | Chroma';
-        
+        if ($es_title)
+            return $es_title . ' | Chroma';
+
         return $title;
     }
 
     /**
      * Localize Meta Description
      */
-    public function localize_meta_description() {
-        if (!self::is_spanish()) return;
-        
+    public function localize_meta_description()
+    {
+        if (!self::is_spanish())
+            return;
+
         $post_id = get_the_ID();
-        if (!$post_id) return;
-        
+        if (!$post_id)
+            return;
+
         $es_meta_desc = get_post_meta($post_id, '_earlystart_es_meta_description', true);
         if ($es_meta_desc) {
             // Remove the default meta description if it exists
@@ -538,7 +563,8 @@ class earlystart_Multilingual_Manager
     /**
      * Filter gettext to handle dynamic translation of common UI strings
      */
-    public function dynamic_translation_filter($translated, $text, $domain) {
+    public function dynamic_translation_filter($translated, $text, $domain)
+    {
         if ($domain !== 'chroma-excellence' || !self::is_spanish()) {
             return $translated;
         }
@@ -567,7 +593,7 @@ class earlystart_Multilingual_Manager
                 'Academy' => 'Academia',
                 'Ready to enroll in <strong>%s</strong>?' => '¿Listo para inscribirse en <strong>%s</strong>?',
                 'Ready to visit our <strong>%s</strong> campus?' => '¿Listo para visitar nuestro campus de <strong>%s</strong>?',
-                
+
                 // About Page
                 'Established 2015' => 'Establecido en 2015',
                 'More than a school. <span class="text-chroma-yellow italic">A second home.</span>' => 'Más que una escuela. <span class="text-chroma-yellow italic">Un segundo hogar.</span>',
@@ -602,7 +628,7 @@ class earlystart_Multilingual_Manager
                 'Find a School' => 'Buscar una Escuela',
                 'Read Bio' => 'Leer Biografía',
                 'Read bio for' => 'Leer biografía de',
-                
+
                 // Parents Page
                 'Parent Dashboard' => 'Panel de Padres',
                 'Partners in your child\'s journey.' => 'Socios en el viaje de su hijo.',
@@ -655,7 +681,7 @@ class earlystart_Multilingual_Manager
                 'Moments of Joy' => 'Momentos de Alegría',
                 'Loading content...' => 'Cargando contenido...',
                 'Open in new tab' => 'Abrir en nueva pestaña',
-                
+
                 // Contact Page
                 'Get in Touch' => 'Ponte en Contacto',
                 'How can we support your family today?' => '¿Cómo podemos apoyar a tu familia hoy?',
@@ -684,7 +710,7 @@ class earlystart_Multilingual_Manager
                 'How do I schedule a tour?' => '¿Cómo programo un recorrido?',
                 'Are meals included in tuition?' => '¿Están incluidas las comidas en la matrícula?',
                 'How do I check my position on a waitlist?' => '¿Cómo verifico mi posición en una lista de espera?',
-                
+
                 // Programs
                 'A Rhythm, Not a Routine' => 'Un Ritmo, No una Rutina',
                 'View Curriculum' => 'Ver Currículo',
@@ -701,14 +727,14 @@ class earlystart_Multilingual_Manager
                 'Social' => 'Social',
                 'Academic' => 'Académico',
                 'Creative' => 'Creativo',
-                
+
                 // City Pages
                 'Serving %s & %s County' => 'Sirviendo a %s y el Condado de %s',
-                'The Best Daycare in <span class="italic text-chroma-blue">%s, %s.</span>' => 'La Mejor Guardería en <span class="italic text-chroma-blue">%s, %s.</span>',
-                'Are you looking for "daycare near me"? Discover the highest-rated early learning centers in the %s area, featuring the Prismpath™ curriculum and GA Pre-K.' => '¿Está buscando "guardería cerca de mí"? Descubra los centros de aprendizaje temprano mejor calificados en el área de %s, con el plan de estudios Prismpath™ y GA Pre-K.',
+                'The Best Pediatric Therapy in <span class="italic text-chroma-blue">%s, %s.</span>' => 'La Mejor Terapia Pediátrica en <span class="italic text-chroma-blue">%s, %s.</span>',
+                'Are you looking for "pediatric therapy near me"? Discover the highest-rated early intervention centers in the %s area.' => '¿Está buscando "terapia pediátrica cerca de mí"? Descubra los centros de intervención temprana mejor calificados en el área de %s.',
                 'See Locations in %s' => 'Ver Ubicaciones en %s',
                 'Early Education and <br> Care in <span class="text-chroma-blue">%s, GA</span>' => 'Educación Temprana y <br> Cuidado en <span class="text-chroma-blue">%s, GA</span>',
-                'Our school is more than a daycare. Through purposeful play and nurturing guidance, we help lay the foundation for a lifelong love of learning.' => 'Nuestra escuela es más que una guardería. A través del juego con propósito y la guía cariñosa, ayudamos a sentar las bases para un amor por el aprendizaje de por vida.',
+                'Our center is more than just therapy. Through purposeful play and nurturing guidance, we help lay the foundation for a lifelong love of learning.' => 'Nuestro centro es más que solo terapia. A través del juego con propósito y la guía cariñosa, ayudamos a sentar las bases para un amor por el aprendizaje de por vida.',
                 'Conveniently located near major highways and down the road from local landmarks and top-rated elementary schools, we are the convenient choice for %s working parents. Come by and see Prismpath™ in action at one of our nearby campuses.' => 'Convenientemente ubicado cerca de las principales autopistas y cerca de puntos de referencia locales y escuelas primarias de primera categoría, somos la opción conveniente para los padres trabajadores de %s. Ven a ver Prismpath™ en acción en uno de nuestros campus cercanos.',
                 'Chroma Locations Serving %s' => 'Ubicaciones de Chroma que Sirven a %s',
                 'Select the campus closest to your home or work.' => 'Seleccione el campus más cercano a su hogar o trabajo.',
@@ -739,7 +765,7 @@ class earlystart_Multilingual_Manager
                 'View All Locations →' => 'Ver Todas las Ubicaciones →',
                 'Contact Us' => 'Contáctanos',
                 'Search by ZIP code or city name...' => 'Buscar por código postal o nombre de la ciudad...',
-                
+
                 // Program Archive
                 'Ages 6 weeks to 12 years' => 'Edades de 6 semanas a 12 años',
                 'Programs and Curriculum that grows <span class="text-chroma-red italic">with them.</span>' => 'Programas y Currículo que crece <span class="text-chroma-red italic">con ellos.</span>',
@@ -754,7 +780,7 @@ class earlystart_Multilingual_Manager
                 'Academic Logic' => 'Lógica Académica',
                 'Creative Expression' => 'Expresión Creativa',
                 'Our Methodology' => 'Nuestra Metodología',
-                'More than just daycare.' => 'Más que una simple guardería.',
+                'More than just pediatric therapy.' => 'Más que solo terapia pediátrica.',
                 'We believe that education isn\'t just about filling a bucket, but lighting a fire. Our curriculum ensures that by the time your child graduates from Chroma, they are not just "school ready"—they are life ready.' => 'Creemos que la educación no se trata solo de llenar un cubo, sino de encender un fuego. Nuestro currículo asegura que para cuando su hijo se gradúe de Chroma, no solo esté "listo para la escuela", sino listo para la vida.',
                 'Cognitive Growth' => 'Crecimiento Cognitivo',
                 'Critical thinking & problem solving.' => 'Pensamiento crítico y resolución de problemas.',
@@ -763,7 +789,7 @@ class earlystart_Multilingual_Manager
                 'Ready to find your fit?' => '¿Listo para encontrar su lugar?',
                 'Every campus offers tours so you can meet the teachers, see the classrooms, and experience the Chroma culture firsthand.' => 'Cada campus ofrece recorridos para que pueda conocer a los maestros, ver las aulas y experimentar la cultura Chroma de primera mano.',
                 'Find a Location' => 'Buscar una Ubicación',
-                
+
                 // Stories / Blog
                 'The Blog' => 'El Blog',
                 'Chroma Stories' => 'Historias Chroma',
@@ -779,7 +805,7 @@ class earlystart_Multilingual_Manager
                 'More from Chroma' => 'Más de Chroma',
                 'Book Tour' => 'Agendar Recorrido',
                 'Uncategorized' => 'Sin Categoría',
-                
+
                 // Specialized Pages (Careers, Employers, Acquisitions)
                 'Apply Now' => 'Aplicar Ahora',
                 'No current openings. Please check back later.' => 'No hay vacantes actuales. Por favor, vuelva a consultar más tarde.',
@@ -799,7 +825,7 @@ class earlystart_Multilingual_Manager
                 'In the meantime, reach out to:' => 'Mientras tanto, comuníquese con:',
                 'Search' => 'Buscar',
                 'Search entire site...' => 'Buscar en todo el sitio...',
-                
+
                 // Location Page Extras
                 'Now Enrolling: Pre-K & Toddlers' => 'Inscripciones Abiertas: Pre-K y Niños Pequeños',
                 "%s's home for brilliant beginnings." => 'El hogar de %s para comienzos brillantes.',
@@ -857,7 +883,7 @@ class earlystart_Multilingual_Manager
                 'View Campus' => 'Ver Campus',
                 'Ages %s' => 'Edades %s',
                 'View Program' => 'Ver Programa',
-                
+
                 // Header & Footer
                 'Early Learning' => 'Aprendizaje Temprano',
                 'Academy' => 'Academia',
@@ -872,7 +898,7 @@ class earlystart_Multilingual_Manager
                 'Skip to content' => 'Saltar al contenido',
                 'Search' => 'Buscar',
                 'Search entire site...' => 'Buscar en todo el sitio...',
-                
+
                 // Location Archive & Page
                 'Campuses' => 'Campuses',
                 'Find your Chroma Community - Our Locations' => 'Encuentra tu Comunidad Chroma - Nuestras Ubicaciones',
@@ -1019,7 +1045,7 @@ class earlystart_Multilingual_Manager
                 'The Chroma Standard' => 'El Estándar Chroma',
                 'Designed for discovery.' => 'Diseñado para el descubrimiento.',
                 'GA Lottery Pre-K' => 'Pre-K de la Lotería de GA',
-                
+
                 // Combo Pages (Dynamic City+Program pages)
                 'Premier %s in %s, %s.' => '%s de Primera Categoría en %s, %s.',
                 'Now Enrolling: %s' => 'Inscripciones Abiertas: %s',
@@ -1042,19 +1068,19 @@ class earlystart_Multilingual_Manager
                 'See the %s environment in person. Meet our Director and teachers.' => 'Vea el ambiente de %s en persona. Conozca a nuestra Directora y maestros.',
                 'More Childcare Options in %s' => 'Más Opciones de Cuidado Infantil en %s',
                 'Other locations in %s' => 'Otras ubicaciones en %s',
-                
+
                 // Homepage Hero
                 'The art of <span class="italic text-chroma-red">growing up.</span>' => 'El arte de <span class="italic text-chroma-red">crecer.</span>',
                 'Where accredited excellence meets the warmth of home. A modern sanctuary powered by our proprietary Prismpath™ learning model for children 6 weeks to 12 years.' => 'Donde la excelencia acreditada se encuentra con la calidez del hogar. Un santuario moderno impulsado por nuestro modelo de aprendizaje patentado Prismpath™ para niños de 6 semanas a 12 años.',
                 'View Programs' => 'Ver Programas',
                 '19+ Metro Atlanta Locations' => 'Más de 19 Ubicaciones en Metro Atlanta',
-                
+
                 // Stats Strip
                 'Metro campuses' => 'Campuses metro',
                 'Children enrolled' => 'Niños inscritos',
                 'Avg parent rating' => 'Calificación promedio de padres',
                 'Age range' => 'Rango de edad',
-                
+
                 // Prismpath Panels
                 'Grounded in Expertise. Wrapped in Love.' => 'Basado en la Experiencia. Envuelto en Amor.',
                 'Meet the Team' => 'Conozca al Equipo',
@@ -1066,7 +1092,7 @@ class earlystart_Multilingual_Manager
                 'Secure, monitored facilities with open-door transparency for parents.' => 'Instalaciones seguras y monitoreadas con transparencia de puertas abiertas para los padres.',
                 'Kindergarten Readiness' => 'Preparación para el Jardín de Infantes',
                 'Our graduates enter school confident, socially capable, and academically prepared.' => 'Nuestros graduados ingresan a la escuela confiados, socialmente capaces y académicamente preparados.',
-                
+
                 // Program Wizard Defaults
                 "Infant\n(6 weeks–12m)" => "Bebés\n(6 semanas–12m)",
                 "Toddler\n(1 year)" => "Niños Pequeños\n(1 año)",
@@ -1074,11 +1100,11 @@ class earlystart_Multilingual_Manager
                 "Pre-K Prep\n(3 years)" => "Preparación Pre-K\n(3 años)",
                 "GA Pre-K\n(4 years)" => "GA Pre-K\n(4 años)",
                 "After School\n(5–12 years)" => "Después de la Escuela\n(5–12 años)",
-                
+
                 // FAQ
                 'Common questions from parents' => 'Preguntas comunes de los padres',
                 'We’ve answered a few of the questions parents ask most when choosing childcare and early learning.' => 'Hemos respondido algunas de las preguntas que los padres hacen con más frecuencia al elegir guardería y aprendizaje temprano.',
-                
+
                 // Reviews Defaults
                 'Marietta Campus' => 'Campus de Marietta',
                 'Johns Creek Campus' => 'Campus de Johns Creek',
@@ -1086,7 +1112,7 @@ class earlystart_Multilingual_Manager
                 'Our daughter has flourished at Chroma. The teachers genuinely care, and the Prismpath curriculum has her excited to learn every day. We couldn\'t ask for a better early learning experience.' => 'Nuestra hija ha florecido en Chroma. Los maestros realmente se preocupan, y el currículo Prismpath la tiene emocionada por aprender todos los días. No podríamos pedir una mejor experiencia de aprendizaje temprano.',
                 'After touring several centers, Chroma stood out immediately. The transparency, the warmth, and the expert care made our decision easy. Our son has been there for two years and we\'ve never looked back.' => 'Después de recorrer varios centros, Chroma se destacó de inmediato. La transparencia, la calidez y el cuidado experto facilitaron nuestra decisión. Nuestro hijo ha estado allí durante dos años y nunca hemos mirado atrás.',
                 'The family-style meals, the daily communication, the beautiful facilities — everything exceeds expectations. Chroma feels like an extension of our family, and our twins are thriving.' => 'Las comidas al estilo familiar, la comunicación diaria, las hermosas instalaciones; todo supera las expectativas. Chroma se siente como una extensión de nuestra familia, y nuestros gemelos están prosperando.',
-                
+
                 // Featured Stories
                 'Inside the Prismpath™ Classroom' => 'Dentro del Aula Prismpath™',
                 'Take a peek at how our educators weave play and academics together each day.' => 'Eche un vistazo a cómo nuestros educadores entrelazan el juego y lo académico cada día.',
@@ -1094,13 +1120,13 @@ class earlystart_Multilingual_Manager
                 'Why shared meals matter for social-emotional growth and independence.' => 'Por qué las comidas compartidas son importantes para el crecimiento socioemocional y la independencia.',
                 'Partnering with Parents' => 'Asociación con los Padres',
                 'See how we communicate daily to keep families connected to the classroom.' => 'Vea cómo nos comunicamos diariamente para mantener a las familias conectadas con el aula.',
-                
+
                 // Regions
                 'North Atlanta' => 'Norte de Atlanta',
                 'South Atlanta' => 'Sur de Atlanta',
                 'East Atlanta' => 'Este de Atlanta',
                 'West Atlanta' => 'Oeste de Atlanta',
-                
+
                 // Curriculum Labels (Radar Chart)
                 'Physical' => 'Físico',
                 'Emotional' => 'Emocional',
@@ -1108,7 +1134,7 @@ class earlystart_Multilingual_Manager
                 'Academic' => 'Académico',
                 'Creative' => 'Creativo',
                 'Prismpath™ Focus' => 'Enfoque Prismpath™',
-                
+
                 // Footer & Sticky CTA
                 'Premium childcare & early education across Metro Atlanta.' => 'Cuidado infantil de primera y educación temprana en todo Metro Atlanta.',
                 'Quick Links' => 'Enlaces Rápidos',
@@ -1120,7 +1146,7 @@ class earlystart_Multilingual_Manager
                 'Ready to experience the Chroma difference?' => '¿Listo para experimentar la diferencia de Chroma?',
                 'Ready to enroll in <strong>%s</strong>?' => '¿Listo para inscribirse en <strong>%s</strong>?',
                 'Ready to visit our <strong>%s</strong> campus?' => '¿Listo para visitar nuestro campus de <strong>%s</strong>?',
-                
+
                 // Program Wizard & Enhancements
                 'Find the right program in 10 seconds' => 'Encuentre el programa adecuado en 10 segundos',
                 'Choose your child\'s age and we\'ll suggest the Chroma program designed for their development stage and your family\'s needs.' => 'Elija la edad de su hijo y le sugeriremos el programa Chroma diseñado para su etapa de desarrollo y las necesidades de su familia.',
@@ -1133,13 +1159,13 @@ class earlystart_Multilingual_Manager
                 'Open in new tab' => 'Abrir en pestaña nueva',
                 'Download' => 'Descargar',
                 'View Curriculum' => 'Ver currículo',
-                
+
                 // Common Program Enhancements
                 'Age Calculator' => 'Calculadora de edad',
                 'Frequently Asked Questions' => 'Preguntas frecuentes',
                 'Photo Gallery' => 'Galería de fotos',
                 'Parent Testimonials' => 'Testimonios de padres',
-                
+
                 // Curriculum Page
                 'See the curriculum in action.' => 'Vea el currículo en acción.',
                 'Schedule a tour to see our "Third Teacher" classrooms and meet the educators bringing Prismpath™ to life.' => 'Programe un recorrido para ver nuestras aulas del "Tercer Maestro" y conocer a los educadores que dan vida a Prismpath™.',
@@ -1152,7 +1178,7 @@ class earlystart_Multilingual_Manager
                 'Environment' => 'Ambiente',
                 'The classroom is the "Third Teacher."' => 'El aula es el "Tercer Maestro."',
                 'Measuring Milestones' => 'Midiendo Hitos',
-                
+
                 // Curriculum Section
                 'The Prismpath™ Curriculum' => 'El Currículo Prismpath™',
                 'A curriculum that shifts as your child grows' => 'Un currículo que cambia a medida que su hijo crece',
@@ -1169,7 +1195,8 @@ if (!function_exists('earlystart_get_alternates')) {
     /**
      * Global helper for theme usage
      */
-    function earlystart_get_alternates($post_id = null) {
+    function earlystart_get_alternates($post_id = null)
+    {
         if (class_exists('earlystart_Multilingual_Manager')) {
             return earlystart_Multilingual_Manager::get_alternates($post_id);
         }
@@ -1181,10 +1208,12 @@ if (!function_exists('earlystart_get_translated_meta')) {
     /**
      * Get translated meta field with fallback
      */
-    function earlystart_get_translated_meta($post_id, $key, $single = true) {
+    function earlystart_get_translated_meta($post_id, $key, $single = true)
+    {
         if (class_exists('earlystart_Multilingual_Manager') && method_exists('earlystart_Multilingual_Manager', 'is_spanish') && earlystart_Multilingual_Manager::is_spanish()) {
             $es_val = get_post_meta($post_id, '_earlystart_es_' . $key, $single);
-            if ($es_val) return $es_val;
+            if ($es_val)
+                return $es_val;
         }
         return get_post_meta($post_id, $key, $single);
     }
@@ -1194,11 +1223,13 @@ if (!function_exists('earlystart_get_theme_mod')) {
     /**
      * Localized theme mod helper
      */
-    function earlystart_get_theme_mod($name, $default = false) {
+    function earlystart_get_theme_mod($name, $default = false)
+    {
         $val = get_theme_mod($name, $default);
         if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) {
             $es_val = get_theme_mod($name . '_es');
-            if ($es_val) return $es_val;
+            if ($es_val)
+                return $es_val;
         }
         return $val;
     }

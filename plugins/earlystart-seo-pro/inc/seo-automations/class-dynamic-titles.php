@@ -40,14 +40,14 @@ class earlystart_Dynamic_Titles
      */
     private function get_default_patterns() {
         return [
-            'location' => '{title} | Daycare in {city}, {state} | Chroma',
+            'location' => '{title} | Pediatric Therapy in {city}, {state} | Chroma',
             'program' => '{title} Program | Ages {age_range} | Chroma',
             'post' => '{title} | Parenting Tips | Chroma Blog',
             'page' => '{title} | Chroma Early Learning',
             'team_member' => '{title} | Meet Our Team | Chroma',
-            'archive_location' => 'Our Daycare Locations | Chroma Early Learning',
-            'archive_program' => 'Early Learning Programs | Chroma',
-            'home' => 'Chroma Early Learning | Quality Childcare & Preschool',
+            'archive_location' => 'Our Pediatric Therapy Locations | Chroma',
+            'archive_program' => 'Pediatric Therapy Programs | Chroma',
+            'home' => 'Chroma Early Learning | Quality Pediatric Therapy',
             'search' => 'Search Results for "{query}" | Chroma'
         ];
     }

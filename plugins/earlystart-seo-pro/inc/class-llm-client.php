@@ -38,9 +38,10 @@ class earlystart_LLM_Client
     /**
      * AJAX: Fetch available models from Gemini API
      */
-    public function ajax_fetch_available_models() {
+    public function ajax_fetch_available_models()
+    {
         check_ajax_referer('earlystart_fetch_models', 'nonce');
-        
+
         if (!current_user_can('manage_options')) {
             wp_send_json_error(['message' => 'Permission denied']);
         }
@@ -76,10 +77,10 @@ class earlystart_LLM_Client
         foreach ($body['models'] as $model) {
             $name = $model['name'] ?? '';
             $display_name = $model['displayName'] ?? $name;
-            
+
             // Extract the model ID (e.g., "models/gemini-2.0-flash-exp" -> "gemini-2.0-flash-exp")
             $model_id = str_replace('models/', '', $name);
-            
+
             // Only include generative models (skip embedding, etc.)
             $supported = $model['supportedGenerationMethods'] ?? [];
             if (in_array('generateContent', $supported)) {
@@ -93,7 +94,7 @@ class earlystart_LLM_Client
 
         // Sort models alphabetically
         asort($models);
-        
+
         // Cache the models
         update_option('earlystart_llm_available_models', $models);
 
@@ -126,8 +127,8 @@ class earlystart_LLM_Client
                 <tr>
                     <th scope="row">Model Name</th>
                     <td>
-                        <input type="text" id="earlystart_llm_model" value="<?php echo esc_attr($model); ?>" class="regular-text"
-                            placeholder="gpt-4o-mini">
+                        <input type="text" id="earlystart_llm_model" value="<?php echo esc_attr($model); ?>"
+                            class="regular-text" placeholder="gpt-4o-mini">
                         <p class="description">e.g., <code>gpt-4o</code>, <code>claude-3-sonnet</code> (via OpenRouter),
                             <code>llama-3</code>
                         </p>
@@ -331,7 +332,7 @@ class earlystart_LLM_Client
             if (!is_array($existing_schemas)) {
                 $existing_schemas = [];
             }
-            
+
             // Look for existing schema of this type to update instead of appending duplicate
             $updated = false;
             foreach ($existing_schemas as $index => &$schema) {
@@ -347,7 +348,7 @@ class earlystart_LLM_Client
 
             if (!$updated) {
                 // valid new schema
-                 $existing_schemas[] = [
+                $existing_schemas[] = [
                     'type' => $schema_type,
                     'data' => $result
                 ];
@@ -397,30 +398,30 @@ class earlystart_LLM_Client
         // Prepare prompt based on schema type - SEO EXPERT PERSONA
         $prompt = "You are an SEO EXPERT specializing in Schema.org structured data and local SEO for businesses.\n";
         $prompt .= "Your goal is to generate the MOST COMPREHENSIVE and GOOGLE-COMPLIANT schema data possible.\n\n";
-        
+
         $prompt .= "Analyze the following content and extract data for a '{$schema_type}' object.\n\n";
-        
+
         $prompt .= "=== YOUR SEO EXPERTISE ===\n";
         $prompt .= "- You understand Google's Rich Results requirements\n";
         $prompt .= "- You know which fields impact Google My Business rankings\n";
         $prompt .= "- You prioritize fields that improve local pack visibility\n";
         $prompt .= "- You ensure NAP (Name, Address, Phone) consistency\n";
         $prompt .= "- You maximize rich snippet eligibility (stars, hours, etc.)\n\n";
-        
+
         $prompt .= "=== DATA PRIORITY (USE IN THIS ORDER) ===\n";
         $prompt .= "1. WEBSITE DATA (highest priority) - Use the live page content and meta data provided\n";
         $prompt .= "2. GOOGLE MY BUSINESS - Use GMB URL to access your knowledge of this business listing\n";
         $prompt .= "3. YOUR KNOWLEDGE - For missing fields, use web search/knowledge about this specific business\n";
         $prompt .= "IMPORTANT: Website data is the source of truth. Only use GMB/web data to FILL GAPS, not override.\n\n";
-        
+
         $prompt .= "=== BUSINESS CONTEXT ===\n";
         $prompt .= "- Industry: Early Childhood Education / Licensed Childcare\n";
-        $prompt .= "- Service Type: Daycare, Preschool, Pre-K Programs\n";
+        $prompt .= "- Service Type: Pediatric Therapy, Early Intervention, ABA, Speech\n";
         $prompt .= "- Location Type: Physical Business Locations in Georgia\n";
         $prompt .= "- Brand: Chroma Early Learning\n\n";
-        
+
         $prompt .= "=== SCHEMA TYPE SPECIFIC INSTRUCTIONS ===\n";
-        
+
         switch ($schema_type) {
             case 'JobPosting':
                 $prompt .= "- Focus on: title, datePosted, validThrough, employmentType\n";
@@ -452,7 +453,7 @@ class earlystart_LLM_Client
                 $prompt .= "- ANSWER: 'acceptedAnswer.text' property\n";
                 $prompt .= "- Do not hallucinate Q&A not in the text\n";
                 break;
-            
+
             case 'HowTo':
                 $prompt .= "- Focus on: step-by-step instructions, totalTime, supply, tool\n";
                 $prompt .= "- STEP: Must include 'name' and 'text' (or 'itemListElement' for structured steps)\n";
@@ -500,7 +501,7 @@ class earlystart_LLM_Client
                 $prompt .= "- STRUCTURE: Hierarchical (Menu -> Section -> Item)\n";
                 $prompt .= "- PRICES: price + priceCurrency\n";
                 break;
-                
+
             case 'ItemList':
             case 'CollectionPage':
                 $prompt .= "- Focus on: itemListElement\n";
@@ -527,17 +528,17 @@ class earlystart_LLM_Client
         $prompt .= "- Dates must be ISO 8601 format (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS)\n";
         $prompt .= "- Telephone should include area code (e.g., 770-555-0123)\n";
         if ($schema_type === 'LocalBusiness' || $schema_type === 'ChildCare') {
-             $prompt .= "- priceRange should be $, $$, or $$$\n";
-             $prompt .= "- geo coordinates must be valid lat/lng decimals\n";
+            $prompt .= "- priceRange should be $, $$, or $$$\n";
+            $prompt .= "- geo coordinates must be valid lat/lng decimals\n";
         }
         $prompt .= "- ratingValue must be between 1 and 5\n\n";
-        
+
         $prompt .= "=== FOR MISSING FIELDS ===\n";
         $prompt .= "If you cannot find a field in the provided data:\n";
         $prompt .= "1. Check your knowledge of the GMB listing (if URL provided)\n";
         $prompt .= "2. Search the web for this specific business location\n";
         $prompt .= "3. If still not found, leave the field empty - DO NOT HALLUCINATE\n\n";
-        
+
         $prompt .= "Return ONLY valid JSON. Do not include markdown formatting.\n";
 
         // Add custom instructions if provided
@@ -567,7 +568,7 @@ class earlystart_LLM_Client
                 }
             }
         }
-        
+
         // Get ACF fields if available (higher priority)
         $acf_context = "";
         if (function_exists('get_fields')) {
@@ -582,21 +583,23 @@ class earlystart_LLM_Client
                 }
             }
         }
-        
+
         // Get featured image
         $featured_image = "";
         $thumbnail_id = get_post_thumbnail_id($post_id);
         if ($thumbnail_id) {
             $featured_image = wp_get_attachment_url($thumbnail_id);
         }
-        
+
         // Get site-wide settings
         // Get site-wide settings (Plugin Option > Theme Mod Fallback)
         $phone = get_option('earlystart_seo_phone');
-        if (empty($phone)) $phone = get_theme_mod('earlystart_phone_number', '');
+        if (empty($phone))
+            $phone = get_theme_mod('earlystart_phone_number', '');
 
         $email = get_option('earlystart_seo_email');
-        if (empty($email)) $email = get_theme_mod('earlystart_email', '');
+        if (empty($email))
+            $email = get_theme_mod('earlystart_email', '');
 
         $site_context = "=== SITE-WIDE INFO ===\n";
         $site_context .= "Site Name: " . get_bloginfo('name') . "\n";
@@ -649,7 +652,7 @@ class earlystart_LLM_Client
 
         // Sanitize data against schema definition
         $json = $this->sanitize_schema_data($json, $schema_type);
-        
+
         // Validate generated schema and provide feedback
         if (class_exists('earlystart_Schema_Validator')) {
             $test_schema = array_merge(
@@ -657,7 +660,7 @@ class earlystart_LLM_Client
                 $json
             );
             $validation = earlystart_Schema_Validator::validate_and_fix($test_schema, true);
-            
+
             if (!empty($validation['warnings'])) {
                 $json['_validation_warnings'] = $validation['warnings'];
             }
@@ -890,17 +893,18 @@ class earlystart_LLM_Client
         // Simple cache key
         $cache_key = 'trans_' . md5($text . $target_lang . $context);
         $cached = $this->get_cached_response($cache_key);
-        if ($cached) return $cached;
+        if ($cached)
+            return $cached;
 
         $prompt = "You are a professional translator for a high-end childcare brand.\n";
         $prompt .= "Translate the following content to " . ($target_lang === 'es' ? 'Spanish (Latin American)' : $target_lang) . ".\n";
         $prompt .= "Maintain HTML tags exactly if present.\n";
         $prompt .= "Tone: Warm, professional, educational, and welcoming.\n";
-        
+
         if ($context) {
             $prompt .= "Context: " . $context . "\n";
         }
-        
+
         $prompt .= "\nContent to Translate:\n" . $text;
 
         $response = $this->make_request([
@@ -915,10 +919,10 @@ class earlystart_LLM_Client
         }
 
         $content = $response['choices'][0]['message']['content'] ?? '';
-        
+
         // Remove markdown code blocks if AI wraps output
         $content = preg_replace('/^```html\s*|```$/', '', trim($content));
-        
+
         if ($content) {
             $this->set_cached_response($cache_key, $content, WEEK_IN_SECONDS);
         }
@@ -1064,21 +1068,24 @@ class earlystart_LLM_Client
     /**
      * Get cached LLM response
      */
-    private function get_cached_response($cache_key) {
+    private function get_cached_response($cache_key)
+    {
         return get_transient('earlystart_llm_cache_' . md5($cache_key));
     }
 
     /**
      * Set cached LLM response
      */
-    private function set_cached_response($cache_key, $data, $expiry = DAY_IN_SECONDS) {
+    private function set_cached_response($cache_key, $data, $expiry = DAY_IN_SECONDS)
+    {
         set_transient('earlystart_llm_cache_' . md5($cache_key), $data, $expiry);
     }
-    
+
     /**
      * Clear cache for a specific post
      */
-    public function clear_cache_for_post($post_id) {
+    public function clear_cache_for_post($post_id)
+    {
         delete_transient('earlystart_llm_cache_' . md5('schema_' . $post_id));
         delete_transient('earlystart_llm_cache_' . md5('seo_' . $post_id));
     }
@@ -1086,7 +1093,8 @@ class earlystart_LLM_Client
     /**
      * Check rate limit
      */
-    private function check_rate_limit() {
+    private function check_rate_limit()
+    {
         $limit = get_option('earlystart_llm_rate_limit', 60); // requests per minute
         $count = get_transient('earlystart_llm_rate_count') ?: 0;
         return $count < $limit;
@@ -1095,11 +1103,12 @@ class earlystart_LLM_Client
     /**
      * Record rate limit usage
      */
-    private function record_rate_limit() {
+    private function record_rate_limit()
+    {
         $count = get_transient('earlystart_llm_rate_count') ?: 0;
         set_transient('earlystart_llm_rate_count', $count + 1, MINUTE_IN_SECONDS);
     }
-    
+
     /**
      * Generate Amenities Data (Tier 5 - BB)
      * Uses LLM to extract safety amenities from post content
@@ -1112,13 +1121,13 @@ class earlystart_LLM_Client
         }
 
         $amenities_list = [
-            "Keypad Access", 
-            "AI Monitored Cameras", 
-            "Privacy Fenced Playgrounds", 
-            "Zono Sanitizing Machine", 
-            "Biometric Entry", 
-            "Clean Air HVAC", 
-            "Storm Shelter / Safe Room", 
+            "Keypad Access",
+            "AI Monitored Cameras",
+            "Privacy Fenced Playgrounds",
+            "Zono Sanitizing Machine",
+            "Biometric Entry",
+            "Clean Air HVAC",
+            "Storm Shelter / Safe Room",
             "Automatic Locking Doors",
             "CPR Certified Staff",
             "Fingerprint Check-in"
@@ -1130,13 +1139,14 @@ class earlystart_LLM_Client
         $prompt .= "If none are found, return an empty array []. Do not invent new terms.\n\n";
 
         $prompt .= "Content:\n" . wp_trim_words(strip_tags($post->post_content), 1000) . "\n";
-        
+
         $meta = get_post_meta($post_id);
-        if($meta) {
-             $prompt .= "\nMeta Data keywords:\n";
-             foreach($meta as $k => $v) {
-                 if(strpos($k, '_')!==0) $prompt .= "$k: " . implode(', ', $v) . "\n";
-             }
+        if ($meta) {
+            $prompt .= "\nMeta Data keywords:\n";
+            foreach ($meta as $k => $v) {
+                if (strpos($k, '_') !== 0)
+                    $prompt .= "$k: " . implode(', ', $v) . "\n";
+            }
         }
 
         $response = $this->make_request([
@@ -1159,23 +1169,27 @@ class earlystart_LLM_Client
             return $json['amenities'];
         }
         if (is_array($json)) {
-             // Check if it's a list of strings
-             if (isset($json[0]) && is_string($json[0])) return $json;
-             // Sometimes returns { "matches": [...] }
-             foreach($json as $key => $val) {
-                 if(is_array($val)) return $val;
-             }
+            // Check if it's a list of strings
+            if (isset($json[0]) && is_string($json[0]))
+                return $json;
+            // Sometimes returns { "matches": [...] }
+            foreach ($json as $key => $val) {
+                if (is_array($val))
+                    return $val;
+            }
         }
-        
+
         return [];
     }
 
     /**
      * Log LLM request for debugging
      */
-    private function log_request($status, $info, $tokens = 0, $duration = 0) {
-        if (!defined('WP_DEBUG') || !WP_DEBUG) return;
-        
+    private function log_request($status, $info, $tokens = 0, $duration = 0)
+    {
+        if (!defined('WP_DEBUG') || !WP_DEBUG)
+            return;
+
         error_log(sprintf(
             '[Chroma LLM] %s | Info: %s | Tokens: %d | Duration: %.2fs',
             $status,
@@ -1188,35 +1202,37 @@ class earlystart_LLM_Client
     /**
      * Track token usage for cost monitoring
      */
-    private function track_usage($tokens, $post_id = 0) {
+    private function track_usage($tokens, $post_id = 0)
+    {
         $month_key = 'earlystart_llm_usage_' . date('Y-m');
         $usage = get_option($month_key, [
-            'total_tokens' => 0, 
+            'total_tokens' => 0,
             'requests' => 0,
             'by_post_type' => [],
             'by_day' => []
         ]);
-        
+
         $usage['total_tokens'] += $tokens;
         $usage['requests'] += 1;
-        
+
         // Track by post type
         if ($post_id) {
             $post_type = get_post_type($post_id) ?: 'unknown';
             $usage['by_post_type'][$post_type] = ($usage['by_post_type'][$post_type] ?? 0) + $tokens;
         }
-        
+
         // Track by day
         $day = date('Y-m-d');
         $usage['by_day'][$day] = ($usage['by_day'][$day] ?? 0) + $tokens;
-        
+
         update_option($month_key, $usage);
     }
-    
+
     /**
      * Get usage statistics
      */
-    public static function get_usage_stats($month = null) {
+    public static function get_usage_stats($month = null)
+    {
         $month = $month ?: date('Y-m');
         return get_option('earlystart_llm_usage_' . $month, [
             'total_tokens' => 0,
@@ -1225,11 +1241,12 @@ class earlystart_LLM_Client
             'by_day' => []
         ]);
     }
-    
+
     /**
      * Calculate estimated cost based on token usage
      */
-    public static function estimate_cost($tokens, $model = 'gpt-4o-mini') {
+    public static function estimate_cost($tokens, $model = 'gpt-4o-mini')
+    {
         // Pricing per 1M tokens (as of Dec 2024)
         $pricing = [
             'gpt-4o' => ['input' => 2.50, 'output' => 10.00],
@@ -1237,34 +1254,35 @@ class earlystart_LLM_Client
             'gpt-4-turbo' => ['input' => 10.00, 'output' => 30.00],
             'gpt-3.5-turbo' => ['input' => 0.50, 'output' => 1.50],
         ];
-        
+
         $rate = $pricing[$model] ?? $pricing['gpt-4o-mini'];
         $avg_rate = ($rate['input'] + $rate['output']) / 2;
-        
+
         return ($tokens / 1000000) * $avg_rate;
     }
 
     /**
      * Make request with retry logic
      */
-    private function make_request_with_retry($data, $max_retries = 3) {
+    private function make_request_with_retry($data, $max_retries = 3)
+    {
         $attempt = 0;
         $last_error = null;
-        
+
         while ($attempt < $max_retries) {
             $attempt++;
             $start_time = microtime(true);
-            
+
             // Check rate limit
             if (!$this->check_rate_limit()) {
                 $this->log_request('[RATE LIMITED]', 'Waiting...', 0, 0);
                 sleep(2);
                 continue;
             }
-            
+
             $response = $this->make_request_internal($data);
             $duration = microtime(true) - $start_time;
-            
+
             if (!is_wp_error($response)) {
                 // Success
                 $this->record_rate_limit();
@@ -1273,31 +1291,32 @@ class earlystart_LLM_Client
                 $this->track_usage($tokens);
                 return $response;
             }
-            
+
             $last_error = $response;
             $error_code = $response->get_error_code();
             $error_msg = $response->get_error_message();
-            
+
             $this->log_request('[ERROR]', "Attempt $attempt: $error_msg", 0, $duration);
-            
+
             // Don't retry on auth errors
             if (strpos($error_msg, 'Invalid API Key') !== false || $error_code === 'no_api_key') {
                 return $response;
             }
-            
+
             if ($attempt < $max_retries) {
                 $wait = pow(2, $attempt); // Exponential backoff
                 sleep($wait);
             }
         }
-        
+
         return $last_error ?: new WP_Error('max_retries', 'Request failed after ' . $max_retries . ' attempts');
     }
-    
+
     /**
      * Internal make request (no retry, no logging)
      */
-    private function make_request_internal($data) {
+    private function make_request_internal($data)
+    {
         $api_key = self::get_api_key();
         $model = get_option('earlystart_llm_model', 'gpt-4o-mini');
         $base_url = get_option('earlystart_llm_base_url', 'https://api.openai.com/v1');
@@ -1333,7 +1352,7 @@ class earlystart_LLM_Client
         if ($code === 429) {
             return new WP_Error('rate_limited', 'API rate limited. Try again later.');
         }
-        
+
         if ($code >= 500) {
             return new WP_Error('server_error', 'API server error. Code: ' . $code);
         }
@@ -1357,13 +1376,13 @@ class earlystart_LLM_Client
     {
         $prompt = "You are an expert JSON-LD Schema validator and fixer.\n";
         $prompt .= "Your task is to FIX the following JSON-LD schema which has failed validation.\n\n";
-        
+
         $prompt .= "=== VALIDATION ERRORS ===\n";
         foreach ($errors as $error) {
             $prompt .= "- $error\n";
         }
         $prompt .= "\n";
-        
+
         $prompt .= "=== INSTRUCTIONS ===\n";
         $prompt .= "1. **SINGLE OUTPUT**: You must output EXACTLY ONE valid JSON-LD structure wrapped in a SINGLE `<script type=\"application/ld+json\">` tag. Do NOT output multiple script tags or separate JSON blocks.\n";
         $prompt .= "2. **USE @GRAPH**: Wrap all entities in a root `@graph` array.\n";
@@ -1378,7 +1397,7 @@ class earlystart_LLM_Client
         $prompt .= "7. **CLEAN UP**: Remove empty properties or duplicate values in arrays.\n";
         $prompt .= "8. **FINAL FORMAT**: Return ONLY valid JSON. If multiple items exist, they MUST be inside a root `@graph` array.\n";
         $prompt .= "9. **CRITICAL**: Do NOT output multiple separate JSON objects (e.g. `}{`). Output exactly one JSON object.\n\n";
-        
+
         // NEW: Tightened validation rules (Feature 13)
         $prompt .= "=== VALIDATION RULES (CRITICAL) ===\n";
         $prompt .= "10. **REQUIRED FIELDS BY TYPE**:\n";
@@ -1392,14 +1411,14 @@ class earlystart_LLM_Client
         $prompt .= "13. **VALID URLs ONLY**: All URL fields must be complete (https://...). No relative paths, no empty strings.\n";
         $prompt .= "14. **ISO 8601 DATES**: Use format YYYY-MM-DDTHH:MM:SS or YYYY-MM-DD for dates.\n";
         $prompt .= "15. **POSITION SEQUENCE**: BreadcrumbList positions must be sequential integers starting from 1.\n\n";
-        
+
         $prompt .= "=== BROKEN SCHEMA ===\n";
         $prompt .= $raw_schema;
 
         // Determine efficient max_tokens based on model
         $model = get_option('earlystart_llm_model', 'gpt-4o-mini');
         $max_tokens = 4096; // Standard limit for GPT-4o / Turbo / Legacy
-        
+
         // High-context models (Gemini, Flash, Mini)
         if (strpos($model, 'mini') !== false || strpos($model, 'gemini') !== false || strpos($model, 'flash') !== false) {
             $max_tokens = 16000; // Allow large output for efficient models
@@ -1415,7 +1434,7 @@ class earlystart_LLM_Client
 
         // Add JSON mode for compatible models
         if (strpos($model, 'gpt') !== false || strpos($model, 'gemini') !== false) {
-             $request_args['response_format'] = ['type' => 'json_object'];
+            $request_args['response_format'] = ['type' => 'json_object'];
         }
 
         $response = $this->make_request($request_args);
@@ -1425,7 +1444,7 @@ class earlystart_LLM_Client
         }
 
         $content = $response['choices'][0]['message']['content'];
-        
+
         // Clean potential wrappers
         if (preg_match('/```(?:json)?\s*(\{.*\})\s*```/s', $content, $matches)) {
             $content = $matches[1];
@@ -1435,29 +1454,29 @@ class earlystart_LLM_Client
         if (preg_match('/<script[^>]*>(.*?)<\/script>/s', $content, $matches)) {
             $content = $matches[1];
         }
-        
+
         $content = trim($content);
 
         // Attempt normalization if valid JSON is not found immediately
         json_decode($content);
         if (json_last_error() !== JSON_ERROR_NONE) {
-             // Handle "concatenated JSON" error (e.g. {...} {...})
-             // Replace "}{" with "},{" and wrap in brackets
-             $normalized = preg_replace('/}\s*{/', '},{', $content);
-             $normalized = '[' . $normalized . ']';
-             
-             // Check if that fixed it
-             $check = json_decode($normalized, true);
-             if ($check) {
-                 // Convert list to @graph format if needed
-                 if (count($check) > 1 || !isset($check['@graph'])) {
-                     $content = json_encode(['@context' => 'https://schema.org', '@graph' => $check]);
-                 } else {
-                     $content = json_encode($check[0]);
-                 }
-             }
+            // Handle "concatenated JSON" error (e.g. {...} {...})
+            // Replace "}{" with "},{" and wrap in brackets
+            $normalized = preg_replace('/}\s*{/', '},{', $content);
+            $normalized = '[' . $normalized . ']';
+
+            // Check if that fixed it
+            $check = json_decode($normalized, true);
+            if ($check) {
+                // Convert list to @graph format if needed
+                if (count($check) > 1 || !isset($check['@graph'])) {
+                    $content = json_encode(['@context' => 'https://schema.org', '@graph' => $check]);
+                } else {
+                    $content = json_encode($check[0]);
+                }
+            }
         }
-        
+
         // Validate final JSON syntax
         $decoded = json_decode($content, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -1469,13 +1488,13 @@ class earlystart_LLM_Client
 
         if (!$validation['valid']) {
             earlystart_debug_log('[Chroma SEO] AI Fix generated invalid schema (attempt ' . ($retry_count + 1) . '): ' . print_r($validation['errors'], true));
-            
+
             // Retry up to 2 times with validation errors in prompt
             if ($retry_count < 2) {
                 $combined_errors = array_merge($errors, $validation['errors']);
                 return $this->fix_schema_with_ai($content, $combined_errors, $retry_count + 1);
             }
-            
+
             // Max retries reached, return with warning
             return [
                 'schema' => $content,

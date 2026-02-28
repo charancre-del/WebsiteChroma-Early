@@ -186,7 +186,7 @@ class earlystart_Fallback_Resolver
         $queries = [];
 
         if ($city) {
-            $queries[] = "best daycare near " . $city . " GA";
+            $queries[] = "best pediatric therapy near " . $city . " GA";
             $queries[] = "childcare in " . $city . " Georgia";
             $queries[] = "preschool " . $city;
         }

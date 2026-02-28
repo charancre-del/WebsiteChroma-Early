@@ -67,7 +67,7 @@ class earlystart_Location_LLM_Context_Meta_Box extends earlystart_Advanced_SEO_M
             'id' => 'seo_llm_target_queries',
             'label' => '',
             'values' => $target_queries,
-            'placeholder' => 'e.g., "best daycare near Canton GA"',
+            'placeholder' => 'e.g., "best pediatric therapy near Canton GA"',
             'button_text' => 'Add Query',
         ]);
 
