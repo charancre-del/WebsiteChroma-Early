@@ -11,11 +11,53 @@
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="grid md:grid-cols-4 gap-12 lg:gap-16">
 			<div class="col-span-1 md:col-span-1">
-				<div class="flex items-center space-x-3 mb-8">
-					<div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-rose-500">
-						<i data-lucide="puzzle" class="w-6 h-6"></i>
+				<?php
+				$footer_logo_width = absint(earlystart_get_theme_mod('earlystart_footer_logo_width', 70));
+				if ($footer_logo_width < 40 || $footer_logo_width > 220) {
+					$footer_logo_width = 70;
+				}
+
+				$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
+				$header_lines = explode("\n", $header_text_raw);
+				$footer_primary_line = isset($header_lines[0]) && '' !== trim($header_lines[0]) ? trim($header_lines[0]) : get_bloginfo('name');
+				$footer_secondary_line = isset($header_lines[1]) ? trim($header_lines[1]) : '';
+				$footer_contact_title = earlystart_get_theme_mod('earlystart_footer_contact_title', __('Contact Admissions', 'earlystart-early-learning'));
+				$footer_contact_phone = trim((string) earlystart_get_theme_mod('earlystart_footer_phone', ''));
+				if ('' === $footer_contact_phone) {
+					$footer_contact_phone = earlystart_global_phone();
+				}
+				$footer_contact_email = trim((string) earlystart_get_theme_mod('earlystart_footer_email', ''));
+				if ('' === $footer_contact_email) {
+					$footer_contact_email = earlystart_global_email();
+				}
+				$footer_contact_hours = earlystart_get_theme_mod('earlystart_footer_hours', __('Mon - Fri: 8:00 AM - 5:00 PM', 'earlystart-early-learning'));
+				?>
+				<div class="flex items-center gap-3 mb-8">
+					<?php if (has_custom_logo()): ?>
+						<?php
+						$custom_logo_id = get_theme_mod('custom_logo');
+						$logo = wp_get_attachment_image_src($custom_logo_id, 'full');
+						$logo_url = $logo[0] ?? '';
+						?>
+						<?php if ($logo_url): ?>
+							<div class="flex-shrink-0">
+								<img src="<?php echo esc_url($logo_url); ?>"
+									alt="<?php echo esc_attr(get_bloginfo('name')); ?>"
+									style="width: <?php echo esc_attr($footer_logo_width); ?>px; height: auto;"
+									class="max-w-full h-auto block">
+							</div>
+						<?php endif; ?>
+					<?php else: ?>
+						<div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-rose-500 flex-shrink-0">
+							<i data-lucide="puzzle" class="w-6 h-6"></i>
+						</div>
+					<?php endif; ?>
+					<div class="flex flex-col leading-none">
+						<span class="text-2xl font-bold text-white tracking-tight"><?php echo esc_html($footer_primary_line); ?></span>
+						<?php if ('' !== $footer_secondary_line): ?>
+							<span class="text-[0.65rem] uppercase tracking-widest text-stone-400 font-semibold mt-1"><?php echo esc_html($footer_secondary_line); ?></span>
+						<?php endif; ?>
 					</div>
-					<span class="text-2xl font-bold text-white tracking-tight">Early Start</span>
 				</div>
 				<p class="text-sm leading-relaxed mb-8 text-stone-300 max-w-xs">
 					<?php _e('Empowering neurodivergent children through play-led, evidence-based therapy. Ages 18mo - 12yrs.', 'earlystart-early-learning'); ?>
@@ -110,20 +152,20 @@
 
 			<div>
 				<h3 class="text-white font-bold mb-8 tracking-widest text-xs uppercase">
-					<?php _e('Contact Admissions', 'earlystart-early-learning'); ?>
+					<?php echo esc_html($footer_contact_title); ?>
 				</h3>
 				<ul class="space-y-6 text-sm">
 					<li class="flex items-start">
 						<i data-lucide="phone" class="w-5 h-5 mr-4 text-rose-500 shrink-0"></i>
-						<span><?php echo esc_html(earlystart_global_phone()); ?></span>
+						<span><?php echo esc_html($footer_contact_phone); ?></span>
 					</li>
 					<li class="flex items-start">
 						<i data-lucide="mail" class="w-5 h-5 mr-4 text-rose-500 shrink-0"></i>
-						<span class="break-all"><?php echo esc_html(earlystart_global_email()); ?></span>
+						<span class="break-all"><?php echo esc_html($footer_contact_email); ?></span>
 					</li>
 					<li class="flex items-start">
 						<i data-lucide="calendar" class="w-5 h-5 mr-4 text-rose-500 shrink-0"></i>
-						<span><?php _e('Mon - Fri: 8:00 AM - 5:00 PM', 'earlystart-early-learning'); ?></span>
+						<span><?php echo esc_html($footer_contact_hours); ?></span>
 					</li>
 				</ul>
 			</div>
