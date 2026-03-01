@@ -48,13 +48,19 @@ $team_query = new WP_Query(array(
                     <?php while ($team_query->have_posts()):
                         $team_query->the_post();
                         $role = get_post_meta(get_the_ID(), 'team_member_title', true);
-                        $thumb_url = get_the_post_thumbnail_url(get_the_ID(), 'large') ?: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&fm=webp?q=80&w=800&auto=format&fit=crop&q=80&fm=webp';
+                        $thumb_url = get_the_post_thumbnail_url(get_the_ID(), 'large') ?: '';
                         ?>
                         <div
                             class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-stone-100 group hover:shadow-xl transition-all duration-500 flex flex-col fade-in-up">
                             <div class="relative h-96 overflow-hidden">
-                                <img src="<?php echo esc_url($thumb_url); ?>" alt="<?php the_title(); ?>"
-                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                <?php if ($thumb_url): ?>
+                                    <img src="<?php echo esc_url($thumb_url); ?>" alt="<?php the_title(); ?>"
+                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                <?php else: ?>
+                                    <div class="w-full h-full bg-stone-50 flex items-center justify-center text-stone-300">
+                                        <i data-lucide="user-round" class="w-20 h-20"></i>
+                                    </div>
+                                <?php endif; ?>
                                 <div
                                     class="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                 </div>
@@ -132,7 +138,7 @@ $team_query = new WP_Query(array(
             <p class="text-xl text-stone-700 mb-10 leading-relaxed">
                 <?php _e('We are always looking for passionate BCBAs, RBTs, and Speech Therapists to join our growing network.', 'earlystart-early-learning'); ?>
             </p>
-            <a href="<?php echo esc_url(home_url('/careers/')); ?>"
+            <a href="<?php echo esc_url(earlystart_get_page_link('careers')); ?>"
                 class="bg-stone-900 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-rose-600 transition-all shadow-xl inline-block active:scale-95">
                 <?php _e('Explore Careers', 'earlystart-early-learning'); ?>
                 <i data-lucide="arrow-right" class="ml-2 w-5 h-5 inline"></i>

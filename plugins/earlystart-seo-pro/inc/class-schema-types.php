@@ -25,6 +25,9 @@ class earlystart_Schema_Types
             'BlogPosting' => self::get_article_schema(), // Inherits from Article
             'NewsArticle' => self::get_article_schema(), // Inherits from Article
             'LocalBusiness' => self::get_local_business_schema(),
+            'MedicalClinic' => self::get_medical_clinic_schema(),
+            'SpeechPathology' => self::get_speech_pathology_schema(),
+            'OccupationalTherapy' => self::get_occupational_therapy_schema(),
             'Organization' => self::get_organization_schema(),
             'Person' => self::get_person_schema(),
             'Event' => self::get_event_schema(),
@@ -53,6 +56,36 @@ class earlystart_Schema_Types
     {
         $schema = self::get_local_business_schema();
         $schema['label'] = 'Child Care / Preschool';
+        return $schema;
+    }
+
+    /**
+     * MedicalClinic (used for ABA clinic/service pages)
+     */
+    private static function get_medical_clinic_schema()
+    {
+        $schema = self::get_local_business_schema();
+        $schema['label'] = 'Medical Clinic / ABA Therapy';
+        return $schema;
+    }
+
+    /**
+     * SpeechPathology (therapy service)
+     */
+    private static function get_speech_pathology_schema()
+    {
+        $schema = self::get_local_business_schema();
+        $schema['label'] = 'Speech Pathology';
+        return $schema;
+    }
+
+    /**
+     * OccupationalTherapy (therapy service)
+     */
+    private static function get_occupational_therapy_schema()
+    {
+        $schema = self::get_local_business_schema();
+        $schema['label'] = 'Occupational Therapy';
         return $schema;
     }
 

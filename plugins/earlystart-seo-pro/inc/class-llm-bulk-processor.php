@@ -168,16 +168,37 @@ class earlystart_LLM_Bulk_Processor
      */
     private function detect_schema_type($post_id) {
         $post_type = get_post_type($post_id);
+        $title = strtolower(get_the_title($post_id));
+        $slug = strtolower(get_post_field('post_name', $post_id));
         
         $type_map = [
-            'location' => 'ChildCare',
-            'program' => 'Course',
+            'location' => 'MedicalClinic',
             'post' => 'Article',
             'page' => 'Article',
             'team_member' => 'Person',
             'job_listing' => 'JobPosting',
             'event' => 'Event'
         ];
+
+        if ($post_type === 'program') {
+            if (strpos($title, 'speech') !== false || strpos($slug, 'speech') !== false) {
+                return 'SpeechPathology';
+            }
+
+            if (
+                strpos($title, 'occupational') !== false ||
+                strpos($slug, 'occupational') !== false ||
+                preg_match('/(^|-)ot($|-)/', $slug)
+            ) {
+                return 'OccupationalTherapy';
+            }
+
+            if (strpos($title, 'aba') !== false || strpos($slug, 'aba') !== false) {
+                return 'MedicalClinic';
+            }
+
+            return 'Service';
+        }
         
         return $type_map[$post_type] ?? 'Article';
     }

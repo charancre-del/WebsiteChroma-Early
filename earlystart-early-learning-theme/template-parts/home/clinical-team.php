@@ -27,7 +27,7 @@ if (empty($team)) {
                     <?php _e('Our leadership team brings decades of experience in ABA, speech-language pathology, and pediatric development to every child\'s care plan.', 'earlystart-early-learning'); ?>
                 </p>
             </div>
-            <a href="<?php echo esc_url(home_url('/about-us/')); ?>"
+            <a href="<?php echo esc_url(earlystart_get_page_link('about')); ?>"
                 class="bg-white text-stone-900 border-2 border-stone-200 px-8 py-3 rounded-full font-bold hover:border-rose-600 hover:text-rose-700 transition-all fade-in-up">
                 <?php _e('Meet the Full Team', 'earlystart-early-learning'); ?>
             </a>
@@ -37,12 +37,18 @@ if (empty($team)) {
             <?php foreach ($team as $index => $member): ?>
                 <div class="group fade-in-up" style="transition-delay: <?php echo ($index + 1) * 100; ?>ms">
                     <div class="relative mb-6 rounded-[2rem] overflow-hidden aspect-[3/4] shadow-xl">
-                        <?php echo earlystart_responsive_unsplash(
-                            $member['image'],
-                            $member['name'],
-                            'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
-                            '(max-width: 768px) 100vw, 33vw'
-                        ); ?>
+                        <?php if (!empty($member['image'])): ?>
+                            <?php echo earlystart_responsive_unsplash(
+                                $member['image'],
+                                $member['name'],
+                                'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
+                                '(max-width: 768px) 100vw, 33vw'
+                            ); ?>
+                        <?php else: ?>
+                            <div class="w-full h-full bg-white flex items-center justify-center text-stone-300">
+                                <i data-lucide="user-round" class="w-16 h-16"></i>
+                            </div>
+                        <?php endif; ?>
                         <?php if (!empty($member['linkedin'])): ?>
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">

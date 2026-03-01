@@ -151,7 +151,7 @@ while (have_posts()):
 				<p class="text-white text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
 					<?php _e('We offer a paid RBT Training Program for compassionate individuals. We cover your 40-hour coursework, background checks, and exam fees.', 'earlystart-early-learning'); ?>
 				</p>
-				<a href="<?php echo esc_url(home_url('/contact/')); ?>"
+				<a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
 					class="bg-white text-rose-700 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-50 transition-colors shadow-2xl active:scale-95 inline-block">
 					<?php _e('Apply for Training', 'earlystart-early-learning'); ?>
 				</a>

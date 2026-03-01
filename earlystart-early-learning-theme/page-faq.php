@@ -107,7 +107,7 @@ get_header();
                 <?php _e('Our admissions coordinators are happy to jump on a call and talk through your specific situation. We are here to help.', 'earlystart-early-learning'); ?>
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="<?php echo esc_url(home_url('/contact/')); ?>"
+                <a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
                     class="bg-amber-600 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-amber-500 transition-all shadow-xl inline-block active:scale-95">
                     <?php _e('Message Admissions', 'earlystart-early-learning'); ?>
                 </a>

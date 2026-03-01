@@ -79,7 +79,7 @@ if (empty($services)) {
                                     <?php endforeach; ?>
                                 </ul>
                                 <div class="pt-4">
-                                    <a href="<?php echo esc_url(earlystart_get_theme_mod('earlystart_book_tour_url', home_url('/contact/'))); ?>"
+                                    <a href="<?php echo esc_url(earlystart_get_theme_mod('earlystart_book_tour_url', earlystart_get_page_link('contact'))); ?>"
                                         class="inline-flex items-center text-rose-700 font-bold group">
                                         <?php _e('Get Started with', 'earlystart-early-learning'); ?>
                                         <?php echo esc_html($service['title']); ?>

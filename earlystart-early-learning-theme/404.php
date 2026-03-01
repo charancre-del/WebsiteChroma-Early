@@ -43,12 +43,12 @@ get_header(); ?>
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center relative z-10">
-          <a href="<?php echo esc_url(home_url('/')); ?>"
+          <a href="<?php echo esc_url(earlystart_get_page_link('')); ?>"
             class="inline-flex items-center justify-center gap-2 bg-rose-600 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-rose-700 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 w-full sm:w-auto">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             <?php esc_html_e('Return to Homepage', 'earlystart-early-learning'); ?>
           </a>
-          <a href="<?php echo esc_url(home_url('/contact/')); ?>"
+          <a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
             class="inline-flex items-center justify-center gap-2 bg-stone-100 text-stone-700 px-8 py-3.5 rounded-full font-semibold hover:bg-stone-200 transition-all w-full sm:w-auto border border-stone-200">
             <i data-lucide="life-buoy" class="w-4 h-4"></i>
             <?php esc_html_e('Contact Support', 'earlystart-early-learning'); ?>

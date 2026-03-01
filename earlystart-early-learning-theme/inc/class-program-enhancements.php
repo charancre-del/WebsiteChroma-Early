@@ -584,7 +584,7 @@ class earlystart_Program_Enhancements
 
             <div id="age-result" class="hidden p-4 rounded-lg">
                 <p id="age-message" class="font-medium"></p>
-                <a id="age-cta" href="<?php echo esc_url(home_url('/schedule-a-tour/')); ?>"
+                <a id="age-cta" href="<?php echo esc_url($tour_url); ?>"
                     class="inline-block mt-3 px-6 py-2 bg-chroma-red text-white rounded-full text-sm font-bold hidden">
                     Schedule a Tour →
                 </a>

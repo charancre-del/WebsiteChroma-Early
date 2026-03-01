@@ -13,6 +13,47 @@ if (!defined('ABSPATH')) {
 
 class earlystart_Schema_Editor_Metabox
 {
+    private function detect_schema_type_for_post($post)
+    {
+        $post_type = get_post_type($post);
+        $title = strtolower(get_the_title($post));
+        $slug = strtolower($post->post_name ?? '');
+
+        if ($post_type === 'location') {
+            return 'MedicalClinic';
+        }
+
+        if ($post_type === 'team_member') {
+            return 'Person';
+        }
+
+        if ($post_type === 'program') {
+            if (strpos($title, 'speech') !== false || strpos($slug, 'speech') !== false) {
+                return 'SpeechPathology';
+            }
+
+            if (
+                strpos($title, 'occupational') !== false ||
+                strpos($slug, 'occupational') !== false ||
+                preg_match('/(^|-)ot($|-)/', $slug)
+            ) {
+                return 'OccupationalTherapy';
+            }
+
+            if (strpos($title, 'aba') !== false || strpos($slug, 'aba') !== false) {
+                return 'MedicalClinic';
+            }
+
+            return 'Service';
+        }
+
+        if ($post_type === 'post') {
+            return 'Article';
+        }
+
+        return 'Article';
+    }
+
     public function __construct()
     {
         add_action('add_meta_boxes', [$this, 'register_metabox']);
@@ -48,6 +89,7 @@ class earlystart_Schema_Editor_Metabox
         $gmb_synced = get_post_meta($post->ID, '_gmb_last_sync', true);
         $needs_review = get_post_meta($post->ID, '_earlystart_needs_review', true);
         $confidence = get_post_meta($post->ID, '_earlystart_schema_confidence', true);
+        $detected_schema_type = $this->detect_schema_type_for_post($post);
         ?>
 
         <div class="chroma-schema-tools">
@@ -79,7 +121,8 @@ class earlystart_Schema_Editor_Metabox
             <!-- Actions -->
             <div class="schema-actions">
                 <button type="button" class="button button-primary" id="chroma-generate-schema"
-                    data-post="<?php echo $post->ID; ?>">
+                    data-post="<?php echo $post->ID; ?>"
+                    data-schema-type="<?php echo esc_attr($detected_schema_type); ?>">
                     🤖 Generate Schema
                 </button>
 
@@ -303,7 +346,7 @@ class earlystart_Schema_Editor_Metabox
                         action: 'earlystart_generate_schema',
                         nonce: '<?php echo wp_create_nonce('earlystart_seo_nonce'); ?>',
                         post_id: $btn.data('post'),
-                        schema_type: 'ChildCare'
+                        schema_type: $btn.data('schema-type')
                     }, function (response) {
                         if (response.success) {
                             $btn.text('✓ Generated!');

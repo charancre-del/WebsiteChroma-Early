@@ -180,14 +180,4 @@ add_action('wp_head', function () {
   <?php endif; ?>
 </main>
 
-<footer class="bg-brand-ink text-white py-12 text-center text-sm opacity-60">
-  <p>&copy;
-    <?php echo esc_html(date('Y')); ?>
-    <?php bloginfo('name'); ?>.
-  </p>
-</footer>
-
-<?php wp_footer(); ?>
-</body>
-
-</html>
+<?php get_footer(); ?>

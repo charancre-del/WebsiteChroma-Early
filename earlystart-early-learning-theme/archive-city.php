@@ -87,7 +87,7 @@ $cities_query = new WP_Query(array(
                     </p>
                 </div>
                 <div class="shrink-0 relative z-10">
-                    <a href="<?php echo esc_url(home_url('/contact/')); ?>"
+                    <a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
                         class="bg-white text-sky-600 px-10 py-5 rounded-full font-bold text-lg hover:bg-stone-900 hover:text-white transition-all shadow-xl">
                         <?php _e('Talk to Intake', 'earlystart-early-learning'); ?>
                     </a>

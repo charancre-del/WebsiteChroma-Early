@@ -270,7 +270,7 @@ while (have_posts()):
                 <p class="text-xl text-stone-300 mb-10 leading-relaxed">
                     <?php _e('Schedule a personal tour to see how our clinicians engage with children and how our clinics are designed for discovery.', 'earlystart-early-learning'); ?>
                 </p>
-                <a href="<?php echo esc_url(home_url('/locations/')); ?>"
+                <a href="<?php echo esc_url(earlystart_get_page_link('locations')); ?>"
                     class="bg-rose-600 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-rose-500 transition-all shadow-xl inline-block active:scale-95">
                     <?php _e('Find a Clinic Near You', 'earlystart-early-learning'); ?>
                 </a>

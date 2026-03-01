@@ -49,6 +49,7 @@ $programs_query = new WP_Query(array(
                         $color = get_post_meta($program_id, 'program_color_scheme', true) ?: 'rose';
                         $features = get_post_meta($program_id, 'program_features', true);
                         $features_array = $features ? array_filter(array_map('trim', explode("\n", $features))) : array();
+                        $image = get_the_post_thumbnail_url($program_id, 'large') ?: '';
 
                         // Map colors to classes
                         $bg_class = "bg-{$color}-50";
@@ -70,11 +71,18 @@ $programs_query = new WP_Query(array(
                             class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-stone-100 group hover:shadow-xl transition-all duration-300 flex flex-col fade-in-up">
                             <div
                                 class="h-64 <?php echo esc_attr($bg_class); ?> flex items-center justify-center relative overflow-hidden">
-                                <div
-                                    class="absolute inset-0 <?php echo esc_attr($icon_bg_class); ?> opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                </div>
-                                <i data-lucide="<?php echo esc_attr($icon); ?>"
-                                    class="w-24 h-24 <?php echo esc_attr($icon_text_class); ?> group-hover:scale-110 transition-all duration-500"></i>
+                                <?php if ($image): ?>
+                                    <img src="<?php echo esc_url($image); ?>" alt="<?php the_title_attribute(); ?>"
+                                        class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-stone-900/25 via-transparent to-transparent">
+                                    </div>
+                                <?php else: ?>
+                                    <div
+                                        class="absolute inset-0 <?php echo esc_attr($icon_bg_class); ?> opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    </div>
+                                    <i data-lucide="<?php echo esc_attr($icon); ?>"
+                                        class="w-24 h-24 <?php echo esc_attr($icon_text_class); ?> group-hover:scale-110 transition-all duration-500"></i>
+                                <?php endif; ?>
                             </div>
                             <div class="p-10 flex-grow flex flex-col">
                                 <h3 class="text-3xl font-bold text-stone-900 mb-4"><?php the_title(); ?></h3>
@@ -170,7 +178,7 @@ $programs_query = new WP_Query(array(
             <p class="text-stone-300 text-xl mb-10 leading-relaxed">
                 <?php _e('Our clinical team offers free 15-minute consultations to help you understand which service is right for your child.', 'earlystart-early-learning'); ?>
             </p>
-            <a href="<?php echo esc_url(home_url('/contact/')); ?>"
+            <a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
                 class="bg-rose-600 text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-500 transition-all shadow-xl hover:shadow-rose-900/20 active:scale-95 inline-block">
                 <?php _e('Speak With A Director', 'earlystart-early-learning'); ?>
             </a>

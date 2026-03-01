@@ -91,7 +91,7 @@
 
 						<div class="pl-4">
 							<?php
-							$cta_url = earlystart_get_theme_mod('earlystart_book_tour_url', home_url('/contact/'));
+							$cta_url = earlystart_get_theme_mod('earlystart_book_tour_url', earlystart_get_page_link('contact'));
 							$cta_text = earlystart_get_theme_mod('earlystart_header_cta_text', 'Get Started');
 							?>
 							<a href="<?php echo esc_url($cta_url); ?>"

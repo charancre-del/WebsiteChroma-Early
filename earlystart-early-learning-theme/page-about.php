@@ -193,7 +193,7 @@ while (have_posts()):
 				<div class="grid md:grid-cols-3 gap-8">
 					<?php
 					for ($i = 1; $i <= 3; $i++) {
-						$icon = get_post_meta($page_id, "about_educator{$i}_icon", true);
+						$icon = earlystart_safe_lucide_icon(get_post_meta($page_id, "about_educator{$i}_icon", true), 'star');
 						$title = get_post_meta($page_id, "about_educator{$i}_title", true);
 						$desc = get_post_meta($page_id, "about_educator{$i}_desc", true);
 
@@ -202,7 +202,7 @@ while (have_posts()):
 								class="bg-stone-50 p-10 rounded-[2.5rem] border border-stone-100 hover:shadow-lg transition-all fade-in-up">
 								<div
 									class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 text-rose-500">
-									<i data-lucide="<?php echo esc_attr($icon ?: 'star'); ?>" class="w-7 h-7"></i>
+									<i data-lucide="<?php echo esc_attr($icon); ?>" class="w-7 h-7"></i>
 								</div>
 								<h3 class="font-bold text-stone-900 text-xl mb-3">
 									<?php echo esc_html($title); ?>
@@ -237,14 +237,14 @@ while (have_posts()):
 				<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 					<?php
 					for ($i = 1; $i <= 4; $i++) {
-						$icon = get_post_meta($page_id, "about_value{$i}_icon", true);
+						$icon = earlystart_safe_lucide_icon(get_post_meta($page_id, "about_value{$i}_icon", true), 'circle');
 						$title = get_post_meta($page_id, "about_value{$i}_title", true);
 						$desc = get_post_meta($page_id, "about_value{$i}_desc", true);
 
 						if ($title): ?>
 							<div
 								class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-rose-400/30 hover:bg-white/20 transition-all fade-in-up">
-								<i data-lucide="<?php echo esc_attr($icon ?: 'circle'); ?>"
+								<i data-lucide="<?php echo esc_attr($icon); ?>"
 									class="w-10 h-10 text-rose-200 mb-4"></i>
 								<h3 class="text-xl font-bold mb-2">
 									<?php echo esc_html($title); ?>
@@ -348,15 +348,21 @@ while (have_posts()):
 						while ($team_query->have_posts()):
 							$team_query->the_post();
 							$role = get_post_meta(get_the_ID(), 'team_member_title', true);
-							$image = get_the_post_thumbnail_url(get_the_ID(), 'large') ?: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&fm=webp?w=800&q=80&fm=webp';
+							$image = get_the_post_thumbnail_url(get_the_ID(), 'large') ?: '';
 							$bio = get_the_content();
 							?>
 							<div class="group fade-in-up">
 								<div
 									class="relative mb-6 overflow-hidden rounded-[2.5rem] aspect-[4/5] shadow-lg group-hover:shadow-2xl transition-all duration-500">
-									<img src="<?php echo esc_url($image); ?>"
-										class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-										alt="<?php the_title_attribute(); ?>">
+									<?php if ($image): ?>
+										<img src="<?php echo esc_url($image); ?>"
+											class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+											alt="<?php the_title_attribute(); ?>">
+									<?php else: ?>
+										<div class="w-full h-full bg-white flex items-center justify-center text-stone-300">
+											<i data-lucide="user-round" class="w-20 h-20"></i>
+										</div>
+									<?php endif; ?>
 									<div
 										class="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
 										<button

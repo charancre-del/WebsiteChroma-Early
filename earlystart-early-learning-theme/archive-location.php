@@ -77,11 +77,28 @@ $locations_query = earlystart_cached_query(
 	<!-- Locations Container -->
 	<section class="py-24 bg-stone-50">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="locations-grid">
-				<?php
-				if ($locations_query->have_posts()):
-					while ($locations_query->have_posts()):
-						$locations_query->the_post();
+			<div class="mb-16">
+				<h2 class="text-3xl font-bold text-stone-900 mb-8 border-b border-stone-200 pb-4">
+					<?php _e('Clinic Locations', 'earlystart-early-learning'); ?></h2>
+				<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="locations-grid-hubs">
+					<?php
+					$clinic_hubs = [];
+					$partner_campuses = [];
+
+					if ($locations_query->have_posts()) {
+						while ($locations_query->have_posts()) {
+							$locations_query->the_post();
+							if ('1' === get_post_meta(get_the_ID(), 'location_featured', true)) {
+								$clinic_hubs[] = get_post();
+							} else {
+								$partner_campuses[] = get_post();
+							}
+						}
+						wp_reset_postdata();
+					}
+
+					foreach ($clinic_hubs as $post):
+						setup_postdata($post);
 						$location_id = get_the_ID();
 						$location_fields = earlystart_get_location_fields($location_id);
 						$location_name = get_the_title();
@@ -97,28 +114,31 @@ $locations_query = earlystart_cached_query(
 						$is_new = get_post_meta($location_id, 'location_new', true);
 						$badge_text = $is_new ? __('New Campus', 'earlystart-early-learning') : __('Now Enrolling', 'earlystart-early-learning');
 						?>
-
 						<div class="location-card fade-in-up" data-region="<?php echo esc_attr($region_slug); ?>"
 							data-name="<?php echo esc_attr($location_name . ' ' . $city . ' ' . $zip); ?>">
 							<a href="<?php the_permalink(); ?>"
-								class="group block bg-white rounded-[3rem] overflow-hidden border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 h-full flex flex-col">
-								<div class="relative h-64 overflow-hidden">
+								class="group block bg-white rounded-[3rem] overflow-hidden border border-rose-200 hover:border-rose-300 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 h-full flex flex-col relative">
+								<div
+									class="absolute -top-10 -right-10 w-40 h-40 bg-rose-50 rounded-full blur-[40px] z-0 opacity-50 group-hover:bg-rose-100 transition-colors">
+								</div>
+								<div class="relative h-64 overflow-hidden z-10">
 									<?php if (has_post_thumbnail()): ?>
 										<?php the_post_thumbnail('medium_large', ['class' => 'w-full h-full object-cover group-hover:scale-110 transition-transform duration-700']); ?>
 									<?php else: ?>
-										<img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp"
-											class="w-full h-full object-cover" alt="Campus">
+										<div class="w-full h-full bg-rose-50 flex items-center justify-center text-rose-300">
+											<i data-lucide="building-2" class="w-14 h-14"></i>
+										</div>
 									<?php endif; ?>
 
 									<div class="absolute top-6 left-6 flex flex-col gap-2">
 										<span
-											class="bg-rose-600 text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest">
+											class="bg-rose-600 text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
 											<?php echo esc_html($badge_text); ?>
 										</span>
 									</div>
 								</div>
 
-								<div class="p-10 flex-1 flex flex-col">
+								<div class="p-10 flex-1 flex flex-col relative z-10">
 									<div
 										class="flex items-center gap-2 text-rose-700 font-bold text-[10px] uppercase tracking-widest mb-4">
 										<i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
@@ -135,21 +155,94 @@ $locations_query = earlystart_cached_query(
 
 									<div class="mt-auto flex items-center justify-between pt-8 border-t border-stone-50">
 										<span class="text-stone-300 text-[10px] font-bold uppercase tracking-widest">
-											<?php _e('Explore Campus', 'earlystart-early-learning'); ?>
+											<?php _e('Explore Clinic Location', 'earlystart-early-learning'); ?>
 										</span>
 										<div
-											class="w-12 h-12 bg-stone-50 text-stone-900 rounded-2xl flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-all">
+											class="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-all shadow-inner">
 											<i data-lucide="arrow-right" class="w-5 h-5"></i>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
-					<?php endwhile;
-					wp_reset_postdata();
-				endif; ?>
+					<?php endforeach;
+					wp_reset_postdata(); ?>
+				</div>
 			</div>
-		</div>
+
+			<div>
+				<h2 class="text-3xl font-bold text-stone-900 mb-8 border-b border-stone-200 pb-4">
+					<?php _e('Partner Locations', 'earlystart-early-learning'); ?></h2>
+				<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="locations-grid-partners">
+					<?php foreach ($partner_campuses as $post):
+						setup_postdata($post);
+						$location_id = get_the_ID();
+						$location_fields = earlystart_get_location_fields($location_id);
+						$location_name = get_the_title();
+						$city = $location_fields['city'];
+						$zip = $location_fields['zip'];
+						$address = earlystart_location_address_line($location_id);
+
+						$location_regions = wp_get_post_terms($location_id, 'location_region');
+						$region_term = !empty($location_regions) && !is_wp_error($location_regions) ? $location_regions[0] : null;
+						$region_slug = $region_term ? $region_term->slug : 'uncategorized';
+						$region_name = $region_term ? $region_term->name : __('Georgia', 'earlystart-early-learning');
+
+						$is_new = get_post_meta($location_id, 'location_new', true);
+						$badge_text = $is_new ? __('New Campus', 'earlystart-early-learning') : __('Now Enrolling', 'earlystart-early-learning');
+						?>
+						<div class="location-card fade-in-up" data-region="<?php echo esc_attr($region_slug); ?>"
+							data-name="<?php echo esc_attr($location_name . ' ' . $city . ' ' . $zip); ?>">
+							<a href="<?php the_permalink(); ?>"
+								class="group block bg-white rounded-[3rem] overflow-hidden border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 h-full flex flex-col">
+								<div class="relative h-64 overflow-hidden">
+									<?php if (has_post_thumbnail()): ?>
+										<?php the_post_thumbnail('medium_large', ['class' => 'w-full h-full object-cover group-hover:scale-110 transition-transform duration-700']); ?>
+									<?php else: ?>
+										<div class="w-full h-full bg-blue-50 flex items-center justify-center text-blue-300">
+											<i data-lucide="school" class="w-14 h-14"></i>
+										</div>
+									<?php endif; ?>
+
+									<div class="absolute top-6 left-6 flex flex-col gap-2">
+										<span
+											class="bg-blue-600 text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-md">
+											<?php echo esc_html($badge_text); ?>
+										</span>
+									</div>
+								</div>
+
+								<div class="p-10 flex-1 flex flex-col">
+									<div
+										class="flex items-center gap-2 text-stone-500 font-bold text-[10px] uppercase tracking-widest mb-4">
+										<i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+										<?php echo esc_html($region_name); ?>
+									</div>
+									<h2
+										class="text-2xl font-bold text-stone-900 mb-4 group-hover:text-blue-700 transition-colors">
+										<?php echo esc_html($location_name); ?>
+									</h2>
+									<p class="text-stone-700 text-sm leading-relaxed mb-10">
+										<?php echo esc_html($address); ?><br>
+										<?php echo esc_html("$city, GA $zip"); ?>
+									</p>
+
+									<div class="mt-auto flex items-center justify-between pt-8 border-t border-stone-50">
+										<span class="text-stone-300 text-[10px] font-bold uppercase tracking-widest">
+											<?php _e('Explore Partner Location', 'earlystart-early-learning'); ?>
+										</span>
+										<div
+											class="w-12 h-12 bg-stone-50 text-stone-900 rounded-2xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all shadow-inner">
+											<i data-lucide="arrow-right" class="w-5 h-5"></i>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					<?php endforeach;
+					wp_reset_postdata(); ?>
+				</div>
+			</div>
 	</section>
 
 	<!-- Global CTA -->

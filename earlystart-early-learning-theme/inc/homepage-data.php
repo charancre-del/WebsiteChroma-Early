@@ -125,26 +125,7 @@ function earlystart_home_services()
 
 function earlystart_home_default_team()
 {
-        return array(
-                array(
-                        'name' => __('Dr. Sarah Johnson', 'earlystart-early-learning'),
-                        'role' => __('Clinical Director, BCBA-D', 'earlystart-early-learning'),
-                        'image' => 'https://images.unsplash.com/photo-1559839734-2b71f1536783?auto=format&fit=crop&w=800&h=1000&q=80&fm=webp',
-                        'linkedin' => '#'
-                ),
-                array(
-                        'name' => __('Michael Chen, MS', 'earlystart-early-learning'),
-                        'role' => __('Lead Speech Pathologist', 'earlystart-early-learning'),
-                        'image' => 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=800&h=1000&q=80&fm=webp',
-                        'linkedin' => '#'
-                ),
-                array(
-                        'name' => __('Emily Rodriguez, OTR/L', 'earlystart-early-learning'),
-                        'role' => __('Occupational Therapy Lead', 'earlystart-early-learning'),
-                        'image' => 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&h=1000&q=80&fm=webp',
-                        'linkedin' => '#'
-                )
-        );
+        return array();
 }
 
 function earlystart_home_team()
@@ -166,16 +147,10 @@ function earlystart_home_team()
                         $query->the_post();
                         $post_id = get_the_ID();
 
-                        $image = get_the_post_thumbnail_url($post_id, 'large');
-                        if (!$image) {
-                                // Default fallback if no image is set
-                                $image = 'https://images.unsplash.com/photo-1559839734-2b71f1536783?auto=format&fit=crop&w=800&h=1000&q=80&fm=webp';
-                        }
-
                         $team[] = array(
                                 'name' => get_the_title(),
                                 'role' => get_post_meta($post_id, 'team_member_title', true) ?: '',
-                                'image' => $image,
+                                'image' => get_the_post_thumbnail_url($post_id, 'large') ?: '',
                                 'linkedin' => get_post_meta($post_id, 'team_member_linkedin', true) ?: '',
                         );
                 }
@@ -986,6 +961,8 @@ function earlystart_home_locations_preview()
                 $state = $fields['state'];
                 $phone = $fields['phone'];
                 $address = $fields['address'];
+                $is_clinic = '1' === get_post_meta($post_id, 'location_featured', true);
+                $kind = $is_clinic ? 'clinic' : 'partner';
 
                 $lat = $fields['latitude'];
                 $lng = $fields['longitude'];
@@ -999,19 +976,25 @@ function earlystart_home_locations_preview()
                                 'url' => $permalink,
                                 'city' => $city,
                                 'state' => $state,
+                                'kind' => $kind,
                         );
                 }
 
                 $location_data = array(
+                        'id' => $post_id,
                         'title' => $title,
                         'city' => $city,
                         'state' => $state,
                         'address' => $address,
                         'phone' => $phone,
                         'url' => $permalink,
+                        'lat' => $lat ? (float) $lat : '',
+                        'lng' => $lng ? (float) $lng : '',
+                        'kind' => $kind,
                 );
-
-                $featured[] = $location_data;
+                if ($is_clinic) {
+                        $featured[] = $location_data;
+                }
 
                 $terms = get_the_terms($post_id, $taxonomy);
                 if (empty($terms) || is_wp_error($terms)) {
@@ -1019,11 +1002,14 @@ function earlystart_home_locations_preview()
                 }
 
                 foreach ($terms as $term) {
-                        $group_key = $term->slug ? sanitize_title($term->slug) : sanitize_title($term->name);
+                        $prefix = $is_clinic ? 'clinic' : 'partner';
+                        $group_key = $prefix . '-' . ($term->slug ? sanitize_title($term->slug) : sanitize_title($term->name));
 
                         if (!isset($grouped[$group_key])) {
                                 $grouped[$group_key] = array(
                                         'label' => $term->name,
+                                        'designation' => $kind,
+                                        'designation_label' => $is_clinic ? __('Clinic Location', 'earlystart-early-learning') : __('Partner Location', 'earlystart-early-learning'),
                                         'slug' => $term->slug ?: $group_key,
                                         'term_id' => $term->term_id ?? 0,
                                         'locations' => array(),
@@ -1033,107 +1019,6 @@ function earlystart_home_locations_preview()
                         $grouped[$group_key]['locations'][] = $location_data;
                 }
         }
-
-        // If no dynamic locations exist, retain the previous static defaults.
-        $map_points = array(
-                array(
-                        'id' => 1,
-                        'name' => 'Johns Creek',
-                        'lat' => 34.028,
-                        'lng' => -84.198,
-                        'url' => '/locations/johns-creek',
-                        'city' => 'Johns Creek',
-                        'state' => 'GA',
-                ),
-                array(
-                        'id' => 2,
-                        'name' => 'Ellenwood',
-                        'lat' => 33.6,
-                        'lng' => -84.2,
-                        'url' => '/locations/ellenwood',
-                        'city' => 'Ellenwood',
-                        'state' => 'GA',
-                ),
-                array(
-                        'id' => 3,
-                        'name' => 'Duluth',
-                        'lat' => 34.0,
-                        'lng' => -84.14,
-                        'url' => '/locations/duluth',
-                        'city' => 'Duluth',
-                        'state' => 'GA',
-                ),
-                array(
-                        'id' => 4,
-                        'name' => 'Marietta',
-                        'lat' => 33.95,
-                        'lng' => -84.55,
-                        'url' => '/locations/marietta',
-                        'city' => 'Marietta',
-                        'state' => 'GA',
-                ),
-                array(
-                        'id' => 5,
-                        'name' => 'Tyrone',
-                        'lat' => 33.47,
-                        'lng' => -84.6,
-                        'url' => '/locations/tyrone',
-                        'city' => 'Tyrone',
-                        'state' => 'GA',
-                ),
-        );
-
-        $featured = array(
-                array(
-                        'title' => 'Johns Creek',
-                        'city' => 'Johns Creek',
-                        'state' => 'GA',
-                        'address' => '3580 Old Alabama Rd',
-                        'phone' => '(770) 555-0101',
-                        'url' => '/locations/johns-creek',
-                ),
-                array(
-                        'title' => 'Ellenwood',
-                        'city' => 'Ellenwood',
-                        'state' => 'GA',
-                        'address' => '2765 E Atlanta Rd',
-                        'phone' => '(770) 555-0102',
-                        'url' => '/locations/ellenwood',
-                ),
-                array(
-                        'title' => 'Duluth',
-                        'city' => 'Duluth',
-                        'state' => 'GA',
-                        'address' => '3152 Creek Dr',
-                        'phone' => '(770) 555-0103',
-                        'url' => '/locations/duluth',
-                ),
-                array(
-                        'title' => 'Marietta',
-                        'city' => 'Marietta',
-                        'state' => 'GA',
-                        'address' => '2424 Powder Springs Rd',
-                        'phone' => '(770) 555-0104',
-                        'url' => '/locations/marietta',
-                ),
-                array(
-                        'title' => 'Tyrone',
-                        'city' => 'Tyrone',
-                        'state' => 'GA',
-                        'address' => '291 Jenkins Rd',
-                        'phone' => '(770) 555-0105',
-                        'url' => '/locations/tyrone',
-                ),
-        );
-
-        $grouped = array(
-                'metro-atlanta' => array(
-                        'label' => 'Metro Atlanta',
-                        'slug' => 'metro-atlanta',
-                        'locations' => $featured,
-                ),
-        );
-
 
         foreach ($grouped as &$group) {
                 usort(
@@ -1149,6 +1034,10 @@ function earlystart_home_locations_preview()
                 uasort(
                         $grouped,
                         function ($a, $b) {
+                                if (($a['designation'] ?? 'partner') !== ($b['designation'] ?? 'partner')) {
+                                        return ('clinic' === ($a['designation'] ?? 'partner')) ? -1 : 1;
+                                }
+
                                 return strnatcasecmp($a['label'], $b['label']);
                         }
                 );

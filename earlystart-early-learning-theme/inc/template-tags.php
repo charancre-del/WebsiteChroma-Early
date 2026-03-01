@@ -528,6 +528,133 @@ function earlystart_get_region_color_from_term($term_id)
 }
 
 /**
+ * Shared list of accepted insurance carriers.
+ *
+ * @return array
+ */
+function earlystart_get_supported_insurances()
+{
+    return array(
+        'Amerigroup',
+        'CareSource',
+        'Peach State',
+        'Georgia Medicaid',
+        'United Healthcare',
+        'Optum',
+        'Tricare',
+        'Aetna',
+        'Anthem',
+        'Ambetter',
+        'Blue Cross Blue Shield',
+        'Cigna',
+    );
+}
+
+/**
+ * Validate lucide icon names from post meta.
+ *
+ * @param string $icon Icon slug candidate.
+ * @param string $fallback Fallback icon slug.
+ * @return string
+ */
+function earlystart_safe_lucide_icon($icon, $fallback = 'circle')
+{
+    $icon = sanitize_key((string) $icon);
+
+    if (!$icon || !preg_match('/^[a-z0-9-]+$/', $icon)) {
+        return $fallback;
+    }
+
+    return $icon;
+}
+
+/**
+ * Global frontend spacing and mobile guardrails.
+ */
+function earlystart_global_content_styles()
+{
+    if (is_admin()) {
+        return;
+    }
+    ?>
+    <style id="earlystart-global-content-styles">
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
+        .prose,
+        .post-content {
+            overflow-wrap: anywhere;
+            word-break: normal;
+        }
+
+        .prose p,
+        .prose li,
+        .post-content p,
+        .post-content li {
+            line-height: 1.8;
+        }
+
+        .prose p + p,
+        .post-content p + p,
+        .post-content ul,
+        .post-content ol,
+        .post-content blockquote,
+        .post-content figure {
+            margin-top: 1.5rem;
+        }
+
+        .post-content h2,
+        .post-content h3,
+        .post-content h4 {
+            line-height: 1.25;
+        }
+
+        .post-content img,
+        .post-content iframe,
+        .post-content video,
+        .prose img,
+        .prose iframe,
+        .prose video {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .clinical-form iframe,
+        .contact-form iframe,
+        iframe[src*="leadconnectorhq.com"] {
+            width: 100% !important;
+            max-width: 100%;
+            border: 0;
+        }
+
+        @media (max-width: 767px) {
+            .pt-20 {
+                padding-top: 4.5rem;
+            }
+
+            [data-chroma-map="true"] {
+                min-height: 380px;
+                height: 380px !important;
+            }
+
+            .prose,
+            .post-content {
+                font-size: 1rem;
+            }
+
+            .post-content blockquote {
+                font-size: 1.05rem;
+                padding-left: 1rem;
+            }
+        }
+    </style>
+    <?php
+}
+add_action('wp_head', 'earlystart_global_content_styles', 20);
+
+/**
  * Region Emoji Helper
  */
 function earlystart_region_emoji($label)
