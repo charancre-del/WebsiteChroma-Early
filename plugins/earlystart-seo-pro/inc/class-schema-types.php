@@ -440,7 +440,7 @@ class earlystart_Schema_Types
                 'serviceType' => [
                     'type' => 'text',
                     'label' => 'Service Type',
-                    'description' => 'The type of service (e.g., "Childcare", "Plumbing").'
+                    'description' => 'The type of service (e.g., "Pediatric Therapy", "Plumbing").'
                 ],
                 'provider_name' => [
                     'type' => 'text',

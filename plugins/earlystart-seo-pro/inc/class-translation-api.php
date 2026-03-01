@@ -224,7 +224,7 @@ class earlystart_Translation_API
             '_earlystart_es_excerpt' => $post->post_excerpt,
         ];
 
-        $translated = earlystart_Translation_Engine::translate_bulk($fields, 'es', 'Translate for a childcare website.');
+        $translated = earlystart_Translation_Engine::translate_bulk($fields, 'es', 'Translate for a pediatric therapy website.');
 
         if (isset($translated['_error'])) {
             return new WP_Error('translation_failed', $translated['_error'], ['status' => 500]);

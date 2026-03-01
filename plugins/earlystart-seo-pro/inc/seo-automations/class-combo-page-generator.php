@@ -272,7 +272,7 @@ class earlystart_Combo_Page_Generator
         
         // Ensure minimum 60 chars
         if (strlen($description) < 60) {
-            $description .= " Trusted childcare serving families in Metro Atlanta.";
+            $description .= " Trusted pediatric therapy serving families in Metro Atlanta.";
         }
         
         return $description;
@@ -429,7 +429,7 @@ class earlystart_Combo_Page_Generator
         $str_view_campus = __('View Campus', 'chroma-excellence');
         $str_visit_classroom = sprintf(__('Visit Our %s Classroom', 'chroma-excellence'), $t_city_name);
         $str_see_environment = sprintf(__('See the %s environment in person. Meet our Director and teachers.', 'chroma-excellence'), $t_prog_title);
-        $str_more_options = sprintf(__('More Childcare Options in %s', 'chroma-excellence'), $t_city_name);
+        $str_more_options = sprintf(__('More Pediatric Therapy Options in %s', 'chroma-excellence'), $t_city_name);
         
         // Location Text Logic
         $t_major_road = $major_road;

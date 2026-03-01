@@ -69,7 +69,7 @@ class earlystart_Admin_Help
                 <!-- City Pages -->
                 <div class="chroma-doc-section">
                     <h3>🏙️ City Landing Pages</h3>
-                    <p>To create a hyperlocal page (e.g., "Childcare in Canton"):</p>
+                    <p>To create a hyperlocal page (e.g., "Pediatric Therapy in Canton"):</p>
                     <ol>
                         <li>Go to <strong>Cities > Add New</strong> in the admin menu.</li>
                         <li>Enter the city name as the title.</li>

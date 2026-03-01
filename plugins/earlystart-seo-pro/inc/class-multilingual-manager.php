@@ -583,7 +583,7 @@ class earlystart_Multilingual_Manager
                 'Skip to content' => 'Saltar al contenido',
                 'Toggle menu' => 'Alternar menú',
                 'Close menu' => 'Cerrar menú',
-                'Premium childcare & early education across Metro Atlanta.' => 'Cuidado infantil premium y educación temprana en todo Metro Atlanta.',
+                'Premium pediatric therapy & early education across Metro Atlanta.' => 'Cuidado infantil premium y educación temprana en todo Metro Atlanta.',
                 'Chroma Early Learning Academy. All rights reserved.' => 'Chroma Early Learning Academy. Todos los derechos reservados.',
                 'Ready to experience the Chroma difference?' => '¿Listo para experimentar la diferencia Chroma?',
                 'Schedule a Tour' => 'Agenda un Recorrido',
@@ -741,7 +741,7 @@ class earlystart_Multilingual_Manager
                 'Also proudly serving families in:' => 'También sirviendo orgullosamente a familias en:',
                 'Programs Available in %s' => 'Programas Disponibles en %s',
                 'World-class curriculum served locally.' => 'Currículo de clase mundial servido localmente.',
-                'Questions about Childcare in %s' => 'Preguntas sobre el Cuidado Infantil en %s',
+                'Questions about Pediatric Therapy in %s' => 'Preguntas sobre el Cuidado Infantil en %s',
                 'Do you offer GA Lottery Pre-K in %s?' => '¿Ofrecen GA Lottery Pre-K en %s?',
                 'Yes! Our locations serving %s participate in the Georgia Lottery Pre-K program. It is tuition-free for all 4-year-olds living in Georgia.' => '¡Sí! Nuestras ubicaciones que sirven a %s participan en el programa Georgia Lottery Pre-K. Es gratuito para todos los niños de 4 años que viven en Georgia.',
                 'Do you provide transportation from %s schools?' => '¿Proporcionan transporte desde las escuelas de %s?',
@@ -811,7 +811,7 @@ class earlystart_Multilingual_Manager
                 'No current openings. Please check back later.' => 'No hay vacantes actuales. Por favor, vuelva a consultar más tarde.',
                 'Apply for Position' => 'Solicitar Posición',
                 'View Current Openings' => 'Ver Vacantes Actuales',
-                'Corporate Childcare Solutions:' => 'Soluciones Corporativas de Cuidado Infantil:',
+                'Corporate Pediatric Therapy Solutions:' => 'Soluciones Corporativas de Cuidado Infantil:',
                 'Critical Infrastructure for Your Team' => 'Infraestructura Crítica para su Equipo',
                 'Our Partnership Models' => 'Nuestros Modelos de Asociación',
                 'Company Name' => 'Nombre de la Empresa',
@@ -1066,7 +1066,7 @@ class earlystart_Multilingual_Manager
                 'Select the campus closest to your home or work.' => 'Seleccione el campus más cercano a su hogar o trabajo.',
                 'Visit Our %s Classroom' => 'Visite Nuestra Aula de %s',
                 'See the %s environment in person. Meet our Director and teachers.' => 'Vea el ambiente de %s en persona. Conozca a nuestra Directora y maestros.',
-                'More Childcare Options in %s' => 'Más Opciones de Cuidado Infantil en %s',
+                'More Pediatric Therapy Options in %s' => 'Más Opciones de Cuidado Infantil en %s',
                 'Other locations in %s' => 'Otras ubicaciones en %s',
 
                 // Homepage Hero
@@ -1103,7 +1103,7 @@ class earlystart_Multilingual_Manager
 
                 // FAQ
                 'Common questions from parents' => 'Preguntas comunes de los padres',
-                'We’ve answered a few of the questions parents ask most when choosing childcare and early learning.' => 'Hemos respondido algunas de las preguntas que los padres hacen con más frecuencia al elegir guardería y aprendizaje temprano.',
+                'We’ve answered a few of the questions parents ask most when choosing pediatric therapy and early learning.' => 'Hemos respondido algunas de las preguntas que los padres hacen con más frecuencia al elegir guardería y aprendizaje temprano.',
 
                 // Reviews Defaults
                 'Marietta Campus' => 'Campus de Marietta',
@@ -1136,7 +1136,7 @@ class earlystart_Multilingual_Manager
                 'Prismpath™ Focus' => 'Enfoque Prismpath™',
 
                 // Footer & Sticky CTA
-                'Premium childcare & early education across Metro Atlanta.' => 'Cuidado infantil de primera y educación temprana en todo Metro Atlanta.',
+                'Premium pediatric therapy & early education across Metro Atlanta.' => 'Cuidado infantil de primera y educación temprana en todo Metro Atlanta.',
                 'Quick Links' => 'Enlaces Rápidos',
                 'Connect With Us' => 'Conéctate con Nosotros',
                 'Latest Blogs' => 'Últimos Blogs',

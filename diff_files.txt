@@ -1,0 +1,62 @@
+commit 59bb01276919908559c726d6a0d45df7910d878b
+Author: charancre-del <charancre@gmail.com>
+Date:   Sat Feb 28 21:15:38 2026 -0500
+
+    Update class geo routes
+
+M	plugins/chroma-agent-api/includes/routes/class-geo-routes.php
+
+commit e9ab3a8ccf3a8718a23cfba79e3b9824fb8188a7
+Author: charancre-del <charancre@gmail.com>
+Date:   Sat Feb 28 05:02:23 2026 -0500
+
+    fix blank editor page
+
+A	diag-edit-screen.php
+A	docs/API-ENDPOINT-AUDIT-REPORT-2026-02-27.md
+A	docs/BLOG-CLS-REMEDIATION-PLAN.md
+A	docs/SCHEMA-CORE-PROGRAM-LOCATION-FIX-PLAN.md
+A	docs/SCHEMA-FULL-WARNINGS-ERRORS-AUDIT.md
+A	docs/SCHEMA-STRUCTURAL-AUDIT.md
+A	docs/THEME-AUDIT-FINDINGS-2026-02-26.md
+A	docs/THEME-PLUGIN-ENDPOINT-METABOX-AUDIT-2026-02-27.md
+M	plugins/chroma-seo-pro-reset/inc/class-translation-engine.php
+A	reports/active_schema_20260225_013321.sqlite
+A	reports/active_schema_20260225_013745.sqlite
+A	reports/active_schema_20260225_020508.sqlite
+A	reports/active_schema_20260225_031423.sqlite
+A	reports/ajax-hooks-raw.txt
+A	reports/api-endpoint-audit-raw.txt
+A	reports/full-meta-endpoint-scan.txt
+A	reports/gen_meta_inventory.ps1
+A	reports/meta-box-explicit-keys.txt
+A	reports/meta-box-file-matrix.csv
+A	reports/meta-box-files.txt
+A	reports/meta-box-inventory.csv
+A	reports/meta-box-key-matrix.csv
+A	reports/meta-boxes-raw.txt
+A	reports/meta-keys-not-in-seo-allowlist.txt
+A	reports/meta-save-raw.txt
+A	reports/permissions-raw.txt
+A	reports/php-files-list.txt
+A	reports/post-meta-registry-raw.txt
+A	reports/rest-routes-raw.txt
+A	reports/save-hook-inventory.csv
+A	reports/schema_validation_audit_20260225_014750.json
+A	reports/schema_validation_audit_20260225_014750.md
+A	reports/schema_validation_audit_20260225_020508.json
+A	reports/schema_validation_audit_20260225_020508.md
+A	reports/schema_validation_audit_20260225_032030.json
+A	reports/schema_validation_audit_20260225_032030.md
+A	reports/schema_validation_audit_full_20260225_020508.json
+A	reports/schema_validation_audit_full_20260225_032030.json
+A	reports/schema_validation_structural_20260225_020508.json
+A	reports/schema_validation_structural_20260225_032030.json
+A	reports/seo-base-metabox-classes.txt
+A	reports/seo-base-metabox-keys.csv
+A	reports/seo-base-metabox-matrix.csv
+A	reports/seo-meta-allowlist-defaults.txt
+A	scripts/audit_schema_from_db.py
+A	scripts/audit_schema_full_from_db.py
+A	scripts/audit_schema_structural_from_db.py
+A	scripts/download_active_schema.py

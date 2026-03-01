@@ -264,7 +264,7 @@ class earlystart_Homepage_Translation_Admin {
         $translated = earlystart_Translation_Engine::translate_bulk(
             $fields_to_translate, 
             'es', 
-            'Translate for a childcare early learning academy website homepage. Use friendly, professional Spanish (Latin American).',
+            'Translate for a pediatric therapy early learning academy website homepage. Use friendly, professional Spanish (Latin American).',
             true // Force fresh translation
         );
 

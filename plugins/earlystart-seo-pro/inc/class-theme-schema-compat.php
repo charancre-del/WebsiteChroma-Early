@@ -522,7 +522,7 @@ if (!function_exists('earlystart_program_schema_pro')) {
 }
 /**
  * Add FAQPage Schema to City Pages
- * Generates common FAQ questions about childcare in the specific city
+ * Generates common FAQ questions about pediatric therapy in the specific city
  */
 if (!function_exists('earlystart_city_faq_schema_output')) {
     function earlystart_city_faq_schema_output()

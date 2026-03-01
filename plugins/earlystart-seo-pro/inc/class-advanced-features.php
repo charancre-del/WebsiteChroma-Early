@@ -273,7 +273,7 @@ class earlystart_Image_Analyzer
             return new WP_Error('no_api_key', 'No API key configured');
         }
         
-        $prompt = "You are an SEO expert. Analyze this image of a childcare/preschool facility and generate:
+        $prompt = "You are an SEO expert. Analyze this image of a pediatric therapy/preschool facility and generate:
 1. An SEO-optimized alt text (max 125 chars)
 2. A caption for the image
 3. Keywords relevant to the image

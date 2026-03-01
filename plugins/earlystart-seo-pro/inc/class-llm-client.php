@@ -415,7 +415,7 @@ class earlystart_LLM_Client
         $prompt .= "IMPORTANT: Website data is the source of truth. Only use GMB/web data to FILL GAPS, not override.\n\n";
 
         $prompt .= "=== BUSINESS CONTEXT ===\n";
-        $prompt .= "- Industry: Early Childhood Education / Licensed Childcare\n";
+        $prompt .= "- Industry: Early Childhood Education / Licensed Pediatric Therapy\n";
         $prompt .= "- Service Type: Pediatric Therapy, Early Intervention, ABA, Speech\n";
         $prompt .= "- Location Type: Physical Business Locations in Georgia\n";
         $prompt .= "- Brand: Chroma Early Learning\n\n";
@@ -896,7 +896,7 @@ class earlystart_LLM_Client
         if ($cached)
             return $cached;
 
-        $prompt = "You are a professional translator for a high-end childcare brand.\n";
+        $prompt = "You are a professional translator for a high-end pediatric therapy brand.\n";
         $prompt .= "Translate the following content to " . ($target_lang === 'es' ? 'Spanish (Latin American)' : $target_lang) . ".\n";
         $prompt .= "Maintain HTML tags exactly if present.\n";
         $prompt .= "Tone: Warm, professional, educational, and welcoming.\n";
@@ -1133,7 +1133,7 @@ class earlystart_LLM_Client
             "Fingerprint Check-in"
         ];
 
-        $prompt = "Analyze the following childcare location content and identify which safety/facility amenities are explicitly mentioned or clearly implied.\n";
+        $prompt = "Analyze the following pediatric therapy location content and identify which safety/facility amenities are explicitly mentioned or clearly implied.\n";
         $prompt .= "Return ONLY a JSON array of strings containing the matches from this specific list:\n";
         $prompt .= "- " . implode("\n- ", $amenities_list) . "\n\n";
         $prompt .= "If none are found, return an empty array []. Do not invent new terms.\n\n";
