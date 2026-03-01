@@ -262,115 +262,281 @@ function earlystart_seed_core_content()
         }
     }
 
-    // 5. Create Sample Locations
+    // 5. Create Chroma Locations
     $locations = array(
-        'duluth' => array(
-            'title' => 'Duluth',
-            'region' => 'Gwinnett',
+        'cherokee-academy' => array(
+            'title' => 'Cherokee Academy by Early Start Early Learning',
+            'region' => 'Cherokee',
             'meta' => array(
-                'location_city' => 'Duluth',
+                'location_address' => '1205 Upper Burris Road',
+                'location_city' => 'Canton',
                 'location_state' => 'GA',
-                'location_zip' => '30096',
-                'location_address' => '3152 Creek Dr',
-                'location_phone' => '(470) 470-3436',
-                'location_email' => 'duluth@earlystarttherapy.com',
-                'location_hours' => '8am - 6pm',
-                'location_latitude' => '33.9961',
-                'location_longitude' => '-84.1508',
-                'location_tagline' => 'Serving Duluth families.',
-                'location_google_rating' => '5.0',
-            )
+                'location_zip' => '30114',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
         ),
-        'marietta' => array(
-            'title' => 'Marietta',
-            'region' => 'West Metro',
+        'east-cobb-campus' => array(
+            'title' => 'East Cobb Campus',
+            'region' => 'Cobb',
             'meta' => array(
+                'location_address' => '2499 Shallowford Road NE',
                 'location_city' => 'Marietta',
                 'location_state' => 'GA',
-                'location_zip' => '30064',
-                'location_address' => '2424 Powder Springs Rd SW',
-                'location_phone' => '(470) 928-5659',
-                'location_email' => 'marietta@earlystarttherapy.com',
-                'location_hours' => '8am - 6pm',
-                'location_latitude' => '33.9056',
-                'location_longitude' => '-84.5985',
-                'location_tagline' => 'Serving West Cobb families.',
-                'location_google_rating' => '5.0',
-            )
+                'location_zip' => '30066',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
         ),
-        'johns-creek' => array(
-            'title' => 'Johns Creek',
-            'region' => 'North Metro',
+        'ellenwood-campus' => array(
+            'title' => 'Ellenwood Campus',
+            'region' => 'Dekalb',
             'meta' => array(
-                'location_city' => 'Johns Creek',
-                'location_state' => 'GA',
-                'location_zip' => '30022',
-                'location_address' => '3580 Old Alabama Rd',
-                'location_phone' => '(470) 719-1154',
-                'location_email' => 'johnscreek@earlystarttherapy.com',
-                'location_hours' => '8am - 6pm',
-                'location_latitude' => '34.0289',
-                'location_longitude' => '-84.1986',
-                'location_tagline' => 'Serving North Fulton families.',
-                'location_google_rating' => '5.0',
-            )
-        ),
-        'tyrone' => array(
-            'title' => 'Tyrone',
-            'region' => 'South Metro',
-            'meta' => array(
-                'location_city' => 'Tyrone',
-                'location_state' => 'GA',
-                'location_zip' => '30290',
-                'location_address' => '291 Jenkins Rd',
-                'location_phone' => '(470) 450-1130',
-                'location_email' => 'tyrone@earlystarttherapy.com',
-                'location_hours' => '8am - 6pm',
-                'location_latitude' => '33.4735',
-                'location_longitude' => '-84.5938',
-                'location_tagline' => 'Serving Fayette County families.',
-                'location_google_rating' => '5.0',
-            )
-        ),
-        'ellenwood' => array(
-            'title' => 'Ellenwood',
-            'region' => 'South Metro',
-            'meta' => array(
+                'location_address' => '2765 E Atlanta Rd',
                 'location_city' => 'Ellenwood',
                 'location_state' => 'GA',
                 'location_zip' => '30294',
-                'location_address' => '2765 E Atlanta Rd',
-                'location_phone' => '(470) 684-6067',
-                'location_email' => 'ellenwood@earlystarttherapy.com',
-                'location_hours' => '8am - 6pm',
-                'location_latitude' => '33.6190',
-                'location_longitude' => '-84.2816',
-                'location_tagline' => 'Serving Henry County families.',
-                'location_google_rating' => '5.0',
-            )
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+                'location_featured' => '1',
+            ),
+        ),
+        'johns-creek-campus' => array(
+            'title' => 'Johns Creek',
+            'region' => 'Fulton',
+            'meta' => array(
+                'location_address' => '3580 Old Alabama Rd',
+                'location_city' => 'Johns Creek',
+                'location_state' => 'GA',
+                'location_zip' => '30005',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+                'location_featured' => '1',
+            ),
+        ),
+        'jonesboro-campus' => array(
+            'title' => 'Jonesboro Campus',
+            'region' => 'Clayton',
+            'meta' => array(
+                'location_address' => '1832 Noahs Ark Road',
+                'location_city' => 'Jonesboro',
+                'location_state' => 'GA',
+                'location_zip' => '30236',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'lawrenceville-campus' => array(
+            'title' => 'Lawrenceville Campus',
+            'region' => 'Gwinnett',
+            'meta' => array(
+                'location_address' => '3650 Club Drive',
+                'location_city' => 'Lawrenceville',
+                'location_state' => 'GA',
+                'location_zip' => '30044',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'lilburn-campus' => array(
+            'title' => 'Lilburn Campus',
+            'region' => 'Gwinnett',
+            'meta' => array(
+                'location_address' => '917 Killian Hill Road Southwest',
+                'location_city' => 'Lilburn',
+                'location_state' => 'GA',
+                'location_zip' => '30047',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'mcdonough-campus' => array(
+            'title' => 'Mcdonough',
+            'region' => 'Henry',
+            'meta' => array(
+                'location_address' => '90 Hunters Chase',
+                'location_city' => 'Mcdonough',
+                'location_state' => 'GA',
+                'location_zip' => '30253',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'midway-campus' => array(
+            'title' => 'Midway Campus',
+            'region' => 'Fulton',
+            'meta' => array(
+                'location_address' => '4015 Discovery Dr',
+                'location_city' => 'Alpharetta',
+                'location_state' => 'GA',
+                'location_zip' => '30004',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'newnan-campus' => array(
+            'title' => 'Newnan Campus',
+            'region' => 'Coweta',
+            'meta' => array(
+                'location_address' => '40 Bledsoe Rd',
+                'location_city' => 'Newnan',
+                'location_state' => 'GA',
+                'location_zip' => '30265',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'north-hall-campus' => array(
+            'title' => 'North Hall Campus, Murraysville',
+            'region' => 'Hall',
+            'meta' => array(
+                'location_address' => '5760 Wade Whelchel Road',
+                'location_city' => 'Murraysville',
+                'location_state' => 'GA',
+                'location_zip' => '30269',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'pleasanthill-campus' => array(
+            'title' => 'Pleasanthill Campus, Duluth',
+            'region' => 'Gwinnett',
+            'meta' => array(
+                'location_address' => '3152 Creek Dr NW',
+                'location_city' => 'Duluth',
+                'location_state' => 'GA',
+                'location_zip' => '30096',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+                'location_featured' => '1',
+            ),
+        ),
+        'rivergreen-campus' => array(
+            'title' => 'Rivergreen Campus',
+            'region' => 'Cherokee',
+            'meta' => array(
+                'location_address' => '200 River Green Avenue',
+                'location_city' => 'Canton',
+                'location_state' => 'GA',
+                'location_zip' => '30114',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'roswell-campus' => array(
+            'title' => 'Roswell Campus',
+            'region' => 'Fulton',
+            'meta' => array(
+                'location_address' => '1255 Upper Hembree Road',
+                'location_city' => 'Roswell',
+                'location_state' => 'GA',
+                'location_zip' => '30076',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'satellite-blvd-campus' => array(
+            'title' => 'Satellite Bvd Campus',
+            'region' => 'Gwinnett',
+            'meta' => array(
+                'location_address' => '3730 Satellite Boulevard',
+                'location_city' => 'Duluth',
+                'location_state' => 'GA',
+                'location_zip' => '30096',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'south-cobb-campus' => array(
+            'title' => 'South Cobb Campus, Austell',
+            'region' => 'Cobb',
+            'meta' => array(
+                'location_address' => '7225 Premier Lane',
+                'location_city' => 'Austell',
+                'location_state' => 'GA',
+                'location_zip' => '30168',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'tramore-campus' => array(
+            'title' => 'Tramore Campus',
+            'region' => 'Cobb',
+            'meta' => array(
+                'location_address' => '2081 Mesa Valley Way',
+                'location_city' => 'Austell',
+                'location_state' => 'GA',
+                'location_zip' => '30106',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+            ),
+        ),
+        'tyrone-campus' => array(
+            'title' => 'Tyrone Campus',
+            'region' => 'Fayette',
+            'meta' => array(
+                'location_address' => '291 Jenkins Road',
+                'location_city' => 'Tyrone',
+                'location_state' => 'GA',
+                'location_zip' => '30290',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+                'location_featured' => '1',
+            ),
+        ),
+        'west-cobb-campus' => array(
+            'title' => 'West Cobb Campus',
+            'region' => 'Cobb',
+            'meta' => array(
+                'location_address' => '2424 Powder Springs Rd SW',
+                'location_city' => 'Marietta',
+                'location_state' => 'GA',
+                'location_zip' => '30064',
+                'location_hours' => 'Mon - Fri: 8:00 AM - 6:00 PM',
+                'location_google_rating' => '4.9',
+                'location_featured' => '1',
+            ),
         ),
     );
 
     foreach ($locations as $slug => $data) {
         $existing = get_page_by_path($slug, OBJECT, 'location');
         if (!$existing) {
+            // Fallback for older seeded locations with different slugs.
+            $existing = get_page_by_title($data['title'], OBJECT, 'location');
+        }
+
+        if ($existing) {
+            $post_id = $existing->ID;
+            wp_update_post(array(
+                'ID' => $post_id,
+                'post_title' => $data['title'],
+                'post_name' => $slug,
+                'post_status' => 'publish',
+            ));
+        } else {
             $post_id = wp_insert_post(array(
                 'post_title' => $data['title'],
                 'post_name' => $slug,
                 'post_status' => 'publish',
                 'post_type' => 'location',
             ));
-            if (!is_wp_error($post_id)) {
-                // Set Meta
-                if (!empty($data['meta'])) {
-                    foreach ($data['meta'] as $key => $value) {
-                        update_post_meta($post_id, $key, $value);
-                    }
+        }
+
+        if (!is_wp_error($post_id)) {
+            // Always refresh location meta so rerunning the seed keeps hubs in sync.
+            if (!empty($data['meta'])) {
+                foreach ($data['meta'] as $key => $value) {
+                    update_post_meta($post_id, $key, $value);
                 }
-                // Set Region Term
-                if (!empty($data['region'])) {
-                    wp_set_object_terms($post_id, $data['region'], 'location_region');
-                }
+            }
+
+            // Reset featured flag when omitted from the location record.
+            $is_featured = !empty($data['meta']['location_featured']) ? '1' : '0';
+            update_post_meta($post_id, 'location_featured', $is_featured);
+
+            if (!empty($data['region'])) {
+                wp_set_object_terms($post_id, $data['region'], 'location_region');
             }
         }
     }

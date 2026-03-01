@@ -469,6 +469,15 @@ function earlystart_render_location_custom_fields_meta_box($post)
 		</div>
 
 	<div class="chroma-meta-field">
+		<label for="location_featured">
+			<input type="checkbox" id="location_featured" name="location_featured" value="1"
+				<?php checked(get_post_meta($post->ID, 'location_featured', true), '1'); ?> />
+			<?php _e('Clinic Location (Featured)', 'earlystart-early-learning'); ?>
+		</label>
+		<small><?php _e('Check to feature this location as a Clinical Hub on the Locations page.', 'earlystart-early-learning'); ?></small>
+	</div>
+
+	<div class="chroma-meta-field">
 		<label for="location_quality_rated">
 			<input type="checkbox" id="location_quality_rated" name="location_quality_rated" value="1"
 				<?php checked(get_post_meta($post->ID, 'location_quality_rated', true), '1'); ?> />
@@ -791,6 +800,10 @@ function earlystart_save_location_custom_fields($post_id)
 	// Save checkbox field for quality_rated
 	$quality_rated = isset($_POST['location_quality_rated']) ? '1' : '';
 	update_post_meta($post_id, 'location_quality_rated', $quality_rated);
+
+	// Save checkbox field for featured clinics
+	$featured = isset($_POST['location_featured']) ? '1' : '';
+	update_post_meta($post_id, 'location_featured', $featured);
 }
 add_action('save_post_location', 'earlystart_save_location_custom_fields');
 

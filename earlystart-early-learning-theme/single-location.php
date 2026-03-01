@@ -13,25 +13,36 @@ while (have_posts()):
 	$location_id = get_the_ID();
 	$location_name = get_the_title();
 
-	// Get location meta
 	$phone = $location_fields['phone'];
 	$email = $location_fields['email'];
 	$address = earlystart_location_address_line();
 	$city = $location_fields['city'];
 	$state = $location_fields['state'];
 	$zip = $location_fields['zip'];
-	$lat = $location_fields['latitude'];
-	$lng = $location_fields['longitude'];
-	$license_number = $location_fields['license_number'];
 
-	// Additional meta fields (with defaults)
-	$hero_subtitle = earlystart_get_translated_meta($location_id, 'location_hero_subtitle') ?: __('Now Enrolling: Pre-K & Toddlers', 'earlystart-early-learning');
+	$hero_subtitle = earlystart_get_translated_meta($location_id, 'location_hero_subtitle') ?: __('Now Enrolling', 'earlystart-early-learning');
 	$hero_gallery_raw = earlystart_get_translated_meta($location_id, 'location_hero_gallery');
-	$virtual_tour_embed = earlystart_get_translated_meta($location_id, 'location_virtual_tour_embed');
-	$tagline = earlystart_get_translated_meta($location_id, 'location_tagline') ?: sprintf(__("%s's home for brilliant beginnings.", 'earlystart-early-learning'), $city);
-	$description = earlystart_get_translated_meta($location_id, 'location_description') ?: get_the_content();
+	$tagline = earlystart_get_translated_meta($location_id, 'location_tagline') ?: sprintf(__('Personalized therapy for %s families.', 'earlystart-early-learning'), $city ?: __('your community', 'earlystart-early-learning'));
+	$description = earlystart_get_translated_meta($location_id, 'location_description');
+	if (empty($description)) {
+		$description = get_the_content();
+	}
 
-	// Parse hero gallery URLs (one per line)
+	$google_rating = earlystart_get_translated_meta($location_id, 'location_google_rating') ?: '4.9';
+	$hours = earlystart_get_translated_meta($location_id, 'location_hours') ?: __('Mon - Fri: 8:00 AM - 6:00 PM', 'earlystart-early-learning');
+	$ages_served = earlystart_get_translated_meta($location_id, 'location_ages_served') ?: __('18mo - 12yrs', 'earlystart-early-learning');
+
+	$director_name = earlystart_get_translated_meta($location_id, 'location_director_name');
+	$director_bio = earlystart_get_translated_meta($location_id, 'location_director_bio');
+	$director_photo = earlystart_get_translated_meta($location_id, 'location_director_photo');
+
+	$hero_review_text = earlystart_get_translated_meta($location_id, 'location_hero_review_text');
+	$hero_review_author = earlystart_get_translated_meta($location_id, 'location_hero_review_author') ?: __('Parent Review', 'earlystart-early-learning');
+
+	$maps_embed = earlystart_get_translated_meta($location_id, 'location_maps_embed');
+	$tour_booking_link = earlystart_get_translated_meta($location_id, 'location_tour_booking_link');
+	$is_clinic_hub = '1' === get_post_meta($location_id, 'location_featured', true);
+
 	$hero_gallery = array();
 	if (!empty($hero_gallery_raw)) {
 		$lines = explode("\n", $hero_gallery_raw);
@@ -42,34 +53,32 @@ while (have_posts()):
 			}
 		}
 	}
-	$google_rating = earlystart_get_translated_meta($location_id, 'location_google_rating') ?: '4.9';
-	$hours = earlystart_get_translated_meta($location_id, 'location_hours') ?: __('7am - 6pm', 'earlystart-early-learning');
-	$ages_served = earlystart_get_translated_meta($location_id, 'location_ages_served') ?: __('6w - 12y', 'earlystart-early-learning');
 
-	// Director info
-	$director_name = earlystart_get_translated_meta($location_id, 'location_director_name');
-	$director_heading = earlystart_get_translated_meta($location_id, 'location_director_heading');
-	$director_bio = earlystart_get_translated_meta($location_id, 'location_director_bio');
-	$director_photo = earlystart_get_translated_meta($location_id, 'location_director_photo');
-	$director_signature = earlystart_get_translated_meta($location_id, 'location_director_signature');
+	$featured_image = get_the_post_thumbnail_url($location_id, 'full');
+	$hero_image_url = '';
+	if (!empty($hero_gallery)) {
+		$hero_image_url = $hero_gallery[0];
+	} elseif (!empty($featured_image)) {
+		$hero_image_url = $featured_image;
+	} else {
+		$hero_image_url = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80';
+	}
 
-	// Maps embed
-	$maps_embed = earlystart_get_translated_meta($location_id, 'location_maps_embed');
+	$gallery_images = $hero_gallery;
+	if (empty($gallery_images) && $featured_image) {
+		$gallery_images[] = $featured_image;
+	}
+	$gallery_images = array_slice($gallery_images, 0, 5);
+	while (count($gallery_images) < 5) {
+		$gallery_images[] = '';
+	}
 
-	// Tour booking link
-	$tour_booking_link = earlystart_get_translated_meta($location_id, 'location_tour_booking_link');
+	$map_query = trim($address . ', ' . $city . ', ' . $state . ' ' . $zip);
+	$map_link = $map_query ? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($map_query) : '#';
 
-	// School pickups
-	$school_pickups = earlystart_get_translated_meta($location_id, 'location_school_pickups');
-
-	// SEO content
-	$seo_content_title = earlystart_get_translated_meta($location_id, 'location_seo_content_title');
-	$seo_content_text = earlystart_get_translated_meta($location_id, 'location_seo_content_text');
-
-	// Get programs at this location
 	$programs_query = new WP_Query(array(
 		'post_type' => 'program',
-		'posts_per_page' => -1,
+		'posts_per_page' => 6,
 		'orderby' => 'menu_order',
 		'order' => 'ASC',
 		'meta_query' => array(
@@ -81,635 +90,443 @@ while (have_posts()):
 		),
 	));
 
-	// Get Region Colors
-	$location_regions = wp_get_post_terms($location_id, 'location_region');
-	$region_term = !empty($location_regions) && !is_wp_error($location_regions) ? $location_regions[0] : null;
-	$region_colors = $region_term ? earlystart_get_region_color_from_term($region_term->term_id) : array(
-		'bg' => 'chroma-blueLight',
-		'text' => 'chroma-blue',
-		'border' => 'chroma-blue',
-	);
+	$location_faqs = earlystart_get_location_faq_items($location_id);
 	?>
 
 	<main class="pt-20">
-		<!-- Hero Section -->
-		<section class="relative bg-white pt-24 pb-20 lg:pt-32 overflow-hidden border-b border-stone-50">
-			<div
-				class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[600px] h-[600px] bg-rose-50 rounded-full blur-3xl opacity-50">
-			</div>
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-				<div class="grid lg:grid-cols-2 gap-16 items-center">
-					<div class="fade-in-up">
-						<span
-							class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
-							<?php echo esc_html($hero_subtitle ?: __('Clinical Excellence', 'earlystart-early-learning')); ?>
-						</span>
-						<h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight">
-							<?php echo esc_html($location_name); ?>
-						</h1>
-						<p class="text-xl text-stone-700 leading-relaxed mb-10 max-w-xl">
-							<?php echo esc_html($tagline); ?>
-						</p>
+		<!-- Premium Hero Section -->
+		<section class="relative pt-24 pb-32 lg:pt-32 lg:pb-40 bg-stone-900 flex items-center justify-center overflow-hidden">
+			<div class="absolute inset-0 bg-stone-900 opacity-80 z-10"></div>
+			<div class="absolute inset-0 bg-cover bg-center mix-blend-overlay" style="background-image: url('<?php echo esc_url($hero_image_url); ?>');"></div>
+			<div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-stone-900/50 to-stone-900 z-10"></div>
 
-						<div class="flex flex-wrap gap-4 mb-10">
-							<a href="#tour"
-								class="bg-stone-900 text-white px-10 py-5 rounded-full font-bold hover:bg-rose-600 transition-all shadow-xl active:scale-95">
-								<?php _e('Schedule a Tour', 'earlystart-early-learning'); ?>
-							</a>
-							<?php if ($phone): ?>
-								<a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>"
-									class="bg-stone-50 text-stone-900 px-10 py-5 rounded-full font-bold hover:bg-stone-100 transition-all">
-									<i data-lucide="phone" class="w-4 h-4 inline-block mr-2"></i>
-									<?php echo esc_html($phone); ?>
-								</a>
-							<?php endif; ?>
+			<div class="relative z-20 text-center text-white px-4 max-w-4xl mx-auto fade-in-up">
+				<span class="inline-flex items-center px-4 py-2 bg-rose-500/20 border border-rose-400/30 text-rose-200 rounded-full text-xs font-bold tracking-widest uppercase mb-6 shadow-lg backdrop-blur-md">
+					<span class="w-2 h-2 bg-rose-400 rounded-full mr-2 animate-pulse"></span>
+					<?php echo esc_html($hero_subtitle); ?>
+				</span>
+				<span class="inline-flex items-center px-4 py-2 bg-white/10 border border-white/20 text-white rounded-full text-xs font-bold tracking-widest uppercase mb-6 shadow-lg backdrop-blur-md">
+					<?php if ($is_clinic_hub): ?>
+						<i data-lucide="stethoscope" class="w-4 h-4 mr-2 text-rose-300"></i>
+						<?php _e('Clinic Hub', 'earlystart-early-learning'); ?>
+					<?php else: ?>
+						<i data-lucide="school" class="w-4 h-4 mr-2 text-blue-300"></i>
+						<?php _e('Partner Campus', 'earlystart-early-learning'); ?>
+					<?php endif; ?>
+				</span>
+				<h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight"><?php echo esc_html($location_name); ?></h1>
+				<p class="text-xl text-stone-300 mb-10 flex items-center justify-center gap-2">
+					<i data-lucide="map-pin" class="w-5 h-5 text-rose-500"></i>
+					<?php echo esc_html($address); ?><?php echo $city ? ', ' . esc_html($city) : ''; ?><?php echo $state ? ', ' . esc_html($state) : ''; ?><?php echo $zip ? ' ' . esc_html($zip) : ''; ?>
+				</p>
+
+				<div class="flex flex-wrap justify-center gap-4 fade-in-up delay-200">
+					<div class="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl px-6 py-3 flex items-center gap-3">
+						<i data-lucide="activity" class="text-rose-400 w-5 h-5"></i>
+						<div class="text-left">
+							<span class="block text-sm font-bold"><?php echo esc_html($ages_served); ?></span>
+							<span class="block text-xs text-stone-400"><?php _e('Ages Served', 'earlystart-early-learning'); ?></span>
+						</div>
+					</div>
+					<div class="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl px-6 py-3 flex items-center gap-3">
+						<i data-lucide="clock" class="text-orange-400 w-5 h-5"></i>
+						<div class="text-left">
+							<span class="block text-sm font-bold"><?php echo esc_html($hours); ?></span>
+							<span class="block text-xs text-stone-400"><?php _e('Clinic Hours', 'earlystart-early-learning'); ?></span>
+						</div>
+					</div>
+					<div class="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl px-6 py-3 flex items-center gap-3">
+						<i data-lucide="users" class="text-amber-400 w-5 h-5"></i>
+						<div class="text-left">
+							<span class="block text-sm font-bold"><?php echo esc_html($google_rating); ?> ★</span>
+							<span class="block text-xs text-stone-400"><?php _e('Google Rating', 'earlystart-early-learning'); ?></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="absolute bottom-0 w-full h-16 bg-stone-50 rounded-t-[100%] z-20 translate-y-1/2 scale-x-110"></div>
+		</section>
+
+		<section class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+			<div class="grid lg:grid-cols-12 gap-12">
+				<div class="lg:col-span-8 space-y-24">
+					<div class="prose prose-lg text-stone-600 max-w-none">
+						<h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-6"><?php _e('A Second Home for Your Child', 'earlystart-early-learning'); ?></h2>
+						<?php echo wp_kses_post(wpautop($description)); ?>
+					</div>
+
+					<div>
+						<div class="flex items-center gap-3 mb-8">
+							<h3 class="text-2xl font-bold text-stone-900"><?php _e('Services at this Location', 'earlystart-early-learning'); ?></h3>
+							<div class="flex-1 h-px bg-stone-200 ml-4"></div>
 						</div>
 
-						<div class="grid grid-cols-3 gap-8 pt-10 border-t border-stone-100">
-							<div>
-								<div class="text-2xl font-bold text-stone-900 mb-1"><?php echo esc_html($ages_served); ?>
-								</div>
-								<div class="text-[10px] font-bold text-stone-300 uppercase tracking-widest">
-									<?php _e('Ages', 'earlystart-early-learning'); ?>
+						<div class="grid sm:grid-cols-2 gap-4">
+							<?php if ($programs_query->have_posts()): ?>
+								<?php while ($programs_query->have_posts()):
+									$programs_query->the_post();
+									$program_title = get_the_title();
+									$program_fields = earlystart_get_program_fields();
+									$program_excerpt = $program_fields['excerpt'] ?: wp_trim_words(get_the_content(), 14);
+									$program_key = strtolower($program_title);
+									$icon = 'sparkles';
+									$bg = 'bg-stone-100';
+									$text = 'text-stone-600';
+									$hover = 'group-hover:bg-stone-900';
+									if (strpos($program_key, 'aba') !== false) {
+										$icon = 'puzzle';
+										$bg = 'bg-rose-50';
+										$text = 'text-rose-600';
+										$hover = 'group-hover:bg-rose-500';
+									} elseif (strpos($program_key, 'speech') !== false) {
+										$icon = 'message-circle';
+										$bg = 'bg-orange-50';
+										$text = 'text-orange-600';
+										$hover = 'group-hover:bg-orange-500';
+									} elseif (strpos($program_key, 'occupational') !== false || strpos($program_key, 'ot') !== false) {
+										$icon = 'hand-metal';
+										$bg = 'bg-amber-50';
+										$text = 'text-amber-600';
+										$hover = 'group-hover:bg-amber-500';
+									} elseif (strpos($program_key, 'bridge') !== false) {
+										$icon = 'school';
+										$bg = 'bg-blue-50';
+										$text = 'text-blue-600';
+										$hover = 'group-hover:bg-blue-500';
+									}
+									?>
+									<div class="flex items-center p-6 bg-white rounded-2xl border border-stone-100 shadow-sm hover:shadow-md transition-shadow group">
+										<div class="w-12 h-12 <?php echo esc_attr($bg); ?> rounded-xl flex items-center justify-center mr-5 <?php echo esc_attr($text); ?> <?php echo esc_attr($hover); ?> group-hover:text-white transition-colors">
+											<i data-lucide="<?php echo esc_attr($icon); ?>" class="w-6 h-6"></i>
+										</div>
+										<div>
+											<span class="font-bold text-stone-900 block text-lg"><?php echo esc_html($program_title); ?></span>
+											<span class="text-sm text-stone-500"><?php echo esc_html($program_excerpt); ?></span>
+										</div>
+									</div>
+								<?php endwhile; ?>
+								<?php wp_reset_postdata(); ?>
+							<?php else: ?>
+								<?php
+								$default_services = array(
+									array('title' => __('ABA Therapy', 'earlystart-early-learning'), 'desc' => __('1:1 Assent-based therapy', 'earlystart-early-learning'), 'icon' => 'puzzle', 'bg' => 'bg-rose-50', 'text' => 'text-rose-600', 'hover' => 'group-hover:bg-rose-500'),
+									array('title' => __('Speech Therapy', 'earlystart-early-learning'), 'desc' => __('Articulation & language', 'earlystart-early-learning'), 'icon' => 'message-circle', 'bg' => 'bg-orange-50', 'text' => 'text-orange-600', 'hover' => 'group-hover:bg-orange-500'),
+									array('title' => __('Occupational Therapy', 'earlystart-early-learning'), 'desc' => __('Motor skills & sensory', 'earlystart-early-learning'), 'icon' => 'hand-metal', 'bg' => 'bg-amber-50', 'text' => 'text-amber-600', 'hover' => 'group-hover:bg-amber-500'),
+									array('title' => __('Bridge Program', 'earlystart-early-learning'), 'desc' => __('School readiness prep', 'earlystart-early-learning'), 'icon' => 'school', 'bg' => 'bg-blue-50', 'text' => 'text-blue-600', 'hover' => 'group-hover:bg-blue-500'),
+								);
+								foreach ($default_services as $service):
+									?>
+									<div class="flex items-center p-6 bg-white rounded-2xl border border-stone-100 shadow-sm hover:shadow-md transition-shadow group">
+										<div class="w-12 h-12 <?php echo esc_attr($service['bg']); ?> rounded-xl flex items-center justify-center mr-5 <?php echo esc_attr($service['text']); ?> <?php echo esc_attr($service['hover']); ?> group-hover:text-white transition-colors">
+											<i data-lucide="<?php echo esc_attr($service['icon']); ?>" class="w-6 h-6"></i>
+										</div>
+										<div>
+											<span class="font-bold text-stone-900 block text-lg"><?php echo esc_html($service['title']); ?></span>
+											<span class="text-sm text-stone-500"><?php echo esc_html($service['desc']); ?></span>
+										</div>
+									</div>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</div>
+					</div>
+
+					<div>
+						<div class="flex items-center gap-3 mb-8">
+							<h3 class="text-2xl font-bold text-stone-900"><?php _e('Inside Our Clinic', 'earlystart-early-learning'); ?></h3>
+							<div class="flex-1 h-px bg-stone-200 ml-4"></div>
+						</div>
+						<div class="grid sm:grid-cols-2 gap-6">
+							<div class="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+								<div class="absolute top-0 right-0 w-32 h-32 bg-rose-50 rounded-bl-[100%] z-0 transition-transform group-hover:scale-110"></div>
+								<div class="relative z-10">
+									<div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center text-rose-600 mb-5">
+										<i data-lucide="activity" class="w-6 h-6"></i>
+									</div>
+									<h4 class="font-bold text-xl text-stone-900 mb-2"><?php _e('Sensory Gyms', 'earlystart-early-learning'); ?></h4>
+									<p class="text-stone-600 text-sm leading-relaxed"><?php _e('Motor rooms equipped for regulation, balance, and gross motor development.', 'earlystart-early-learning'); ?></p>
 								</div>
 							</div>
-							<div>
-								<div class="text-2xl font-bold text-stone-900 mb-1"><?php echo esc_html($google_rating); ?>
-									★</div>
-								<div class="text-[10px] font-bold text-stone-300 uppercase tracking-widest">
-									<?php _e('Rating', 'earlystart-early-learning'); ?>
+
+							<div class="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+								<div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-[100%] z-0 transition-transform group-hover:scale-110"></div>
+								<div class="relative z-10">
+									<div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-5">
+										<i data-lucide="school" class="w-6 h-6"></i>
+									</div>
+									<h4 class="font-bold text-xl text-stone-900 mb-2"><?php _e('Mock Classrooms', 'earlystart-early-learning'); ?></h4>
+									<p class="text-stone-600 text-sm leading-relaxed"><?php _e('Spaces designed for school readiness and group instruction routines.', 'earlystart-early-learning'); ?></p>
 								</div>
 							</div>
-							<div>
-								<div class="text-2xl font-bold text-stone-900 mb-1"><?php echo esc_html($hours); ?></div>
-								<div class="text-[10px] font-bold text-stone-300 uppercase tracking-widest">
-									<?php _e('Clinic Hours', 'earlystart-early-learning'); ?>
+
+							<div class="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+								<div class="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-bl-[100%] z-0 transition-transform group-hover:scale-110"></div>
+								<div class="relative z-10">
+									<div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 mb-5">
+										<i data-lucide="mic" class="w-6 h-6"></i>
+									</div>
+									<h4 class="font-bold text-xl text-stone-900 mb-2"><?php _e('Therapy Suites', 'earlystart-early-learning'); ?></h4>
+									<p class="text-stone-600 text-sm leading-relaxed"><?php _e('Quiet, distraction-free rooms for focused 1:1 sessions.', 'earlystart-early-learning'); ?></p>
+								</div>
+							</div>
+
+							<div class="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+								<div class="absolute top-0 right-0 w-32 h-32 bg-stone-100 rounded-bl-[100%] z-0 transition-transform group-hover:scale-110"></div>
+								<div class="relative z-10">
+									<div class="w-12 h-12 bg-stone-100 rounded-xl flex items-center justify-center text-stone-600 mb-5">
+										<i data-lucide="coffee" class="w-6 h-6"></i>
+									</div>
+									<h4 class="font-bold text-xl text-stone-900 mb-2"><?php _e('Parent Lounge', 'earlystart-early-learning'); ?></h4>
+									<p class="text-stone-600 text-sm leading-relaxed"><?php _e('Comfortable waiting area with observation monitors and Wi-Fi.', 'earlystart-early-learning'); ?></p>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<!-- Hero Image / Carousel -->
-					<div class="relative fade-in-up delay-200 block">
-						<div
-							class="absolute inset-0 bg-<?php echo esc_attr($region_colors['text']); ?>/10 rounded-[3rem] rotate-6 transform translate-x-4 translate-y-4">
+					<div>
+						<div class="flex items-center justify-between mb-8">
+							<h3 class="text-2xl font-bold text-stone-900"><?php _e('Take a Look Inside', 'earlystart-early-learning'); ?></h3>
+							<a href="#tour" class="text-rose-600 font-bold text-sm hover:underline flex items-center"><?php _e('Book a Tour', 'earlystart-early-learning'); ?> <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i></a>
 						</div>
-						<div class="relative rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white aspect-square md:aspect-[4/3]"
-							<?php if (count($hero_gallery) > 1)
-								echo 'data-location-carousel'; ?>>
-							<?php if (!empty($hero_gallery)): ?>
-								<!-- Gallery Carousel -->
-								<div class="relative w-full h-full">
-									<div class="flex transition-transform duration-500 ease-in-out h-full"
-										data-location-carousel-track>
-										<?php foreach ($hero_gallery as $index => $image_url):
-											// Try to get attachment ID to serve responsive images
-											$attachment_id = attachment_url_to_postid($image_url);
-											?>
-											<div class="w-full h-full flex-shrink-0"
-												data-location-slide="<?php echo esc_attr($index); ?>">
-												<?php if ($attachment_id):
-													echo wp_get_attachment_image($attachment_id, 'large', false, array(
-														'class' => 'w-full h-full object-cover',
-														'fetchpriority' => $index === 0 ? 'high' : 'auto',
-														'loading' => $index === 0 ? 'eager' : 'lazy',
-														'decoding' => 'async',
-														'sizes' => '(max-width: 768px) 100vw, 50vw'
-													));
-												else: ?>
-													<img src="<?php echo esc_url($image_url); ?>"
-														alt="<?php echo esc_attr($location_name); ?> - Image <?php echo esc_attr($index + 1); ?>"
-														class="w-full h-full object-cover" decoding="async"
-														sizes="(max-width: 768px) 100vw, 50vw" <?php if ($index === 0)
-															echo 'fetchpriority="high"';
-														else
-															echo 'loading="lazy"'; ?> />
-												<?php endif; ?>
-											</div>
-										<?php endforeach; ?>
+						<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+							<div class="col-span-2 md:col-span-2 row-span-2 bg-stone-200 rounded-3xl min-h-[300px] relative overflow-hidden group">
+								<?php if (!empty($gallery_images[0])): ?>
+									<img src="<?php echo esc_url($gallery_images[0]); ?>" alt="<?php echo esc_attr($location_name); ?>" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" decoding="async">
+								<?php else: ?>
+									<div class="absolute inset-0 flex items-center justify-center text-stone-400 bg-stone-100">
+										<i data-lucide="image" class="w-16 h-16"></i>
 									</div>
+								<?php endif; ?>
+								<div class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent"></div>
+								<div class="absolute bottom-6 left-6 text-white font-bold text-lg"><?php _e('Main Sensory Gym', 'earlystart-early-learning'); ?></div>
+							</div>
 
-									<?php if (count($hero_gallery) > 1): ?>
-										<!-- Navigation Arrows -->
-										<button
-											class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 rounded-full shadow-lg text-brand-ink hover:bg-white transition"
-											data-location-prev aria-label="Previous image">
-											<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-													d="M15 19l-7-7 7-7" />
-											</svg>
-										</button>
-										<button
-											class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 rounded-full shadow-lg text-brand-ink hover:bg-white transition"
-											data-location-next aria-label="Next image">
-											<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-													d="M9 5l7 7-7 7" />
-											</svg>
-										</button>
-
-										<!-- Dots -->
-										<div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" data-location-dots>
-											<?php foreach ($hero_gallery as $index => $image_url): ?>
-												<button
-													class="w-2 h-2 rounded-full transition-all <?php echo 0 === $index ? 'bg-white w-6' : 'bg-white/50'; ?>"
-													data-location-dot="<?php echo esc_attr($index); ?>"
-													aria-label="Go to image <?php echo esc_attr($index + 1); ?>"></button>
-											<?php endforeach; ?>
+							<?php
+							$labels = array(
+								__('Classroom A', 'earlystart-early-learning'),
+								__('Speech Suite', 'earlystart-early-learning'),
+								__('Playground', 'earlystart-early-learning'),
+								__('Parent Lounge & Observation', 'earlystart-early-learning'),
+							);
+							for ($i = 1; $i <= 4; $i++):
+								$is_wide = $i === 4;
+								?>
+								<div class="<?php echo $is_wide ? 'col-span-2 md:col-span-2 h-48' : 'aspect-square'; ?> bg-stone-200 rounded-3xl relative overflow-hidden group">
+									<?php if (!empty($gallery_images[$i])): ?>
+										<img src="<?php echo esc_url($gallery_images[$i]); ?>" alt="<?php echo esc_attr($location_name); ?>" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" decoding="async">
+									<?php else: ?>
+										<div class="absolute inset-0 flex items-center justify-center text-stone-400 bg-stone-100">
+											<i data-lucide="image" class="<?php echo $is_wide ? 'w-12 h-12' : 'w-8 h-8'; ?>"></i>
 										</div>
 									<?php endif; ?>
+									<div class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent"></div>
+									<span class="absolute bottom-4 left-4 text-white font-bold text-sm"><?php echo esc_html($labels[$i - 1]); ?></span>
 								</div>
-							<?php elseif (has_post_thumbnail()): ?>
-								<?php the_post_thumbnail('large', array('class' => 'w-full h-full object-cover', 'fetchpriority' => 'high', 'sizes' => '(max-width: 768px) 100vw, 50vw')); ?>
-							<?php else:
-								// Unsplash fallback with srcset
-								$base_unsplash = "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80&fm=webp?q=80&auto=format&fit=crop&q=80&fm=webp";
-								$src_mobile = $base_unsplash . "&w=600&h=600";
-								$src_desktop = $base_unsplash . "&w=1000&h=750";
-								?>
-								<img src="<?php echo esc_url($src_desktop); ?>"
-									srcset="<?php echo esc_url($src_mobile); ?> 600w, <?php echo esc_url($src_desktop); ?> 1000w"
-									sizes="(max-width: 768px) 100vw, 50vw" alt="<?php echo esc_attr($location_name); ?> Campus"
-									class="w-full h-full object-cover" fetchpriority="high" decoding="async" width="1000"
-									height="750" />
-							<?php endif; ?>
-
-							<!-- Floating Review Badge -->
-							<?php
-							$hero_review_text = earlystart_get_translated_meta(get_the_ID(), 'location_hero_review_text');
-							$hero_review_author = earlystart_get_translated_meta(get_the_ID(), 'location_hero_review_author') ?: __('Parent Review', 'earlystart-early-learning');
-
-							if ($hero_review_text):
-								?>
-								<div
-									class="hidden lg:block absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm p-5 rounded-2xl shadow-float max-w-[200px] fade-in-up delay-300 z-20">
-									<div class="flex items-center gap-1 mb-2">
-										<?php for ($i = 0; $i < 5; $i++): ?>
-											<i class="fa-solid fa-star text-chroma-yellow text-sm"></i>
-										<?php endfor; ?>
-									</div>
-									<p class="text-xs font-serif italic text-brand-ink/90">
-										"<?php echo esc_html($hero_review_text); ?>"
-									</p>
-									<p class="text-[10px] font-bold text-brand-ink mt-2 uppercase tracking-wide">—
-										<?php echo esc_html($hero_review_author); ?>
-									</p>
-								</div>
-							<?php endif; ?>
+							<?php endfor; ?>
 						</div>
 					</div>
-				</div>
-		</section>
 
-		<!-- Campus Highlights -->
-		<section id="about" class="py-24 bg-stone-50 overflow-hidden relative">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-				<div class="text-center mb-20 fade-in-up">
-					<h2 class="text-4xl font-bold text-stone-900 mb-6">
-						<?php _e('Designed for Clinical Magic.', 'earlystart-early-learning'); ?>
-					</h2>
-					<p class="text-xl text-stone-700 max-w-2xl mx-auto">
-						<?php printf(__('Every corner of our %s campus is intentional—from sensory-sensitive treatment rooms to stimulating learning environments.', 'earlystart-early-learning'), esc_html($city)); ?>
-					</p>
-				</div>
-
-				<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-					<div
-						class="bg-white p-10 rounded-[2.5rem] shadow-sm border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 fade-in-up">
-						<div class="w-14 h-14 bg-rose-50 text-rose-700 rounded-2xl flex items-center justify-center mb-8">
-							<i data-lucide="shield-check" class="w-7 h-7"></i>
-						</div>
-						<h3 class="text-xl font-bold text-stone-900 mb-4">
-							<?php _e('Secure Access', 'earlystart-early-learning'); ?>
-						</h3>
-						<p class="text-stone-700 text-sm leading-relaxed">
-							<?php _e('Biometric entry and constant clinical oversight ensure our students are safe and supported.', 'earlystart-early-learning'); ?>
-						</p>
-					</div>
-
-					<div class="bg-white p-10 rounded-[2.5rem] shadow-sm border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 fade-in-up"
-						style="animation-delay: 0.1s;">
-						<div
-							class="w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-8">
-							<i data-lucide="brain-circuit" class="w-7 h-7"></i>
-						</div>
-						<h3 class="text-xl font-bold text-stone-900 mb-4">
-							<?php _e('Sensory Spaces', 'earlystart-early-learning'); ?>
-						</h3>
-						<p class="text-stone-700 text-sm leading-relaxed">
-							<?php _e('Custom-built zones to help students regulate and focus through evidence-based sensory integration.', 'earlystart-early-learning'); ?>
-						</p>
-					</div>
-
-					<div class="bg-white p-10 rounded-[2.5rem] shadow-sm border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 fade-in-up"
-						style="animation-delay: 0.2s;">
-						<div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-8">
-							<i data-lucide="flask-conical" class="w-7 h-7"></i>
-						</div>
-						<h3 class="text-xl font-bold text-stone-900 mb-4">
-							<?php _e('STEM Labs', 'earlystart-early-learning'); ?>
-						</h3>
-						<p class="text-stone-700 text-sm leading-relaxed">
-							<?php _e('Clinical learning hubs for early engineering, light exploration, and scientific discovery.', 'earlystart-early-learning'); ?>
-						</p>
-					</div>
-
-					<div class="bg-white p-10 rounded-[2.5rem] shadow-sm border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 fade-in-up"
-						style="animation-delay: 0.3s;">
-						<div class="w-14 h-14 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-8">
-							<i data-lucide="scroll-text" class="w-7 h-7"></i>
-						</div>
-						<h3 class="text-xl font-bold text-stone-900 mb-4">
-							<?php _e('GA Pre-K', 'earlystart-early-learning'); ?>
-						</h3>
-						<p class="text-stone-700 text-sm leading-relaxed">
-							<?php _e('A proud partner of the Georgia Pre-K Program, blending clinical support with academic readiness.', 'earlystart-early-learning'); ?>
-						</p>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<?php if ($director_name): ?>
-			<!-- Director's Welcome -->
-			<section id="director" class="py-24 bg-stone-900 text-white overflow-hidden relative">
-				<div
-					class="absolute top-0 right-0 w-96 h-96 bg-rose-600/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2">
-				</div>
-				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-					<div class="grid lg:grid-cols-2 gap-20 items-center">
-						<?php if ($director_photo): ?>
-							<div class="relative fade-in-up">
-								<div class="aspect-[4/5] rounded-[3rem] overflow-hidden border-8 border-stone-800 shadow-2xl">
-									<img src="<?php echo esc_url($director_photo); ?>" alt="<?php echo esc_attr($director_name); ?>"
-										class="w-full h-full object-cover">
-								</div>
-								<div class="absolute -bottom-10 -right-10 w-48 h-48 bg-rose-600 rounded-full blur-3xl opacity-30">
-								</div>
+					<?php if ($director_name || $director_bio || $director_photo): ?>
+						<div>
+							<div class="flex items-center gap-3 mb-8">
+								<h3 class="text-2xl font-bold text-stone-900"><?php _e('Your Local Leadership', 'earlystart-early-learning'); ?></h3>
+								<div class="flex-1 h-px bg-stone-200 ml-4"></div>
 							</div>
-						<?php endif; ?>
-
-						<div class="fade-in-up" <?php echo !$director_photo ? 'class="lg:col-span-2 text-center max-w-3xl mx-auto"' : ''; ?>>
-							<span
-								class="inline-block px-4 py-2 bg-rose-900/50 text-rose-400 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
-								<?php _e('Meet the Director', 'earlystart-early-learning'); ?>
-							</span>
-							<h2 class="text-4xl md:text-5xl font-bold mb-8 leading-tight">
-								<?php echo $director_heading ?: sprintf(__('Leading with Heart in %s.', 'earlystart-early-learning'), esc_html($city)); ?>
-							</h2>
-							<div class="text-xl text-stone-300 leading-relaxed mb-10 prose prose-invert max-w-none">
-								<?php echo wpautop(wp_kses_post($director_bio)); ?>
-							</div>
-
-							<div class="flex items-center gap-6">
-								<?php if ($director_signature): ?>
-									<img src="<?php echo esc_url($director_signature); ?>" alt="Signature"
-										class="h-16 w-auto opacity-80 invert">
-								<?php endif; ?>
+							<div class="bg-white rounded-3xl p-8 border border-stone-100 flex flex-col md:flex-row gap-8 items-center shadow-sm">
+								<div class="w-32 h-32 md:w-40 md:h-40 bg-stone-100 rounded-full flex-shrink-0 overflow-hidden border-4 border-rose-50 shadow-inner relative flex items-center justify-center text-stone-400">
+									<?php if ($director_photo): ?>
+										<img src="<?php echo esc_url($director_photo); ?>" alt="<?php echo esc_attr($director_name ?: $location_name); ?>" class="w-full h-full object-cover">
+									<?php else: ?>
+										<i data-lucide="user" class="w-16 h-16"></i>
+									<?php endif; ?>
+								</div>
 								<div>
-									<p class="text-lg font-bold text-white"><?php echo esc_html($director_name); ?></p>
-									<p class="text-sm text-stone-700 uppercase tracking-widest">
-										<?php _e('Campus Director', 'earlystart-early-learning'); ?>
+									<h4 class="text-2xl font-bold text-stone-900"><?php echo esc_html($director_name ?: __('Clinical Director', 'earlystart-early-learning')); ?></h4>
+									<p class="text-rose-600 font-bold text-sm uppercase tracking-wide mb-3"><?php _e('Clinical Director', 'earlystart-early-learning'); ?></p>
+									<p class="text-stone-600 italic mb-4 text-sm leading-relaxed">
+										<?php echo esc_html($director_bio ?: __('Our clinical leadership team is dedicated to creating a joyful, evidence-based environment for every child.', 'earlystart-early-learning')); ?>
 									</p>
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-			</section>
-		<?php endif; ?>
+					<?php endif; ?>
 
-		<?php if (!empty($virtual_tour_embed)): ?>
-			<!-- Virtual Tour -->
-			<section id="virtual-tour" class="py-24 bg-white relative">
-				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-					<div class="text-center mb-16 fade-in-up">
-						<h2 class="text-4xl font-bold text-stone-900 mb-6">
-							<?php _e('Explore Our Clinical Environment.', 'earlystart-early-learning'); ?>
-						</h2>
-						<p class="text-xl text-stone-700 max-w-2xl mx-auto">
-							<?php printf(__('Walk through our %s campus from the comfort of your home. See our Chroma Care Model in action.', 'earlystart-early-learning'), esc_html($city)); ?>
-						</p>
-					</div>
-
-					<div
-						class="relative aspect-video rounded-[3rem] overflow-hidden shadow-2xl border border-stone-100 bg-stone-50 fade-in-up">
-						<?php
-						$allowed_tags = wp_kses_allowed_html('post');
-						$allowed_tags['iframe'] = array('src' => true, 'width' => true, 'height' => true, 'frameborder' => true, 'allowfullscreen' => true, 'allow' => true, 'loading' => true, 'style' => true, 'class' => true, 'title' => true);
-						echo wp_kses($virtual_tour_embed, $allowed_tags);
-						?>
-					</div>
-				</div>
-			</section>
-		<?php endif; ?>
-
-		<!-- Programs Grid -->
-		<?php if ($programs_query->have_posts()): ?>
-			<section id="programs" class="py-24 bg-stone-50">
-				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-						<div class="fade-in-up">
-							<h2 class="text-4xl font-bold text-stone-900 mb-4">
-								<?php _e('Specialized Care. Hyperlocal Delivery.', 'earlystart-early-learning'); ?>
-							</h2>
-							<p class="text-stone-700 text-lg">
-								<?php _e('Our campus offers clinical programs tailored to every developmental stage.', 'earlystart-early-learning'); ?>
-							</p>
-						</div>
-						<a href="<?php echo esc_url(earlystart_get_program_archive_url()); ?>"
-							class="text-rose-700 font-bold flex items-center gap-2 group fade-in-up">
-							<?php _e('Explore Curriculum', 'earlystart-early-learning'); ?>
-							<i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-						</a>
-					</div>
-
-					<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-						<?php while ($programs_query->have_posts()):
-							$programs_query->the_post();
-							$prog_fields = earlystart_get_program_fields();
-							$age_range = $prog_fields['age_range'];
-							$excerpt = $prog_fields['excerpt'] ?: wp_trim_words(get_the_content(), 20);
-							?>
-							<a href="<?php the_permalink(); ?>"
-								class="group bg-white rounded-[2.5rem] overflow-hidden border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col fade-in-up">
-								<?php if (has_post_thumbnail()): ?>
-									<div class="h-64 overflow-hidden">
-										<?php the_post_thumbnail('medium_large', ['class' => 'w-full h-full object-cover group-hover:scale-110 transition-transform duration-700']); ?>
-									</div>
-								<?php endif; ?>
-								<div class="p-10 flex-1 flex flex-col">
-									<span
-										class="bg-rose-50 text-rose-700 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 w-fit">
-										<?php echo esc_html($age_range); ?>
-									</span>
-									<h3 class="text-2xl font-bold text-stone-900 mb-4 group-hover:text-rose-700 transition-colors">
-										<?php the_title(); ?>
-									</h3>
-									<p class="text-stone-700 text-sm leading-relaxed mb-8 flex-1"><?php echo esc_html($excerpt); ?>
-									</p>
-									<div class="flex items-center gap-2 text-rose-700 font-bold text-xs">
-										<?php _e('View Program', 'earlystart-early-learning'); ?>
-										<i data-lucide="chevron-right"
-											class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+					<?php if ($hero_review_text): ?>
+						<div class="bg-stone-900 rounded-[3rem] p-10 md:p-14 text-white relative overflow-hidden">
+							<div class="absolute top-0 right-0 w-80 h-80 bg-rose-500 rounded-full blur-[80px] opacity-20 -mr-20 -mt-20 pointer-events-none"></div>
+							<div class="absolute bottom-0 left-0 w-64 h-64 bg-orange-500 rounded-full blur-[80px] opacity-20 -ml-20 -mb-20 pointer-events-none"></div>
+							<div class="relative z-10">
+								<div class="flex justify-between items-end mb-10">
+									<h3 class="text-3xl font-bold"><?php echo esc_html($location_name); ?> <?php _e('Families Say', 'earlystart-early-learning'); ?></h3>
+								</div>
+								<div class="grid md:grid-cols-2 gap-8">
+									<div class="bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+										<div class="flex text-amber-400 mb-4">
+											<i data-lucide="star" class="w-5 h-5 fill-current"></i>
+											<i data-lucide="star" class="w-5 h-5 fill-current"></i>
+											<i data-lucide="star" class="w-5 h-5 fill-current"></i>
+											<i data-lucide="star" class="w-5 h-5 fill-current"></i>
+											<i data-lucide="star" class="w-5 h-5 fill-current"></i>
+										</div>
+										<p class="text-stone-300 italic mb-6 text-lg leading-relaxed">"<?php echo esc_html($hero_review_text); ?>"</p>
+										<div class="flex items-center gap-3">
+											<div class="w-10 h-10 bg-rose-500/20 rounded-full flex items-center justify-center text-rose-300 font-bold text-sm">ES</div>
+											<span class="font-bold text-white"><?php echo esc_html($hero_review_author); ?></span>
+										</div>
 									</div>
 								</div>
-							</a>
-						<?php endwhile;
-						wp_reset_postdata(); ?>
+							</div>
+						</div>
+					<?php endif; ?>
+
+					<div>
+						<div class="flex items-center gap-3 mb-8">
+							<h3 class="text-2xl font-bold text-stone-900"><?php _e('Clinic FAQs', 'earlystart-early-learning'); ?></h3>
+							<div class="flex-1 h-px bg-stone-200 ml-4"></div>
+						</div>
+						<div class="space-y-4">
+							<?php foreach ($location_faqs as $index => $item): ?>
+								<div class="bg-white border border-stone-200 rounded-2xl p-6 cursor-pointer hover:border-rose-300 transition-colors" data-faq-item>
+									<div class="flex justify-between items-center">
+										<h4 class="font-bold text-stone-800"><?php echo esc_html($item['question']); ?></h4>
+										<i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-stone-400"></i>
+									</div>
+									<div class="faq-answer text-stone-600 mt-0">
+										<p class="pt-4"><?php echo wp_kses_post($item['answer']); ?></p>
+									</div>
+								</div>
+							<?php endforeach; ?>
+						</div>
 					</div>
 				</div>
-			</section>
-		<?php endif; ?>
 
-		<!-- Testimonials -->
-		<section class="py-24 bg-white">
-			<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-				<div class="inline-block p-4 bg-rose-50 text-rose-700 rounded-2xl mb-10">
-					<i data-lucide="quote" class="w-8 h-8"></i>
-				</div>
-				<h2 class="text-4xl font-bold text-stone-900 mb-12">
-					<?php _e('Voices of the Community.', 'earlystart-early-learning'); ?>
-				</h2>
-				<blockquote class="text-3xl italic text-stone-700 leading-relaxed mb-12">
-					"<?php echo esc_html($hero_review_text ?: __("The clinical support here has changed our child's trajectory. We finally feel heard and supported.", 'earlystart-early-learning')); ?>"
-				</blockquote>
-				<div class="flex flex-col items-center">
-					<div class="w-16 h-1 bg-rose-600 rounded-full mb-6"></div>
-					<cite class="not-italic">
-						<span
-							class="block text-lg font-bold text-stone-900 uppercase tracking-widest"><?php echo esc_html($hero_review_author ?: __("Happy Parent", 'earlystart-early-learning')); ?></span>
-						<span
-							class="text-sm text-stone-300"><?php _e('Georgia Campus Family', 'earlystart-early-learning'); ?></span>
-					</cite>
+				<div class="lg:col-span-4" id="tour">
+					<div class="sticky top-24 space-y-6">
+						<div class="bg-white rounded-[2rem] p-8 shadow-xl border border-stone-100 relative overflow-hidden">
+							<div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500"></div>
+							<h3 class="text-2xl font-bold text-stone-900 mb-2 mt-2"><?php _e('Book a Tour', 'earlystart-early-learning'); ?></h3>
+							<p class="text-sm text-stone-500 mb-6"><?php _e('Come see the facility and meet our team. No commitment required.', 'earlystart-early-learning'); ?></p>
+							<div class="clinical-form">
+								<?php echo do_shortcode('[earlystart_tour_form location_id="' . $location_id . '"]'); ?>
+							</div>
+							<?php if ($tour_booking_link): ?>
+								<div class="mt-6 pt-6 border-t border-stone-100 text-center">
+									<a href="<?php echo esc_url($tour_booking_link); ?>" class="booking-btn w-full inline-flex items-center justify-center bg-rose-600 text-white py-3 rounded-xl font-bold hover:bg-rose-700 transition-colors shadow-md">
+										<?php _e('Book Direct via Calendar', 'earlystart-early-learning'); ?>
+									</a>
+								</div>
+							<?php endif; ?>
+						</div>
+
+						<div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
+							<h3 class="text-lg font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4"><?php _e('Clinic Details', 'earlystart-early-learning'); ?></h3>
+							<div class="space-y-6 text-sm">
+								<div class="flex items-start group">
+									<div class="w-10 h-10 bg-rose-50 rounded-full flex items-center justify-center text-rose-600 mr-4 shrink-0 group-hover:bg-rose-100 transition-colors"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+									<div class="pt-1">
+										<p class="text-stone-900 font-medium">
+											<?php echo esc_html($address); ?><br><?php echo esc_html($city . ', ' . $state . ' ' . $zip); ?>
+										</p>
+										<?php if ($map_query): ?>
+											<a href="<?php echo esc_url($map_link); ?>" class="text-rose-600 font-bold mt-1 block hover:underline" target="_blank" rel="noopener">
+												<?php _e('Get Directions', 'earlystart-early-learning'); ?>
+											</a>
+										<?php endif; ?>
+									</div>
+								</div>
+
+								<div class="flex items-start group">
+									<div class="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center text-orange-600 mr-4 shrink-0 group-hover:bg-orange-100 transition-colors"><i data-lucide="clock" class="w-5 h-5"></i></div>
+									<div class="pt-1">
+										<p class="text-stone-900 font-medium"><?php echo esc_html($hours); ?></p>
+									</div>
+								</div>
+
+								<div class="flex items-start group">
+									<div class="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 mr-4 shrink-0 group-hover:bg-amber-100 transition-colors"><i data-lucide="phone" class="w-5 h-5"></i></div>
+									<div class="pt-1">
+										<?php if ($phone): ?>
+											<p class="text-stone-900 font-bold text-base"><?php echo esc_html($phone); ?></p>
+										<?php endif; ?>
+										<?php if ($email): ?>
+											<p class="text-stone-500"><?php echo esc_html($email); ?></p>
+										<?php endif; ?>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
+							<h4 class="font-bold text-stone-900 mb-4 flex items-center">
+								<i data-lucide="shield-check" class="w-5 h-5 text-green-500 mr-2"></i>
+								<?php _e('Insurance Accepted Here', 'earlystart-early-learning'); ?>
+							</h4>
+							<div class="flex flex-wrap gap-2 text-xs font-bold text-stone-600">
+								<span class="bg-stone-50 px-3 py-1.5 rounded-lg border border-stone-200">BlueCross</span>
+								<span class="bg-stone-50 px-3 py-1.5 rounded-lg border border-stone-200">Aetna</span>
+								<span class="bg-stone-50 px-3 py-1.5 rounded-lg border border-stone-200">Cigna</span>
+								<span class="bg-stone-50 px-3 py-1.5 rounded-lg border border-stone-200">United</span>
+								<span class="bg-stone-50 px-3 py-1.5 rounded-lg border border-stone-200">Tricare</span>
+								<span class="bg-stone-50 px-3 py-1.5 rounded-lg border border-stone-200">Private Pay</span>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
 
-		<!-- FAQ Section -->
-		<section class="py-24 bg-stone-50 border-t border-stone-100">
-			<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div class="text-center mb-16 fade-in-up">
-					<h2 class="text-4xl font-bold text-stone-900 mb-6">
-						<?php _e('Questions & Answers', 'earlystart-early-learning'); ?>
-					</h2>
-					<p class="text-stone-700 text-lg">
-						<?php _e('Common inquiries about our clinical approach and enrollment process.', 'earlystart-early-learning'); ?>
-					</p>
-				</div>
-
-				<div class="space-y-4">
+		<section class="h-[500px] w-full bg-stone-200 relative flex items-center justify-center border-t border-stone-200">
+			<?php if ($maps_embed): ?>
+				<div class="absolute inset-0">
 					<?php
-					$location_faqs = earlystart_get_location_faq_items($location_id);
-					foreach ($location_faqs as $item):
-						?>
-						<div
-							class="group bg-white rounded-3xl p-8 shadow-sm border border-stone-100 hover:shadow-xl transition-all duration-300">
-							<h3 class="text-lg font-bold text-stone-900 mb-4"><?php echo esc_html($item['question']); ?></h3>
-							<div class="text-stone-700 text-sm leading-relaxed prose prose-stone max-w-none">
-								<?php echo wp_kses_post($item['answer']); ?>
-							</div>
-						</div>
-					<?php endforeach; ?>
+					$allowed_tags = array(
+						'iframe' => array(
+							'src' => true,
+							'width' => true,
+							'height' => true,
+							'frameborder' => true,
+							'allowfullscreen' => true,
+							'allow' => true,
+							'loading' => true,
+							'style' => true,
+							'class' => true,
+							'title' => true,
+						),
+					);
+					echo wp_kses($maps_embed, $allowed_tags);
+					?>
 				</div>
+			<?php else: ?>
+				<div class="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-cover bg-center opacity-40"></div>
+			<?php endif; ?>
+
+			<div class="relative z-10 bg-white/95 backdrop-blur-md px-10 py-8 rounded-[2.5rem] shadow-2xl text-center border border-white max-w-sm w-full mx-4 transform hover:-translate-y-2 transition-transform duration-300">
+				<div class="w-16 h-16 bg-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-rose-600 shadow-sm">
+					<i data-lucide="map-pin" class="w-8 h-8"></i>
+				</div>
+				<h3 class="font-bold text-xl text-stone-900 mb-2"><?php echo esc_html($location_name); ?></h3>
+				<p class="text-stone-500 text-sm mb-6"><?php echo esc_html($address); ?><br><?php echo esc_html($city . ', ' . $state . ' ' . $zip); ?></p>
+				<?php if ($map_query): ?>
+					<a href="<?php echo esc_url($map_link); ?>" class="inline-flex items-center justify-center w-full bg-stone-900 text-white py-3 rounded-xl font-bold hover:bg-rose-600 transition-colors shadow-md" target="_blank" rel="noopener">
+						<?php _e('Open in Google Maps', 'earlystart-early-learning'); ?>
+					</a>
+				<?php endif; ?>
 			</div>
 		</section>
-
-		<!-- Visit Section -->
-		<section id="contact" class="py-24 bg-white overflow-hidden relative">
-			<div
-				class="absolute bottom-0 left-0 w-96 h-96 bg-sky-50 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2 opacity-50">
-			</div>
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-				<div class="grid lg:grid-cols-2 gap-20 items-start">
-
-					<div class="fade-in-up">
-						<span
-							class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
-							<?php _e('Location Details', 'earlystart-early-learning'); ?>
-						</span>
-						<h2 class="text-4xl md:text-5xl font-bold text-stone-900 mb-8 leading-tight">
-							<?php _e('Experience the Magic.', 'earlystart-early-learning'); ?>
-						</h2>
-						<p class="text-lg text-stone-700 mb-12 leading-relaxed">
-							<?php _e('Clinical excellence is best experienced in person. Come see how we blend therapy and education in a premium environment.', 'earlystart-early-learning'); ?>
-						</p>
-
-						<div class="space-y-10">
-							<div class="flex gap-6 text-stone-900">
-								<div class="w-14 h-14 bg-stone-50 rounded-2xl flex items-center justify-center shrink-0">
-									<i data-lucide="map-pin" class="w-7 h-7"></i>
-								</div>
-								<div>
-									<h4 class="text-lg font-bold mb-2">
-										<?php _e('Campus Address', 'earlystart-early-learning'); ?>
-									</h4>
-									<p class="text-stone-700 leading-relaxed">
-										<?php echo esc_html($address); ?><br><?php echo esc_html("$city, $state $zip"); ?>
-									</p>
-								</div>
-							</div>
-
-							<div class="flex gap-6 text-stone-900">
-								<div class="w-14 h-14 bg-stone-50 rounded-2xl flex items-center justify-center shrink-0">
-									<i data-lucide="phone" class="w-7 h-7"></i>
-								</div>
-								<div>
-									<h4 class="text-lg font-bold mb-2">
-										<?php _e('Direct Line', 'earlystart-early-learning'); ?>
-									</h4>
-									<p class="text-stone-700 leading-relaxed"><?php echo esc_html($phone); ?></p>
-								</div>
-							</div>
-
-							<div class="flex gap-6 text-stone-900">
-								<div class="w-14 h-14 bg-stone-50 rounded-2xl flex items-center justify-center shrink-0">
-									<i data-lucide="clock" class="w-7 h-7"></i>
-								</div>
-								<div>
-									<h4 class="text-lg font-bold mb-2">
-										<?php _e('Operational Hours', 'earlystart-early-learning'); ?>
-									</h4>
-									<p class="text-stone-700 leading-relaxed"><?php echo esc_html($hours); ?>
-										(<?php _e('Mon-Fri', 'earlystart-early-learning'); ?>)</p>
-								</div>
-							</div>
-						</div>
-
-						<?php if ($maps_embed): ?>
-							<div
-								class="mt-16 rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 aspect-video lg:aspect-square">
-								<?php echo wp_kses($maps_embed, ['iframe' => ['src' => true, 'width' => true, 'height' => true, 'frameborder' => true, 'allowfullscreen' => true, 'loading' => true]]); ?>
-							</div>
-						<?php endif; ?>
-					</div>
-
-					<div id="tour"
-						class="fade-in-up bg-stone-50 p-12 lg:p-16 rounded-[3rem] border border-stone-100 shadow-xl sticky top-32">
-						<h3 class="text-3xl font-bold text-stone-900 mb-4">
-							<?php _e('Schedule a Private Tour', 'earlystart-early-learning'); ?>
-						</h3>
-						<p class="text-stone-700 mb-10">
-							<?php _e('Enter your details below and our intake team will coordinate a time for you to visit.', 'earlystart-early-learning'); ?>
-						</p>
-
-						<div class="clinical-form">
-							<?php echo do_shortcode('[earlystart_tour_form location_id="' . $location_id . '"]'); ?>
-						</div>
-
-						<?php if ($tour_booking_link): ?>
-							<div class="mt-10 pt-10 border-t border-stone-100 text-center">
-								<p class="text-stone-300 text-sm font-bold uppercase tracking-widest mb-6">
-									<?php _e('Or Book Instantly', 'earlystart-early-learning'); ?>
-								</p>
-								<a href="<?php echo esc_url($tour_booking_link); ?>"
-									class="bg-rose-600 text-white px-10 py-5 rounded-full font-bold shadow-lg hover:bg-stone-900 transition-all inline-block">
-									<?php _e('Book Direct via Calendar', 'earlystart-early-learning'); ?>
-								</a>
-							</div>
-						<?php endif; ?>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<?php if ($seo_content_title || $seo_content_text): ?>
-			<!-- SEO Content -->
-			<section class="py-24 bg-stone-50">
-				<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-					<h2 class="text-3xl font-bold text-stone-900 mb-8"><?php echo esc_html($seo_content_title); ?></h2>
-					<div class="text-stone-700 leading-relaxed prose prose-stone max-w-none">
-						<?php echo wp_kses_post(wpautop($seo_content_text)); ?>
-					</div>
-				</div>
-			</section>
-		<?php endif; ?>
-
-		<!-- Inner Content -->
-		<section class="pb-24 bg-stone-50">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<?php the_content(); ?>
-			</div>
-		</section>
-
 	</main>
 
 <?php endwhile; ?>
 
-<!-- Tour Booking Modal -->
-<div id="chroma-tour-modal" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true">
-	<div class="absolute inset-0 bg-stone-900/80 backdrop-blur-sm transition-opacity" id="chroma-tour-backdrop"></div>
-	<div
-		class="absolute inset-4 md:inset-10 bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col animate-fade-in-up">
-		<div class="bg-stone-50 border-b border-stone-100 px-8 py-6 flex items-center justify-between flex-shrink-0">
-			<h3 class="text-2xl font-bold text-stone-900">
-				<?php _e('Schedule Your Visit', 'earlystart-early-learning'); ?></h3>
-			<div class="flex items-center gap-6">
-				<a href="#" id="chroma-tour-external" target="_blank" rel="noopener noreferrer"
-					class="text-sm font-bold uppercase tracking-widest text-stone-300 hover:text-rose-700 transition-colors hidden md:block">
-					<?php _e('Open in new tab', 'earlystart-early-learning'); ?> <i data-lucide="external-link"
-						class="w-4 h-4 inline-block ml-1"></i>
-				</a>
-				<button id="chroma-tour-close"
-					class="w-12 h-12 rounded-full bg-white border border-stone-100 flex items-center justify-center text-stone-900 hover:bg-rose-50 hover:text-rose-700 transition-all">
-					<i data-lucide="x" class="w-6 h-6"></i>
-				</button>
-			</div>
-		</div>
-		<div class="flex-grow relative bg-white">
-			<div id="chroma-tour-loader"
-				class="absolute inset-0 flex items-center justify-center bg-white z-10 transition-opacity duration-300">
-				<div class="w-12 h-12 border-4 border-rose-100 border-t-rose-600 rounded-full animate-spin"></div>
-			</div>
-			<iframe id="chroma-tour-frame" src="" class="w-full h-full border-0"
-				allow="camera; microphone; autoplay; encrypted-media;"></iframe>
-		</div>
-	</div>
-</div>
-
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
-		const modal = document.getElementById('chroma-tour-modal');
-		const backdrop = document.getElementById('chroma-tour-backdrop');
-		const closeBtn = document.getElementById('chroma-tour-close');
-		const iframe = document.getElementById('chroma-tour-frame');
-		const externalLink = document.getElementById('chroma-tour-external');
-		const loader = document.getElementById('chroma-tour-loader');
-
-		function openModal(url) {
-			modal.classList.remove('hidden');
-			document.body.style.overflow = 'hidden';
-			loader.style.opacity = '1';
-			iframe.src = url;
-			externalLink.href = url;
-			iframe.onload = function () {
-				loader.style.opacity = '0';
-				setTimeout(() => loader.classList.add('hidden'), 300);
-			};
-		}
-
-		function closeModal() {
-			modal.classList.add('hidden');
-			document.body.style.overflow = '';
-			iframe.src = '';
-			loader.classList.remove('hidden');
-		}
-
-		const bookingBtns = document.querySelectorAll('.booking-btn, a[href*="calendly.com"], a[href*="tidycal.com"]');
-		bookingBtns.forEach(btn => {
-			btn.addEventListener('click', function (e) {
-				const url = this.getAttribute('href');
-				if (url && (url.includes('calendly.com') || url.includes('tidycal.com'))) {
-					e.preventDefault();
-					openModal(url);
-				}
+		var faqItems = document.querySelectorAll('[data-faq-item]');
+		faqItems.forEach(function (item) {
+			item.addEventListener('click', function () {
+				var answer = item.querySelector('.faq-answer');
+				var icon = item.querySelector('.faq-icon');
+				if (answer) answer.classList.toggle('open');
+				if (icon) icon.classList.toggle('rotate');
 			});
-		});
-
-		if (closeBtn) closeBtn.addEventListener('click', closeModal);
-		if (backdrop) backdrop.addEventListener('click', closeModal);
-		document.addEventListener('keydown', (e) => {
-			if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
 		});
 	});
 </script>

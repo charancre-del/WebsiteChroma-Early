@@ -132,6 +132,25 @@ header .container>a[href*='contact'] {
     }
 }
 
+/* FAQ Toggle */
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.faq-answer.open {
+    max-height: 500px;
+}
+
+.faq-icon {
+    transition: transform 0.3s ease;
+}
+
+.faq-icon.rotate {
+    transform: rotate(180deg);
+}
+
 /* Custom Scrollbar for Job Board */
 .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
