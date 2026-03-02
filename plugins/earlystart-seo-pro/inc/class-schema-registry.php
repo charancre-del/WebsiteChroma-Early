@@ -20,6 +20,8 @@ if (!defined('ABSPATH')) {
 
 class earlystart_Schema_Registry
 {
+    const STRICT_MODE_OPTION = 'earlystart_schema_strict_mode';
+
     /**
      * Collected schemas for this page
      * @var array
@@ -51,6 +53,19 @@ class earlystart_Schema_Registry
     private static $output_done = false;
 
     /**
+     * Field-level source and confidence metadata, keyed by node key.
+     * @var array
+     */
+    private static $field_metadata = [];
+
+    /**
+     * Tracks fields already claimed by non-AI sources (per node key)
+     * to enforce "AI can only fill missing low-risk fields".
+     * @var array
+     */
+    private static $trusted_field_index = [];
+
+    /**
      * Initialize the registry
      */
     public static function init()
@@ -74,6 +89,8 @@ class earlystart_Schema_Registry
     public static function register($schema, $options = [])
     {
         $source = isset($options['source']) ? $options['source'] : 'unknown';
+        $field_source = isset($options['field_source']) && is_array($options['field_source']) ? $options['field_source'] : [];
+        $field_confidence = isset($options['field_confidence']) && is_array($options['field_confidence']) ? $options['field_confidence'] : [];
         
         if (self::$output_done) {
             self::$blocked[] = [
@@ -141,11 +158,30 @@ class earlystart_Schema_Registry
             }
         }
 
+        $node_key = self::get_node_key($schema, $type);
+        $is_ai_source = self::is_ai_source($source);
+
+        if ($is_ai_source) {
+            $sanitized_for_ai = self::sanitize_ai_fields($schema, $node_key, $source);
+            if (empty($sanitized_for_ai)) {
+                self::$blocked[] = [
+                    'type' => $type,
+                    'reason' => 'AI source had no allowed low-risk fields after sanitization',
+                    'source' => $source
+                ];
+                return false;
+            }
+            $schema = $sanitized_for_ai;
+        }
+
+        self::capture_field_metadata($schema, $node_key, $source, $field_source, $field_confidence);
+
         // Register the schema
         self::$schemas[] = [
             'schema' => $schema,
             'type' => $type,
-            'source' => $source
+            'source' => $source,
+            'node_key' => $node_key
         ];
 
         self::$registered_types[$type] = true;
@@ -204,23 +240,26 @@ class earlystart_Schema_Registry
             return;
         }
 
-        // Build schema graph
-        $graph = [];
-        foreach (self::$schemas as $item) {
-            $schema = $item['schema'];
-            
-            // Add @context if missing
-            if (!isset($schema['@context'])) {
-                $schema['@context'] = 'https://schema.org';
+        $pipeline = self::sanitize_validate_pipeline(self::$schemas);
+        if (!$pipeline['valid']) {
+            foreach ($pipeline['errors'] as $error) {
+                self::$blocked[] = [
+                    'type' => 'graph',
+                    'reason' => $error,
+                    'source' => 'strict-pipeline'
+                ];
             }
-            
-            $graph[] = $schema;
+            return;
         }
+
+        $graph = $pipeline['graph'];
 
         // Output as individual scripts
         foreach ($graph as $schema) {
             echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
         }
+
+        do_action('earlystart_schema_field_metadata_ready', self::$field_metadata, $graph);
     }
 
     /**
@@ -329,7 +368,417 @@ class earlystart_Schema_Registry
         self::$blocked = [];
         self::$registered_types = [];
         self::$registered_ids = [];
+        self::$field_metadata = [];
+        self::$trusted_field_index = [];
         self::$output_done = false;
+    }
+
+    /**
+     * Expose field metadata for QA/admin tools.
+     *
+     * @return array
+     */
+    public static function get_field_metadata()
+    {
+        return self::$field_metadata;
+    }
+
+    private static function sanitize_validate_pipeline($registered_items)
+    {
+        $errors = [];
+        $sanitized_nodes = [];
+        $hash_index = [];
+        $id_index = [];
+
+        foreach ($registered_items as $item) {
+            if (empty($item['schema']) || !is_array($item['schema'])) {
+                continue;
+            }
+            $source = isset($item['source']) ? (string) $item['source'] : 'unknown';
+            $node = self::sanitize_node_recursive($item['schema'], $source);
+            if (empty($node) || !is_array($node)) {
+                continue;
+            }
+            if (!isset($node['@context'])) {
+                $node['@context'] = 'https://schema.org';
+            }
+            if (!self::is_valid_type_shape($node)) {
+                $errors[] = 'Invalid @type shape detected in strict pipeline';
+                continue;
+            }
+            $node_hash = md5(wp_json_encode($node));
+            if (isset($hash_index[$node_hash])) {
+                continue;
+            }
+            $hash_index[$node_hash] = true;
+
+            if (!empty($node['@id']) && is_string($node['@id'])) {
+                $nid = $node['@id'];
+                if (isset($id_index[$nid])) {
+                    if ($id_index[$nid] !== $node_hash) {
+                        $errors[] = sprintf('Duplicate @id with conflicting nodes: %s', $nid);
+                    }
+                    continue;
+                }
+                $id_index[$nid] = $node_hash;
+            }
+
+            $sanitized_nodes[] = $node;
+        }
+
+        if (empty($sanitized_nodes)) {
+            return ['valid' => false, 'errors' => array_merge($errors, ['No valid schema nodes left after sanitization']), 'graph' => []];
+        }
+
+        $strict_errors = self::run_strict_graph_checks($sanitized_nodes);
+        if (!empty($strict_errors)) {
+            $errors = array_merge($errors, $strict_errors);
+        }
+
+        if (class_exists('earlystart_Schema_Validator')) {
+            $graph_payload = [
+                '@context' => 'https://schema.org',
+                '@graph' => $sanitized_nodes,
+            ];
+            $valid = earlystart_Schema_Validator::validate_graph($graph_payload);
+            if (!$valid) {
+                $validator_errors = earlystart_Schema_Validator::get_errors();
+                foreach ($validator_errors as $ve) {
+                    $errors[] = 'Validator: ' . $ve;
+                }
+            }
+        }
+
+        return [
+            'valid' => empty($errors),
+            'errors' => array_values(array_unique($errors)),
+            'graph' => $sanitized_nodes,
+        ];
+    }
+
+    private static function run_strict_graph_checks($nodes)
+    {
+        $errors = [];
+        $home_org_candidates = 0;
+        $known_ids = [];
+        $ref_ids = [];
+
+        foreach ($nodes as $node) {
+            $types = self::normalize_types($node);
+            foreach ($types as $t) {
+                if (!preg_match('/^[A-Za-z][A-Za-z0-9]+$/', $t)) {
+                    $errors[] = sprintf('Invalid @type value: %s', $t);
+                }
+            }
+            $id = isset($node['@id']) && is_string($node['@id']) ? $node['@id'] : '';
+            if ($id !== '') {
+                $known_ids[$id] = true;
+            }
+
+            if (in_array('Organization', $types, true) && self::is_primary_organization_node($node)) {
+                $home_org_candidates++;
+            }
+
+            $canonical_key = '';
+            if (isset($node['canonical']) && is_string($node['canonical'])) {
+                $canonical_key = $node['canonical'];
+            } elseif (isset($node['canonicalUrl']) && is_string($node['canonicalUrl'])) {
+                $canonical_key = $node['canonicalUrl'];
+            }
+
+            if ($canonical_key !== '' && isset($node['url']) && is_string($node['url'])) {
+                $canonical = trailingslashit(esc_url_raw($canonical_key));
+                $url = trailingslashit(esc_url_raw($node['url']));
+                if ($canonical !== '' && $url !== '' && $canonical !== $url) {
+                    $errors[] = sprintf('Canonical/url conflict on node: %s', $id !== '' ? $id : '(no @id)');
+                }
+            }
+
+            self::collect_ref_ids($node, $ref_ids);
+        }
+
+        if ($home_org_candidates > 1) {
+            $errors[] = 'Multiple primary Organization nodes detected';
+        }
+
+        foreach (array_unique($ref_ids) as $ref) {
+            if (isset($known_ids[$ref])) {
+                continue;
+            }
+
+            if (strpos($ref, '#') === 0) {
+                $resolved = false;
+                foreach (array_keys($known_ids) as $known_id) {
+                    if (substr($known_id, -strlen($ref)) === $ref) {
+                        $resolved = true;
+                        break;
+                    }
+                }
+                if (!$resolved) {
+                    $errors[] = sprintf('Broken @id reference: %s', $ref);
+                }
+                continue;
+            }
+
+            $errors[] = sprintf('Broken @id reference: %s', $ref);
+        }
+
+        if (count($nodes) === 0) {
+            $errors[] = 'Schema graph empty after strict checks';
+        }
+
+        return $errors;
+    }
+
+    private static function sanitize_node_recursive($value, $source)
+    {
+        if (is_array($value)) {
+            $is_assoc = self::is_assoc_array($value);
+            $out = [];
+            foreach ($value as $key => $child) {
+                $clean = self::sanitize_node_recursive($child, $source);
+                if ($clean === null || $clean === '' || $clean === []) {
+                    continue;
+                }
+
+                if (is_string($key) && in_array($key, ['url', '@id', 'logo', 'image', 'thumbnailUrl', 'contentUrl'], true)) {
+                    if (is_string($clean)) {
+                        $clean = esc_url_raw(trim($clean));
+                        if ($clean === '') {
+                            continue;
+                        }
+                    }
+                }
+                if (is_string($key) && in_array($key, ['telephone', 'faxNumber'], true) && is_string($clean)) {
+                    $clean = self::normalize_phone($clean);
+                    if ($clean === '') {
+                        continue;
+                    }
+                }
+
+                $out[$key] = $clean;
+            }
+
+            if ($is_assoc) {
+                return $out;
+            }
+
+            return array_values($out);
+        }
+
+        if (is_string($value)) {
+            return trim(wp_strip_all_tags($value));
+        }
+
+        if (is_bool($value) || is_numeric($value)) {
+            return $value;
+        }
+
+        return null;
+    }
+
+    private static function sanitize_ai_fields($schema, $node_key, $source)
+    {
+        $allowed_low_risk = [
+            '@context', '@type', '@id',
+            'description', 'disambiguatingDescription', 'keywords', 'slogan', 'award', 'knowsAbout',
+            'additionalType', 'isSimilarTo'
+        ];
+        $protected_identity = [
+            'name', 'legalName', 'url', 'telephone', 'email', 'address', 'geo',
+            'sameAs', 'logo', 'openingHours', 'contactPoint'
+        ];
+
+        $out = [];
+        foreach ($schema as $field => $value) {
+            if (in_array($field, ['@context', '@type', '@id'], true)) {
+                $out[$field] = $value;
+                continue;
+            }
+
+            if (!in_array($field, $allowed_low_risk, true)) {
+                self::$blocked[] = [
+                    'type' => isset($schema['@type']) ? (is_array($schema['@type']) ? reset($schema['@type']) : $schema['@type']) : 'unknown',
+                    'reason' => sprintf('AI field blocked (high risk): %s', $field),
+                    'source' => $source
+                ];
+                continue;
+            }
+
+            if (in_array($field, $protected_identity, true)) {
+                self::$blocked[] = [
+                    'type' => isset($schema['@type']) ? (is_array($schema['@type']) ? reset($schema['@type']) : $schema['@type']) : 'unknown',
+                    'reason' => sprintf('AI cannot overwrite identity field: %s', $field),
+                    'source' => $source
+                ];
+                continue;
+            }
+
+            if (!empty(self::$trusted_field_index[$node_key][$field])) {
+                self::$blocked[] = [
+                    'type' => isset($schema['@type']) ? (is_array($schema['@type']) ? reset($schema['@type']) : $schema['@type']) : 'unknown',
+                    'reason' => sprintf('AI field ignored because trusted source already provided it: %s', $field),
+                    'source' => $source
+                ];
+                continue;
+            }
+
+            $out[$field] = $value;
+        }
+
+        $business_keys = array_diff(array_keys($out), ['@context', '@type', '@id']);
+        if (empty($business_keys)) {
+            return [];
+        }
+
+        return $out;
+    }
+
+    private static function capture_field_metadata($schema, $node_key, $source, $field_source, $field_confidence)
+    {
+        if (!isset(self::$field_metadata[$node_key])) {
+            self::$field_metadata[$node_key] = [];
+        }
+
+        $is_ai_source = self::is_ai_source($source);
+        $base_confidence = self::default_confidence_for_source($source);
+
+        foreach ($schema as $field => $value) {
+            if ($field === '@context') {
+                continue;
+            }
+            $resolved_source = isset($field_source[$field]) ? (string) $field_source[$field] : (string) $source;
+            $resolved_conf = isset($field_confidence[$field]) ? (float) $field_confidence[$field] : $base_confidence;
+            $resolved_conf = max(0.0, min(1.0, $resolved_conf));
+
+            self::$field_metadata[$node_key][$field] = [
+                'field_source' => $resolved_source,
+                'confidence' => $resolved_conf
+            ];
+
+            if (!$is_ai_source) {
+                if (!isset(self::$trusted_field_index[$node_key])) {
+                    self::$trusted_field_index[$node_key] = [];
+                }
+                self::$trusted_field_index[$node_key][$field] = true;
+            }
+        }
+    }
+
+    private static function default_confidence_for_source($source)
+    {
+        $source = strtolower((string) $source);
+        if (strpos($source, 'post_meta') !== false || strpos($source, 'theme_mod') !== false || strpos($source, 'option') !== false) {
+            return 0.95;
+        }
+        if (self::is_ai_source($source)) {
+            return 0.45;
+        }
+        return 0.75;
+    }
+
+    private static function is_ai_source($source)
+    {
+        $source = strtolower((string) $source);
+        return strpos($source, 'ai') !== false || strpos($source, 'llm') !== false;
+    }
+
+    private static function get_node_key($schema, $type)
+    {
+        if (!empty($schema['@id']) && is_string($schema['@id'])) {
+            return $schema['@id'];
+        }
+        return 'type:' . (string) $type;
+    }
+
+    private static function normalize_types($node)
+    {
+        if (!isset($node['@type'])) {
+            return [];
+        }
+        if (is_array($node['@type'])) {
+            return array_values(array_filter(array_map('strval', $node['@type'])));
+        }
+        return [strval($node['@type'])];
+    }
+
+    private static function is_primary_organization_node($node)
+    {
+        $home = trailingslashit(home_url('/'));
+        $org_id_1 = $home . '#organization';
+        $org_id_2 = untrailingslashit(home_url()) . '#organization';
+        $id = isset($node['@id']) ? (string) $node['@id'] : '';
+        $url = isset($node['url']) ? trailingslashit((string) $node['url']) : '';
+
+        if ($id === $org_id_1 || $id === $org_id_2) {
+            return true;
+        }
+        if ($url !== '' && $url === $home) {
+            return true;
+        }
+        return false;
+    }
+
+    private static function collect_ref_ids($value, &$refs)
+    {
+        if (!is_array($value)) {
+            return;
+        }
+
+        if (isset($value['@id']) && count($value) === 1 && is_string($value['@id'])) {
+            $refs[] = $value['@id'];
+        }
+
+        foreach ($value as $child) {
+            self::collect_ref_ids($child, $refs);
+        }
+    }
+
+    private static function is_valid_type_shape($node)
+    {
+        if (!isset($node['@type'])) {
+            return false;
+        }
+        if (is_string($node['@type']) && trim($node['@type']) !== '') {
+            return true;
+        }
+        if (is_array($node['@type'])) {
+            foreach ($node['@type'] as $type) {
+                if (!is_string($type) || trim($type) === '') {
+                    return false;
+                }
+            }
+            return !empty($node['@type']);
+        }
+        return false;
+    }
+
+    private static function normalize_phone($phone)
+    {
+        $phone = trim((string) $phone);
+        if ($phone === '') {
+            return '';
+        }
+        $clean = preg_replace('/[^\d\+]/', '', $phone);
+        if ($clean === null || $clean === '') {
+            return '';
+        }
+
+        if ($clean[0] !== '+' && strlen($clean) === 10) {
+            $clean = '+1' . $clean;
+        }
+        if (!preg_match('/^\+\d{8,15}$/', $clean)) {
+            return '';
+        }
+        return $clean;
+    }
+
+    private static function is_assoc_array($arr)
+    {
+        if (!is_array($arr)) {
+            return false;
+        }
+        return array_keys($arr) !== range(0, count($arr) - 1);
     }
 }
 
