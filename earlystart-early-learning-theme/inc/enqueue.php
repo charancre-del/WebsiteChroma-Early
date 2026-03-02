@@ -130,7 +130,7 @@ function earlystart_resource_hints($urls, $relation_type)
 {
         if ('preconnect' === $relation_type) {
 
-                if (is_front_page() || is_singular('program') || is_post_type_archive('program')) {
+                if (is_singular('program')) {
                         $urls[] = 'https://cdn.jsdelivr.net';
                 }
 
@@ -138,26 +138,24 @@ function earlystart_resource_hints($urls, $relation_type)
                         $urls[] = 'https://unpkg.com';
                 }
 
-                // Preconnect to external origins identified in audit
-                $urls[] = 'https://widgets.leadconnectorhq.com';
-                $urls[] = 'https://services.leadconnectorhq.com';
-                $urls[] = 'https://images.leadconnectorhq.com';
-                $urls[] = 'https://stcdn.leadconnectorhq.com';
-                $urls[] = 'https://images.unsplash.com';
+                if (is_front_page()) {
+                        $urls[] = 'https://images.unsplash.com';
+                }
         }
 
         if ('dns-prefetch' === $relation_type) {
 
-                if (is_front_page() || is_singular('program') || is_post_type_archive('program')) {
+                if (is_singular('program')) {
                         $urls[] = '//cdn.jsdelivr.net';
                 }
 
-                $urls[] = '//unpkg.com';
-                $urls[] = '//images.unsplash.com';
-                $urls[] = '//widgets.leadconnectorhq.com';
-                $urls[] = '//services.leadconnectorhq.com';
-                $urls[] = '//images.leadconnectorhq.com';
-                $urls[] = '//stcdn.leadconnectorhq.com';
+                if (earlystart_should_load_maps()) {
+                        $urls[] = '//unpkg.com';
+                }
+
+                if (is_front_page()) {
+                        $urls[] = '//images.unsplash.com';
+                }
         }
 
         return array_unique($urls, SORT_REGULAR);
@@ -204,8 +202,8 @@ add_action('admin_enqueue_scripts', 'earlystart_enqueue_admin_assets');
  */
 function earlystart_async_styles($html, $handle, $href, $media)
 {
-        // Defer Font Awesome, Google Fonts AND Main CSS (Critical CSS inlined in header)
-        if (in_array($handle, array('chroma-font-awesome', 'chroma-main', 'earlystart-fonts'))) {
+        // Keep the main stylesheet render-blocking so desktop nav and hero typography do not pop in late.
+        if (in_array($handle, array('chroma-font-awesome', 'earlystart-fonts'))) {
                 // Add data-no-optimize to prevent LiteSpeed from combining/blocking this file
                 $html = str_replace('<link', '<link data-no-optimize="1"', $html);
 
@@ -287,12 +285,12 @@ function earlystart_preload_fonts()
         $font_url = earlystart_THEME_URI . '/assets/webfonts/Outfit-Regular.woff2';
         echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 
-        // Outfit SemiBold (LCP Heading / Strong Text)
-        $font_url = earlystart_THEME_URI . '/assets/webfonts/Outfit-SemiBold.woff2';
+        // Outfit Medium (Desktop nav labels)
+        $font_url = earlystart_THEME_URI . '/assets/webfonts/Outfit-Medium.woff2';
         echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 
-        // Playfair Display Bold (Headings)
-        $font_url = earlystart_THEME_URI . '/assets/webfonts/PlayfairDisplay-Bold.woff2';
+        // Outfit Bold (Hero CTA and synthesized extra-bold fallback)
+        $font_url = earlystart_THEME_URI . '/assets/webfonts/Outfit-Bold.woff2';
         echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 }
 add_action('wp_head', 'earlystart_preload_fonts', 1);

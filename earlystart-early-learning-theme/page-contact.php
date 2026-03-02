@@ -102,17 +102,17 @@ while (have_posts()):
 							</h4>
 							<div class="grid sm:grid-cols-2 gap-4 text-sm">
 								<a href="mailto:admissions@earlystarttherapy.com"
-									class="text-stone-700 hover:text-rose-700 transition-colors"><strong><?php _e('Admissions:', 'earlystart-early-learning'); ?></strong>
-									admissions@...</a>
+									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Admissions:', 'earlystart-early-learning'); ?></strong>
+									<span style="overflow-wrap:anywhere;word-break:break-word;">admissions@earlystarttherapy.com</span></a>
 								<a href="mailto:careers@earlystarttherapy.com"
-									class="text-stone-700 hover:text-rose-700 transition-colors"><strong><?php _e('Careers:', 'earlystart-early-learning'); ?></strong>
-									careers@...</a>
+									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Careers:', 'earlystart-early-learning'); ?></strong>
+									<span style="overflow-wrap:anywhere;word-break:break-word;">careers@earlystarttherapy.com</span></a>
 								<a href="mailto:billing@earlystarttherapy.com"
-									class="text-stone-700 hover:text-rose-700 transition-colors"><strong><?php _e('Billing:', 'earlystart-early-learning'); ?></strong>
-									billing@...</a>
+									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Billing:', 'earlystart-early-learning'); ?></strong>
+									<span style="overflow-wrap:anywhere;word-break:break-word;">billing@earlystarttherapy.com</span></a>
 								<a href="mailto:media@earlystarttherapy.com"
-									class="text-stone-700 hover:text-rose-700 transition-colors"><strong><?php _e('Media:', 'earlystart-early-learning'); ?></strong>
-									media@...</a>
+									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Media:', 'earlystart-early-learning'); ?></strong>
+									<span style="overflow-wrap:anywhere;word-break:break-word;">media@earlystarttherapy.com</span></a>
 							</div>
 						</div>
 					</div>

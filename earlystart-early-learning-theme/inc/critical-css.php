@@ -109,12 +109,6 @@ function chroma_print_critical_css()
             }
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
         .font-serif {
             font-family: var(--cqa-font-heading, 'Playfair Display', 'Playfair-Fallback', serif);
         }
@@ -519,6 +513,16 @@ function chroma_print_critical_css()
 
             .lg\:left-16 {
                 left: 4rem
+            }
+        }
+
+        @media(min-width:1280px) {
+            .xl\:flex {
+                display: flex
+            }
+
+            .xl\:hidden {
+                display: none
             }
         }
 
