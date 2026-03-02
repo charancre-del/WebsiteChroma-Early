@@ -30,7 +30,26 @@
 				if ('' === $footer_contact_email) {
 					$footer_contact_email = earlystart_global_email();
 				}
+				$footer_contact_address = trim((string) earlystart_get_theme_mod('earlystart_footer_address', ''));
+				if ('' === $footer_contact_address) {
+					$footer_contact_address = earlystart_global_full_address();
+				}
 				$footer_contact_hours = earlystart_get_theme_mod('earlystart_footer_hours', __('Mon - Fri: 8:00 AM - 5:00 PM', 'earlystart-early-learning'));
+
+				$footer_facebook_url = trim((string) earlystart_get_theme_mod('earlystart_footer_facebook', ''));
+				if ('' === $footer_facebook_url) {
+					$footer_facebook_url = earlystart_global_facebook_url();
+				}
+				$footer_instagram_url = trim((string) earlystart_get_theme_mod('earlystart_footer_instagram', ''));
+				if ('' === $footer_instagram_url) {
+					$footer_instagram_url = earlystart_global_instagram_url();
+				}
+				$footer_linkedin_url = trim((string) earlystart_get_theme_mod('earlystart_footer_linkedin', ''));
+				if ('' === $footer_linkedin_url) {
+					$footer_linkedin_url = earlystart_global_linkedin_url();
+				}
+				$footer_twitter_url = trim((string) earlystart_get_theme_mod('earlystart_footer_twitter', ''));
+				$footer_youtube_url = trim((string) earlystart_get_theme_mod('earlystart_footer_youtube', ''));
 				?>
 				<div class="flex items-center gap-3 mb-8">
 					<?php if (has_custom_logo()): ?>
@@ -63,23 +82,35 @@
 					<?php _e('Empowering neurodivergent children through play-led, evidence-based therapy. Ages 18mo - 12yrs.', 'earlystart-early-learning'); ?>
 				</p>
 				<div class="flex space-x-4">
-					<?php if (earlystart_global_facebook_url()): ?>
-						<a href="<?php echo esc_url(earlystart_global_facebook_url()); ?>" target="_blank" rel="noopener"
+					<?php if ($footer_facebook_url): ?>
+						<a href="<?php echo esc_url($footer_facebook_url); ?>" target="_blank" rel="noopener"
 							aria-label="<?php esc_attr_e('Follow Early Start on Facebook', 'earlystart-early-learning'); ?>"
 							class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 								data-lucide="facebook" class="w-5 h-5"></i></a>
 					<?php endif; ?>
-					<?php if (earlystart_global_instagram_url()): ?>
-						<a href="<?php echo esc_url(earlystart_global_instagram_url()); ?>" target="_blank" rel="noopener"
+					<?php if ($footer_instagram_url): ?>
+						<a href="<?php echo esc_url($footer_instagram_url); ?>" target="_blank" rel="noopener"
 							aria-label="<?php esc_attr_e('Follow Early Start on Instagram', 'earlystart-early-learning'); ?>"
 							class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 								data-lucide="instagram" class="w-5 h-5"></i></a>
 					<?php endif; ?>
-					<?php if (earlystart_global_linkedin_url()): ?>
-						<a href="<?php echo esc_url(earlystart_global_linkedin_url()); ?>" target="_blank" rel="noopener"
+					<?php if ($footer_linkedin_url): ?>
+						<a href="<?php echo esc_url($footer_linkedin_url); ?>" target="_blank" rel="noopener"
 							aria-label="<?php esc_attr_e('Follow Early Start on LinkedIn', 'earlystart-early-learning'); ?>"
 							class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 								data-lucide="linkedin" class="w-5 h-5"></i></a>
+					<?php endif; ?>
+					<?php if ($footer_twitter_url): ?>
+						<a href="<?php echo esc_url($footer_twitter_url); ?>" target="_blank" rel="noopener"
+							aria-label="<?php esc_attr_e('Follow Early Start on Twitter/X', 'earlystart-early-learning'); ?>"
+							class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
+								data-lucide="twitter" class="w-5 h-5"></i></a>
+					<?php endif; ?>
+					<?php if ($footer_youtube_url): ?>
+						<a href="<?php echo esc_url($footer_youtube_url); ?>" target="_blank" rel="noopener"
+							aria-label="<?php esc_attr_e('Follow Early Start on YouTube', 'earlystart-early-learning'); ?>"
+							class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
+								data-lucide="youtube" class="w-5 h-5"></i></a>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -137,14 +168,35 @@
 				} else {
 					?>
 					<div class="flex flex-col space-y-4 text-sm font-medium">
-						<a href="<?php echo esc_url(earlystart_get_program_link('aba')); ?>"
-							class="hover:text-rose-400 transition-colors">ABA Therapy</a>
-						<a href="<?php echo esc_url(earlystart_get_program_link('speech')); ?>"
-							class="hover:text-rose-400 transition-colors">Speech Therapy</a>
-						<a href="<?php echo esc_url(earlystart_get_program_link('ot')); ?>"
-							class="hover:text-rose-400 transition-colors">Occupational Therapy</a>
-						<a href="<?php echo esc_url(earlystart_get_program_link('bridge')); ?>"
-							class="hover:text-rose-400 transition-colors">Preschool Bridge</a>
+						<?php
+						$footer_programs = new WP_Query([
+							'post_type' => 'program',
+							'posts_per_page' => 5,
+							'orderby' => 'menu_order',
+							'order' => 'ASC',
+							'post_status' => 'publish'
+						]);
+
+						if ($footer_programs->have_posts()) {
+							while ($footer_programs->have_posts()) {
+								$footer_programs->the_post();
+								?>
+								<a href="<?php the_permalink(); ?>"
+									class="hover:text-rose-400 transition-colors"><?php the_title(); ?></a>
+								<?php
+							}
+							wp_reset_postdata();
+						} else {
+							?>
+							<a href="<?php echo esc_url(earlystart_get_program_link('aba')); ?>"
+								class="hover:text-rose-400 transition-colors">ABA Therapy</a>
+							<a href="<?php echo esc_url(earlystart_get_program_link('speech')); ?>"
+								class="hover:text-rose-400 transition-colors">Speech Therapy</a>
+							<a href="<?php echo esc_url(earlystart_get_program_link('ot')); ?>"
+								class="hover:text-rose-400 transition-colors">Occupational Therapy</a>
+							<a href="<?php echo esc_url(earlystart_get_program_link('bridge')); ?>"
+								class="hover:text-rose-400 transition-colors">Preschool Bridge</a>
+						<?php } ?>
 					</div>
 				<?php } ?>
 			</div>
@@ -167,14 +219,40 @@
 						<i data-lucide="calendar" class="w-5 h-5 mr-4 text-rose-500 shrink-0"></i>
 						<span><?php echo esc_html($footer_contact_hours); ?></span>
 					</li>
+					<?php if ('' !== $footer_contact_address): ?>
+						<li class="flex items-start">
+							<i data-lucide="map-pin" class="w-5 h-5 mr-4 text-rose-500 shrink-0"></i>
+							<span><?php echo nl2br(esc_html($footer_contact_address)); ?></span>
+						</li>
+					<?php endif; ?>
 				</ul>
 			</div>
 		</div>
 
 		<div class="border-t border-stone-800 mt-20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+			<?php
+			$footer_alternates = function_exists('earlystart_get_alternates') ? earlystart_get_alternates() : array();
+			$is_spanish = class_exists('earlystart_Multilingual_Manager') && method_exists('earlystart_Multilingual_Manager', 'is_spanish') && earlystart_Multilingual_Manager::is_spanish();
+			?>
 			<p class="text-xs text-stone-400">&copy; <?php echo date('Y'); ?>
 				<?php _e('Early Start. All rights reserved.', 'earlystart-early-learning'); ?>
 			</p>
+			<?php if (!empty($footer_alternates['en']) || !empty($footer_alternates['es'])): ?>
+				<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
+					<?php if (!empty($footer_alternates['en'])): ?>
+						<a href="<?php echo esc_url($footer_alternates['en']); ?>"
+							class="px-3 py-2 rounded-full border transition-colors <?php echo $is_spanish ? 'border-stone-700 text-stone-400 hover:text-white hover:border-stone-500' : 'border-rose-500 text-white bg-rose-600'; ?>">
+							EN
+						</a>
+					<?php endif; ?>
+					<?php if (!empty($footer_alternates['es'])): ?>
+						<a href="<?php echo esc_url($footer_alternates['es']); ?>"
+							class="px-3 py-2 rounded-full border transition-colors <?php echo $is_spanish ? 'border-blue-500 text-white bg-blue-600' : 'border-stone-700 text-stone-400 hover:text-white hover:border-stone-500'; ?>">
+							ES
+						</a>
+					<?php endif; ?>
+				</div>
+			<?php endif; ?>
 			<div class="flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-stone-400">
 				<a href="<?php echo esc_url(earlystart_get_page_link('privacy-policy')); ?>"
 					class="hover:text-stone-200 transition-colors">Privacy Policy</a>

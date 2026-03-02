@@ -158,7 +158,7 @@ while (have_posts()):
                             </ul>
                         </div>
 
-                        <a href="<?php echo esc_url(home_url('/contact/')); ?>"
+                        <a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
                             class="bg-rose-600 text-white px-8 py-4 rounded-full font-bold hover:bg-rose-700 transition-colors inline-flex items-center shadow-lg">
                             <i data-lucide="shield-check" class="w-5 h-5 mr-2"></i>
                             <?php _e('Verify My Insurance', 'earlystart-early-learning'); ?>
@@ -168,26 +168,12 @@ while (have_posts()):
                     <!-- Right: Logos & Private Pay -->
                     <div class="space-y-8 fade-in-up">
                         <div class="grid grid-cols-2 gap-6">
-                            <div
-                                class="bg-white p-8 rounded-3xl shadow-md text-center flex flex-col items-center justify-center aspect-square border border-stone-100 hover:-translate-y-1 transition-transform">
-                                <span class="text-xl font-bold text-stone-800">BlueCross</span>
-                                <span class="text-xs text-stone-300 mt-2">BlueShield</span>
-                            </div>
-                            <div
-                                class="bg-white p-8 rounded-3xl shadow-md text-center flex flex-col items-center justify-center aspect-square border border-stone-100 hover:-translate-y-1 transition-transform">
-                                <span class="text-xl font-bold text-stone-800">Aetna</span>
-                                <span class="text-xs text-stone-300 mt-2">CVS Health</span>
-                            </div>
-                            <div
-                                class="bg-white p-8 rounded-3xl shadow-md text-center flex flex-col items-center justify-center aspect-square border border-stone-100 hover:-translate-y-1 transition-transform">
-                                <span class="text-xl font-bold text-stone-800">Cigna</span>
-                                <span class="text-xs text-stone-300 mt-2">Evernorth</span>
-                            </div>
-                            <div
-                                class="bg-white p-8 rounded-3xl shadow-md text-center flex flex-col items-center justify-center aspect-square border border-stone-100 hover:-translate-y-1 transition-transform">
-                                <span class="text-xl font-bold text-stone-800">United</span>
-                                <span class="text-xs text-stone-300 mt-2">Healthcare</span>
-                            </div>
+                            <?php foreach (earlystart_get_supported_insurances() as $insurance): ?>
+                                <div
+                                    class="bg-white p-6 rounded-3xl shadow-md text-center flex items-center justify-center min-h-[140px] border border-stone-100 hover:-translate-y-1 transition-transform">
+                                    <span class="text-base md:text-lg font-bold text-stone-800"><?php echo esc_html($insurance); ?></span>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
 
                         <!-- Private Pay Option -->
@@ -593,7 +579,7 @@ while (have_posts()):
                 <p class="text-xl text-stone-700 mb-10">
                     <?php _e('We know this process is new for many families. We are here to answer every question, no matter how small.', 'earlystart-early-learning'); ?>
                 </p>
-                <a href="<?php echo esc_url(home_url('/contact/')); ?>"
+                <a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
                     class="bg-stone-900 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-rose-600 transition-colors shadow-lg inline-block transform hover:-translate-y-0.5">
                     <?php _e('Contact Admissions', 'earlystart-early-learning'); ?>
                 </a>

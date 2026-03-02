@@ -655,7 +655,7 @@ class earlystart_Schema_Injector
                     'type' => 'ChildCare',
                     'data' => [
                         'name' => $location_name,
-                        'description' => $description ?: sprintf(__('Quality childcare and early education at %s', 'chroma-excellence'), $location_name),
+                        'description' => $description ?: sprintf(__('Quality pediatric therapy and early education at %s', 'chroma-excellence'), $location_name),
                         'address' => $address ?: '',
                         'telephone' => $phone ?: get_theme_mod('earlystart_phone_number', ''),
                         'url' => get_permalink($post_id),

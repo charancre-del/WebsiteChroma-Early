@@ -36,7 +36,7 @@ while (have_posts()):
                             <?php _e('Preparing early learners for the transition from 1:1 therapy to a social classroom environment. Our "Bridge" simulates the preschool experience with clinical precision to ensure true school readiness.', 'earlystart-early-learning'); ?>
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="<?php echo esc_url(home_url('/consultation/')); ?>"
+                            <a href="<?php echo esc_url(earlystart_get_page_link('consultation')); ?>"
                                 class="bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:bg-blue-500 transition-all shadow-lg flex items-center justify-center">
                                 <?php _e('Book a Consultation', 'earlystart-early-learning'); ?>
                                 <i data-lucide="calendar" class="ml-2 w-5 h-5"></i>
@@ -282,7 +282,7 @@ while (have_posts()):
                 <p class="text-blue-100 text-xl mb-12 leading-relaxed max-w-2xl mx-auto">
                     <?php _e('Our clinical directors offer specialized consultations to assess if the Bridge Program is the right next step for your child\'s educational journey.', 'earlystart-early-learning'); ?>
                 </p>
-                <a href="<?php echo esc_url(home_url('/consultation/')); ?>"
+                <a href="<?php echo esc_url(earlystart_get_page_link('consultation')); ?>"
                     class="bg-white text-blue-600 px-12 py-5 rounded-full font-bold text-lg hover:bg-blue-50 transition-all shadow-2xl inline-flex items-center gap-3">
                     <?php _e('Book a Consultation', 'earlystart-early-learning'); ?>
                     <i data-lucide="arrow-right" class="w-6 h-6"></i>

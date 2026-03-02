@@ -75,7 +75,7 @@ $partner_query = new WP_Query(array(
 		<section class="py-20 bg-stone-50 overflow-hidden">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="mb-12">
-					<h2 class="text-3xl font-bold text-stone-900 mb-2"><?php _e('Clinical Hubs', 'earlystart-early-learning'); ?>
+					<h2 class="text-3xl font-bold text-stone-900 mb-2"><?php _e('Clinic Locations', 'earlystart-early-learning'); ?>
 					</h2>
 					<p class="text-stone-700">
 						<?php _e('Our flagship centers for intensive therapy and early intervention.', 'earlystart-early-learning'); ?>
@@ -91,7 +91,7 @@ $partner_query = new WP_Query(array(
 						$zip = get_post_meta($location_id, 'location_zip', true);
 						$phone = get_post_meta($location_id, 'location_phone', true);
 						$hours = get_post_meta($location_id, 'location_hours', true) ?: 'Mon - Fri: 8:00 AM - 6:00 PM';
-						$image = get_the_post_thumbnail_url($location_id, 'large') ?: 'https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp';
+						$image = get_the_post_thumbnail_url($location_id, 'large') ?: '';
 
 						// Prepare map data for this location
 						$lat = get_post_meta($location_id, 'location_latitude', true) ?: 34.0754; // Default to Alpharettaish
@@ -102,19 +102,26 @@ $partner_query = new WP_Query(array(
 								'lat' => $lat,
 								'lng' => $lng,
 								'url' => get_permalink(),
-								'city' => $city
+								'city' => $city,
+								'kind' => 'clinic'
 							)
 						));
 						?>
 						<div class="grid lg:grid-cols-2 gap-12 items-center">
 							<div class="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border border-stone-100 fade-in-up">
 								<div class="h-64 relative">
-									<img src="<?php echo esc_url($image); ?>" class="w-full h-full object-cover"
-										alt="<?php the_title_attribute(); ?>">
+									<?php if ($image): ?>
+										<img src="<?php echo esc_url($image); ?>" class="w-full h-full object-cover"
+											alt="<?php the_title_attribute(); ?>">
+									<?php else: ?>
+										<div class="w-full h-full bg-rose-50 flex items-center justify-center text-rose-300">
+											<i data-lucide="building-2" class="w-14 h-14"></i>
+										</div>
+									<?php endif; ?>
 									<div
 										class="absolute bottom-6 left-6 bg-white/90 backdrop-blur px-4 py-2 rounded-lg text-sm font-bold text-stone-800 shadow-sm">
 										<i data-lucide="building" class="w-4 h-4 inline-block mr-2 text-rose-500"></i>
-										<?php _e('Clinical Hub', 'earlystart-early-learning'); ?>
+										<?php _e('Clinic Location', 'earlystart-early-learning'); ?>
 									</div>
 								</div>
 								<div class="p-10">
@@ -161,7 +168,7 @@ $partner_query = new WP_Query(array(
 				<span
 					class="text-rose-700 font-bold tracking-widest text-sm uppercase mb-3 block"><?php _e('Integrated Therapy', 'earlystart-early-learning'); ?></span>
 				<h2 class="text-4xl font-bold text-stone-900 mb-6">
-					<?php _e('Our Partner Network', 'earlystart-early-learning'); ?>
+					<?php _e('Partner Locations', 'earlystart-early-learning'); ?>
 				</h2>
 				<p class="text-stone-700 max-w-2xl mx-auto text-lg leading-relaxed">
 					<?php _e('We partner with elite schools to provide on-site therapy. No more driving between school and clinic—we come to the classroom.', 'earlystart-early-learning'); ?>
@@ -272,7 +279,7 @@ $partner_query = new WP_Query(array(
 			<p class="text-xl text-stone-700 mb-10 leading-relaxed">
 				<?php _e('Whether it\'s in our specialized clinical clinic, your family home, or one of our partner schools, we have a spot for you.', 'earlystart-early-learning'); ?>
 			</p>
-			<a href="<?php echo esc_url(home_url('/contact/')); ?>"
+			<a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
 				class="bg-stone-900 text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-600 transition-all shadow-xl hover:shadow-rose-900/10 transform hover:-translate-y-1 inline-block">
 				<?php _e('Contact Admissions', 'earlystart-early-learning'); ?>
 			</a>

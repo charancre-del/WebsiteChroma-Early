@@ -49,7 +49,7 @@ class earlystart_CLI_Commands
             '_earlystart_es_excerpt' => $post->post_excerpt,
         ];
 
-        $translated = earlystart_Translation_Engine::translate_bulk($fields, 'es', 'Translate for a childcare website.');
+        $translated = earlystart_Translation_Engine::translate_bulk($fields, 'es', 'Translate for a pediatric therapy website.');
 
         if (isset($translated['_error'])) {
             WP_CLI::error("Translation failed: " . $translated['_error']);
@@ -114,7 +114,7 @@ class earlystart_CLI_Commands
                 '_earlystart_es_excerpt' => $post->post_excerpt,
             ];
 
-            $translated = earlystart_Translation_Engine::translate_bulk($fields, 'es', 'Translate for a childcare website.');
+            $translated = earlystart_Translation_Engine::translate_bulk($fields, 'es', 'Translate for a pediatric therapy website.');
 
             if (!isset($translated['_error'])) {
                 foreach ($translated as $key => $value) {

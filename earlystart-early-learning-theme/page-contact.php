@@ -40,9 +40,9 @@ while (have_posts()):
 				<div class="grid md:grid-cols-3 gap-8">
 					<?php
 					$routes = array(
-						array('icon' => 'baby', 'title' => 'For Families', 'desc' => 'Find a clinic near you and schedule a tour for ABA, Speech, or OT.', 'link' => '/locations/', 'label' => 'Find a Clinic', 'color' => 'rose'),
-						array('icon' => 'briefcase', 'title' => 'For Clinicians', 'desc' => 'View our open positions and learn about our culture of burnout prevention.', 'link' => '/careers/', 'label' => 'View Careers', 'color' => 'orange'),
-						array('icon' => 'heart-pulse', 'title' => 'For Providers', 'desc' => 'Easily refer a client to our clinical team for a comprehensive assessment.', 'link' => '/contact/#general-form', 'label' => 'Refer a Client', 'color' => 'amber'),
+						array('icon' => 'baby', 'title' => 'For Families', 'desc' => 'Find a clinic near you and schedule a tour for ABA, Speech, or OT.', 'link' => earlystart_get_page_link('locations'), 'label' => 'Find a Clinic', 'color' => 'rose'),
+						array('icon' => 'briefcase', 'title' => 'For Clinicians', 'desc' => 'View our open positions and learn about our culture of burnout prevention.', 'link' => earlystart_get_page_link('careers'), 'label' => 'View Careers', 'color' => 'orange'),
+						array('icon' => 'heart-pulse', 'title' => 'For Providers', 'desc' => 'Easily refer a client to our clinical team for a comprehensive assessment.', 'link' => earlystart_get_page_link('contact') . '#general-form', 'label' => 'Refer a Client', 'color' => 'amber'),
 					);
 					foreach ($routes as $r): ?>
 						<div
@@ -53,7 +53,7 @@ while (have_posts()):
 							</div>
 							<h3 class="text-2xl font-bold text-stone-900 mb-4"><?php echo esc_html($r['title']); ?></h3>
 							<p class="text-stone-700 text-sm leading-relaxed mb-8"><?php echo esc_html($r['desc']); ?></p>
-							<a href="<?php echo esc_url(home_url($r['link'])); ?>"
+							<a href="<?php echo esc_url($r['link']); ?>"
 								class="inline-block w-full py-4 bg-white border border-stone-200 text-stone-900 font-bold rounded-xl hover:border-<?php echo $r['color']; ?>-200 hover:text-<?php echo $r['color']; ?>-600 transition-all text-sm">
 								<?php echo esc_html($r['label']); ?>
 							</a>
@@ -194,7 +194,7 @@ while (have_posts()):
 				<p class="text-stone-700 mb-10 max-w-2xl mx-auto">
 					<?php _e('With specialized therapy centers across the region, there is likely a Early Start clinic in your community.', 'earlystart-early-learning'); ?>
 				</p>
-				<a href="<?php echo esc_url(home_url('/locations/')); ?>"
+				<a href="<?php echo esc_url(earlystart_get_page_link('locations')); ?>"
 					class="inline-flex items-center text-rose-700 font-bold hover:underline gap-2">
 					<?php _e('View Location Directory', 'earlystart-early-learning'); ?>
 					<i data-lucide="arrow-right" class="w-5 h-5"></i>

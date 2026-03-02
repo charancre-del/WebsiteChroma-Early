@@ -5,6 +5,18 @@
  */
 
 (function () {
+  const getMarkerIcon = (kind) => {
+    const color = kind === 'clinic' ? '#e11d48' : '#2563eb';
+
+    return L.divIcon({
+      className: 'chroma-map-pin',
+      html: `<span style="display:block;width:18px;height:18px;border-radius:9999px;background:${color};border:3px solid #ffffff;box-shadow:0 10px 24px rgba(15,23,42,.18);"></span>`,
+      iconSize: [18, 18],
+      iconAnchor: [9, 9],
+      popupAnchor: [0, -8],
+    });
+  };
+
   const initMaps = () => {
     const mapContainers = document.querySelectorAll('[data-chroma-map]');
 
@@ -45,7 +57,9 @@
       // Add markers
       const bounds = [];
       locations.forEach((location) => {
-        const marker = L.marker([location.lat, location.lng]).addTo(map);
+        const marker = L.marker([location.lat, location.lng], {
+          icon: getMarkerIcon(location.kind),
+        }).addTo(map);
 
         const popupContent = `
         <div class="text-center p-2">

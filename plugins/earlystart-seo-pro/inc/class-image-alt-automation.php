@@ -53,7 +53,7 @@ class earlystart_Image_Alt_Automation
         if ($post_type === 'location') {
             $city = get_post_meta($post_id, 'location_city', true);
             $auto_alt = sprintf(
-                __('Childcare facility at %s in %s - Quality Rated learning environment', 'chroma-excellence'),
+                __('Pediatric Therapy facility at %s in %s - Quality Rated learning environment', 'chroma-excellence'),
                 $title,
                 $city ? $city : 'Georgia'
             );

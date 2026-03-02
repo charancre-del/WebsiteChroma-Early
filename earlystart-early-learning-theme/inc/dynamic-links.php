@@ -50,6 +50,15 @@ function earlystart_get_program_link($slug)
     // Clean the slug
     $slug = trim($slug, '/');
 
+    $aliases = array(
+        'aba' => 'aba-therapy',
+        'speech' => 'speech-therapy',
+        'ot' => 'occupational-therapy',
+        'occupational' => 'occupational-therapy',
+        'bridge' => 'bridge-program',
+    );
+    $slug = $aliases[$slug] ?? $slug;
+
     // Try program CPT first
     $post = get_page_by_path($slug, OBJECT, 'program');
     if ($post) {
@@ -150,7 +159,27 @@ function earlystart_get_page_link($name)
 {
     // Define common aliases for pages that may have changed slugs
     $aliases = array(
+        'about' => 'about-us',
+        'about-us' => 'about-us',
+        'contact' => 'contact',
         'contact-us' => 'contact', // Map legacy to new
+        'consultation' => 'contact',
+        'schedule-a-tour' => 'contact',
+        'locations' => 'locations',
+        'location' => 'locations',
+        'services' => 'programs',
+        'service' => 'programs',
+        'programs' => 'programs',
+        'program' => 'programs',
+        'families' => 'for-families',
+        'parents' => 'for-families',
+        'for-families' => 'for-families',
+        'careers' => 'careers',
+        'faq' => 'faq',
+        'privacy-policy' => 'privacy-policy',
+        'terms' => 'terms',
+        'terms-of-use' => 'terms',
+        'hipaa' => 'hipaa',
         'preschool' => 'programs/preschool',
         'ga-pre-k' => 'programs/ga-pre-k',
         'infant-care' => 'programs/infant-care',

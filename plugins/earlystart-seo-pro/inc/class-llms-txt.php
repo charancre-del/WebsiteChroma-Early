@@ -284,7 +284,7 @@ class earlystart_LLMs_Txt_Generator
         }
 
         $output .= "## About Us\n\n";
-        $output .= "Chroma Early Learning Academy is a network of premium childcare and early education centers across Metro Atlanta.\n";
+        $output .= "Chroma Early Learning Academy is a network of premium pediatric therapy and early education centers across Metro Atlanta.\n";
         $output .= "We use the Prismpath™ curriculum, focusing on physical, emotional, social, academic, and creative development.\n";
 
         return $output;

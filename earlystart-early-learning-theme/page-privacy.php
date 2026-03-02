@@ -117,7 +117,7 @@ if (!$has_custom_content) {
     </div>
 
     <div class="mt-16 pt-8 border-t border-chroma-blue/20">
-      <a href="<?php echo esc_url(home_url('/terms-of-service/')); ?>" class="text-chroma-blue hover:underline">
+      <a href="<?php echo esc_url(earlystart_get_page_link('terms')); ?>" class="text-chroma-blue hover:underline">
         <?php _e('View our Terms of Service →', 'earlystart-early-learning'); ?>
       </a>
     </div>

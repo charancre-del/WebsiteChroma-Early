@@ -233,7 +233,7 @@ class earlystart_Combo_AI_Generator
             'messages' => [
                 [
                     'role' => 'system',
-                    'content' => 'You are a local SEO expert helping generate location-specific content for a childcare/preschool website. Return valid JSON only.'
+                    'content' => 'You are a local SEO expert helping generate location-specific content for a pediatric therapy/preschool website. Return valid JSON only.'
                 ],
                 [
                     'role' => 'user',
@@ -329,7 +329,7 @@ class earlystart_Combo_AI_Generator
         ]);
         
         $prompt = <<<PROMPT
-Translate the following local SEO data from English to Spanish for a childcare page ($program_name in $city_name).
+Translate the following local SEO data from English to Spanish for a pediatric therapy page ($program_name in $city_name).
 Keep proper names (cities, roads, companies) in English if that is standard usage, but translate descriptions.
 Return JSON only:
 
@@ -456,7 +456,7 @@ PROMPT;
      */
     private function build_prompt($program_name, $city_name, $state) {
         return <<<PROMPT
-Generate local SEO content for a childcare landing page: "$program_name in $city_name, $state"
+Generate local SEO content for a pediatric therapy landing page: "$program_name in $city_name, $state"
 
 Research and provide:
 1. neighborhoods: Array of 3-5 real neighborhood names in or near $city_name, $state. IMPORTANT: If you do not know real specific neighborhood names with high certainty, use generic but accurate descriptors (e.g., "Downtown District", "Historic Center", "Residential Areas") to avoid hallucinating fake names.

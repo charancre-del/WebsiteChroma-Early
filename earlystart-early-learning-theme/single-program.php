@@ -91,7 +91,7 @@ while (have_posts()):
 						</p>
 
 						<div class="flex flex-wrap gap-4">
-							<a href="<?php echo esc_url(home_url('/locations/')); ?>"
+							<a href="<?php echo esc_url(earlystart_get_page_link('locations')); ?>"
 								class="bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-rose-600 transition-all shadow-lg active:scale-95 inline-block">
 								<?php _e('Find a Clinic', 'earlystart-early-learning'); ?>
 							</a>
@@ -110,8 +110,9 @@ while (have_posts()):
 							<?php if (has_post_thumbnail()): ?>
 								<?php the_post_thumbnail('large', ['class' => 'w-full h-full object-cover']); ?>
 							<?php else: ?>
-								<img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?w=1200&fit=crop&q=80&fm=webp"
-									class="w-full h-full object-cover" alt="Program">
+								<div class="w-full h-full bg-<?php echo esc_attr($theme_color); ?>-50 flex items-center justify-center text-<?php echo esc_attr($theme_color); ?>-300">
+									<i data-lucide="image" class="w-16 h-16"></i>
+								</div>
 							<?php endif; ?>
 						</div>
 						<div class="absolute -bottom-8 -right-8 w-48 h-48 bg-amber-50 rounded-full blur-3xl -z-10"></div>
@@ -285,7 +286,7 @@ while (have_posts()):
 									</div>
 								</div>
 							</div>
-							<a href="<?php echo esc_url(home_url('/locations/')); ?>"
+							<a href="<?php echo esc_url(earlystart_get_page_link('locations')); ?>"
 								class="block w-full py-4 bg-rose-600 hover:bg-rose-500 transition-colors text-white text-center rounded-2xl font-bold">
 								<?php _e('Book Your Clinical Tour', 'earlystart-early-learning'); ?>
 							</a>

@@ -110,7 +110,7 @@ class earlystart_City_Landing_Meta extends earlystart_Advanced_SEO_Meta_Box_Base
                 <textarea id="city_intro_text" name="city_intro_text" rows="5" class="widefat"
                     placeholder="<?php _e('Example: Parents in Canton trust Chroma for...', 'chroma-excellence'); ?>"><?php echo esc_textarea($intro_text); ?></textarea>
                 <p class="description">
-                    <?php _e('Write a unique introduction about childcare in this specific city.', 'chroma-excellence'); ?>
+                    <?php _e('Write a unique introduction about pediatric therapy in this specific city.', 'chroma-excellence'); ?>
                 </p>
             </div>
 

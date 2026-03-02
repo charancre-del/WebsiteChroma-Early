@@ -318,7 +318,7 @@ class earlystart_Theme_Translator
         // Delegate to engine
         if(class_exists('earlystart_Translation_Engine')) {
             $strings = isset($_POST['strings']) ? $_POST['strings'] : [];
-            $translated = earlystart_Translation_Engine::translate_bulk($strings, 'es', 'Translate UI strings for a childcare website.');
+            $translated = earlystart_Translation_Engine::translate_bulk($strings, 'es', 'Translate UI strings for a pediatric therapy website.');
             wp_send_json_success($translated);
         }
         wp_send_json_error(['message' => 'Engine not found']);

@@ -69,12 +69,9 @@ $programs_query = new WP_Query(array(
 										'decoding' => 'async'
 									]); ?>
 								<?php else: ?>
-                  <?php echo earlystart_responsive_unsplash(
-                    'https://images.unsplash.com/photo-1516627145497-ae6968895b74',
-                    'Program',
-                    'w-full h-full object-cover group-hover:scale-110 transition-transform duration-700',
-                    '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                  ); ?>
+									<div class="w-full h-full bg-<?php echo esc_attr($theme_color); ?>-50 flex items-center justify-center text-<?php echo esc_attr($theme_color); ?>-300">
+										<i data-lucide="image" class="w-16 h-16"></i>
+									</div>
 								<?php endif; ?>
 
 								<?php if ($age_range): ?>
@@ -140,7 +137,7 @@ $programs_query = new WP_Query(array(
 					</p>
 				</div>
 				<div class="shrink-0 relative z-10">
-					<a href="<?php echo esc_url(home_url('/contact/')); ?>"
+					<a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
 						class="bg-white text-rose-700 px-10 py-5 rounded-full font-bold text-lg hover:bg-stone-900 hover:text-white transition-all shadow-xl">
 						<?php _e('Contact Intake Team', 'earlystart-early-learning'); ?>
 					</a>
@@ -152,10 +149,5 @@ $programs_query = new WP_Query(array(
 </main>
 
 <?php get_footer(); ?>
-
-
-
-<?php
-get_footer();
 
 

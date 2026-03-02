@@ -50,7 +50,7 @@ class earlystart_Archive_ItemList_Builder
         // Determine schema type based on post type
         $list_name = ($post_type === 'location') ? 'Our Locations' : 'Our Programs';
         $list_desc = ($post_type === 'location') 
-            ? 'All Chroma Early Learning childcare locations' 
+            ? 'All Chroma Early Learning pediatric therapy locations' 
             : 'All educational programs at Chroma Early Learning';
 
         $schema = [

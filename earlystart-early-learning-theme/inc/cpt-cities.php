@@ -61,7 +61,7 @@ function earlystart_register_city_cpt()
         'publicly_queryable' => true,
         'capability_type' => 'page',
         'show_in_rest' => true, // Enable Gutenberg
-        'rewrite' => array('slug' => 'childcare'), // e.g., /childcare/canton-ga
+        'rewrite' => array('slug' => 'pediatric-therapy'), // e.g., /pediatric-therapy/canton-ga
     );
     register_post_type('city', $args);
 }

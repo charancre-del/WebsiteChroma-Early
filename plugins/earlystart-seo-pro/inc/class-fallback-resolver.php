@@ -146,7 +146,7 @@ class earlystart_Fallback_Resolver
             $parts[] = $stars . ' Quality Rated';
         }
 
-        $parts[] = 'childcare center';
+        $parts[] = 'pediatric therapy center';
 
         if ($city) {
             $parts[] = 'in ' . $city . ', Georgia';
@@ -187,7 +187,7 @@ class earlystart_Fallback_Resolver
 
         if ($city) {
             $queries[] = "best pediatric therapy near " . $city . " GA";
-            $queries[] = "childcare in " . $city . " Georgia";
+            $queries[] = "pediatric therapy in " . $city . " Georgia";
             $queries[] = "preschool " . $city;
         }
 
