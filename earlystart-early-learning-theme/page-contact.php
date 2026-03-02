@@ -11,6 +11,8 @@ get_header();
 while (have_posts()):
 	the_post();
 	$page_id = get_the_ID();
+	$location_counts = wp_count_posts('location');
+	$published_locations = isset($location_counts->publish) ? (int) $location_counts->publish : 0;
 	?>
 
 	<main class="pt-20">
@@ -189,7 +191,18 @@ while (have_posts()):
 		<section class="py-24 bg-stone-50 border-t border-stone-100">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
 				<h2 class="text-3xl font-bold text-stone-900 mb-6">
-					<?php _e('Visit one of our 10+ clinics.', 'earlystart-early-learning'); ?>
+					<?php
+					if ($published_locations > 1) {
+						printf(
+							esc_html__('Visit one of our %s clinics.', 'earlystart-early-learning'),
+							esc_html(number_format_i18n($published_locations))
+						);
+					} elseif (1 === $published_locations) {
+						_e('Visit our clinic.', 'earlystart-early-learning');
+					} else {
+						_e('Visit one of our clinics.', 'earlystart-early-learning');
+					}
+					?>
 				</h2>
 				<p class="text-stone-700 mb-10 max-w-2xl mx-auto">
 					<?php _e('With specialized therapy centers across the region, there is likely a Early Start clinic in your community.', 'earlystart-early-learning'); ?>

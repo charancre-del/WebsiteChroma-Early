@@ -55,6 +55,7 @@ while (have_posts()):
 	}
 
 	$featured_image = get_the_post_thumbnail_url($location_id, 'full');
+	$featured_image_id = get_post_thumbnail_id($location_id);
 	$hero_image_url = '';
 	if (!empty($hero_gallery)) {
 		$hero_image_url = $hero_gallery[0];
@@ -71,6 +72,42 @@ while (have_posts()):
 	$gallery_images = array_slice($gallery_images, 0, 5);
 	while (count($gallery_images) < 5) {
 		$gallery_images[] = '';
+	}
+
+	$hero_image_markup = '';
+	$hero_image_alt = sprintf(__('%s clinic location', 'earlystart-early-learning'), $location_name);
+	if (empty($hero_gallery) && $featured_image_id) {
+		$hero_image_markup = wp_get_attachment_image(
+			$featured_image_id,
+			'full',
+			false,
+			array(
+				'class' => 'absolute inset-0 w-full h-full object-cover',
+				'alt' => $hero_image_alt,
+				'sizes' => '100vw',
+				'fetchpriority' => 'high',
+				'loading' => 'eager',
+				'decoding' => 'async',
+			)
+		);
+	} elseif (!empty($hero_image_url)) {
+		$hero_src = $hero_image_url;
+		$hero_srcset = '';
+		if (strpos($hero_image_url, 'images.unsplash.com') !== false) {
+			$hero_widths = array(640, 960, 1280, 1600, 1920);
+			$srcset_parts = array();
+			foreach ($hero_widths as $hero_width) {
+				$srcset_parts[] = esc_url(earlystart_get_optimized_unsplash_url($hero_image_url, $hero_width, 900, 70)) . ' ' . $hero_width . 'w';
+			}
+			$hero_src = earlystart_get_optimized_unsplash_url($hero_image_url, 1600, 900, 70);
+			$hero_srcset = implode(', ', $srcset_parts);
+		}
+
+		$hero_image_markup = '<img src="' . esc_url($hero_src) . '"';
+		if (!empty($hero_srcset)) {
+			$hero_image_markup .= ' srcset="' . esc_attr($hero_srcset) . '" sizes="100vw"';
+		}
+		$hero_image_markup .= ' alt="' . esc_attr($hero_image_alt) . '" class="absolute inset-0 w-full h-full object-cover" width="1600" height="900" fetchpriority="high" loading="eager" decoding="async">';
 	}
 
 	$map_query = trim($address . ', ' . $city . ', ' . $state . ' ' . $zip);
@@ -97,9 +134,11 @@ while (have_posts()):
 		<!-- Premium Hero Section -->
 		<section
 			class="relative pt-24 pb-32 lg:pt-32 lg:pb-40 bg-stone-900 flex items-center justify-center overflow-hidden">
-			<div class="absolute inset-0 bg-stone-900 opacity-80 z-10"></div>
-			<div class="absolute inset-0 bg-cover bg-center mix-blend-overlay"
-				style="background-image: url('<?php echo esc_url($hero_image_url); ?>');"></div>
+			<?php if ($hero_image_markup): ?>
+				<?php echo $hero_image_markup; ?>
+			<?php endif; ?>
+			<div class="absolute inset-0 bg-stone-900 opacity-70 z-10"></div>
+			<div class="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-transparent to-stone-900/20 z-10"></div>
 			<div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-stone-900/50 to-stone-900 z-10"></div>
 
 			<div class="relative z-20 text-center text-white px-4 max-w-4xl mx-auto fade-in-up">

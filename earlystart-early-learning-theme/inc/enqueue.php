@@ -163,6 +163,28 @@ function earlystart_resource_hints($urls, $relation_type)
 add_filter('wp_resource_hints', 'earlystart_resource_hints', 10, 2);
 
 /**
+ * Strip plugin-injected preconnect hints that do not improve page rendering.
+ */
+function earlystart_strip_unused_resource_hints($urls, $relation_type)
+{
+        if (!in_array($relation_type, array('preconnect', 'dns-prefetch'), true)) {
+                return $urls;
+        }
+
+        $blocked_origins = array(
+                'https://sa.searchatlas.com',
+                '//sa.searchatlas.com',
+                'https://fonts.gstatic.com',
+                '//fonts.gstatic.com',
+        );
+
+        return array_values(array_filter($urls, function ($url) use ($blocked_origins) {
+                return !in_array($url, $blocked_origins, true);
+        }));
+}
+add_filter('wp_resource_hints', 'earlystart_strip_unused_resource_hints', 99, 2);
+
+/**
  * Enqueue admin assets
  */
 function earlystart_enqueue_admin_assets($hook)
@@ -202,8 +224,14 @@ add_action('admin_enqueue_scripts', 'earlystart_enqueue_admin_assets');
  */
 function earlystart_async_styles($html, $handle, $href, $media)
 {
-        // Keep the main stylesheet render-blocking so desktop nav and hero typography do not pop in late.
-        if (in_array($handle, array('chroma-font-awesome', 'earlystart-fonts'))) {
+        $should_async = in_array($handle, array('chroma-font-awesome', 'earlystart-fonts'), true);
+
+        // Keep the homepage stylesheet render-blocking for CLS, but defer the full theme bundle on inner pages.
+        if ('chroma-main' === $handle && !is_front_page()) {
+                $should_async = true;
+        }
+
+        if ($should_async) {
                 // Add data-no-optimize to prevent LiteSpeed from combining/blocking this file
                 $html = str_replace('<link', '<link data-no-optimize="1"', $html);
 
@@ -268,6 +296,10 @@ function earlystart_dequeue_dashicons()
  */
 function earlystart_preload_main_css()
 {
+        if (!is_front_page()) {
+                return;
+        }
+
         $css_path = earlystart_THEME_DIR . '/assets/css/main.css';
         $css_version = file_exists($css_path) ? filemtime($css_path) : earlystart_VERSION;
         $css_url = earlystart_THEME_URI . '/assets/css/main.css?ver=' . $css_version;

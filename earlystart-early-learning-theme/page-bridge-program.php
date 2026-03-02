@@ -86,12 +86,12 @@ while (have_posts()):
                             <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
                                 <span class="block text-3xl font-bold text-blue-500 mb-1">92%</span>
                                 <span
-                                    class="text-[10px] font-bold text-stone-700 uppercase tracking-widest"><?php _e('Placement Rate', 'earlystart-early-learning'); ?></span>
+                                    class="text-[10px] font-bold text-stone-200 uppercase tracking-widest"><?php _e('Placement Rate', 'earlystart-early-learning'); ?></span>
                             </div>
                             <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
                                 <span class="block text-3xl font-bold text-blue-400 mb-1">1:3</span>
                                 <span
-                                    class="text-[10px] font-bold text-stone-700 uppercase tracking-widest"><?php _e('Group Ratio', 'earlystart-early-learning'); ?></span>
+                                    class="text-[10px] font-bold text-stone-200 uppercase tracking-widest"><?php _e('Group Ratio', 'earlystart-early-learning'); ?></span>
                             </div>
                         </div>
                     </div>
@@ -101,7 +101,7 @@ while (have_posts()):
                             <i data-lucide="shield-check" class="w-16 h-16 mb-8 text-blue-200"></i>
                             <h3 class="text-2xl font-bold mb-4"><?php _e('Clinical Guarantee', 'earlystart-early-learning'); ?>
                             </h3>
-                            <p class="text-blue-100 leading-relaxed italic">
+                            <p class="text-blue-50 leading-relaxed italic">
                                 <?php _e('"We don\'t graduate children based on age; we graduate them based on objective readiness data. This ensures they enter school with the skills to succeed, not just survive."', 'earlystart-early-learning'); ?>
                             </p>
                         </div>
@@ -147,7 +147,7 @@ while (have_posts()):
                         <h3 class="text-2xl font-bold mb-4 mt-4">
                             <?php _e('Classroom Skills', 'earlystart-early-learning'); ?>
                         </h3>
-                        <p class="text-blue-100 text-sm mb-6 leading-relaxed">
+                        <p class="text-blue-50 text-sm mb-6 leading-relaxed">
                             <?php _e('Small group dynamics (1:3 ratio). Mock classroom routines. Functional social play with peers.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
@@ -245,7 +245,7 @@ while (have_posts()):
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-3xl font-bold mb-8"><?php _e('Is Your Child Ready for Bridge?', 'earlystart-early-learning'); ?>
                 </h2>
-                <p class="text-blue-100 mb-12 max-w-2xl mx-auto">
+                <p class="text-blue-50 mb-12 max-w-2xl mx-auto">
                     <?php _e('The Bridge Program is typically for children ages 3-6 who have mastered foundational 1:1 skills and are preparing for a less restrictive environment.', 'earlystart-early-learning'); ?>
                 </p>
                 <div class="grid md:grid-cols-2 gap-6 text-left">
@@ -279,7 +279,7 @@ while (have_posts()):
                 <h2 class="text-4xl md:text-5xl font-bold mb-8">
                     <?php _e('Is your child ready for the Bridge?', 'earlystart-early-learning'); ?>
                 </h2>
-                <p class="text-blue-100 text-xl mb-12 leading-relaxed max-w-2xl mx-auto">
+                <p class="text-blue-50 text-xl mb-12 leading-relaxed max-w-2xl mx-auto">
                     <?php _e('Our clinical directors offer specialized consultations to assess if the Bridge Program is the right next step for your child\'s educational journey.', 'earlystart-early-learning'); ?>
                 </p>
                 <a href="<?php echo esc_url(earlystart_get_page_link('consultation')); ?>"
