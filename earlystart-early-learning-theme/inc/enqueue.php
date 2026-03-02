@@ -226,11 +226,6 @@ function earlystart_async_styles($html, $handle, $href, $media)
 {
         $should_async = in_array($handle, array('chroma-font-awesome', 'earlystart-fonts'), true);
 
-        // Keep the homepage stylesheet render-blocking for CLS, but defer the full theme bundle on inner pages.
-        if ('chroma-main' === $handle && !is_front_page()) {
-                $should_async = true;
-        }
-
         if ($should_async) {
                 // Add data-no-optimize to prevent LiteSpeed from combining/blocking this file
                 $html = str_replace('<link', '<link data-no-optimize="1"', $html);
