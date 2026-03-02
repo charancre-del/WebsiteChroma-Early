@@ -26,6 +26,34 @@ $locations_query = earlystart_cached_query(
 	'locations_archive',
 	7 * DAY_IN_SECONDS
 );
+
+$clinic_hubs = [];
+$partner_campuses = [];
+
+if ($locations_query->have_posts()) {
+	foreach ($locations_query->posts as $location_post) {
+		if ('1' === get_post_meta($location_post->ID, 'location_featured', true)) {
+			$clinic_hubs[] = $location_post;
+		} else {
+			$partner_campuses[] = $location_post;
+		}
+	}
+}
+
+$clinic_count = count($clinic_hubs);
+$partner_count = count($partner_campuses);
+$hero_badge_text = sprintf(
+	/* translators: 1: clinic count label, 2: partner location count label */
+	__('%1$s, %2$s', 'earlystart-early-learning'),
+	sprintf(
+		_n('%d Clinic', '%d Clinics', $clinic_count, 'earlystart-early-learning'),
+		$clinic_count
+	),
+	sprintf(
+		_n('%d Partner Location', '%d Partner Locations', $partner_count, 'earlystart-early-learning'),
+		$partner_count
+	)
+);
 ?>
 
 <main class="pt-20">
@@ -34,7 +62,7 @@ $locations_query = earlystart_cached_query(
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 			<span
 				class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
-				<?php printf(__('%d Campus Locations', 'earlystart-early-learning'), $locations_query->found_posts); ?>
+				<?php echo esc_html($hero_badge_text); ?>
 			</span>
 
 			<h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
@@ -82,21 +110,6 @@ $locations_query = earlystart_cached_query(
 					<?php _e('Clinic Locations', 'earlystart-early-learning'); ?></h2>
 				<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="locations-grid-hubs">
 					<?php
-					$clinic_hubs = [];
-					$partner_campuses = [];
-
-					if ($locations_query->have_posts()) {
-						while ($locations_query->have_posts()) {
-							$locations_query->the_post();
-							if ('1' === get_post_meta(get_the_ID(), 'location_featured', true)) {
-								$clinic_hubs[] = get_post();
-							} else {
-								$partner_campuses[] = get_post();
-							}
-						}
-						wp_reset_postdata();
-					}
-
 					foreach ($clinic_hubs as $post):
 						setup_postdata($post);
 						$location_id = get_the_ID();

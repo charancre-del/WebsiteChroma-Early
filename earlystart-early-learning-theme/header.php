@@ -68,20 +68,23 @@
 						<div class="flex flex-col">
 							<?php
 							$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
-							$header_lines = explode("\n", $header_text_raw);
+							$header_lines = preg_split('/\r\n|\r|\n/', (string) $header_text_raw);
+							$header_lines = array_values(array_filter(array_map('trim', (array) $header_lines), static function ($line) {
+								return $line !== '';
+							}));
 							$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
-							$secondary_line = isset($header_lines[1]) ? $header_lines[1] : 'Pediatric Therapy';
+							$extra_lines = array_slice($header_lines, 1);
 							?>
 							<span
 								class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 tracking-tight leading-none">
 								<?php echo esc_html($primary_line); ?>
 							</span>
-							<?php if (!empty($secondary_line)): ?>
+							<?php foreach ($extra_lines as $line): ?>
 								<span
-									class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
-									<?php echo esc_html($secondary_line); ?>
+									class="text-[0.62rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block leading-tight">
+									<?php echo esc_html($line); ?>
 								</span>
-							<?php endif; ?>
+							<?php endforeach; ?>
 						</div>
 					</a>
 
