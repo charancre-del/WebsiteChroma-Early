@@ -565,7 +565,13 @@ class earlystart_Multilingual_Manager
      */
     public function dynamic_translation_filter($translated, $text, $domain)
     {
-        if ($domain !== 'chroma-excellence' || !self::is_spanish()) {
+        if (!self::is_spanish()) {
+            return $translated;
+        }
+
+        // Support legacy and current theme domains, plus default gettext domain.
+        $supported_domains = ['chroma-excellence', 'earlystart-early-learning', 'default', ''];
+        if (!in_array((string) $domain, $supported_domains, true)) {
             return $translated;
         }
 
@@ -887,10 +893,15 @@ class earlystart_Multilingual_Manager
                 // Header & Footer
                 'Early Learning' => 'Aprendizaje Temprano',
                 'Academy' => 'Academia',
+                'Early Start' => 'Inicio Temprano',
+                'Pediatric Therapy' => 'Terapia Pediátrica',
                 'Book a Tour' => 'Reservar Recorrido',
                 'Menu' => 'Menú',
                 'Toggle menu' => 'Alternar menú',
                 'Close menu' => 'Cerrar menú',
+                'Clinics & Programs' => 'Clínicas y Programas',
+                'Contact Admissions' => 'Contacto de Admisiones',
+                'Quick Links' => 'Enlaces Rápidos',
                 'Ready to experience the Chroma difference?' => '¿Listo para experimentar la diferencia de Chroma?',
                 'Schedule a Tour' => 'Programar un Recorrido',
                 'Ready to enroll in <strong>%s</strong>?' => '¿Listo para inscribirse en <strong>%s</strong>?',

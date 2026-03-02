@@ -60,7 +60,17 @@ if (!function_exists('earlystart_get_theme_mod')) {
      */
     function earlystart_get_theme_mod($name, $default = false)
     {
-        return get_theme_mod($name, $default);
+        $value = get_theme_mod($name, $default);
+
+        // In Spanish mode, allow per-setting localized overrides via `{setting}_es`.
+        if (class_exists('earlystart_Multilingual_Manager') && method_exists('earlystart_Multilingual_Manager', 'is_spanish') && earlystart_Multilingual_Manager::is_spanish()) {
+            $localized = get_theme_mod($name . '_es', null);
+            if (null !== $localized && '' !== $localized) {
+                return $localized;
+            }
+        }
+
+        return $value;
     }
 }
 
