@@ -81,7 +81,7 @@
 							</span>
 							<?php foreach ($extra_lines as $line): ?>
 								<span
-									class="text-[0.62rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block leading-tight">
+									class="text-[0.65rem] uppercase tracking-widest text-stone-500 font-semibold hidden md:block">
 									<?php echo esc_html($line); ?>
 								</span>
 							<?php endforeach; ?>
