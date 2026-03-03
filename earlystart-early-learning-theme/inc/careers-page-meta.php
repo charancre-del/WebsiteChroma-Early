@@ -445,7 +445,7 @@ function earlystart_seed_careers_page_defaults( $post_id ) {
 		'careers_cta_title'       => 'Don\'t see your role?',
 		'careers_cta_description' => 'We are always growing. Send us your resume and we\'ll keep it on file.',
 		'careers_cta_button_text' => 'Email HR Team',
-		'careers_cta_button_url'  => 'mailto:careers@chromaela.com',
+		'careers_cta_button_url'  => 'mailto:careers@chromaearlystart.com',
 	);
 
 	// Populate all default values

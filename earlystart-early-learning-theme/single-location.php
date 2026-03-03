@@ -33,14 +33,22 @@ while (have_posts()):
 	$ages_served = earlystart_get_translated_meta($location_id, 'location_ages_served') ?: __('18mo - 12yrs', 'earlystart-early-learning');
 
 	$director_name = earlystart_get_translated_meta($location_id, 'location_director_name');
+	$director_heading = earlystart_get_translated_meta($location_id, 'location_director_heading') ?: __('Your Local Leadership', 'earlystart-early-learning');
 	$director_bio = earlystart_get_translated_meta($location_id, 'location_director_bio');
 	$director_photo = earlystart_get_translated_meta($location_id, 'location_director_photo');
+	$director_signature = earlystart_get_translated_meta($location_id, 'location_director_signature');
 
 	$hero_review_text = earlystart_get_translated_meta($location_id, 'location_hero_review_text');
 	$hero_review_author = earlystart_get_translated_meta($location_id, 'location_hero_review_author') ?: __('Parent Review', 'earlystart-early-learning');
 
 	$maps_embed = earlystart_get_translated_meta($location_id, 'location_maps_embed');
+	$virtual_tour_embed = earlystart_get_translated_meta($location_id, 'location_virtual_tour_embed');
 	$tour_booking_link = earlystart_get_translated_meta($location_id, 'location_tour_booking_link');
+	$gmb_url = earlystart_get_translated_meta($location_id, 'location_gmb_url');
+	$seo_content_title = earlystart_get_translated_meta($location_id, 'location_seo_content_title');
+	$seo_content_text = earlystart_get_translated_meta($location_id, 'location_seo_content_text');
+	$service_areas_raw = earlystart_get_translated_meta($location_id, 'location_service_areas');
+	$school_pickups_raw = earlystart_get_translated_meta($location_id, 'location_school_pickups');
 	$is_clinic_hub = '1' === get_post_meta($location_id, 'location_featured', true);
 
 	$hero_gallery = array();
@@ -112,6 +120,12 @@ while (have_posts()):
 
 	$map_query = trim($address . ', ' . $city . ', ' . $state . ' ' . $zip);
 	$map_link = $map_query ? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($map_query) : '#';
+	if (empty($gmb_url) && $map_query) {
+		$gmb_url = $map_link;
+	}
+
+	$service_areas = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', (string) $service_areas_raw))));
+	$school_pickups = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', (string) $school_pickups_raw))));
 
 	$programs_query = new WP_Query(array(
 		'post_type' => 'program',
@@ -205,6 +219,19 @@ while (have_posts()):
 							<?php _e('A Second Home for Your Child', 'earlystart-early-learning'); ?></h2>
 						<?php echo wp_kses_post(wpautop($description)); ?>
 					</div>
+
+					<?php if ($seo_content_title || $seo_content_text): ?>
+						<div class="bg-stone-50 rounded-[2rem] p-8 border border-stone-100 shadow-sm">
+							<?php if ($seo_content_title): ?>
+								<h2 class="text-2xl font-bold text-stone-900 mb-4"><?php echo esc_html($seo_content_title); ?></h2>
+							<?php endif; ?>
+							<?php if ($seo_content_text): ?>
+								<div class="prose prose-stone max-w-none text-stone-700">
+									<?php echo wp_kses_post(wpautop($seo_content_text)); ?>
+								</div>
+							<?php endif; ?>
+						</div>
+					<?php endif; ?>
 
 					<div>
 						<div class="flex items-center gap-3 mb-8">
@@ -431,7 +458,7 @@ while (have_posts()):
 						<div>
 							<div class="flex items-center gap-3 mb-8">
 								<h3 class="text-2xl font-bold text-stone-900">
-									<?php _e('Your Local Leadership', 'earlystart-early-learning'); ?></h3>
+									<?php echo esc_html($director_heading); ?></h3>
 								<div class="flex-1 h-px bg-stone-200 ml-4"></div>
 							</div>
 							<div
@@ -455,6 +482,11 @@ while (have_posts()):
 									<p class="text-stone-600 italic mb-4 text-sm leading-relaxed">
 										<?php echo esc_html($director_bio ?: __('Our clinical leadership team is dedicated to creating a joyful, evidence-based environment for every child.', 'earlystart-early-learning')); ?>
 									</p>
+									<?php if ($director_signature): ?>
+										<p class="text-xs font-bold tracking-widest uppercase text-stone-400">
+											<?php echo esc_html($director_signature); ?>
+										</p>
+									<?php endif; ?>
 								</div>
 							</div>
 						</div>
@@ -522,7 +554,7 @@ while (have_posts()):
 				</div>
 
 				<div class="lg:col-span-4" id="tour">
-					<div class="sticky top-24 space-y-6">
+					<div class="lg:sticky lg:top-24 space-y-6">
 						<div class="bg-white rounded-[2rem] p-8 shadow-xl border border-stone-100 relative overflow-hidden">
 							<div
 								class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500">
@@ -567,7 +599,14 @@ while (have_posts()):
 											<a href="<?php echo esc_url($map_link); ?>"
 												class="text-rose-600 font-bold mt-1 block hover:underline" target="_blank"
 												rel="noopener">
-												<?php _e('Get Directions', 'earlystart-early-learning'); ?>
+										<?php _e('Get Directions', 'earlystart-early-learning'); ?>
+											</a>
+										<?php endif; ?>
+										<?php if ($gmb_url): ?>
+											<a href="<?php echo esc_url($gmb_url); ?>"
+												class="text-stone-700 font-bold mt-1 block hover:underline" target="_blank"
+												rel="noopener">
+												<?php _e('View Google Business Profile', 'earlystart-early-learning'); ?>
 											</a>
 										<?php endif; ?>
 									</div>
@@ -609,12 +648,76 @@ while (have_posts()):
 								<?php endforeach; ?>
 							</div>
 						</div>
+
+						<?php if (!empty($service_areas) || !empty($school_pickups)): ?>
+							<div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
+								<?php if (!empty($service_areas)): ?>
+									<h4 class="font-bold text-stone-900 mb-4 flex items-center">
+										<i data-lucide="map" class="w-5 h-5 text-blue-500 mr-2"></i>
+										<?php _e('Service Areas', 'earlystart-early-learning'); ?>
+									</h4>
+									<div class="flex flex-wrap gap-2 mb-6">
+										<?php foreach ($service_areas as $service_area): ?>
+											<span class="bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-bold border border-blue-100">
+												<?php echo esc_html($service_area); ?>
+											</span>
+										<?php endforeach; ?>
+									</div>
+								<?php endif; ?>
+
+								<?php if (!empty($school_pickups)): ?>
+									<h4 class="font-bold text-stone-900 mb-4 flex items-center">
+										<i data-lucide="bus" class="w-5 h-5 text-amber-500 mr-2"></i>
+										<?php _e('Nearby Schools & Pickups', 'earlystart-early-learning'); ?>
+									</h4>
+									<ul class="space-y-2 text-sm text-stone-700">
+										<?php foreach ($school_pickups as $school_pickup): ?>
+											<li class="flex items-start gap-2">
+												<i data-lucide="check" class="w-4 h-4 text-amber-500 mt-0.5 shrink-0"></i>
+												<span><?php echo esc_html($school_pickup); ?></span>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>
 		</section>
 
-		<section class="h-[500px] w-full bg-stone-200 relative flex items-center justify-center border-t border-stone-200">
+		<?php if ($virtual_tour_embed): ?>
+			<section class="py-20 bg-white border-t border-stone-100">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="flex items-center gap-3 mb-8">
+						<h2 class="text-3xl font-bold text-stone-900">
+							<?php _e('Take a Virtual Tour', 'earlystart-early-learning'); ?></h2>
+						<div class="flex-1 h-px bg-stone-200 ml-4"></div>
+					</div>
+					<div class="rounded-[2.5rem] overflow-hidden border border-stone-100 shadow-sm bg-stone-50" data-chroma-map="true">
+						<?php
+						$allowed_embed_tags = array(
+							'iframe' => array(
+								'src' => true,
+								'width' => true,
+								'height' => true,
+								'frameborder' => true,
+								'allowfullscreen' => true,
+								'allow' => true,
+								'loading' => true,
+								'style' => true,
+								'class' => true,
+								'title' => true,
+							),
+						);
+						echo wp_kses($virtual_tour_embed, $allowed_embed_tags);
+						?>
+					</div>
+				</div>
+			</section>
+		<?php endif; ?>
+
+		<section class="h-[380px] md:h-[500px] w-full bg-stone-200 relative flex items-center justify-center border-t border-stone-200">
 			<?php if ($maps_embed): ?>
 				<div class="absolute inset-0">
 					<?php
@@ -642,7 +745,7 @@ while (have_posts()):
 			<?php endif; ?>
 
 			<div
-				class="relative z-10 bg-white/95 backdrop-blur-md px-10 py-8 rounded-[2.5rem] shadow-2xl text-center border border-white max-w-sm w-full mx-4 transform hover:-translate-y-2 transition-transform duration-300">
+				class="relative z-10 bg-white/95 backdrop-blur-md px-6 md:px-10 py-6 md:py-8 rounded-[2.5rem] shadow-2xl text-center border border-white max-w-sm w-full mx-4 transform hover:-translate-y-2 transition-transform duration-300">
 				<div
 					class="w-16 h-16 bg-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-rose-600 shadow-sm">
 					<i data-lucide="map-pin" class="w-8 h-8"></i>

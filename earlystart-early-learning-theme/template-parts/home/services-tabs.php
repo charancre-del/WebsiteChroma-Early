@@ -32,7 +32,7 @@ if (empty($services)) {
             <div class="w-full lg:w-1/3 flex flex-row lg:flex-col gap-3 overflow-x-auto pb-4 lg:pb-0 no-scrollbar">
                 <?php foreach ($services as $index => $service): ?>
                     <button data-services-tab="<?php echo esc_attr($service['id']); ?>"
-                        class="tab-btn <?php echo (0 === $index) ? 'active' : ''; ?> w-full text-left px-8 py-6 rounded-2xl bg-white border-2 border-transparent shadow-md hover:shadow-lg transition-all group shrink-0 lg:shrink"
+                        class="tab-btn <?php echo (0 === $index) ? 'active' : ''; ?> w-[85vw] max-w-sm lg:w-full text-left px-6 md:px-8 py-5 md:py-6 rounded-2xl bg-white border-2 border-transparent shadow-md hover:shadow-lg transition-all group shrink-0 lg:shrink"
                         aria-label="<?php echo esc_attr(sprintf(__('View details for %s', 'earlystart-early-learning'), $service['title'])); ?>">
                         <div class="flex items-center space-x-4">
                             <div
@@ -54,7 +54,7 @@ if (empty($services)) {
             </div>
 
             <!-- Tab Content -->
-            <div class="w-full lg:w-2/3 min-h-[600px] lg:min-h-[700px]">
+            <div class="w-full lg:w-2/3 lg:min-h-[700px]">
                 <?php foreach ($services as $index => $service): ?>
                     <div data-services-panel="<?php echo esc_attr($service['id']); ?>"
                         class="service-panel <?php echo (0 === $index) ? '' : 'hidden'; ?> bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-xl border border-stone-100 animate-fade-in h-full">

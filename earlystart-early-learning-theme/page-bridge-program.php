@@ -46,8 +46,8 @@ while (have_posts()):
                     <div class="relative fade-in-up">
                         <div class="absolute inset-0 bg-blue-100 rounded-[3rem] transform -rotate-3"></div>
                         <div
-                            class="relative bg-white rounded-[3rem] h-[500px] overflow-hidden shadow-2xl border border-stone-100 flex items-center justify-center">
-                            <div class="text-center p-10">
+                            class="relative bg-white rounded-[3rem] h-[320px] md:h-[500px] overflow-hidden shadow-2xl border border-stone-100 flex items-center justify-center">
+                            <div class="text-center p-6 md:p-10">
                                 <div
                                     class="bg-blue-50 w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-6">
                                     <i data-lucide="graduation-cap" class="w-16 h-16 text-blue-500"></i>

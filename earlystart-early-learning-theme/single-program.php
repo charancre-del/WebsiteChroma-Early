@@ -16,6 +16,14 @@ while (have_posts()):
 	$age_range = get_post_meta($program_id, 'program_age_range', true);
 	$color_scheme = get_post_meta($program_id, 'program_color_scheme', true) ?: 'rose';
 	$lesson_plan_url = get_post_meta($program_id, 'program_lesson_plan_file', true);
+	$program_anchor_slug = get_post_meta($program_id, 'program_anchor_slug', true) ?: get_post_field('post_name', $program_id);
+	$program_seo_heading = get_post_meta($program_id, 'program_seo_heading', true);
+	$program_seo_summary = get_post_meta($program_id, 'program_seo_summary', true);
+	$program_seo_highlights = get_post_meta($program_id, 'program_seo_highlights', true);
+	$program_meta_title = get_post_meta($program_id, 'program_meta_title', true);
+	$program_meta_description = get_post_meta($program_id, 'program_meta_description', true);
+	$program_cta_text = get_post_meta($program_id, 'program_cta_text', true) ?: __('Find a Clinic', 'earlystart-early-learning');
+	$program_cta_link = get_post_meta($program_id, 'program_cta_link', true) ?: earlystart_get_page_link('locations');
 
 	// Use a mapping for Tailwind-friendly colors based on the scheme
 	$colors = array(
@@ -38,8 +46,8 @@ while (have_posts()):
 	$chart_color = $hex_colors[$theme_color] ?? '#f43f5e';
 
 	// Hero section
-	$hero_title = get_post_meta($program_id, 'program_hero_title', true) ?: get_the_title();
-	$hero_description = get_post_meta($program_id, 'program_hero_description', true) ?: get_the_excerpt();
+	$hero_title = get_post_meta($program_id, 'program_hero_title', true) ?: ($program_meta_title ?: get_the_title());
+	$hero_description = get_post_meta($program_id, 'program_hero_description', true) ?: ($program_meta_description ?: get_the_excerpt());
 
 	// Prismpath section
 	$prism_title = get_post_meta($program_id, 'program_prism_title', true) ?: __('Clinical & Developmental Focus', 'earlystart-early-learning');
@@ -67,13 +75,13 @@ while (have_posts()):
 
 	<main class="pt-20">
 		<!-- Hero Section -->
-		<section class="relative bg-white pt-24 pb-20 lg:pt-32 overflow-hidden">
+		<section id="<?php echo esc_attr($program_anchor_slug); ?>" class="relative bg-white pt-24 pb-20 lg:pt-32 overflow-hidden">
 			<div
 				class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[600px] h-[600px] bg-<?php echo $theme_color; ?>-50 rounded-full blur-3xl opacity-50">
 			</div>
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 				<div class="grid lg:grid-cols-2 gap-16 items-center">
-					<div class="fade-in-up">
+					<div class="fade-in-up" id="tour">
 						<div
 							class="inline-flex items-center space-x-2 bg-<?php echo $theme_color; ?>-50 border border-<?php echo $theme_color; ?>-100 px-4 py-2 rounded-full mb-8">
 							<span
@@ -91,9 +99,9 @@ while (have_posts()):
 						</p>
 
 						<div class="flex flex-wrap gap-4">
-							<a href="<?php echo esc_url(earlystart_get_page_link('locations')); ?>"
+							<a href="<?php echo esc_url($program_cta_link); ?>"
 								class="bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-rose-600 transition-all shadow-lg active:scale-95 inline-block">
-								<?php _e('Find a Clinic', 'earlystart-early-learning'); ?>
+								<?php echo esc_html($program_cta_text); ?>
 							</a>
 							<?php if ($lesson_plan_url): ?>
 								<a href="<?php echo esc_url($lesson_plan_url); ?>" target="_blank" rel="noopener noreferrer"
@@ -181,11 +189,11 @@ while (have_posts()):
 							if (count($parts) >= 2):
 								?>
 								<div
-									class="group flex items-center gap-8 p-6 bg-stone-50 rounded-2xl border border-stone-100 hover:bg-white hover:border-rose-200 hover:shadow-xl transition-all duration-300">
-									<span class="text-sm font-bold text-stone-300 uppercase tracking-widest min-w-[100px] shrink-0">
+									class="group flex flex-col items-start gap-4 md:flex-row md:items-center md:gap-8 p-6 bg-stone-50 rounded-2xl border border-stone-100 hover:bg-white hover:border-rose-200 hover:shadow-xl transition-all duration-300">
+									<span class="text-sm font-bold text-stone-300 uppercase tracking-widest md:min-w-[100px] shrink-0">
 										<?php echo esc_html(trim($parts[0])); ?>
 									</span>
-									<div class="h-10 w-px bg-stone-200 group-hover:bg-rose-200"></div>
+									<div class="h-px w-full md:h-10 md:w-px bg-stone-200 group-hover:bg-rose-200"></div>
 									<div class="flex-grow">
 										<h4 class="font-bold text-stone-900"><?php echo esc_html(trim($parts[1])); ?></h4>
 										<?php if (isset($parts[2])): ?>
@@ -194,6 +202,40 @@ while (have_posts()):
 									</div>
 								</div>
 							<?php endif; endforeach; ?>
+					</div>
+				</div>
+			</section>
+		<?php endif; ?>
+
+		<?php
+		$seo_summary = $program_seo_summary ?: $program_meta_description;
+		$seo_highlights = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', (string) $program_seo_highlights))));
+		?>
+		<?php if ($program_seo_heading || $seo_summary || !empty($seo_highlights) || $program_meta_title): ?>
+			<section class="py-24 bg-white border-t border-stone-100">
+				<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="bg-stone-50 rounded-[3rem] p-10 md:p-14 border border-stone-100 shadow-sm">
+						<?php if ($program_meta_title): ?>
+							<span class="inline-flex items-center px-4 py-2 bg-<?php echo esc_attr($theme_color); ?>-50 text-<?php echo esc_attr($theme_color); ?>-700 rounded-full text-[10px] font-bold tracking-widest uppercase mb-6">
+								<?php echo esc_html($program_meta_title); ?>
+							</span>
+						<?php endif; ?>
+						<?php if ($program_seo_heading): ?>
+							<h2 class="text-4xl font-bold text-stone-900 mb-6"><?php echo esc_html($program_seo_heading); ?></h2>
+						<?php endif; ?>
+						<?php if ($seo_summary): ?>
+							<p class="text-lg text-stone-700 leading-relaxed mb-8 max-w-4xl"><?php echo esc_html($seo_summary); ?></p>
+						<?php endif; ?>
+						<?php if (!empty($seo_highlights)): ?>
+							<div class="grid sm:grid-cols-2 gap-4">
+								<?php foreach ($seo_highlights as $highlight): ?>
+									<div class="flex items-start gap-3 bg-white rounded-2xl p-5 border border-stone-100">
+										<i data-lucide="check-circle-2" class="w-5 h-5 text-<?php echo esc_attr($theme_color); ?>-500 shrink-0 mt-0.5"></i>
+										<span class="text-sm font-medium text-stone-800"><?php echo esc_html($highlight); ?></span>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						<?php endif; ?>
 					</div>
 				</div>
 			</section>
@@ -286,9 +328,9 @@ while (have_posts()):
 									</div>
 								</div>
 							</div>
-							<a href="<?php echo esc_url(earlystart_get_page_link('locations')); ?>"
+							<a href="<?php echo esc_url($program_cta_link); ?>"
 								class="block w-full py-4 bg-rose-600 hover:bg-rose-500 transition-colors text-white text-center rounded-2xl font-bold">
-								<?php _e('Book Your Clinical Tour', 'earlystart-early-learning'); ?>
+								<?php echo esc_html($program_cta_text); ?>
 							</a>
 						</div>
 					</div>

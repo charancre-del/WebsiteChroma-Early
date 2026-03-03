@@ -127,7 +127,7 @@
 
 			<!-- Mobile Menu Dropdown (Relative to Header) -->
 			<div data-mobile-nav
-				class="absolute top-full left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 hidden flex-col space-y-4 xl:hidden h-[calc(100vh-6rem)] overflow-y-auto pb-32">
+				class="absolute top-full left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 hidden flex-col space-y-4 xl:hidden max-h-[calc(100dvh-5rem)] overflow-y-auto pb-24">
 				<?php earlystart_mobile_nav(); ?>
 				<a href="<?php echo esc_url($cta_url); ?>"
 					class="block w-full text-center bg-stone-900 text-white px-6 py-4 rounded-xl font-bold mt-4">

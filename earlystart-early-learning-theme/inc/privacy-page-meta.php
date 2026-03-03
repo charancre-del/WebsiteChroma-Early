@@ -238,7 +238,7 @@ function earlystart_seed_privacy_page_defaults( $post_id ) {
 </ul>',
 
 		'privacy_section5_title' => '5. Contact Us',
-		'privacy_section5_content' => '<p class="mb-4">If you have questions regarding this policy, please contact our corporate office at privacy@chromaela.com.</p>',
+		'privacy_section5_content' => '<p class="mb-4">If you have questions regarding this policy, please contact our corporate office at privacy@chromaearlystart.com.</p>',
 	);
 
 	// Seed all defaults

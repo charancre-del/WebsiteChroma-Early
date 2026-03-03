@@ -13,6 +13,22 @@ while (have_posts()):
 	$page_id = get_the_ID();
 	$location_counts = wp_count_posts('location');
 	$published_locations = isset($location_counts->publish) ? (int) $location_counts->publish : 0;
+	$hero_badge = get_post_meta($page_id, 'contact_hero_badge', true) ?: __('Connect with Us', 'earlystart-early-learning');
+	$hero_title = get_post_meta($page_id, 'contact_hero_title', true) ?: __('How can we<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Support you?</span>', 'earlystart-early-learning');
+	$hero_description = get_post_meta($page_id, 'contact_hero_description', true) ?: __('Whether you are a family looking for care, a clinician seeking a career, or a provider wanting to refer, we are here to help.', 'earlystart-early-learning');
+	$form_submit_text = get_post_meta($page_id, 'contact_form_submit_text', true) ?: __('Request Consultation', 'earlystart-early-learning');
+	$corporate_title = get_post_meta($page_id, 'contact_corporate_title', true) ?: __('Corporate Office', 'earlystart-early-learning');
+	$corporate_name = get_post_meta($page_id, 'contact_corporate_name', true) ?: __('Chroma Early Start HQ', 'earlystart-early-learning');
+	$corporate_address = get_post_meta($page_id, 'contact_corporate_address', true) ?: '';
+	$corporate_phone = get_post_meta($page_id, 'contact_corporate_phone', true) ?: '';
+	$careers_title = get_post_meta($page_id, 'contact_careers_title', true) ?: __('Careers', 'earlystart-early-learning');
+	$careers_description = get_post_meta($page_id, 'contact_careers_description', true) ?: '';
+	$careers_link_text = get_post_meta($page_id, 'contact_careers_link_text', true) ?: __('View Open Positions', 'earlystart-early-learning');
+	$careers_link_url = get_post_meta($page_id, 'contact_careers_link_url', true) ?: earlystart_get_page_link('careers');
+	$press_title = get_post_meta($page_id, 'contact_press_title', true) ?: __('Press Inquiries', 'earlystart-early-learning');
+	$press_description = get_post_meta($page_id, 'contact_press_description', true) ?: '';
+	$press_link_text = get_post_meta($page_id, 'contact_press_link_text', true) ?: __('Visit Newsroom', 'earlystart-early-learning');
+	$press_link_url = get_post_meta($page_id, 'contact_press_link_url', true) ?: home_url('/newsroom/');
 	?>
 
 	<main class="pt-20">
@@ -25,16 +41,13 @@ while (have_posts()):
 				<div class="text-center max-w-3xl mx-auto mb-16 fade-in-up">
 					<span
 						class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
-						<?php _e('Connect with Us', 'earlystart-early-learning'); ?>
+						<?php echo esc_html($hero_badge); ?>
 					</span>
 					<h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight">
-						<?php _e('How can we', 'earlystart-early-learning'); ?><br>
-						<span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">
-							<?php _e('Support you?', 'earlystart-early-learning'); ?>
-						</span>
+						<?php echo wp_kses_post($hero_title); ?>
 					</h1>
 					<p class="text-xl text-stone-700 max-w-2xl mx-auto leading-relaxed">
-						<?php _e('Whether you are a family looking for care, a clinician seeking a career, or a provider wanting to refer, we are here to help.', 'earlystart-early-learning'); ?>
+						<?php echo esc_html($hero_description); ?>
 					</p>
 				</div>
 
@@ -98,23 +111,49 @@ while (have_posts()):
 							<?php endforeach; ?>
 						</div>
 
+						<div class="mt-12 rounded-[2rem] border border-stone-100 bg-stone-50 p-8">
+							<h3 class="text-xl font-bold text-stone-900 mb-3"><?php echo esc_html($corporate_title); ?></h3>
+							<p class="font-bold text-stone-900 mb-2"><?php echo esc_html($corporate_name); ?></p>
+							<?php if ($corporate_address): ?>
+								<p class="text-stone-700 text-sm whitespace-pre-line mb-3"><?php echo esc_html($corporate_address); ?></p>
+							<?php endif; ?>
+							<?php if ($corporate_phone): ?>
+								<p class="text-stone-700 text-sm"><?php echo esc_html($corporate_phone); ?></p>
+							<?php endif; ?>
+						</div>
+
+						<div class="mt-12 grid sm:grid-cols-2 gap-4">
+							<a href="<?php echo esc_url($careers_link_url); ?>"
+								class="rounded-[2rem] border border-stone-100 bg-white p-6 hover:shadow-md transition-shadow">
+								<span class="block text-sm font-bold text-stone-900 mb-2"><?php echo esc_html($careers_title); ?></span>
+								<span class="block text-sm text-stone-700 mb-3"><?php echo esc_html($careers_description); ?></span>
+								<span class="text-sm font-bold text-rose-700"><?php echo esc_html($careers_link_text); ?></span>
+							</a>
+							<a href="<?php echo esc_url($press_link_url); ?>"
+								class="rounded-[2rem] border border-stone-100 bg-white p-6 hover:shadow-md transition-shadow">
+								<span class="block text-sm font-bold text-stone-900 mb-2"><?php echo esc_html($press_title); ?></span>
+								<span class="block text-sm text-stone-700 mb-3"><?php echo esc_html($press_description); ?></span>
+								<span class="text-sm font-bold text-rose-700"><?php echo esc_html($press_link_text); ?></span>
+							</a>
+						</div>
+
 						<div class="mt-16 pt-12 border-t border-stone-100">
 							<h4 class="text-stone-900 font-bold mb-6">
 								<?php _e('Departmental Emails', 'earlystart-early-learning'); ?>
 							</h4>
 							<div class="grid sm:grid-cols-2 gap-4 text-sm">
-								<a href="mailto:admissions@earlystarttherapy.com"
+								<a href="mailto:admissions@chromaearlystart.com"
 									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Admissions:', 'earlystart-early-learning'); ?></strong>
-									<span style="overflow-wrap:anywhere;word-break:break-word;">admissions@earlystarttherapy.com</span></a>
-								<a href="mailto:careers@earlystarttherapy.com"
+									<span style="overflow-wrap:anywhere;word-break:break-word;">admissions@chromaearlystart.com</span></a>
+								<a href="mailto:careers@chromaearlystart.com"
 									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Careers:', 'earlystart-early-learning'); ?></strong>
-									<span style="overflow-wrap:anywhere;word-break:break-word;">careers@earlystarttherapy.com</span></a>
-								<a href="mailto:billing@earlystarttherapy.com"
+									<span style="overflow-wrap:anywhere;word-break:break-word;">careers@chromaearlystart.com</span></a>
+								<a href="mailto:billing@chromaearlystart.com"
 									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Billing:', 'earlystart-early-learning'); ?></strong>
-									<span style="overflow-wrap:anywhere;word-break:break-word;">billing@earlystarttherapy.com</span></a>
-								<a href="mailto:media@earlystarttherapy.com"
+									<span style="overflow-wrap:anywhere;word-break:break-word;">billing@chromaearlystart.com</span></a>
+								<a href="mailto:media@chromaearlystart.com"
 									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Media:', 'earlystart-early-learning'); ?></strong>
-									<span style="overflow-wrap:anywhere;word-break:break-word;">media@earlystarttherapy.com</span></a>
+									<span style="overflow-wrap:anywhere;word-break:break-word;">media@chromaearlystart.com</span></a>
 							</div>
 						</div>
 					</div>
@@ -177,7 +216,7 @@ while (have_posts()):
 									</div>
 									<button
 										class="w-full bg-stone-900 text-white font-bold py-5 rounded-2xl hover:bg-rose-600 transition-all shadow-xl active:scale-95">
-										<?php _e('Request Consultation', 'earlystart-early-learning'); ?>
+										<?php echo esc_html($form_submit_text); ?>
 									</button>
 								</form>
 							<?php } ?>

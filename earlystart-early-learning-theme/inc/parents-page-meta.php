@@ -945,7 +945,7 @@ function earlystart_seed_parents_page_defaults($post_id)
         'parents_referral_title' => 'Love the Early Start family?',
         'parents_referral_description' => 'Refer a friend and receive a <strong>$100 tuition credit</strong> when they enroll.',
         'parents_referral_button_text' => 'Refer a Friend',
-        'parents_referral_button_url' => 'mailto:director@chromaela.com?subject=Parent%20Referral',
+        'parents_referral_button_url' => 'mailto:director@chromaearlystart.com?subject=Parent%20Referral',
     );
 
     // Populate all default values

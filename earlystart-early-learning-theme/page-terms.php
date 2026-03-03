@@ -91,7 +91,7 @@ $default_sections = array(
     ),
     array(
         'title' => __('Website Terms', 'earlystart-early-learning'),
-        'content' => '<p>' . __('Use of our website (chromaela.com) is subject to the following:', 'earlystart-early-learning') . '</p>
+        'content' => '<p>' . __('Use of our website (chromaearlystart.com) is subject to the following:', 'earlystart-early-learning') . '</p>
         <ul>
             <li>' . __('Content is provided for informational purposes only', 'earlystart-early-learning') . '</li>
             <li>' . __('We do not guarantee the accuracy or completeness of website information', 'earlystart-early-learning') . '</li>
@@ -109,9 +109,9 @@ $default_sections = array(
         'title' => __('Contact Information', 'earlystart-early-learning'),
         'content' => '<p>' . __('If you have questions about these Terms of Service, please contact us:', 'earlystart-early-learning') . '</p>
         <p><strong>' . __('Early Start Early Learning Academy', 'earlystart-early-learning') . '</strong><br>
-        ' . __('Email: info@chromaela.com', 'earlystart-early-learning') . '<br>
+        ' . __('Email: info@chromaearlystart.com', 'earlystart-early-learning') . '<br>
         ' . __('Phone: (404) 800-8000', 'earlystart-early-learning') . '<br>
-        ' . __('Website: www.chromaela.com', 'earlystart-early-learning') . '</p>'
+        ' . __('Website: www.chromaearlystart.com', 'earlystart-early-learning') . '</p>'
     ),
 );
 

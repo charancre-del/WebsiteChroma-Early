@@ -102,7 +102,7 @@ get_header();
       <!-- Featured Post -->
       <section class="py-12 px-4 lg:px-6 max-w-7xl mx-auto">
         <a href="<?php echo esc_url(get_permalink($featured_post_id)); ?>" class="block">
-          <div class="relative rounded-[3rem] overflow-hidden shadow-soft group cursor-pointer h-[500px]">
+          <div class="relative rounded-[3rem] overflow-hidden shadow-soft group cursor-pointer h-[360px] md:h-[500px]">
             <?php if ($featured_thumbnail_id): ?>
               <?php echo wp_get_attachment_image(
                 $featured_thumbnail_id,
@@ -130,10 +130,10 @@ get_header();
                 loading="eager" decoding="async" />
             <?php endif; ?>
             <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-brand-ink/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-8 md:p-12">
+            <div class="absolute bottom-0 left-0 p-6 md:p-12">
               <span
                 class="bg-chroma-yellow text-brand-ink text-[10px] font-bold uppercase px-3 py-1 rounded-full mb-4 inline-block"><?php _e('Featured', 'earlystart-early-learning'); ?></span>
-              <h2 class="font-serif text-3xl md:text-4xl text-white font-bold mb-4">
+              <h2 class="font-serif text-2xl md:text-4xl text-white font-bold mb-4">
                 <?php echo esc_html(get_the_title($featured_post_id)); ?>
               </h2>
               <p class="text-white/80 mb-6 max-w-2xl">

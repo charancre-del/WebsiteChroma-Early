@@ -59,13 +59,13 @@ $default_sections = array(
             <li><strong>' . __('Deletion:', 'earlystart-early-learning') . '</strong> ' . __('Request deletion of your data, subject to legal retention requirements', 'earlystart-early-learning') . '</li>
             <li><strong>' . __('Opt-Out:', 'earlystart-early-learning') . '</strong> ' . __('Unsubscribe from marketing communications at any time', 'earlystart-early-learning') . '</li>
         </ul>
-        <p>' . __('To exercise any of these rights, please contact your center director or email us at privacy@chromaela.com.', 'earlystart-early-learning') . '</p>'
+        <p>' . __('To exercise any of these rights, please contact your center director or email us at privacy@chromaearlystart.com.', 'earlystart-early-learning') . '</p>'
   ),
   array(
     'title' => __('Contact Us', 'earlystart-early-learning'),
     'content' => '<p>' . __('If you have any questions about this Privacy Policy or our data practices, please contact us:', 'earlystart-early-learning') . '</p>
         <p><strong>' . __('Early Start Early Learning Academy', 'earlystart-early-learning') . '</strong><br>
-        ' . __('Email: privacy@chromaela.com', 'earlystart-early-learning') . '<br>
+        ' . __('Email: privacy@chromaearlystart.com', 'earlystart-early-learning') . '<br>
         ' . __('Phone: (404) 800-8000', 'earlystart-early-learning') . '</p>
         <p>' . __('This policy may be updated from time to time. We will notify you of any material changes by posting the new policy on this page with an updated "Last Updated" date.', 'earlystart-early-learning') . '</p>'
   ),

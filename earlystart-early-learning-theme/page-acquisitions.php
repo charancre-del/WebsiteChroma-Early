@@ -94,7 +94,7 @@ get_header();
                         <p class="text-sm"><?php _e('Please activate the "Early Start Acquisitions Form" plugin to display the acquisition form.', 'earlystart-early-learning'); ?></p>
                         <p class="mt-6"><?php _e('In the meantime, reach out to:', 'earlystart-early-learning'); ?></p>
                         <p class="font-semibold text-chroma-teal mt-2">
-                            <a href="mailto:acquisitions@chromaela.com">acquisitions@chromaela.com</a>
+                            <a href="mailto:acquisitions@chromaearlystart.com">acquisitions@chromaearlystart.com</a>
                         </p>
                     </div>
                     <?php
