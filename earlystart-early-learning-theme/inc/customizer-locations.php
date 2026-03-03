@@ -73,7 +73,7 @@ function earlystart_customize_locations($wp_customize)
 
     $wp_customize->add_control('earlystart_locations_badge_fallback', array(
         'label' => __('Badge Fallback Text', 'earlystart-early-learning'),
-        'description' => __('Text to show on the location card badge if not "New Campus" (e.g., "Now Enrolling").', 'earlystart-early-learning'),
+        'description' => __('Text to show on the location card badge if not "New Clinic" (e.g., "Now Enrolling").', 'earlystart-early-learning'),
         'section' => 'earlystart_locations_settings',
         'type' => 'text',
     ));

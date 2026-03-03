@@ -99,7 +99,7 @@ if ($locations_query->have_posts()) {
                         </span>
                     </h1>
                     <p class="text-xl text-stone-700 leading-relaxed mb-10 max-w-xl">
-                        <?php _e('Select your preferred campus below to schedule a private walkthrough with our Clinical Director. We look forward to welcoming your family.', 'earlystart-early-learning'); ?>
+                        <?php _e('Select your preferred clinic below to schedule a private walkthrough with our clinical team. We look forward to welcoming your family.', 'earlystart-early-learning'); ?>
                     </p>
 
                     <div class="flex flex-wrap gap-3">

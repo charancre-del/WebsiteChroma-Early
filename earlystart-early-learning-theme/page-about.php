@@ -89,7 +89,7 @@ while (have_posts()):
 								</p>
 							<?php else: ?>
 								<p>
-									<?php _e('Early Start Early Learning Academy began with a mission to redefine "daycare." We didn\'t just want to watch children; we wanted to ignite their potential.', 'earlystart-early-learning'); ?>
+									<?php _e('Chroma Early Start began with a mission to redefine early intervention. We did not want to simply supervise children; we wanted to help them build meaningful skills through compassionate, evidence-based care.', 'earlystart-early-learning'); ?>
 								</p>
 							<?php endif; ?>
 
@@ -159,8 +159,8 @@ while (have_posts()):
 					<div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
 						<?php
 						$milestones = array(
-							array('year' => '2022', 'title' => 'The Beginning', 'desc' => 'Early Start Early Learning Academy opens its first flagship location.', 'color' => 'rose'),
-							array('year' => '2023', 'title' => 'Rapid Expansion', 'desc' => 'Growth to 10+ locations identifying child development needs.', 'color' => 'orange'),
+							array('year' => '2022', 'title' => 'The Beginning', 'desc' => 'Chroma Early Start opens its first flagship clinic.', 'color' => 'rose'),
+							array('year' => '2023', 'title' => 'Regional Growth', 'desc' => 'Expansion to 10+ clinics serving more families across metro Atlanta.', 'color' => 'orange'),
 							array('year' => '2024', 'title' => 'Early Start', 'desc' => 'Official launch of our specialized ABA & Therapy division.', 'color' => 'amber'),
 							array('year' => 'Today', 'title' => 'A Holistic Network', 'desc' => '19+ locations integrating education and clinical therapy.', 'color' => 'rose'),
 						);
@@ -234,7 +234,7 @@ while (have_posts()):
 
 		<!-- Nutrition & Daily Care -->
 		<?php
-		$nutrition_title = get_post_meta($page_id, 'about_nutrition_title', true) ?: __('Supporting whole-child care.', 'earlystart-early-learning');
+		$nutrition_title = get_post_meta($page_id, 'about_nutrition_title', true) ?: __('Supporting whole-child wellbeing.', 'earlystart-early-learning');
 		$nutrition_desc = get_post_meta($page_id, 'about_nutrition_description', true) ?: __('We design our routines to support regulation, nutrition, and day-to-day participation so children can engage more fully in therapy and learning.', 'earlystart-early-learning');
 		$nutrition_image = get_post_meta($page_id, 'about_nutrition_image', true);
 		?>

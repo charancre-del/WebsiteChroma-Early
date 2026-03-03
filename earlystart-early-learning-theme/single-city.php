@@ -82,7 +82,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                     <?php printf(__('Clinics Serving %s', 'earlystart-early-learning'), esc_html($city)); ?>
                 </h2>
                 <p class="text-stone-700 text-lg">
-                    <?php _e('Select the campus closest to your home or work.', 'earlystart-early-learning'); ?>
+                    <?php _e('Select the clinic closest to your home or work.', 'earlystart-early-learning'); ?>
                 </p>
             </div>
 
@@ -116,7 +116,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
 
                                 <a href="<?php the_permalink(); ?>"
                                     class="inline-flex items-center gap-2 text-rose-700 font-bold group-hover:gap-4 transition-all">
-                                    <?php _e('View Campus', 'earlystart-early-learning'); ?>
+                                    <?php _e('View Clinic', 'earlystart-early-learning'); ?>
                                     <i data-lucide="arrow-right" class="w-5 h-5"></i>
                                 </a>
                             </div>
@@ -193,7 +193,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                             class="w-5 h-5 text-stone-300 group-open:rotate-180 transition-transform"></i>
                     </summary>
                     <div class="mt-4 text-stone-700 leading-relaxed text-sm">
-                        <?php printf(__('Several of our campuses serving %s participate in the Georgia Lottery Pre-K program. Please check individual campus pages for specific availability.', 'earlystart-early-learning'), esc_html($city)); ?>
+                        <?php printf(__('Several of our clinics serving %s offer pediatric therapy services tailored to different ages and needs. Review individual clinic pages for program availability.', 'earlystart-early-learning'), esc_html($city)); ?>
                     </div>
                 </details>
             </div>

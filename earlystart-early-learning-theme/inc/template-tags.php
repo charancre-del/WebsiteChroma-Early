@@ -206,28 +206,28 @@ function earlystart_get_location_faq_items($post_id = null)
     // 1. Global Defaults
     $defaults = array(
         array(
-            'question' => __('Do you offer tours?', 'earlystart-early-learning'),
-            'answer' => __('Yes! We encourage all families to book a tour to see our classrooms, meet our directors, and experience the Early Start difference firsthand.', 'earlystart-early-learning'),
+            'question' => __('Do you offer clinic tours?', 'earlystart-early-learning'),
+            'answer' => __('Yes. We encourage families to book a visit so they can meet our clinical team, see the therapy environment, and ask questions about next steps.', 'earlystart-early-learning'),
         ),
         array(
             'question' => __('What ages do you serve?', 'earlystart-early-learning'),
-            'answer' => __('We typically serve children from 6 weeks (Infants) up to 12 years old (After School), though specific programs may vary by campus.', 'earlystart-early-learning'),
+            'answer' => __('We typically serve children from early intervention through early school-age years, though the exact age range varies by clinic and therapy program.', 'earlystart-early-learning'),
         ),
         array(
-            'question' => __('Is food included?', 'earlystart-early-learning'),
-            'answer' => __('Yes, we provide nutritious, child-friendly meals and snacks prepared fresh daily.', 'earlystart-early-learning'),
+            'question' => __('Which services are available?', 'earlystart-early-learning'),
+            'answer' => __('Most locations offer ABA therapy, speech therapy, occupational therapy, and caregiver guidance, though exact services vary by clinic.', 'earlystart-early-learning'),
         ),
         array(
-            'question' => __('Do you offer part-time daycare or Parents Day Out?', 'earlystart-early-learning'),
-            'answer' => __('Yes. Early Start Early Learning Academy locations offer part-time care and Parents Day Out programs. Availability and schedules vary by location, and programs are designed to support families who need flexible care options.', 'earlystart-early-learning'),
+            'question' => __('Do you accept insurance?', 'earlystart-early-learning'),
+            'answer' => __('Coverage varies by service and payer. Our intake team can help review benefits, authorizations, and the best path to begin services.', 'earlystart-early-learning'),
         ),
         array(
             'question' => __('What safety and security measures are in place?', 'earlystart-early-learning'),
-            'answer' => __('All Early Start Locations have Keypad Controlled Access, 24/7 monitored Cameras, Carbon monoxide and Smoke Alarm Systems, Defibrillators, and Emergency Plans that are performed regularly.', 'earlystart-early-learning'),
+            'answer' => __('Our clinics use controlled access, safety protocols, emergency response procedures, and staff training designed for pediatric therapy environments.', 'earlystart-early-learning'),
         ),
         array(
-            'question' => __('Do you accept CAPS?', 'earlystart-early-learning'),
-            'answer' => __('Yes, all Early Start Early Learning Academy Locations accept CAPS (Childcare and Parent Services).', 'earlystart-early-learning'),
+            'question' => __('How do we get started?', 'earlystart-early-learning'),
+            'answer' => __('Start by contacting our intake team. We will help you schedule a consultation, confirm fit, and guide you through evaluation or onboarding steps.', 'earlystart-early-learning'),
         ),
     );
 

@@ -115,7 +115,7 @@ function earlystart_enqueue_assets()
                         'nonce' => wp_create_nonce('earlystart_nonce'),
                         'themeUrl' => earlystart_THEME_URI,
                         'homeUrl' => home_url(),
-                        'viewCampus' => __('View campus', 'earlystart-early-learning'),
+                        'viewCampus' => __('View clinic', 'earlystart-early-learning'),
                 )
         );
 }

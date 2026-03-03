@@ -44,7 +44,7 @@ function earlystart_about_page_meta_boxes() {
 
 	add_meta_box(
 		'chroma-about-educators',
-		__( 'Educators Section', 'earlystart-early-learning' ),
+		__( 'Clinical Team Section', 'earlystart-early-learning' ),
 		'earlystart_about_educators_meta_box_render',
 		'page',
 		'normal',
@@ -269,7 +269,7 @@ function earlystart_about_story_meta_box_render( $post ) {
 					   placeholder="e.g., 2k+" style="width: 100px;" />
 				<input type="text" id="about_stat2_label" name="about_stat2_label"
 					   value="<?php echo esc_attr( $stat2_label ); ?>"
-					   placeholder="e.g., Students" style="margin-left: 10px;" />
+					   placeholder="e.g., Families Supported" style="margin-left: 10px;" />
 			</td>
 		</tr>
 		<tr>
@@ -280,7 +280,7 @@ function earlystart_about_story_meta_box_render( $post ) {
 					   placeholder="e.g., 450+" style="width: 100px;" />
 				<input type="text" id="about_stat3_label" name="about_stat3_label"
 					   value="<?php echo esc_attr( $stat3_label ); ?>"
-					   placeholder="e.g., Educators" style="margin-left: 10px;" />
+					   placeholder="e.g., Team Members" style="margin-left: 10px;" />
 			</td>
 		</tr>
 		<tr>
@@ -643,7 +643,7 @@ function earlystart_about_leadership_meta_box_render( $post ) {
 			<td>
 				<input type="text" id="about_leadership_title" name="about_leadership_title"
 					   value="<?php echo esc_attr( $leadership_title ); ?>"
-					   class="large-text" placeholder="e.g., Led by educators, not investors." />
+					   class="large-text" placeholder="e.g., Led by clinicians, not investors." />
 				<br>
 				<input type="text" id="_earlystart_es_about_leadership_title" name="_earlystart_es_about_leadership_title"
 					   value="<?php echo esc_attr( get_post_meta( $post->ID, '_earlystart_es_about_leadership_title', true ) ); ?>"
@@ -1093,35 +1093,35 @@ function earlystart_seed_about_page_defaults( $post_id ) {
 	// Default values array
 	$defaults = array(
 		'about_hero_badge_text'            => 'Established 2015',
-		'about_hero_title'                 => 'More than a school. <span class="text-chroma-yellow italic">A second home.</span>',
-		'about_hero_description'           => 'We founded Early Start on a simple belief: Early education should be a perfect blend of rigorous cognitive development and the comforting warmth of family.',
+		'about_hero_title'                 => 'More than a clinic. <span class="text-chroma-yellow italic">A second home.</span>',
+		'about_hero_description'           => 'We founded Chroma Early Start on a simple belief: Pediatric therapy should balance clinical precision with the warmth families need to feel supported.',
 		'about_hero_image'                 => 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&fm=webp?q=80&w=1000&auto=format&fit=crop&q=80&fm=webp',
 		'about_mission_quote'              => '"To cultivate a vibrant community of lifelong learners by blending academic rigor with the nurturing warmth of home, ensuring every child feels seen, valued, and capable."',
-		'about_story_title'                => 'From one classroom to a community.',
-		'about_story_paragraph1'           => 'Early Start Early Learning Academy began with a single location in Lawrenceville and a mission to redefine "daycare." We didn\'t just want to watch children; we wanted to ignite them.',
-		'about_story_paragraph2'           => 'Over the last decade, we have grown into a network of 19+ campuses across Metro Atlanta, yet each location retains the intimacy and personal touch of that very first school. We are locally owned, operated by educators, and driven by the success of our families.',
+		'about_story_title'                => 'From one clinic to a regional care network.',
+		'about_story_paragraph1'           => 'Chroma Early Start began with a single location in Lawrenceville and a mission to redefine how pediatric therapy feels for families. We wanted care that was clinically rigorous, warm, and deeply human.',
+		'about_story_paragraph2'           => 'Over the last decade, we have grown into a regional network of clinics across Metro Atlanta while preserving the close partnership, responsiveness, and trust that shaped our first location.',
 		'about_story_image'                => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?q=80&w=800&auto=format&fit=crop&q=80&fm=webp',
 		'about_stat1_value'                => '19+',
 		'about_stat1_label'                => 'Locations',
 		'about_stat2_value'                => '2k+',
-		'about_stat2_label'                => 'Students',
+		'about_stat2_label'                => 'Families Supported',
 		'about_stat3_value'                => '450+',
-		'about_stat3_label'                => 'Educators',
+		'about_stat3_label'                => 'Team Members',
 		'about_stat4_value'                => '100%',
 		'about_stat4_label'                => 'Licensed',
 		'about_educators_title'            => 'The Heart of Early Start.',
-		'about_educators_description'      => 'We don\'t just hire supervisors; we hire career educators. Our teachers are the most valuable asset in our classrooms, selected for their passion, patience, and professional credentials.',
+		'about_educators_description'      => 'We build around clinicians and care teams who combine technical skill, warmth, and accountability in every interaction.',
 		'about_educator1_icon'             => 'fa-solid fa-certificate',
 		'about_educator1_title'            => 'Certified & Credentialed',
-		'about_educator1_desc'             => 'Lead teachers hold a CDA (Child Development Associate), TCC, or higher degree in Early Childhood Education. We support ongoing education for every staff member.',
+		'about_educator1_desc'             => 'Our team includes licensed and board-certified professionals across ABA, speech, and occupational therapy disciplines.',
 		'about_educator2_icon'             => 'fa-solid fa-user-shield',
 		'about_educator2_title'            => 'Safety First',
 		'about_educator2_desc'             => 'Every team member undergoes rigorous federal and state background checks. All staff are certified in CPR and First Aid, with regular refresher courses.',
 		'about_educator3_icon'             => 'fa-solid fa-chalkboard-user',
 		'about_educator3_title'            => 'Continuous Growth',
-		'about_educator3_desc'             => 'Our educators participate in 20+ hours of annual professional development, specializing in the Prismpath™ curriculum and social-emotional learning.',
+		'about_educator3_desc'             => 'Our clinical team completes 20+ hours of annual professional development focused on evidence-based care, regulation support, and family-centered progress planning.',
 		'about_values_title'               => 'The Early Start Standard',
-		'about_values_description'         => 'Our culture is built on four non-negotiable pillars that guide every decision we make, from hiring teachers to designing playgrounds.',
+		'about_values_description'         => 'Our culture is built on four non-negotiable pillars that guide every decision we make, from hiring clinicians to designing patient-centered spaces.',
 		'about_value1_icon'                => 'fa-solid fa-heart',
 		'about_value1_title'               => 'Unconditional Joy',
 		'about_value1_desc'                => 'We believe childhood should be magical. We prioritize laughter, play, and warmth in every interaction.',
@@ -1134,23 +1134,23 @@ function earlystart_seed_about_page_defaults( $post_id ) {
 		'about_value4_icon'                => 'fa-solid fa-users',
 		'about_value4_title'               => 'Open Partnership',
 		'about_value4_desc'                => 'Parents are partners. We maintain open doors, transparent communication, and daily updates.',
-		'about_leadership_title'           => 'Led by educators, not investors.',
+		'about_leadership_title'           => 'Led by clinicians, not investors.',
 		'about_nutrition_title'            => 'Fueling growing minds.',
-		'about_nutrition_description'      => 'We believe nutrition is a key part of education. Our in-house chefs prepare balanced, nut-free meals daily using fresh ingredients.',
+		'about_nutrition_description'      => 'Whole-child support includes regulation, routines, and nutrition so children can engage more fully in therapy.',
 		'about_nutrition_bullet1_icon'     => 'fa-solid fa-apple-whole',
-		'about_nutrition_bullet1_text'     => 'CACFP Certified Menus',
+		'about_nutrition_bullet1_text'     => 'Family-centered care plans',
 		'about_nutrition_bullet2_icon'     => 'fa-solid fa-carrot',
-		'about_nutrition_bullet2_text'     => 'Family-Style Dining to teach manners',
+		'about_nutrition_bullet2_text'     => 'Sensory-aware routines',
 		'about_nutrition_bullet3_icon'     => 'fa-solid fa-ban',
 		'about_nutrition_bullet3_text'     => 'Strict Nut-Free & Allergy Protocols',
 		'about_nutrition_image'            => 'https://images.unsplash.com/photo-1606914506133-2230d94922b5?auto=format&fit=crop&q=80&fm=webp?q=80&w=800&auto=format&fit=crop&q=80&fm=webp',
 		'about_philanthropy_title'         => 'Giving back to our future.',
 		'about_philanthropy_subtitle'      => 'Foundations For Learning Inc.',
-		'about_philanthropy_description'   => 'At Early Start, our commitment extends beyond our classroom walls. Through our partnership with <strong>Foundations For Learning Inc.</strong>, we work to ensure that quality early education is accessible to every child in our community.',
+		'about_philanthropy_description'   => 'At Chroma Early Start, our commitment extends beyond direct therapy. Through our partnership with <strong>Foundations For Learning Inc.</strong>, we help expand access to family support, education, and early intervention resources.',
 		'about_philanthropy_bullet1_icon'  => 'fa-solid fa-hand-holding-heart',
 		'about_philanthropy_bullet1_text'  => 'Scholarship opportunities for families',
 		'about_philanthropy_bullet2_icon'  => 'fa-solid fa-chalkboard-user',
-		'about_philanthropy_bullet2_text'  => 'Teacher training grants',
+		'about_philanthropy_bullet2_text'  => 'Clinical training grants',
 		'about_philanthropy_bullet3_icon'  => 'fa-solid fa-people-roof',
 		'about_philanthropy_bullet3_text'  => 'Community outreach programs',
 		'about_philanthropy_image'         => 'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&fm=webp?q=80&w=800&auto=format&fit=crop&q=80&fm=webp',

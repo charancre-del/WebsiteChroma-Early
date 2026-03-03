@@ -215,7 +215,7 @@ function earlystart_seed_privacy_page_defaults( $post_id ) {
 		'privacy_last_updated' => 'October 1, 2024',
 
 		'privacy_section1_title' => '1. Commitment to Privacy',
-		'privacy_section1_content' => '<p class="mb-4">Early Start Early Learning Academy ("Early Start", "we", "us") respects your privacy. This policy outlines how we collect, use, and protect the personal information of our families, students, and website visitors.</p>',
+		'privacy_section1_content' => '<p class="mb-4">Chroma Early Start ("Chroma", "we", "us") respects your privacy. This policy outlines how we collect, use, and protect the personal information of our families, patients, caregivers, and website visitors.</p>',
 
 		'privacy_section2_title' => '2. Information Collection',
 		'privacy_section2_content' => '<p class="mb-4">We collect information necessary for enrollment, safety, and communication, including:</p>

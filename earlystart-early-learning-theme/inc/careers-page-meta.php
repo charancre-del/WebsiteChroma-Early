@@ -233,7 +233,7 @@ function earlystart_careers_openings_meta_box_render( $post ) {
 					<input type="text" id="careers_job<?php echo $num; ?>_location"
 						   name="careers_job<?php echo $num; ?>_location"
 						   value="<?php echo esc_attr( $location ); ?>"
-						   placeholder="e.g., Lawrenceville Campus" />
+						   placeholder="e.g., Lawrenceville Clinic" />
 				</td>
 			</tr>
 			<tr>
@@ -423,22 +423,22 @@ function earlystart_seed_careers_page_defaults( $post_id ) {
 
 		'careers_benefit3_icon'  => 'fa-solid fa-heart-pulse',
 		'careers_benefit3_title' => 'Health & Wellness',
-		'careers_benefit3_desc'  => 'Comprehensive medical, dental, and vision insurance, plus free childcare discounts.',
+		'careers_benefit3_desc'  => 'Comprehensive medical, dental, and vision insurance, plus family support benefits.',
 
 		'careers_openings_title' => 'Current Opportunities',
 
 		'careers_job1_title'    => 'Lead Teacher (Pre-K)',
-		'careers_job1_location' => 'Lawrenceville Campus',
+		'careers_job1_location' => 'Lawrenceville Clinic',
 		'careers_job1_type'     => 'Full Time',
 		'careers_job1_url'      => '#apply',
 
 		'careers_job2_title'    => 'Assistant Director',
-		'careers_job2_location' => 'Marietta (East) Campus',
+		'careers_job2_location' => 'Marietta (East) Clinic',
 		'careers_job2_type'     => 'Full Time',
 		'careers_job2_url'      => '#apply',
 
 		'careers_job3_title'    => 'Infant Caregiver',
-		'careers_job3_location' => 'Johns Creek Campus',
+		'careers_job3_location' => 'Johns Creek Clinic',
 		'careers_job3_type'     => 'Full Time / Part Time',
 		'careers_job3_url'      => '#apply',
 

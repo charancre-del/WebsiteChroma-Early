@@ -19,7 +19,7 @@ $last_updated = earlystart_get_translated_meta($page_id, 'privacy_last_updated')
 $default_sections = array(
   array(
     'title' => __('Information We Collect', 'earlystart-early-learning'),
-    'content' => '<p>' . __('At Early Start Early Learning Academy, we collect information necessary to provide excellent childcare services to your family. This includes:', 'earlystart-early-learning') . '</p>
+    'content' => '<p>' . __('At Chroma Early Start, we collect information necessary to provide safe, effective pediatric therapy and family support services. This includes:', 'earlystart-early-learning') . '</p>
         <ul>
             <li><strong>' . __('Contact Information:', 'earlystart-early-learning') . '</strong> ' . __('Names, addresses, phone numbers, and email addresses of parents/guardians', 'earlystart-early-learning') . '</li>
             <li><strong>' . __('Child Information:', 'earlystart-early-learning') . '</strong> ' . __('Child\'s name, date of birth, allergies, medical conditions, and emergency contacts', 'earlystart-early-learning') . '</li>
@@ -31,7 +31,7 @@ $default_sections = array(
     'title' => __('How We Use Your Information', 'earlystart-early-learning'),
     'content' => '<p>' . __('We use the information we collect to:', 'earlystart-early-learning') . '</p>
         <ul>
-            <li>' . __('Provide safe, quality childcare services', 'earlystart-early-learning') . '</li>
+            <li>' . __('Provide safe, high-quality pediatric therapy and support services', 'earlystart-early-learning') . '</li>
             <li>' . __('Communicate with you about your child\'s care and development', 'earlystart-early-learning') . '</li>
             <li>' . __('Process enrollment applications and payments', 'earlystart-early-learning') . '</li>
             <li>' . __('Comply with state licensing requirements (Georgia DECAL)', 'earlystart-early-learning') . '</li>
@@ -52,7 +52,7 @@ $default_sections = array(
   ),
   array(
     'title' => __('Your Rights', 'earlystart-early-learning'),
-    'content' => '<p>' . __('As a parent or guardian enrolled with Early Start Early Learning Academy, you have the right to:', 'earlystart-early-learning') . '</p>
+    'content' => '<p>' . __('As a parent, guardian, or caregiver working with Chroma Early Start, you have the right to:', 'earlystart-early-learning') . '</p>
         <ul>
             <li><strong>' . __('Access:', 'earlystart-early-learning') . '</strong> ' . __('Request a copy of the personal information we hold about you and your child', 'earlystart-early-learning') . '</li>
             <li><strong>' . __('Correction:', 'earlystart-early-learning') . '</strong> ' . __('Request corrections to any inaccurate information', 'earlystart-early-learning') . '</li>
@@ -64,7 +64,7 @@ $default_sections = array(
   array(
     'title' => __('Contact Us', 'earlystart-early-learning'),
     'content' => '<p>' . __('If you have any questions about this Privacy Policy or our data practices, please contact us:', 'earlystart-early-learning') . '</p>
-        <p><strong>' . __('Early Start Early Learning Academy', 'earlystart-early-learning') . '</strong><br>
+        <p><strong>' . __('Chroma Early Start', 'earlystart-early-learning') . '</strong><br>
         ' . __('Email: privacy@chromaearlystart.com', 'earlystart-early-learning') . '<br>
         ' . __('Phone: (404) 800-8000', 'earlystart-early-learning') . '</p>
         <p>' . __('This policy may be updated from time to time. We will notify you of any material changes by posting the new policy on this page with an updated "Last Updated" date.', 'earlystart-early-learning') . '</p>'
@@ -100,7 +100,7 @@ if (!$has_custom_content) {
 
     <div class="prose prose-lg text-brand-ink/80 max-w-none">
       <p class="text-lg leading-relaxed mb-8">
-        <?php _e('Early Start Early Learning Academy ("we," "us," or "our") is committed to protecting your privacy and that of your children. This Privacy Policy explains how we collect, use, and safeguard your personal information.', 'earlystart-early-learning'); ?>
+        <?php _e('Chroma Early Start ("we," "us," or "our") is committed to protecting your privacy and that of your children. This Privacy Policy explains how we collect, use, and safeguard your personal information.', 'earlystart-early-learning'); ?>
       </p>
 
       <?php foreach ($sections as $section): ?>

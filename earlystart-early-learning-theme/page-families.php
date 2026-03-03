@@ -736,7 +736,7 @@ while (have_posts()):
                                     data-lucide="chevron-down" class="w-5 h-5"></i></span>
                         </summary>
                         <div class="text-stone-700 mt-4 leading-relaxed text-sm">
-                            <p><?php _e('We do not provide home transport. However, if your child attends Early Start Early Learning Academy, our staff will handle the transition between the classroom and the therapy clinic for you.', 'earlystart-early-learning'); ?>
+                            <p><?php _e('We do not provide home transport. However, if your child participates in a paired education and therapy schedule, our team can coordinate safe handoffs between services at the same location.', 'earlystart-early-learning'); ?>
                             </p>
                         </div>
                     </details>

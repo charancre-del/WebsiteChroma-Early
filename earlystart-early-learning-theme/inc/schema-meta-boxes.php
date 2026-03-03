@@ -19,7 +19,7 @@ function earlystart_register_schema_meta_boxes() {
 	// Homepage/Organization Schema
 	add_meta_box(
 		'chroma-schema-organization',
-		__( 'Schema.org - Organization (ChildCare)', 'earlystart-early-learning' ),
+		__( 'Schema.org - Organization (MedicalBusiness)', 'earlystart-early-learning' ),
 		'earlystart_schema_organization_meta_box',
 		'page',
 		'normal',
@@ -29,7 +29,7 @@ function earlystart_register_schema_meta_boxes() {
 	// Location Schema
 	add_meta_box(
 		'chroma-schema-location',
-		__( 'Schema.org - LocalBusiness (ChildCare)', 'earlystart-early-learning' ),
+		__( 'Schema.org - LocalBusiness (MedicalBusiness)', 'earlystart-early-learning' ),
 		'earlystart_schema_location_meta_box',
 		'location',
 		'normal',
@@ -72,8 +72,8 @@ function earlystart_schema_organization_meta_box( $post ) {
 
 	?>
 	<div style="margin-bottom: 15px; padding: 10px; background: #f0f8ff; border-left: 4px solid #0073aa;">
-		<strong>Active Schema:</strong> ChildCare Organization<br>
-		<a href="https://schema.org/ChildCare" target="_blank" rel="noopener noreferrer">View ChildCare schema documentation →</a>
+		<strong>Active Schema:</strong> MedicalBusiness Organization<br>
+		<a href="https://schema.org/MedicalBusiness" target="_blank" rel="noopener noreferrer">View MedicalBusiness schema documentation →</a>
 	</div>
 
 	<table class="form-table">
@@ -165,8 +165,8 @@ function earlystart_schema_location_meta_box( $post ) {
 
 	?>
 	<div style="margin-bottom: 15px; padding: 10px; background: #f0f8ff; border-left: 4px solid #0073aa;">
-		<strong>Active Schemas:</strong> ChildCare + LocalBusiness<br>
-		<a href="https://schema.org/ChildCare" target="_blank" rel="noopener noreferrer">ChildCare</a> |
+		<strong>Active Schemas:</strong> MedicalBusiness + LocalBusiness<br>
+		<a href="https://schema.org/MedicalBusiness" target="_blank" rel="noopener noreferrer">MedicalBusiness</a> |
 		<a href="https://schema.org/LocalBusiness" target="_blank" rel="noopener noreferrer">LocalBusiness</a>
 	</div>
 

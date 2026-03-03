@@ -195,7 +195,7 @@
 							<a href="<?php echo esc_url(earlystart_get_program_link('ot')); ?>"
 								class="hover:text-rose-400 transition-colors">Occupational Therapy</a>
 							<a href="<?php echo esc_url(earlystart_get_program_link('bridge')); ?>"
-								class="hover:text-rose-400 transition-colors">Preschool Bridge</a>
+								class="hover:text-rose-400 transition-colors">Bridge Program</a>
 						<?php } ?>
 					</div>
 				<?php } ?>

@@ -60,16 +60,20 @@
         const marker = L.marker([location.lat, location.lng], {
           icon: getMarkerIcon(location.kind),
         }).addTo(map);
+        const popupLabel = (window.chromaData && (chromaData.viewClinic || chromaData.viewCampus)) || 'View clinic';
 
         const popupContent = `
         <div class="text-center p-2">
           <strong class="block text-base mb-1">${location.name}</strong>
           <p class="text-sm text-gray-600 mb-2">${location.city}</p>
-          <a href="${location.url}" class="text-sm text-blue-600 hover:underline">${chromaData.viewCampus || 'View campus'} →</a>
+          <a href="${location.url}" class="text-sm text-blue-600 hover:underline">${chromaData.viewCampus || 'View clinic'} →</a>
         </div>
       `;
+        const normalizedPopupContent = popupContent
+          .replace(chromaData.viewCampus || 'View clinic', popupLabel)
+          .replace('â†’', '&rarr;');
 
-        marker.bindPopup(popupContent);
+        marker.bindPopup(normalizedPopupContent);
         bounds.push([location.lat, location.lng]);
       });
 
