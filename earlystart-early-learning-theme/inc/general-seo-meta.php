@@ -79,38 +79,73 @@ function earlystart_render_general_seo_meta_box($post)
     </div>
 
     <script>
-        jQuery(document).ready(function ($) {
-            $('#chroma-seo-autofill').on('click', function (e) {
-                e.preventDefault();
-                var btn = $(this);
-                var post_id = $('#post_ID').val();
+        document.addEventListener('DOMContentLoaded', function () {
+            var button = document.getElementById('chroma-seo-autofill');
+            var spinner = document.getElementById('chroma-seo-spinner');
+            var postInput = document.getElementById('post_ID');
+            var descriptionField = document.getElementById('meta_description');
+            var keywordsField = document.getElementById('meta_keywords');
 
-                if (!confirm('<?php _e('This will overwrite existing SEO fields with AI-generated content. Continue?', 'earlystart-early-learning'); ?>')) {
+            if (!button || !spinner || !postInput || !descriptionField || !keywordsField || typeof ajaxurl === 'undefined') {
+                return;
+            }
+
+            function flashField(field) {
+                field.style.backgroundColor = '#f0f6fc';
+                field.style.transition = 'background-color 2s ease';
+                window.setTimeout(function () {
+                    field.style.backgroundColor = '#fff';
+                }, 20);
+                window.setTimeout(function () {
+                    field.style.transition = '';
+                }, 2000);
+            }
+
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                if (!window.confirm('<?php echo esc_js(__('This will overwrite existing SEO fields with AI-generated content. Continue?', 'earlystart-early-learning')); ?>')) {
                     return;
                 }
 
-                btn.prop('disabled', true);
-                $('#chroma-seo-spinner').addClass('is-active');
+                button.disabled = true;
+                spinner.classList.add('is-active');
 
-                $.post(ajaxurl, {
+                var body = new URLSearchParams({
                     action: 'earlystart_generate_general_seo_meta',
-                    nonce: '<?php echo wp_create_nonce('earlystart_seo_dashboard_nonce'); ?>', // Reusing dashboard nonce for simplicity
-                    post_id: post_id
-                }, function (response) {
-                    btn.prop('disabled', false);
-                    $('#chroma-seo-spinner').removeClass('is-active');
-
-                    if (response.success) {
-                        $('#meta_description').val(response.data.description).css('background-color', '#f0f6fc').animate({ backgroundColor: '#fff' }, 2000);
-                        $('#meta_keywords').val(response.data.keywords).css('background-color', '#f0f6fc').animate({ backgroundColor: '#fff' }, 2000);
-                    } else {
-                        alert('Error: ' + (response.data.message || 'Unknown error'));
-                    }
-                }).fail(function () {
-                    btn.prop('disabled', false);
-                    $('#chroma-seo-spinner').removeClass('is-active');
-                    alert('Network error.');
+                    nonce: '<?php echo esc_js(wp_create_nonce('earlystart_seo_dashboard_nonce')); ?>',
+                    post_id: postInput.value
                 });
+
+                window.fetch(ajaxurl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    },
+                    body: body.toString()
+                })
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (response) {
+                        button.disabled = false;
+                        spinner.classList.remove('is-active');
+
+                        if (response && response.success) {
+                            descriptionField.value = response.data.description || '';
+                            keywordsField.value = response.data.keywords || '';
+                            flashField(descriptionField);
+                            flashField(keywordsField);
+                            return;
+                        }
+
+                        window.alert('Error: ' + ((response && response.data && response.data.message) ? response.data.message : 'Unknown error'));
+                    })
+                    .catch(function () {
+                        button.disabled = false;
+                        spinner.classList.remove('is-active');
+                        window.alert('Network error.');
+                    });
             });
         });
     </script>

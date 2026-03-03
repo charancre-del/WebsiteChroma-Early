@@ -405,19 +405,29 @@ function earlystart_program_locations_meta_box_render($post)
 	<p><small><?php _e('This program will only appear on selected location pages.', 'earlystart-early-learning'); ?></small></p>
 
 	<script>
-		(function ($) {
-			$(document).ready(function () {
-				$('#chroma-toggle-all-locations').on('click', function (e) {
-					e.preventDefault();
+		document.addEventListener('DOMContentLoaded', function () {
+			var toggleButton = document.getElementById('chroma-toggle-all-locations');
+			if (!toggleButton) {
+				return;
+			}
 
-					var checkboxes = $('.chroma-location-checkbox');
-					var allChecked = checkboxes.length === checkboxes.filter(':checked').length;
+			toggleButton.addEventListener('click', function (event) {
+				event.preventDefault();
 
-					// If all are checked, uncheck all. Otherwise, check all.
-					checkboxes.prop('checked', !allChecked);
+				var checkboxes = Array.prototype.slice.call(document.querySelectorAll('.chroma-location-checkbox'));
+				if (!checkboxes.length) {
+					return;
+				}
+
+				var allChecked = checkboxes.every(function (checkbox) {
+					return checkbox.checked;
+				});
+
+				checkboxes.forEach(function (checkbox) {
+					checkbox.checked = !allChecked;
 				});
 			});
-		})(jQuery);
+		});
 	</script>
 	<?php
 }
@@ -539,9 +549,16 @@ function earlystart_program_details_meta_box_render($post)
 		<small><?php _e('Select a preset or type a custom emoji.', 'earlystart-early-learning'); ?></small>
 
 		<script>
-			jQuery(document).ready(function ($) {
-				$('.chroma-emoji-btn').on('click', function () {
-					$('#program_icon').val($(this).data('emoji'));
+			document.addEventListener('DOMContentLoaded', function () {
+				var iconField = document.getElementById('program_icon');
+				if (!iconField) {
+					return;
+				}
+
+				Array.prototype.slice.call(document.querySelectorAll('.chroma-emoji-btn')).forEach(function (button) {
+					button.addEventListener('click', function () {
+						iconField.value = button.getAttribute('data-emoji') || '';
+					});
 				});
 			});
 		</script>
@@ -807,14 +824,34 @@ function earlystart_program_single_page_meta_box_render($post)
 		<small><?php _e('Set values 0-100 for each pillar. These create the radar chart.', 'earlystart-early-learning'); ?></small>
 
 		<script>
-			jQuery(document).ready(function ($) {
-				$('.chroma-chart-preset').on('click', function () {
-					var values = $(this).data('values'); // Array [Phy, Emo, Soc, Aca, Cre]
-					$('#program_prism_physical').val(values[0]);
-					$('#program_prism_emotional').val(values[1]);
-					$('#program_prism_social').val(values[2]);
-					$('#program_prism_academic').val(values[3]);
-					$('#program_prism_creative').val(values[4]);
+			document.addEventListener('DOMContentLoaded', function () {
+				var fieldIds = [
+					'program_prism_physical',
+					'program_prism_emotional',
+					'program_prism_social',
+					'program_prism_academic',
+					'program_prism_creative'
+				];
+
+				var fields = fieldIds.map(function (fieldId) {
+					return document.getElementById(fieldId);
+				});
+
+				if (fields.some(function (field) { return !field; })) {
+					return;
+				}
+
+				Array.prototype.slice.call(document.querySelectorAll('.chroma-chart-preset')).forEach(function (button) {
+					button.addEventListener('click', function () {
+						var values = (button.getAttribute('data-values') || '').split(',');
+						if (values.length < fields.length) {
+							return;
+						}
+
+						fields.forEach(function (field, index) {
+							field.value = values[index];
+						});
+					});
 				});
 			});
 		</script>
