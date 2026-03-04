@@ -14,7 +14,11 @@ $get_meta_value = static function ($post_id, $key, $default = '') {
 
 $get_location_meta = static function ($post_id, $key, $default = '') use ($get_meta_value) {
 	if (function_exists('earlystart_get_translated_meta')) {
-		$value = earlystart_get_translated_meta($post_id, $key);
+		try {
+			$value = earlystart_get_translated_meta($post_id, $key);
+		} catch (Throwable $e) {
+			$value = $get_meta_value($post_id, $key, $default);
+		}
 	} else {
 		$value = $get_meta_value($post_id, $key, $default);
 	}
@@ -52,7 +56,11 @@ while (have_posts()):
 	$location_name = get_the_title();
 
 	if (function_exists('earlystart_get_location_fields')) {
-		$location_fields = earlystart_get_location_fields($location_id);
+		try {
+			$location_fields = earlystart_get_location_fields($location_id);
+		} catch (Throwable $e) {
+			$location_fields = array();
+		}
 	} else {
 		$location_fields = array(
 			'address' => $get_meta_value($location_id, 'location_address', ''),
@@ -268,12 +276,24 @@ while (have_posts()):
 		),
 	));
 
-	$location_faqs = function_exists('earlystart_get_location_faq_items')
-		? earlystart_get_location_faq_items($location_id)
-		: array();
-	$supported_insurances = function_exists('earlystart_get_supported_insurances')
-		? earlystart_get_supported_insurances()
-		: array();
+	if (function_exists('earlystart_get_location_faq_items')) {
+		try {
+			$location_faqs = earlystart_get_location_faq_items($location_id);
+		} catch (Throwable $e) {
+			$location_faqs = array();
+		}
+	} else {
+		$location_faqs = array();
+	}
+	if (function_exists('earlystart_get_supported_insurances')) {
+		try {
+			$supported_insurances = earlystart_get_supported_insurances();
+		} catch (Throwable $e) {
+			$supported_insurances = array();
+		}
+	} else {
+		$supported_insurances = array();
+	}
 	?>
 
 	<main class="pt-20">
