@@ -92,6 +92,8 @@ $partner_query = new WP_Query(array(
 						$phone = get_post_meta($location_id, 'location_phone', true);
 						$hours = get_post_meta($location_id, 'location_hours', true) ?: 'Mon - Fri: 8:00 AM - 6:00 PM';
 						$image = get_the_post_thumbnail_url($location_id, 'large') ?: '';
+						$clinic_url = get_permalink($location_id);
+						$clinic_tour_url = $clinic_url ? $clinic_url . '#tour' : '#tour';
 
 						// Prepare map data for this location
 						$lat = get_post_meta($location_id, 'location_latitude', true) ?: 34.0754; // Default to Alpharettaish
@@ -101,7 +103,7 @@ $partner_query = new WP_Query(array(
 								'name' => get_the_title(),
 								'lat' => $lat,
 								'lng' => $lng,
-								'url' => get_permalink(),
+								'url' => $clinic_url ?: '',
 								'city' => $city,
 								'kind' => 'clinic'
 							)
@@ -141,7 +143,7 @@ $partner_query = new WP_Query(array(
 											<span class="text-stone-700"><?php echo esc_html($hours); ?></span>
 										</div>
 									</div>
-									<a href="<?php the_permalink(); ?>#tour"
+									<a href="<?php echo esc_url($clinic_tour_url); ?>"
 										class="block w-full text-center bg-stone-900 text-white py-4 rounded-xl font-bold hover:bg-rose-600 transition-colors">
 										<?php _e('Schedule a Tour', 'earlystart-early-learning'); ?>
 									</a>
@@ -184,6 +186,7 @@ $partner_query = new WP_Query(array(
 						$regions = wp_get_post_terms($location_id, 'location_region');
 						$region_name = !empty($regions) ? $regions[0]->name : 'Metro Atlanta';
 						$services = get_post_meta($location_id, 'location_special_programs', true) ?: 'ABA & Speech Available';
+						$partner_url = get_permalink($location_id);
 						?>
 						<div
 							class="bg-stone-50 p-8 rounded-3xl border border-stone-100 hover:shadow-xl hover:border-rose-100 transition-all group fade-in-up">
@@ -204,6 +207,13 @@ $partner_query = new WP_Query(array(
 								</div>
 								<?php echo esc_html($services); ?>
 							</div>
+							<?php if (!empty($partner_url)): ?>
+								<a href="<?php echo esc_url($partner_url); ?>"
+									class="mt-5 inline-flex items-center text-sm font-bold text-rose-700 hover:text-rose-800 hover:underline">
+									<?php _e('View Live Location', 'earlystart-early-learning'); ?>
+									<i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+								</a>
+							<?php endif; ?>
 						</div>
 					<?php endwhile;
 					wp_reset_postdata(); ?>

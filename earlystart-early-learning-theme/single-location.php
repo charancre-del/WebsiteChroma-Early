@@ -149,9 +149,21 @@ while (have_posts()):
 
 	$map_query = trim($address . ', ' . $city . ', ' . $state . ' ' . $zip);
 	$map_link = $map_query ? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($map_query) : '#';
-	if (empty($gmb_url) && $map_query) {
-		$gmb_url = $map_link;
+	$location_live_url = get_permalink($location_id);
+	if (empty($gmb_url)) {
+		if (!empty($map_query)) {
+			$gmb_url = $map_link;
+		} else {
+			$gmb_url = $location_live_url;
+		}
 	}
+	$is_google_profile_link = is_string($gmb_url) && (
+		strpos($gmb_url, 'google.') !== false ||
+		strpos($gmb_url, 'maps.') !== false
+	);
+	$live_profile_label = $is_google_profile_link
+		? __('View Google Business Profile', 'earlystart-early-learning')
+		: __('View Live Location Page', 'earlystart-early-learning');
 
 	$service_areas = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', (string) $service_areas_raw))));
 	$school_pickups = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', (string) $school_pickups_raw))));
@@ -631,7 +643,7 @@ while (have_posts()):
 											<a href="<?php echo esc_url($gmb_url); ?>"
 												class="text-stone-700 font-bold mt-1 block hover:underline" target="_blank"
 												rel="noopener">
-												<?php _e('View Google Business Profile', 'earlystart-early-learning'); ?>
+												<?php echo esc_html($live_profile_label); ?>
 											</a>
 										<?php endif; ?>
 									</div>
