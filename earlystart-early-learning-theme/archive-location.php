@@ -28,20 +28,20 @@ $locations_query = earlystart_cached_query(
 );
 
 $clinic_hubs = [];
-$partner_campuses = [];
+$partner_locations = [];
 
 if ($locations_query->have_posts()) {
 	foreach ($locations_query->posts as $location_post) {
 		if ('1' === get_post_meta($location_post->ID, 'location_featured', true)) {
 			$clinic_hubs[] = $location_post;
 		} else {
-			$partner_campuses[] = $location_post;
+			$partner_locations[] = $location_post;
 		}
 	}
 }
 
 $clinic_count = count($clinic_hubs);
-$partner_count = count($partner_campuses);
+$partner_count = count($partner_locations);
 $hero_badge_text = sprintf(
 	/* translators: 1: clinic count label, 2: partner location count label */
 	__('%1$s, %2$s', 'earlystart-early-learning'),
@@ -73,7 +73,7 @@ $hero_badge_text = sprintf(
 			</h1>
 
 			<p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed mb-12 fade-in-up">
-				<?php _e('Explore our state-of-the-art campuses across Georgia. Each location features premium clinical environments, the Chroma Care Model, and expert care.', 'earlystart-early-learning'); ?>
+				<?php _e('Explore our pediatric therapy locations across Georgia. Each clinic is built around evidence-based care, family partnership, and the Chroma Care Model.', 'earlystart-early-learning'); ?>
 			</p>
 
 			<!-- Filter Bar -->
@@ -125,7 +125,7 @@ $hero_badge_text = sprintf(
 						$region_name = $region_term ? $region_term->name : __('Georgia', 'earlystart-early-learning');
 
 						$is_new = get_post_meta($location_id, 'location_new', true);
-						$badge_text = $is_new ? __('New Campus', 'earlystart-early-learning') : __('Now Enrolling', 'earlystart-early-learning');
+						$badge_text = $is_new ? __('New Clinic', 'earlystart-early-learning') : __('Now Enrolling', 'earlystart-early-learning');
 						?>
 						<div class="location-card fade-in-up" data-region="<?php echo esc_attr($region_slug); ?>"
 							data-name="<?php echo esc_attr($location_name . ' ' . $city . ' ' . $zip); ?>">
@@ -187,7 +187,7 @@ $hero_badge_text = sprintf(
 				<h2 class="text-3xl font-bold text-stone-900 mb-8 border-b border-stone-200 pb-4">
 					<?php _e('Partner Locations', 'earlystart-early-learning'); ?></h2>
 				<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="locations-grid-partners">
-					<?php foreach ($partner_campuses as $post):
+					<?php foreach ($partner_locations as $post):
 						setup_postdata($post);
 						$location_id = get_the_ID();
 						$location_fields = earlystart_get_location_fields($location_id);
@@ -202,7 +202,7 @@ $hero_badge_text = sprintf(
 						$region_name = $region_term ? $region_term->name : __('Georgia', 'earlystart-early-learning');
 
 						$is_new = get_post_meta($location_id, 'location_new', true);
-						$badge_text = $is_new ? __('New Campus', 'earlystart-early-learning') : __('Now Enrolling', 'earlystart-early-learning');
+						$badge_text = $is_new ? __('New Clinic', 'earlystart-early-learning') : __('Now Enrolling', 'earlystart-early-learning');
 						?>
 						<div class="location-card fade-in-up" data-region="<?php echo esc_attr($region_slug); ?>"
 							data-name="<?php echo esc_attr($location_name . ' ' . $city . ' ' . $zip); ?>">
@@ -268,7 +268,7 @@ $hero_badge_text = sprintf(
 				<?php _e('Not sure where to start?', 'earlystart-early-learning'); ?>
 			</h2>
 			<p class="text-xl text-stone-300 max-w-2xl mx-auto mb-12">
-				<?php _e('Our clinical intake team can help you identify the best campus and program for your child\'s unique developmental path.', 'earlystart-early-learning'); ?>
+				<?php _e('Our clinical intake team can help you identify the right clinic and therapy program for your child\'s needs.', 'earlystart-early-learning'); ?>
 			</p>
 			<div class="flex flex-wrap justify-center gap-6">
 				<a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"

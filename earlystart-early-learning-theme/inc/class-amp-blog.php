@@ -310,7 +310,7 @@ class earlystart_AMP_Blog
         
         <div class="amp-cta">
             <h3>Schedule a Tour Today</h3>
-            <p>See our programs in action and meet our teachers.</p>
+            <p>See our programs in action and meet our clinical team.</p>
             <a href="<?php echo esc_url(earlystart_get_page_link('schedule-a-tour')); ?>">Book Your Visit</a>
         </div>
     </article>

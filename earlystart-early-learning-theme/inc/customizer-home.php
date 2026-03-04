@@ -110,7 +110,7 @@ function earlystart_home_customize_register(WP_Customize_Manager $wp_customize)
         'earlystart_home_stats_json',
         array(
             'label' => __('Stats JSON (value/label pairs)', 'earlystart-early-learning'),
-            'description' => __('Example: [{"value":"19+","label":"Metro campuses"}]', 'earlystart-early-learning'),
+            'description' => __('Example: [{"value":"19+","label":"Metro clinics"}]', 'earlystart-early-learning'),
             'section' => 'earlystart_home_stats_section',
             'type' => 'textarea',
         )
@@ -294,7 +294,7 @@ function earlystart_home_customize_register(WP_Customize_Manager $wp_customize)
     $wp_customize->add_setting('earlystart_home_locations_heading', array('default' => '19+ neighborhood locations across Metro Atlanta', 'sanitize_callback' => 'sanitize_text_field'));
     $wp_customize->add_control('earlystart_home_locations_heading', array('label' => __('Locations heading', 'earlystart-early-learning'), 'section' => 'earlystart_home_locations_section', 'type' => 'text'));
 
-    $wp_customize->add_setting('earlystart_home_locations_subheading', array('default' => 'Find a Early Start campus near your home or work. All locations share the same safety standards, curriculum framework, and warm Early Start culture.', 'sanitize_callback' => 'sanitize_text_field'));
+    $wp_customize->add_setting('earlystart_home_locations_subheading', array('default' => 'Find a Chroma Early Start clinic near your home or work. All locations share the same safety standards, care model, and family-centered culture.', 'sanitize_callback' => 'sanitize_text_field'));
     $wp_customize->add_control('earlystart_home_locations_subheading', array('label' => __('Locations subheading', 'earlystart-early-learning'), 'section' => 'earlystart_home_locations_section', 'type' => 'textarea'));
 
     $wp_customize->add_setting('earlystart_home_locations_cta_label', array('default' => 'View All Locations', 'sanitize_callback' => 'sanitize_text_field'));
@@ -325,7 +325,7 @@ function earlystart_home_customize_register(WP_Customize_Manager $wp_customize)
         'earlystart_home_parent_reviews_json',
         array(
             'label' => __('Parent Reviews JSON', 'earlystart-early-learning'),
-            'description' => __('Each review: {"name": "Parent Name", "location": "Campus Name", "rating": 5, "review": "Testimonial text..."}', 'earlystart-early-learning'),
+            'description' => __('Each review: {"name": "Parent Name", "location": "Clinic Name", "rating": 5, "review": "Testimonial text..."}', 'earlystart-early-learning'),
             'section' => 'earlystart_home_reviews_section',
             'type' => 'textarea',
             'input_attrs' => array(

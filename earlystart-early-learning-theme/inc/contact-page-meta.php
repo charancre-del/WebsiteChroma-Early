@@ -356,7 +356,7 @@ function earlystart_seed_contact_page_defaults( $post_id ) {
 		'contact_corporate_phone'   => '(404) 555-0199',
 
 		'contact_careers_title'       => 'Careers',
-		'contact_careers_description' => 'Passionate about early childhood education? We are always looking for dedicated teachers and directors.',
+		'contact_careers_description' => 'Passionate about pediatric therapy and family support? We are always looking for dedicated clinicians, care coordinators, and operational leaders.',
 		'contact_careers_link_text'   => 'View Open Positions',
 		'contact_careers_link_url'    => '/careers',
 

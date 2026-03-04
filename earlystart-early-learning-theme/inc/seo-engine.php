@@ -75,7 +75,7 @@ function earlystart_organization_schema()
 
         $schema = array(
                 '@context' => 'https://schema.org',
-                '@type' => 'ChildCare',
+                '@type' => 'MedicalBusiness',
                 'name' => $name,
                 'url' => $url,
                 'logo' => $logo,
@@ -233,7 +233,7 @@ function earlystart_location_schema()
 
         // 2. SCHEMA CONSTRUCTION
         // ----------------------
-        $types = array('ChildCare', 'Preschool', 'EducationalOrganization', 'LocalBusiness');
+        $types = array('MedicalBusiness', 'LocalBusiness');
         
         // Event Venue (Tier 19 - RRR) - Add if location is marked as event venue
         if (get_post_meta($location_id, '_earlystart_is_event_venue', true)) {
@@ -470,7 +470,7 @@ function earlystart_location_schema()
                                 'name' => $program->post_title,
                                 'description' => get_the_excerpt($program->ID),
                                 'url' => get_permalink($program->ID),
-                                'category' => get_post_meta($program->ID, 'program_age_range', true) ?: 'Child Care'
+                                'category' => get_post_meta($program->ID, 'program_age_range', true) ?: 'Pediatric Therapy'
                         );
                 }
                 $schema['makesOffer'] = $offers;
@@ -525,7 +525,7 @@ function earlystart_location_schema()
                         'addressCountry' => 'US'
                     )
                 ),
-                'description' => "Join us for an Open House at $name. Meet the teachers, tour the classrooms, and learn about our curriculum.",
+                'description' => "Join us for an Open House at $name. Meet our clinical team, tour the therapy environment, and learn about the services we provide.",
                 'organizer' => array(
                     '@type' => 'Organization',
                     'name' => $name,
@@ -569,8 +569,8 @@ function earlystart_city_schema()
         $schema = array(
                 '@context' => 'https://schema.org',
                 '@type' => 'Service',
-                'name' => "Daycare & Preschool in $city_name",
-                'serviceType' => 'Child Care',
+                'name' => "Pediatric Therapy in $city_name",
+                'serviceType' => 'Pediatric Therapy',
                 'provider' => array(
                         '@type' => 'Organization',
                         'name' => get_bloginfo('name'),
@@ -580,7 +580,7 @@ function earlystart_city_schema()
                         '@type' => 'City',
                         'name' => $city_name
                 ),
-                'description' => get_the_excerpt() ?: "Premier child care and early education services in $city_name, GA.",
+                'description' => get_the_excerpt() ?: "Evidence-based pediatric therapy services in $city_name, GA, including ABA, speech, and occupational therapy.",
                 'url' => get_permalink()
         );
 
@@ -593,7 +593,7 @@ function earlystart_city_schema()
                         $offers[] = array(
                                 '@type' => 'Offer',
                                 'itemOffered' => array(
-                                        '@type' => 'ChildCare',
+                                        '@type' => 'MedicalBusiness',
                                         'name' => $loc_name,
                                         'url' => $loc_url
                                 )
@@ -601,7 +601,7 @@ function earlystart_city_schema()
                 }
                 $schema['hasOfferCatalog'] = array(
                         '@type' => 'OfferCatalog',
-                        'name' => "Schools serving $city_name",
+                        'name' => "Clinics serving $city_name",
                         'itemListElement' => $offers
                 );
         }
@@ -638,7 +638,7 @@ function earlystart_program_schema()
         // Get custom values or fallbacks
         $name = get_post_meta($program_id, 'schema_prog_name', true) ?: get_the_title();
         $description = get_post_meta($program_id, 'schema_prog_description', true) ?: (get_the_excerpt() ?: earlystart_trimmed_excerpt(30, $program_id));
-        $service_type = get_post_meta($program_id, 'schema_prog_service_type', true) ?: 'Early Childhood Education';
+        $service_type = get_post_meta($program_id, 'schema_prog_service_type', true) ?: 'Pediatric Therapy Program';
         $provider_name = get_post_meta($program_id, 'schema_prog_provider_name', true) ?: get_bloginfo('name');
         $area_served = get_post_meta($program_id, 'schema_prog_area_served', true) ?: 'Metro Atlanta';
         $category = get_post_meta($program_id, 'schema_prog_category', true);
@@ -853,7 +853,7 @@ function earlystart_shared_meta_description()
         $description = '';
 
         if (is_singular('location')) {
-                // Location Template: "Visit our [Location Name] campus in [City], [State]. [Tagline]. Serving families in [Service Areas]. [Phone]."
+                // Location Template: "Visit our [Location Name] clinic in [City], [State]. [Tagline]. Serving families in [Service Areas]. [Phone]."
                 $city = get_post_meta($post_id, 'location_city', true);
                 $state = get_post_meta($post_id, 'location_state', true);
                 $tagline = get_post_meta($post_id, 'location_tagline', true);
@@ -863,7 +863,7 @@ function earlystart_shared_meta_description()
                 $parts = array();
                 
                 if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) {
-                     $parts[] = 'Visite nuestro campus ' . get_the_title();
+                     $parts[] = 'Visite nuestra clínica ' . get_the_title();
                     if ($city && $state) {
                             $parts[] = "en $city, $state";
                     }
@@ -877,7 +877,7 @@ function earlystart_shared_meta_description()
                             $parts[] = ". Llámenos al $phone";
                     }
                 } else {
-                    $parts[] = 'Visit our ' . get_the_title() . ' campus';
+                    $parts[] = 'Visit our ' . get_the_title() . ' clinic';
                     if ($city && $state) {
                             $parts[] = "in $city, $state";
                     }
@@ -895,7 +895,7 @@ function earlystart_shared_meta_description()
                 $description = implode('', $parts) . '.';
 
         } elseif (is_singular('city')) {
-                // City Template: "Best Daycare & Preschool in [City], GA. [Excerpt]"
+                // City Template: "Pediatric therapy in [City], GA. [Excerpt]"
                 $excerpt = has_excerpt() ? get_the_excerpt() : earlystart_trimmed_excerpt(30, $post_id);
                 
                 // Try to get Spanish excerpt if available
@@ -904,20 +904,23 @@ function earlystart_shared_meta_description()
                     if ($es_excerpt) $excerpt = $es_excerpt;
                     $description = "La mejor guardería y preescolar en " . get_the_title() . ", GA. " . $excerpt;
                 } else {
-                    $description = "Best Daycare & Preschool in " . get_the_title() . ", GA. " . $excerpt;
+                    $description = "Pediatric therapy in " . get_the_title() . ", GA. " . $excerpt;
+                }
+                if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) {
+                    $description = "Terapia pediátrica en " . get_the_title() . ", GA. " . $excerpt;
                 }
 
         } elseif (is_singular('program')) {
-                // Program Template: "[Program Name] at Early Start Early Learning Academy. [Excerpt]."
+                // Program Template: "[Program Name] at Chroma Early Start. [Excerpt]."
                 $excerpt = has_excerpt() ? get_the_excerpt() : earlystart_trimmed_excerpt(20, $post_id);
                 
                 if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) {
                     $es_excerpt = get_post_meta($post_id, '_earlystart_es_excerpt', true);
                     $es_title = get_post_meta($post_id, '_earlystart_es_title', true) ?: get_the_title();
                     if ($es_excerpt) $excerpt = $es_excerpt;
-                    $description = $es_title . ' en Early Start Early Learning Academy. ' . $excerpt;
+                    $description = $es_title . ' en Chroma Early Start. ' . $excerpt;
                 } else {
-                    $description = get_the_title() . ' at Early Start Early Learning Academy. ' . $excerpt;
+                    $description = get_the_title() . ' at Chroma Early Start. ' . $excerpt;
                 }
 
         } elseif (is_singular('post')) {
@@ -932,10 +935,10 @@ function earlystart_shared_meta_description()
                         $description = get_bloginfo('description');
                 }
                 if (empty($description)) {
-                        $description = get_bloginfo('name') . ' offers premier child care, daycare, and early childhood education in the Metro Atlanta area.';
+                        $description = get_bloginfo('name') . ' provides pediatric therapy services across Metro Atlanta, including ABA, speech, and occupational therapy.';
                         
                         if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) {
-                            $description = 'Early Start Early Learning Academy ofrece servicios de cuidado infantil, guardería y educación temprana de primer nivel en el área metropolitana de Atlanta.';
+                            $description = 'Chroma Early Start ofrece terapia pediátrica, apoyo familiar y servicios de intervención temprana en el área metropolitana de Atlanta.';
                         }
                 }
         }
@@ -1012,9 +1015,10 @@ function earlystart_meta_keywords()
                 }
 
                 if ($city) {
-                        $keywords[] = "child care $city";
-                        $keywords[] = "daycare $city";
-                        $keywords[] = "preschool $city";
+                        $keywords[] = "pediatric therapy $city";
+                        $keywords[] = "aba therapy $city";
+                        $keywords[] = "speech therapy $city";
+                        $keywords[] = "occupational therapy $city";
                 }
                 if ($service_areas) {
                         // Split service areas by comma if it's a list
@@ -1026,40 +1030,60 @@ function earlystart_meta_keywords()
 
         } elseif (is_singular('city')) {
                 $city_name = get_the_title();
-                $keywords[] = "daycare $city_name";
-                $keywords[] = "child care $city_name";
-                $keywords[] = "preschool $city_name";
-                $keywords[] = "best daycare in $city_name";
-                $keywords[] = "early learning $city_name";
-                $keywords[] = "childcare near me";
-
-        } elseif (is_singular('city')) {
-                $city_name = get_the_title();
-                $keywords[] = "daycare $city_name";
-                $keywords[] = "child care $city_name";
-                $keywords[] = "preschool $city_name";
-                $keywords[] = "best daycare in $city_name";
-                $keywords[] = "early learning $city_name";
-                $keywords[] = "childcare near me";
+                $keywords[] = "pediatric therapy $city_name";
+                $keywords[] = "aba therapy $city_name";
+                $keywords[] = "speech therapy $city_name";
+                $keywords[] = "occupational therapy $city_name";
+                $keywords[] = "early intervention $city_name";
+                $keywords[] = "child therapy near me";
 
         } elseif (is_singular('program')) {
                 if (empty($keywords)) {
                         $keywords[] = get_the_title();
                 }
-                $keywords[] = 'early childhood education';
-                $keywords[] = 'curriculum';
-                $keywords[] = 'child development';
+                $keywords[] = 'pediatric therapy';
+                $keywords[] = 'early intervention';
+                $keywords[] = 'child development therapy';
+                $keywords[] = 'family-centered care';
 
         } else {
                 // Global defaults if still empty
                 if (empty($keywords)) {
-                        $keywords[] = 'child care';
-                        $keywords[] = 'daycare';
-                        $keywords[] = 'preschool';
-                        $keywords[] = 'early learning';
+                        $keywords[] = 'pediatric therapy';
+                        $keywords[] = 'aba therapy';
+                        $keywords[] = 'speech therapy';
+                        $keywords[] = 'occupational therapy';
                         $keywords[] = 'Atlanta';
                 }
         }
+
+        // Filter legacy childcare-era keyword phrasing from both static maps and dynamic fallbacks.
+        $legacy_patterns = array(
+                'daycare',
+                'preschool',
+                'pre k',
+                'pre-k',
+                'ga pre-k',
+                'child care',
+                'childcare',
+                'early learning',
+                'learning academy',
+                'academy',
+        );
+        $keywords = array_filter(array_map('trim', $keywords), function ($keyword) use ($legacy_patterns) {
+                if ($keyword === '') {
+                        return false;
+                }
+
+                $normalized = strtolower($keyword);
+                foreach ($legacy_patterns as $pattern) {
+                        if (strpos($normalized, $pattern) !== false) {
+                                return false;
+                        }
+                }
+
+                return true;
+        });
 
         // Deduplicate and output
         $keywords = array_unique($keywords);
@@ -1303,20 +1327,20 @@ function earlystart_city_faq_schema_output()
 
         // Questions and Answers from single-city.php
         // Q1
-        $q1 = "Do you offer GA Lottery Pre-K in $city?";
-        $a1 = "Yes! Our locations serving $city participate in the Georgia Lottery Pre-K program. It is tuition-free for all 4-year-olds living in Georgia.";
+        $q1 = "Do you offer pediatric therapy in $city?";
+        $a1 = "Yes. Families in $city can access pediatric therapy through nearby Chroma Early Start clinics, including ABA, speech, and occupational therapy based on clinical fit.";
 
         // Q2
-        $q2 = "Do you provide transportation from $city schools?";
-        $a2 = "We provide safe bus transportation from most major elementary schools in the $county School District. Check the specific campus page for a full list.";
+        $q2 = "How do we find the right clinic near $city?";
+        $a2 = "Our intake team can help match your family with the best nearby clinic based on your location, goals, scheduling needs, and service availability.";
 
         // Q3
-        $q3 = "What ages do you accept at your $city centers?";
-        $a3 = "We serve children from 6 weeks old (<a href='" . earlystart_get_page_link('infant-care') . "'>Infant Care</a>) up to 12 years old (<a href='" . earlystart_get_page_link('after-school') . "'>After School</a>). We also offer a <a href='" . earlystart_get_page_link('pre-k-prep') . "'>Pre-K Prep</a> option at select locations.";
+        $q3 = "What ages do you serve near $city?";
+        $a3 = "Most clinics serve children from early intervention through early school-age years, though exact age ranges vary by location and therapy program.";
 
         // Q4
-        $q4 = "How do I enroll my child in $city?";
-        $a4 = "The best way to start is by scheduling a tour at your preferred location. You can book online or call us directly. We'll walk you through the enrollment process and answer all your questions.";
+        $q4 = "How do we get started in $city?";
+        $a4 = "The best way to start is by contacting our intake team. We will help you schedule a consultation, confirm fit, and walk you through the next steps for evaluation or onboarding.";
 
         $faq_items = array(
                 array('question' => $q1, 'answer' => $a1),

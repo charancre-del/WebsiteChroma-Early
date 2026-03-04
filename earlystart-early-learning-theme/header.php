@@ -31,8 +31,20 @@
 						<div class="site-logo-graphic flex-shrink-0">
 							<?php if (has_custom_logo()):
 								$custom_logo_id = get_theme_mod('custom_logo');
-								$logo = wp_get_attachment_image_src($custom_logo_id, 'full');
-								$logo_url = $logo[0] ?? '';
+								$logo_markup = wp_get_attachment_image(
+									$custom_logo_id,
+									'thumbnail',
+									false,
+									array(
+										'class' => 'w-full h-auto block',
+										'alt' => get_bloginfo('name'),
+										'sizes' => '(min-width: 768px) 70px, 56px',
+										'fetchpriority' => 'high',
+										'loading' => 'eager',
+										'decoding' => 'async',
+										'style' => 'display: block; width: 100% !important; height: auto !important; max-width: 100% !important;',
+									)
+								);
 								?>
 								<style>
 									.site-logo-container {
@@ -49,9 +61,7 @@
 									}
 								</style>
 								<div class="site-logo-container">
-									<img src="<?php echo esc_url($logo_url); ?>"
-										alt="<?php echo esc_attr(get_bloginfo('name')); ?>" class="w-full h-auto block"
-										style="display: block; width: 100% !important; height: auto !important; max-width: 100% !important;">
+									<?php echo $logo_markup ?: ''; ?>
 								</div>
 							<?php else: ?>
 								<!-- Default Icon Fallback -->
@@ -117,7 +127,7 @@
 
 			<!-- Mobile Menu Dropdown (Relative to Header) -->
 			<div data-mobile-nav
-				class="absolute top-full left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 hidden flex-col space-y-4 xl:hidden h-[calc(100vh-6rem)] overflow-y-auto pb-32">
+				class="absolute top-full left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 hidden flex-col space-y-4 xl:hidden max-h-[calc(100dvh-5rem)] overflow-y-auto pb-24">
 				<?php earlystart_mobile_nav(); ?>
 				<a href="<?php echo esc_url($cta_url); ?>"
 					class="block w-full text-center bg-stone-900 text-white px-6 py-4 rounded-xl font-bold mt-4">

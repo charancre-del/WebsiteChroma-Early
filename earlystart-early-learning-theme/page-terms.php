@@ -19,12 +19,12 @@ $last_updated = earlystart_get_translated_meta($page_id, 'tos_last_updated') ?: 
 $default_sections = array(
     array(
         'title' => __('Acceptance of Terms', 'earlystart-early-learning'),
-        'content' => '<p>' . __('By enrolling your child at Early Start Early Learning Academy or using our website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.', 'earlystart-early-learning') . '</p>
+        'content' => '<p>' . __('By enrolling with Chroma Early Start or using our website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.', 'earlystart-early-learning') . '</p>
         <p>' . __('These terms apply to all parents, guardians, and visitors to our facilities and website. We reserve the right to modify these terms at any time, and such modifications will be effective immediately upon posting.', 'earlystart-early-learning') . '</p>'
     ),
     array(
         'title' => __('Enrollment & Registration', 'earlystart-early-learning'),
-        'content' => '<p>' . __('Enrollment at Early Start Early Learning Academy is subject to:', 'earlystart-early-learning') . '</p>
+        'content' => '<p>' . __('Enrollment at Chroma Early Start is subject to:', 'earlystart-early-learning') . '</p>
         <ul>
             <li><strong>' . __('Age Requirements:', 'earlystart-early-learning') . '</strong> ' . __('Children must meet age requirements for their specific program (6 weeks to 12 years)', 'earlystart-early-learning') . '</li>
             <li><strong>' . __('Documentation:', 'earlystart-early-learning') . '</strong> ' . __('Complete enrollment forms, immunization records, and emergency contact information must be provided', 'earlystart-early-learning') . '</li>
@@ -84,14 +84,14 @@ $default_sections = array(
         <ul>
             <li>' . __('Children may occasionally sustain minor injuries during normal play activities', 'earlystart-early-learning') . '</li>
             <li>' . __('You will be notified immediately of any injury requiring medical attention', 'earlystart-early-learning') . '</li>
-            <li>' . __('Early Start Early Learning Academy is not liable for lost or damaged personal items', 'earlystart-early-learning') . '</li>
-            <li>' . __('You agree to indemnify and hold harmless Early Start Early Learning Academy from claims arising from your or your child\'s actions', 'earlystart-early-learning') . '</li>
+            <li>' . __('Chroma Early Start is not liable for lost or damaged personal items', 'earlystart-early-learning') . '</li>
+            <li>' . __('You agree to indemnify and hold harmless Chroma Early Start from claims arising from your or your child\'s actions', 'earlystart-early-learning') . '</li>
         </ul>
         <p>' . __('Our liability is limited to the extent permitted by Georgia law.', 'earlystart-early-learning') . '</p>'
     ),
     array(
         'title' => __('Website Terms', 'earlystart-early-learning'),
-        'content' => '<p>' . __('Use of our website (chromaela.com) is subject to the following:', 'earlystart-early-learning') . '</p>
+        'content' => '<p>' . __('Use of our website (chromaearlystart.com) is subject to the following:', 'earlystart-early-learning') . '</p>
         <ul>
             <li>' . __('Content is provided for informational purposes only', 'earlystart-early-learning') . '</li>
             <li>' . __('We do not guarantee the accuracy or completeness of website information', 'earlystart-early-learning') . '</li>
@@ -108,10 +108,10 @@ $default_sections = array(
     array(
         'title' => __('Contact Information', 'earlystart-early-learning'),
         'content' => '<p>' . __('If you have questions about these Terms of Service, please contact us:', 'earlystart-early-learning') . '</p>
-        <p><strong>' . __('Early Start Early Learning Academy', 'earlystart-early-learning') . '</strong><br>
-        ' . __('Email: info@chromaela.com', 'earlystart-early-learning') . '<br>
+        <p><strong>' . __('Chroma Early Start', 'earlystart-early-learning') . '</strong><br>
+        ' . __('Email: info@chromaearlystart.com', 'earlystart-early-learning') . '<br>
         ' . __('Phone: (404) 800-8000', 'earlystart-early-learning') . '<br>
-        ' . __('Website: www.chromaela.com', 'earlystart-early-learning') . '</p>'
+        ' . __('Website: www.chromaearlystart.com', 'earlystart-early-learning') . '</p>'
     ),
 );
 
@@ -144,7 +144,7 @@ if (!$has_custom_content) {
 
         <div class="prose prose-lg text-brand-ink/80 max-w-none">
             <p class="text-lg leading-relaxed mb-8">
-                <?php _e('Welcome to Early Start Early Learning Academy. These Terms of Service ("Terms") govern your use of our childcare services and website. Please read them carefully before enrolling your child or using our services.', 'earlystart-early-learning'); ?>
+                <?php _e('Welcome to Chroma Early Start. These Terms of Service ("Terms") govern your use of our pediatric therapy services and website. Please read them carefully before enrolling your child or using our services.', 'earlystart-early-learning'); ?>
             </p>
 
             <?php foreach ($sections as $index => $section): ?>

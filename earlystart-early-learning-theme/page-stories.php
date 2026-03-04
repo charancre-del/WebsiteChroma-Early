@@ -97,20 +97,43 @@ get_header();
     if ($featured_post):
       setup_postdata($featured_post);
       $featured_categories = get_the_category($featured_post_id);
-      $featured_image = get_the_post_thumbnail_url($featured_post_id, 'large') ?: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?q=80&w=1200&auto=format&fit=crop&q=80&fm=webp';
+      $featured_thumbnail_id = get_post_thumbnail_id($featured_post_id);
       ?>
       <!-- Featured Post -->
       <section class="py-12 px-4 lg:px-6 max-w-7xl mx-auto">
         <a href="<?php echo esc_url(get_permalink($featured_post_id)); ?>" class="block">
-          <div class="relative rounded-[3rem] overflow-hidden shadow-soft group cursor-pointer h-[500px]">
-            <img src="<?php echo esc_url($featured_image); ?>"
-              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              alt="<?php echo esc_attr(get_the_title($featured_post_id)); ?>" />
+          <div class="relative rounded-[3rem] overflow-hidden shadow-soft group cursor-pointer h-[360px] md:h-[500px]">
+            <?php if ($featured_thumbnail_id): ?>
+              <?php echo wp_get_attachment_image(
+                $featured_thumbnail_id,
+                'large',
+                false,
+                array(
+                  'class' => 'absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105',
+                  'alt' => get_the_title($featured_post_id),
+                  'sizes' => '(max-width: 1024px) 100vw, 1200px',
+                  'fetchpriority' => 'high',
+                  'loading' => 'eager',
+                  'decoding' => 'async',
+                )
+              ); ?>
+            <?php else: ?>
+              <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9', 1200, 700, 70)); ?>"
+                srcset="<?php echo esc_attr(
+                  esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9', 640, 373, 70)) . ' 640w, ' .
+                  esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9', 960, 560, 70)) . ' 960w, ' .
+                  esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9', 1200, 700, 70)) . ' 1200w'
+                ); ?>"
+                sizes="(max-width: 1024px) 100vw, 1200px"
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                alt="<?php echo esc_attr(get_the_title($featured_post_id)); ?>" width="1200" height="700" fetchpriority="high"
+                loading="eager" decoding="async" />
+            <?php endif; ?>
             <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-brand-ink/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-8 md:p-12">
+            <div class="absolute bottom-0 left-0 p-6 md:p-12">
               <span
                 class="bg-chroma-yellow text-brand-ink text-[10px] font-bold uppercase px-3 py-1 rounded-full mb-4 inline-block"><?php _e('Featured', 'earlystart-early-learning'); ?></span>
-              <h2 class="font-serif text-3xl md:text-4xl text-white font-bold mb-4">
+              <h2 class="font-serif text-2xl md:text-4xl text-white font-bold mb-4">
                 <?php echo esc_html(get_the_title($featured_post_id)); ?>
               </h2>
               <p class="text-white/80 mb-6 max-w-2xl">
@@ -131,21 +154,38 @@ get_header();
   <section class="pb-24 px-4 lg:px-6 max-w-7xl mx-auto">
     <?php if ($posts_query->have_posts()): ?>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <?php while ($posts_query->have_posts()):
+        <?php $story_index = 0; while ($posts_query->have_posts()):
           $posts_query->the_post();
           $post_categories = get_the_category();
           $category_name = !empty($post_categories) ? $post_categories[0]->name : 'Uncategorized';
           $category_slug = !empty($post_categories) ? $post_categories[0]->slug : 'uncategorized';
           $category_color = earlystart_get_category_color($category_slug);
-          $post_image = get_the_post_thumbnail_url(get_the_ID(), 'medium_large') ?: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80&fm=webp?q=80&w=600&auto=format&fit=crop&q=80&fm=webp';
+          $is_priority_card = (!$featured_post_id && 0 === $story_index);
           ?>
           <!-- Post -->
           <article class="group cursor-pointer">
             <a href="<?php the_permalink(); ?>" class="block">
               <div class="rounded-[2rem] overflow-hidden mb-4 h-64 relative">
-                <img src="<?php echo esc_url($post_image); ?>"
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  alt="<?php the_title_attribute(); ?>" />
+                <?php if (has_post_thumbnail()): ?>
+                  <?php the_post_thumbnail('medium_large', array(
+                    'class' => 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-110',
+                    'sizes' => '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw',
+                    'fetchpriority' => $is_priority_card ? 'high' : 'auto',
+                    'loading' => $is_priority_card ? 'eager' : 'lazy',
+                    'decoding' => 'async',
+                  )); ?>
+                <?php else: ?>
+                  <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1587654780291-39c9404d746b', 768, 419, 70)); ?>"
+                    srcset="<?php echo esc_attr(
+                      esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1587654780291-39c9404d746b', 480, 262, 70)) . ' 480w, ' .
+                      esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1587654780291-39c9404d746b', 768, 419, 70)) . ' 768w'
+                    ); ?>"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    alt="<?php the_title_attribute(); ?>" width="768" height="419"
+                    <?php if ($is_priority_card): ?>fetchpriority="high" loading="eager"<?php else: ?>loading="lazy"<?php endif; ?>
+                    decoding="async" />
+                <?php endif; ?>
               </div>
               <span class="text-<?php echo esc_attr($category_color); ?> font-bold text-[10px] uppercase tracking-wider">
                 <?php echo esc_html($category_name); ?>
@@ -159,6 +199,7 @@ get_header();
               </p>
             </a>
           </article>
+          <?php $story_index++; ?>
         <?php endwhile; ?>
       </div>
 

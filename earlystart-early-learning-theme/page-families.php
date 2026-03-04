@@ -11,9 +11,59 @@ while (have_posts()):
     $page_id = get_the_ID();
 
     // Hero Data
-    $hero_badge = get_post_meta($page_id, 'families_hero_badge', true) ?: 'Parent Resources';
-    $hero_title = get_post_meta($page_id, 'families_hero_title', true) ?: 'You Are Not Alone<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">On This Journey.</span>';
-    $hero_desc = get_post_meta($page_id, 'families_hero_desc', true) ?: 'Navigating early intervention can be overwhelming. We are here to guide you through insurance, diagnosis, and the first steps of therapy with clarity and compassion. We partner with you to unlock your child\'s potential.';
+    $hero_badge = get_post_meta($page_id, 'families_hero_badge', true) ?: (get_post_meta($page_id, 'parents_hero_badge', true) ?: 'Parent Resources');
+    $hero_title = get_post_meta($page_id, 'families_hero_title', true) ?: (get_post_meta($page_id, 'parents_hero_title', true) ?: 'You Are Not Alone<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">On This Journey.</span>');
+    $hero_desc = get_post_meta($page_id, 'families_hero_desc', true) ?: (get_post_meta($page_id, 'parents_hero_description', true) ?: 'Navigating early intervention can be overwhelming. We are here to guide you through insurance, diagnosis, and the first steps of therapy with clarity and compassion. We partner with you to unlock your child\'s potential.');
+    $parents_essentials_title = get_post_meta($page_id, 'parents_essentials_title', true) ?: 'Parent Essentials';
+    $parents_events_badge = get_post_meta($page_id, 'parents_events_badge', true) ?: 'Community';
+    $parents_events_title = get_post_meta($page_id, 'parents_events_title', true) ?: 'Events & Celebrations';
+    $parents_events_description = get_post_meta($page_id, 'parents_events_description', true) ?: '';
+    $parents_events_image = get_post_meta($page_id, 'parents_events_image', true) ?: '';
+    $parents_event_items = array();
+    for ($i = 1; $i <= 3; $i++) {
+        $parents_event_items[] = array(
+            'icon' => get_post_meta($page_id, "parents_event{$i}_icon", true),
+            'title' => get_post_meta($page_id, "parents_event{$i}_title", true),
+            'desc' => get_post_meta($page_id, "parents_event{$i}_desc", true),
+        );
+    }
+    $parents_nutrition_badge = get_post_meta($page_id, 'parents_nutrition_badge', true) ?: 'Wellness';
+    $parents_nutrition_title = get_post_meta($page_id, 'parents_nutrition_title', true) ?: '';
+    $parents_nutrition_description = get_post_meta($page_id, 'parents_nutrition_description', true) ?: '';
+    $parents_nutrition_image = get_post_meta($page_id, 'parents_nutrition_image', true) ?: '';
+    $parents_menu_items = array();
+    for ($i = 1; $i <= 3; $i++) {
+        $parents_menu_items[] = array(
+            'icon' => get_post_meta($page_id, "parents_menu{$i}_icon", true),
+            'title' => get_post_meta($page_id, "parents_menu{$i}_title", true),
+            'subtitle' => get_post_meta($page_id, "parents_menu{$i}_subtitle", true),
+            'url' => get_post_meta($page_id, "parents_menu{$i}_url", true),
+        );
+    }
+    $parents_safety_title = get_post_meta($page_id, 'parents_safety_title', true) ?: '';
+    $parents_safety_description = get_post_meta($page_id, 'parents_safety_description', true) ?: '';
+    $parents_safety_items = array();
+    for ($i = 1; $i <= 3; $i++) {
+        $parents_safety_items[] = array(
+            'icon' => get_post_meta($page_id, "parents_safety{$i}_icon", true),
+            'title' => get_post_meta($page_id, "parents_safety{$i}_title", true),
+            'desc' => get_post_meta($page_id, "parents_safety{$i}_desc", true),
+        );
+    }
+    $parents_faq_title = get_post_meta($page_id, 'parents_faq_title', true) ?: '';
+    $parents_faq_description = get_post_meta($page_id, 'parents_faq_description', true) ?: '';
+    $parents_faq_items = array();
+    for ($i = 1; $i <= 3; $i++) {
+        $question = get_post_meta($page_id, "parents_faq{$i}_question", true);
+        $answer = get_post_meta($page_id, "parents_faq{$i}_answer", true);
+        if ($question && $answer) {
+            $parents_faq_items[] = array('question' => $question, 'answer' => $answer);
+        }
+    }
+    $parents_referral_title = get_post_meta($page_id, 'parents_referral_title', true) ?: '';
+    $parents_referral_description = get_post_meta($page_id, 'parents_referral_description', true) ?: '';
+    $parents_referral_button_text = get_post_meta($page_id, 'parents_referral_button_text', true) ?: 'Refer a Family';
+    $parents_referral_button_url = get_post_meta($page_id, 'parents_referral_button_url', true) ?: earlystart_get_page_link('contact');
     ?>
 
     <div class="bg-stone-50 min-h-screen">
@@ -31,6 +81,130 @@ while (have_posts()):
                 <p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
                     <?php echo esc_html($hero_desc); ?>
                 </p>
+            </div>
+        </section>
+
+        <section class="py-24 bg-white border-b border-stone-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 fade-in-up">
+                    <span class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
+                        <?php echo esc_html($parents_events_badge); ?>
+                    </span>
+                    <h2 class="text-4xl font-bold text-stone-900 mb-4"><?php echo esc_html($parents_essentials_title); ?></h2>
+                    <p class="text-stone-700 text-lg"><?php echo esc_html($parents_events_description); ?></p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12 items-center mb-12">
+                    <div class="rounded-[2.5rem] overflow-hidden bg-stone-100 min-h-[320px] border border-stone-100 shadow-sm relative">
+                        <?php if ($parents_events_image): ?>
+                            <img src="<?php echo esc_url($parents_events_image); ?>" alt="<?php echo esc_attr($parents_events_title); ?>" class="absolute inset-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-stone-900/35"></div>
+                        <?php endif; ?>
+                        <div class="relative z-10 p-10 h-full flex flex-col justify-end <?php echo $parents_events_image ? 'text-white' : 'text-stone-900'; ?>">
+                            <h3 class="text-3xl font-bold mb-4"><?php echo esc_html($parents_events_title); ?></h3>
+                            <p class="text-sm leading-relaxed <?php echo $parents_events_image ? 'text-white/90' : 'text-stone-700'; ?>"><?php echo esc_html($parents_events_description); ?></p>
+                        </div>
+                    </div>
+                    <div class="grid gap-4">
+                        <?php foreach ($parents_event_items as $item): ?>
+                            <?php if (!empty($item['title'])): ?>
+                                <div class="rounded-[2rem] border border-stone-100 bg-stone-50 p-6">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-2xl bg-white border border-stone-100 flex items-center justify-center text-rose-600 shrink-0">
+                                            <?php if (!empty($item['icon']) && 0 === strpos($item['icon'], 'fa-')): ?>
+                                                <i class="<?php echo esc_attr($item['icon']); ?>"></i>
+                                            <?php else: ?>
+                                                <i data-lucide="<?php echo esc_attr($item['icon'] ?: 'sparkles'); ?>" class="w-5 h-5"></i>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-lg font-bold text-stone-900 mb-2"><?php echo esc_html($item['title']); ?></h3>
+                                            <p class="text-sm text-stone-700 leading-relaxed"><?php echo esc_html($item['desc']); ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12 items-start">
+                    <div class="rounded-[2.5rem] border border-stone-100 bg-stone-50 p-8">
+                        <span class="text-rose-700 font-bold tracking-widest text-xs uppercase block mb-4"><?php echo esc_html($parents_nutrition_badge); ?></span>
+                        <h3 class="text-3xl font-bold text-stone-900 mb-4"><?php echo esc_html($parents_nutrition_title); ?></h3>
+                        <p class="text-stone-700 leading-relaxed mb-6"><?php echo esc_html($parents_nutrition_description); ?></p>
+                        <?php if ($parents_nutrition_image): ?>
+                            <div class="rounded-3xl overflow-hidden mb-6">
+                                <img src="<?php echo esc_url($parents_nutrition_image); ?>" alt="<?php echo esc_attr($parents_nutrition_title); ?>" class="w-full h-56 object-cover">
+                            </div>
+                        <?php endif; ?>
+                        <div class="space-y-3">
+                            <?php foreach ($parents_menu_items as $item): ?>
+                                <?php if (!empty($item['title'])): ?>
+                                    <a href="<?php echo esc_url($item['url'] ?: '#'); ?>" class="flex items-center justify-between rounded-2xl bg-white border border-stone-100 p-4 hover:border-rose-200 transition-colors">
+                                        <span class="flex items-center gap-3">
+                                            <span class="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center text-rose-600">
+                                                <?php if (!empty($item['icon']) && 0 === strpos($item['icon'], 'fa-')): ?>
+                                                    <i class="<?php echo esc_attr($item['icon']); ?>"></i>
+                                                <?php else: ?>
+                                                    <i data-lucide="<?php echo esc_attr($item['icon'] ?: 'check'); ?>" class="w-4 h-4"></i>
+                                                <?php endif; ?>
+                                            </span>
+                                            <span>
+                                                <span class="block font-bold text-stone-900 text-sm"><?php echo esc_html($item['title']); ?></span>
+                                                <span class="block text-xs text-stone-600"><?php echo esc_html($item['subtitle']); ?></span>
+                                            </span>
+                                        </span>
+                                        <i data-lucide="arrow-right" class="w-4 h-4 text-stone-400"></i>
+                                    </a>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="rounded-[2.5rem] border border-stone-100 bg-stone-900 p-8 text-white">
+                            <h3 class="text-3xl font-bold mb-4"><?php echo esc_html($parents_safety_title); ?></h3>
+                            <p class="text-stone-300 leading-relaxed mb-6"><?php echo esc_html($parents_safety_description); ?></p>
+                            <div class="grid gap-4">
+                                <?php foreach ($parents_safety_items as $item): ?>
+                                    <?php if (!empty($item['title'])): ?>
+                                        <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+                                            <div class="flex items-start gap-4">
+                                                <div class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center text-amber-300 shrink-0">
+                                                    <?php if (!empty($item['icon']) && 0 === strpos($item['icon'], 'fa-')): ?>
+                                                        <i class="<?php echo esc_attr($item['icon']); ?>"></i>
+                                                    <?php else: ?>
+                                                        <i data-lucide="<?php echo esc_attr($item['icon'] ?: 'shield'); ?>" class="w-5 h-5"></i>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-bold mb-2"><?php echo esc_html($item['title']); ?></h4>
+                                                    <p class="text-sm text-stone-300 leading-relaxed"><?php echo esc_html($item['desc']); ?></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <?php if (!empty($parents_faq_items)): ?>
+                            <div class="rounded-[2.5rem] border border-stone-100 bg-white p-8">
+                                <h3 class="text-2xl font-bold text-stone-900 mb-2"><?php echo esc_html($parents_faq_title); ?></h3>
+                                <p class="text-stone-700 text-sm mb-6"><?php echo esc_html($parents_faq_description); ?></p>
+                                <div class="space-y-3">
+                                    <?php foreach ($parents_faq_items as $item): ?>
+                                        <details class="rounded-2xl border border-stone-100 bg-stone-50 p-5">
+                                            <summary class="cursor-pointer list-none font-bold text-stone-900"><?php echo esc_html($item['question']); ?></summary>
+                                            <p class="mt-3 text-sm text-stone-700 leading-relaxed"><?php echo esc_html($item['answer']); ?></p>
+                                        </details>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -500,7 +674,7 @@ while (have_posts()):
                     <div class="relative fade-in-up">
                         <div class="absolute inset-0 bg-white rounded-[3rem] transform rotate-3"></div>
                         <div
-                            class="relative bg-rose-200 rounded-[3rem] h-[400px] flex items-center justify-center overflow-hidden shadow-lg border border-white">
+                            class="relative bg-rose-200 rounded-[3rem] h-[280px] md:h-[400px] flex items-center justify-center overflow-hidden shadow-lg border border-white">
                             <!-- Visual placeholder for parent meeting -->
                             <div class="text-center p-8">
                                 <i data-lucide="users" class="w-24 h-24 text-rose-500 mx-auto mb-6"></i>
@@ -562,7 +736,7 @@ while (have_posts()):
                                     data-lucide="chevron-down" class="w-5 h-5"></i></span>
                         </summary>
                         <div class="text-stone-700 mt-4 leading-relaxed text-sm">
-                            <p><?php _e('We do not provide home transport. However, if your child attends Early Start Early Learning Academy, our staff will handle the transition between the classroom and the therapy clinic for you.', 'earlystart-early-learning'); ?>
+                            <p><?php _e('We do not provide home transport. However, if your child participates in a paired education and therapy schedule, our team can coordinate safe handoffs between services at the same location.', 'earlystart-early-learning'); ?>
                             </p>
                         </div>
                     </details>
@@ -574,14 +748,14 @@ while (have_posts()):
         <section class="py-24 bg-stone-50 text-center border-t border-stone-100">
             <div class="max-w-4xl mx-auto px-4 fade-in-up">
                 <h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
-                    <?php _e('Ready to take the first step?', 'earlystart-early-learning'); ?>
+                    <?php echo esc_html($parents_referral_title ?: __('Ready to take the first step?', 'earlystart-early-learning')); ?>
                 </h2>
                 <p class="text-xl text-stone-700 mb-10">
-                    <?php _e('We know this process is new for many families. We are here to answer every question, no matter how small.', 'earlystart-early-learning'); ?>
+                    <?php echo wp_kses_post($parents_referral_description ?: __('We know this process is new for many families. We are here to answer every question, no matter how small.', 'earlystart-early-learning')); ?>
                 </p>
-                <a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
+                <a href="<?php echo esc_url($parents_referral_button_url); ?>"
                     class="bg-stone-900 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-rose-600 transition-colors shadow-lg inline-block transform hover:-translate-y-0.5">
-                    <?php _e('Contact Admissions', 'earlystart-early-learning'); ?>
+                    <?php echo esc_html($parents_referral_button_text ?: __('Contact Admissions', 'earlystart-early-learning')); ?>
                 </a>
             </div>
         </section>

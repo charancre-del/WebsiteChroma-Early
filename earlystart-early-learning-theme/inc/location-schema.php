@@ -31,7 +31,7 @@ function earlystart_output_location_schema()
     // Build Schema Array
     $schema = array(
         '@context' => 'https://schema.org',
-        '@type' => 'ChildCare',
+        '@type' => 'MedicalBusiness',
         'name' => 'Chroma Early Start - ' . esc_html($name),
         'url' => esc_url($url),
     );

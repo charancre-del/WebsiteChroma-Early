@@ -21,6 +21,8 @@ function earlystart_pdf_shortcode($atts)
     if (empty($args['url']))
         return '';
 
+    earlystart_enqueue_pdf_assets();
+
     $unique_id = uniqid('pdf_');
 
     // Default cover if none provided
@@ -71,15 +73,30 @@ function earlystart_pdf_shortcode($atts)
 }
 add_shortcode('earlystart_pdf', 'earlystart_pdf_shortcode');
 
-// hooks moved outside to ensure they run even if shortcode isn't used (e.g. manual triggers)
+// The viewer modal is global, but assets are only enqueued when the shortcode renders.
 add_action('wp_footer', 'earlystart_render_pdf_modal');
-add_action('wp_enqueue_scripts', 'earlystart_enqueue_pdf_assets');
 
 // Enqueue Assets
 function earlystart_enqueue_pdf_assets()
 {
     // Optimization: Do not load on homepage (Critical Path reduction)
     if (is_front_page()) {
+        return;
+    }
+
+    $should_enqueue = false;
+    if (is_singular()) {
+        global $post;
+
+        if ($post instanceof WP_Post) {
+            $content = (string) $post->post_content;
+            $should_enqueue = has_shortcode($content, 'earlystart_pdf') || strpos($content, 'chroma-pdf-trigger') !== false;
+        }
+    }
+
+    $should_enqueue = (bool) apply_filters('earlystart_should_enqueue_pdf_assets', $should_enqueue);
+
+    if (!$should_enqueue) {
         return;
     }
 
@@ -98,6 +115,10 @@ function earlystart_enqueue_pdf_assets()
 // Render Global Modal (Once)
 function earlystart_render_pdf_modal()
 {
+    if (!wp_script_is('chroma-pdf-viewer', 'enqueued')) {
+        return;
+    }
+
     // Only render once
     if (defined('earlystart_PDF_MODAL_RENDERED'))
         return;

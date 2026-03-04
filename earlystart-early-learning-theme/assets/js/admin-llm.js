@@ -31,7 +31,7 @@ jQuery(function ($) {
             }
 
             // Hours
-            if (type === 'LocalBusiness' || type === 'ChildCare') {
+            if (type === 'LocalBusiness' || type === 'MedicalBusiness' || type === 'ChildCare') {
                 html += '<div class="serp-hours">Hours: Mon-Fri 6am-6pm</div>';
             }
 

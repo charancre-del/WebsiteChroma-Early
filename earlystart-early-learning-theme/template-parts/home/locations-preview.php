@@ -36,7 +36,7 @@ $grouped = $locations_data['grouped'] ?? array();
             <!-- Map Section (Left, larger) -->
             <?php if (!empty($locations_data['map_points'])): ?>
                 <div class="w-full lg:w-2/3">
-                    <div class="rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 h-[500px] lg:h-[700px] relative z-10 fade-in-up"
+                    <div class="rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 h-[360px] md:h-[500px] lg:h-[700px] relative z-10 fade-in-up"
                         data-chroma-map="true"
                         data-chroma-locations="<?php echo esc_attr(json_encode($locations_data['map_points'])); ?>">
                     </div>
@@ -46,7 +46,7 @@ $grouped = $locations_data['grouped'] ?? array();
             <!-- Locations List Section (Right, scrollable) -->
             <div class="w-full <?php echo !empty($locations_data['map_points']) ? 'lg:w-1/3' : ''; ?>">
                 <?php if (!empty($grouped)): ?>
-                    <div class="flex flex-col gap-4 overflow-y-auto pr-2" style="max-height: 700px;">
+                    <div class="flex flex-col gap-4 pr-2 lg:max-h-[700px] lg:overflow-y-auto">
                         <?php
                         $count = 0;
                         foreach ($grouped as $group):

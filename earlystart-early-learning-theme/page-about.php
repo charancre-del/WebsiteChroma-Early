@@ -19,6 +19,7 @@ while (have_posts()):
 		$hero_badge = get_post_meta($page_id, 'about_hero_badge_text', true) ?: __('Established 2022', 'earlystart-early-learning');
 		$hero_title = get_post_meta($page_id, 'about_hero_title', true) ?: __('More than a clinic. <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">A second home.</span>', 'earlystart-early-learning');
 		$hero_desc = get_post_meta($page_id, 'about_hero_description', true) ?: __('We founded Early Start on a simple belief: Clinical therapy should be a perfect blend of rigorous skill development and the comforting warmth of family life.', 'earlystart-early-learning');
+		$hero_image = get_post_meta($page_id, 'about_hero_image', true);
 		?>
 		<section class="relative bg-white pt-24 pb-24 lg:pt-32 overflow-hidden">
 			<div
@@ -36,6 +37,16 @@ while (have_posts()):
 				<p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
 					<?php echo esc_html($hero_desc); ?>
 				</p>
+				<?php if ($hero_image): ?>
+					<div class="mt-12 max-w-4xl mx-auto fade-in-up">
+						<div class="relative rounded-[3rem] overflow-hidden shadow-2xl border border-stone-100">
+							<img src="<?php echo esc_url($hero_image); ?>"
+								alt="<?php esc_attr_e('About Chroma Early Start', 'earlystart-early-learning'); ?>"
+								class="w-full h-[280px] md:h-[420px] object-cover" loading="eager" decoding="async">
+							<div class="absolute inset-0 bg-gradient-to-t from-stone-900/20 to-transparent"></div>
+						</div>
+					</div>
+				<?php endif; ?>
 			</div>
 		</section>
 
@@ -78,7 +89,7 @@ while (have_posts()):
 								</p>
 							<?php else: ?>
 								<p>
-									<?php _e('Early Start Early Learning Academy began with a mission to redefine "daycare." We didn\'t just want to watch children; we wanted to ignite their potential.', 'earlystart-early-learning'); ?>
+									<?php _e('Chroma Early Start began with a mission to redefine early intervention. We did not want to simply supervise children; we wanted to help them build meaningful skills through compassionate, evidence-based care.', 'earlystart-early-learning'); ?>
 								</p>
 							<?php endif; ?>
 
@@ -95,10 +106,9 @@ while (have_posts()):
 							<?php endif; ?>
 						</div>
 
-						<div class="grid grid-cols-3 gap-8 mt-12 border-t border-stone-200 pt-10">
+						<div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12 border-t border-stone-200 pt-10">
 							<?php
-							// Stats Loop (1-3)
-							for ($i = 1; $i <= 3; $i++) {
+							for ($i = 1; $i <= 4; $i++) {
 								$val = get_post_meta($page_id, "about_stat{$i}_value", true);
 								$lbl = get_post_meta($page_id, "about_stat{$i}_label", true);
 
@@ -127,7 +137,7 @@ while (have_posts()):
 					<div class="relative fade-in-up">
 						<div class="absolute -inset-4 bg-rose-100 rounded-[3rem] transform rotate-2"></div>
 						<div
-							class="relative bg-white rounded-[3rem] h-[500px] overflow-hidden shadow-2xl border border-stone-100">
+							class="relative bg-white rounded-[3rem] h-[320px] md:h-[500px] overflow-hidden shadow-2xl border border-stone-100">
 							<img src="<?php echo esc_url($story_image); ?>" class="w-full h-full object-cover"
 								alt="<?php _e('Our Story', 'earlystart-early-learning'); ?>">
 						</div>
@@ -149,8 +159,8 @@ while (have_posts()):
 					<div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
 						<?php
 						$milestones = array(
-							array('year' => '2022', 'title' => 'The Beginning', 'desc' => 'Early Start Early Learning Academy opens its first flagship location.', 'color' => 'rose'),
-							array('year' => '2023', 'title' => 'Rapid Expansion', 'desc' => 'Growth to 10+ locations identifying child development needs.', 'color' => 'orange'),
+							array('year' => '2022', 'title' => 'The Beginning', 'desc' => 'Chroma Early Start opens its first flagship clinic.', 'color' => 'rose'),
+							array('year' => '2023', 'title' => 'Regional Growth', 'desc' => 'Expansion to 10+ clinics serving more families across metro Atlanta.', 'color' => 'orange'),
 							array('year' => '2024', 'title' => 'Early Start', 'desc' => 'Official launch of our specialized ABA & Therapy division.', 'color' => 'amber'),
 							array('year' => 'Today', 'title' => 'A Holistic Network', 'desc' => '19+ locations integrating education and clinical therapy.', 'color' => 'rose'),
 						);
@@ -193,7 +203,8 @@ while (have_posts()):
 				<div class="grid md:grid-cols-3 gap-8">
 					<?php
 					for ($i = 1; $i <= 3; $i++) {
-						$icon = earlystart_safe_lucide_icon(get_post_meta($page_id, "about_educator{$i}_icon", true), 'star');
+						$icon_raw = get_post_meta($page_id, "about_educator{$i}_icon", true);
+						$icon = earlystart_safe_lucide_icon($icon_raw, 'star');
 						$title = get_post_meta($page_id, "about_educator{$i}_title", true);
 						$desc = get_post_meta($page_id, "about_educator{$i}_desc", true);
 
@@ -202,7 +213,11 @@ while (have_posts()):
 								class="bg-stone-50 p-10 rounded-[2.5rem] border border-stone-100 hover:shadow-lg transition-all fade-in-up">
 								<div
 									class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 text-rose-500">
-									<i data-lucide="<?php echo esc_attr($icon); ?>" class="w-7 h-7"></i>
+									<?php if (!empty($icon_raw) && 0 === strpos($icon_raw, 'fa-')): ?>
+										<i class="<?php echo esc_attr($icon_raw); ?> text-2xl"></i>
+									<?php else: ?>
+										<i data-lucide="<?php echo esc_attr($icon); ?>" class="w-7 h-7"></i>
+									<?php endif; ?>
 								</div>
 								<h3 class="font-bold text-stone-900 text-xl mb-3">
 									<?php echo esc_html($title); ?>
@@ -213,6 +228,64 @@ while (have_posts()):
 							</div>
 						<?php endif;
 					} ?>
+				</div>
+			</div>
+		</section>
+
+		<!-- Nutrition & Daily Care -->
+		<?php
+		$nutrition_title = get_post_meta($page_id, 'about_nutrition_title', true) ?: __('Supporting whole-child wellbeing.', 'earlystart-early-learning');
+		$nutrition_desc = get_post_meta($page_id, 'about_nutrition_description', true) ?: __('We design our routines to support regulation, nutrition, and day-to-day participation so children can engage more fully in therapy and learning.', 'earlystart-early-learning');
+		$nutrition_image = get_post_meta($page_id, 'about_nutrition_image', true);
+		?>
+		<section class="py-24 bg-stone-50 overflow-hidden">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="grid lg:grid-cols-2 gap-16 items-center">
+					<div class="fade-in-up order-2 lg:order-1">
+						<div class="inline-flex items-center px-4 py-2 bg-rose-100 text-rose-700 rounded-full text-[10px] font-bold tracking-widest uppercase mb-6">
+							<?php _e('Whole-Child Support', 'earlystart-early-learning'); ?>
+						</div>
+						<h2 class="text-4xl font-bold text-stone-900 mb-6"><?php echo esc_html($nutrition_title); ?></h2>
+						<p class="text-lg text-stone-700 leading-relaxed mb-10">
+							<?php echo esc_html($nutrition_desc); ?>
+						</p>
+						<div class="space-y-4">
+							<?php for ($i = 1; $i <= 3; $i++):
+								$bullet_icon = get_post_meta($page_id, "about_nutrition_bullet{$i}_icon", true);
+								$bullet_text = get_post_meta($page_id, "about_nutrition_bullet{$i}_text", true);
+								if (!$bullet_text) {
+									continue;
+								}
+								?>
+								<div class="flex items-center gap-4 bg-white rounded-2xl p-5 border border-stone-100 shadow-sm">
+									<div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+										<?php if (!empty($bullet_icon) && 0 === strpos($bullet_icon, 'fa-')): ?>
+											<i class="<?php echo esc_attr($bullet_icon); ?> text-xl"></i>
+										<?php else: ?>
+											<i data-lucide="<?php echo esc_attr(earlystart_safe_lucide_icon($bullet_icon, 'check-circle-2')); ?>" class="w-6 h-6"></i>
+										<?php endif; ?>
+									</div>
+									<span class="font-semibold text-stone-800"><?php echo esc_html($bullet_text); ?></span>
+								</div>
+							<?php endfor; ?>
+						</div>
+					</div>
+					<div class="fade-in-up order-1 lg:order-2">
+						<div class="relative">
+							<div class="absolute -inset-4 bg-rose-100 rounded-[3rem] -rotate-2"></div>
+							<div class="relative rounded-[3rem] overflow-hidden border border-stone-100 shadow-2xl bg-white">
+								<?php if ($nutrition_image): ?>
+									<img src="<?php echo esc_url($nutrition_image); ?>"
+										alt="<?php echo esc_attr($nutrition_title); ?>"
+										class="w-full h-[320px] md:h-[460px] object-cover" loading="lazy" decoding="async">
+								<?php else: ?>
+									<div class="h-[320px] md:h-[460px] flex items-center justify-center text-stone-300 bg-stone-100">
+										<i data-lucide="apple" class="w-16 h-16"></i>
+									</div>
+								<?php endif; ?>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -237,15 +310,20 @@ while (have_posts()):
 				<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 					<?php
 					for ($i = 1; $i <= 4; $i++) {
-						$icon = earlystart_safe_lucide_icon(get_post_meta($page_id, "about_value{$i}_icon", true), 'circle');
+						$icon_raw = get_post_meta($page_id, "about_value{$i}_icon", true);
+						$icon = earlystart_safe_lucide_icon($icon_raw, 'circle');
 						$title = get_post_meta($page_id, "about_value{$i}_title", true);
 						$desc = get_post_meta($page_id, "about_value{$i}_desc", true);
 
 						if ($title): ?>
 							<div
 								class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-rose-400/30 hover:bg-white/20 transition-all fade-in-up">
-								<i data-lucide="<?php echo esc_attr($icon); ?>"
-									class="w-10 h-10 text-rose-200 mb-4"></i>
+								<?php if (!empty($icon_raw) && 0 === strpos($icon_raw, 'fa-')): ?>
+									<i class="<?php echo esc_attr($icon_raw); ?> text-3xl text-rose-200 mb-4"></i>
+								<?php else: ?>
+									<i data-lucide="<?php echo esc_attr($icon); ?>"
+										class="w-10 h-10 text-rose-200 mb-4"></i>
+								<?php endif; ?>
 								<h3 class="text-xl font-bold mb-2">
 									<?php echo esc_html($title); ?>
 								</h3>
@@ -398,12 +476,12 @@ while (have_posts()):
 				<div class="md:w-2/5 h-64 md:h-auto">
 					<img id="modal-image" src="" alt="" class="w-full h-full object-cover">
 				</div>
-				<div class="md:w-3/5 p-12 overflow-y-auto max-h-[80vh]">
+				<div class="md:w-3/5 p-6 md:p-12 overflow-y-auto max-h-[80vh]">
 					<span id="modal-role"
 						class="text-rose-700 font-bold tracking-widest text-xs uppercase mb-2 block"></span>
-					<h3 id="modal-name" class="text-4xl font-bold text-stone-900 mb-6"></h3>
+					<h3 id="modal-name" class="text-3xl md:text-4xl font-bold text-stone-900 mb-6"></h3>
 					<div id="modal-bio" class="prose prose-stone text-stone-700 leading-relaxed"></div>
-					<div class="mt-8 pt-8 border-t border-stone-100 flex gap-4">
+					<div class="mt-8 pt-8 border-t border-stone-100 flex flex-col md:flex-row gap-4">
 						<div class="bg-stone-50 p-4 rounded-2xl flex-1">
 							<span class="block text-[10px] font-bold text-stone-300 uppercase mb-1">
 								<?php _e('Specialty', 'earlystart-early-learning'); ?>
@@ -430,40 +508,89 @@ while (have_posts()):
 		$phil_title = get_post_meta($page_id, 'about_philanthropy_title', true) ?: __('Foundations For Learning Inc.', 'earlystart-early-learning');
 		$phil_subtitle = get_post_meta($page_id, 'about_philanthropy_subtitle', true) ?: __('Community Impact', 'earlystart-early-learning');
 		$phil_desc = get_post_meta($page_id, 'about_philanthropy_description', true) ?: __('Through our non-profit arm, we work to ensure quality early intervention resources are accessible.', 'earlystart-early-learning');
+		$phil_image = get_post_meta($page_id, 'about_philanthropy_image', true);
+		$about_cta_title = get_post_meta($page_id, 'about_cta_title', true);
+		$about_cta_description = get_post_meta($page_id, 'about_cta_description', true);
 		?>
 		<section class="py-24 bg-white overflow-hidden">
 			<div class="max-w-6xl mx-auto px-4">
 				<div
-					class="bg-stone-900 rounded-[3rem] p-12 lg:p-24 text-center text-white relative overflow-hidden fade-in-up">
+					class="bg-stone-900 rounded-[3rem] p-12 lg:p-24 text-white relative overflow-hidden fade-in-up">
 					<div
 						class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-rose-500 to-transparent">
 					</div>
-					<div class="relative z-10">
-						<span class="text-rose-400 font-bold tracking-widest text-sm uppercase mb-4 block">
-							<?php echo esc_html($phil_subtitle); ?>
-						</span>
-						<h2 class="text-4xl md:text-5xl font-bold mb-8">
-							<?php echo esc_html($phil_title); ?>
-						</h2>
-						<p class="text-xl text-stone-300 leading-relaxed mb-12 max-w-3xl mx-auto">
-							<?php echo esc_html($phil_desc); ?>
-						</p>
-						<div class="flex flex-wrap justify-center gap-4">
-							<?php
-							for ($i = 1; $i <= 3; $i++) {
-								$txt = get_post_meta($page_id, "about_philanthropy_bullet{$i}_text", true);
-								if ($txt): ?>
-									<span
-										class="px-8 py-3 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-sm font-bold">
-										<?php echo esc_html($txt); ?>
-									</span>
-								<?php endif;
-							} ?>
+					<div class="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+						<div class="text-center lg:text-left">
+							<span class="text-rose-400 font-bold tracking-widest text-sm uppercase mb-4 block">
+								<?php echo esc_html($phil_subtitle); ?>
+							</span>
+							<h2 class="text-4xl md:text-5xl font-bold mb-8">
+								<?php echo esc_html($phil_title); ?>
+							</h2>
+							<div class="text-xl text-stone-300 leading-relaxed mb-12 max-w-3xl prose prose-invert prose-p:my-0">
+								<?php echo wp_kses_post(wpautop($phil_desc)); ?>
+							</div>
+							<div class="space-y-4">
+								<?php
+								for ($i = 1; $i <= 3; $i++) {
+									$bullet_icon = get_post_meta($page_id, "about_philanthropy_bullet{$i}_icon", true);
+									$txt = get_post_meta($page_id, "about_philanthropy_bullet{$i}_text", true);
+									if (!$txt) {
+										continue;
+									}
+									?>
+									<div class="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 px-5 py-4">
+										<div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-rose-300 shrink-0">
+											<?php if (!empty($bullet_icon) && 0 === strpos($bullet_icon, 'fa-')): ?>
+												<i class="<?php echo esc_attr($bullet_icon); ?>"></i>
+											<?php else: ?>
+												<i data-lucide="<?php echo esc_attr(earlystart_safe_lucide_icon($bullet_icon, 'heart')); ?>" class="w-5 h-5"></i>
+											<?php endif; ?>
+										</div>
+										<span class="text-sm font-bold"><?php echo esc_html($txt); ?></span>
+									</div>
+								<?php } ?>
+							</div>
+						</div>
+						<div class="relative">
+							<div class="absolute -inset-4 bg-white/5 rounded-[2.5rem] rotate-2"></div>
+							<div class="relative rounded-[2.5rem] overflow-hidden border border-white/10 bg-stone-800 min-h-[320px]">
+								<?php if ($phil_image): ?>
+									<img src="<?php echo esc_url($phil_image); ?>"
+										alt="<?php echo esc_attr($phil_title); ?>"
+										class="w-full h-full min-h-[320px] object-cover" loading="lazy" decoding="async">
+								<?php else: ?>
+									<div class="absolute inset-0 flex items-center justify-center text-stone-500">
+										<i data-lucide="heart-handshake" class="w-16 h-16"></i>
+									</div>
+								<?php endif; ?>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
+
+		<?php if ($about_cta_title || $about_cta_description): ?>
+			<section class="pb-24 bg-white overflow-hidden">
+				<div class="max-w-5xl mx-auto px-4">
+					<div class="rounded-[3rem] bg-gradient-to-r from-rose-600 to-orange-500 p-12 md:p-16 text-white text-center shadow-xl fade-in-up">
+						<?php if ($about_cta_title): ?>
+							<h2 class="text-4xl font-bold mb-6"><?php echo esc_html($about_cta_title); ?></h2>
+						<?php endif; ?>
+						<?php if ($about_cta_description): ?>
+							<p class="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-8">
+								<?php echo esc_html($about_cta_description); ?>
+							</p>
+						<?php endif; ?>
+						<a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
+							class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-rose-700 font-bold hover:bg-stone-100 transition-colors">
+							<?php _e('Talk With Our Team', 'earlystart-early-learning'); ?>
+						</a>
+					</div>
+				</div>
+			</section>
+		<?php endif; ?>
 
 	</main>
 

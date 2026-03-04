@@ -151,7 +151,7 @@ function earlystart_location_title_placeholder($title)
 {
 	$screen = get_current_screen();
 	if ('location' === $screen->post_type) {
-		$title = __('e.g., Johns Creek Campus', 'earlystart-early-learning');
+		$title = __('e.g., Johns Creek Clinic', 'earlystart-early-learning');
 	}
 	return $title;
 }
@@ -513,13 +513,13 @@ function earlystart_render_location_custom_fields_meta_box($post)
 	</div>
 
 	<div class="chroma-meta-section">
-		<h4><?php _e('Campus Director', 'earlystart-early-learning'); ?></h4>
+		<h4><?php _e('Clinical Director', 'earlystart-early-learning'); ?></h4>
 
 		<div class="chroma-meta-field">
 			<label for="location_director_name"><?php _e('Director Name', 'earlystart-early-learning'); ?></label>
 			<input type="text" id="location_director_name" name="location_director_name"
 				value="<?php echo esc_attr($director_name); ?>" placeholder="e.g., Sarah Williams" />
-			<small><?php _e('Name of the campus director (leave empty to hide director section)', 'earlystart-early-learning'); ?></small>
+			<small><?php _e('Name of the clinical director (leave empty to hide director section)', 'earlystart-early-learning'); ?></small>
 		</div>
 
 		<div class="chroma-meta-field">
@@ -685,7 +685,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 		<div class="chroma-meta-field">
 			<label for="location_seo_content_text"><?php _e('SEO Content Description', 'earlystart-early-learning'); ?></label>
 			<textarea id="location_seo_content_text" name="location_seo_content_text" rows="6"
-				placeholder="Our school is more than a daycare..."><?php echo esc_textarea($seo_content_text); ?></textarea>
+				placeholder="Our clinic provides compassionate pediatric therapy..."><?php echo esc_textarea($seo_content_text); ?></textarea>
 			<small><?php _e('Location-specific description highlighting the area, accessibility, and unique features. This content appears at the bottom of the location page.', 'earlystart-early-learning'); ?></small>
 		</div>
 	</div>

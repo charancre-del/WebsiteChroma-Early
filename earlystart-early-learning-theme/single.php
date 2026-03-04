@@ -28,6 +28,21 @@ if (!empty($categories)) {
   $related_args['category__in'] = array($categories[0]->term_id);
 }
 $related_query = new WP_Query($related_args);
+
+if (!function_exists('earlystart_normalize_blog_heading_levels')) {
+  function earlystart_normalize_blog_heading_levels($content)
+  {
+    return preg_replace_callback(
+      '#<h3([^>]*)class="([^"]*\bwp-block-heading\b[^"]*)"([^>]*)>(.*?)</h3>#is',
+      static function ($matches) {
+        return '<h2' . $matches[1] . 'class="' . $matches[2] . '"' . $matches[3] . '>' . $matches[4] . '</h2>';
+      },
+      $content
+    );
+  }
+}
+
+add_filter('the_content', 'earlystart_normalize_blog_heading_levels', 20);
 ?>
 <?php
 get_header();

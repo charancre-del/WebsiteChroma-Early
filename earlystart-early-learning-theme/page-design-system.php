@@ -157,7 +157,7 @@ get_header();
                     <div class="flex flex-wrap gap-4">
                         <span
                             class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase">
-                            New Campus
+                            New Clinic
                         </span>
                         <span
                             class="inline-block px-4 py-2 bg-stone-100 text-stone-700 rounded-full text-xs font-bold tracking-widest uppercase">

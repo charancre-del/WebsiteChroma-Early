@@ -34,7 +34,7 @@ $cities_query = new WP_Query(array(
                 </span>
             </h1>
             <p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
-                <?php _e('We serve families across Georgia with premium pediatric therapy and early education. Find your city below to discover nearby campuses and specialized programs.', 'earlystart-early-learning'); ?>
+                <?php _e('We serve families across Georgia with premium pediatric therapy. Find your city below to discover nearby clinics and specialized programs.', 'earlystart-early-learning'); ?>
             </p>
         </div>
     </section>
@@ -83,7 +83,7 @@ $cities_query = new WP_Query(array(
                     <h2 class="text-3xl md:text-4xl font-bold mb-6">
                         <?php _e('Don’t see your city?', 'earlystart-early-learning'); ?></h2>
                     <p class="text-sky-100 text-lg">
-                        <?php _e('We are rapidly expanding our clinical footprint. Contact our intake team to see if we can serve your family via a nearby campus.', 'earlystart-early-learning'); ?>
+                        <?php _e('We are rapidly expanding our clinical footprint. Contact our intake team to see if we can serve your family through a nearby clinic.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
                 <div class="shrink-0 relative z-10">

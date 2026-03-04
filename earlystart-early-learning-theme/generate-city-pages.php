@@ -179,7 +179,7 @@ foreach ($city_map as $city_name => $schools) {
     // Fallback: Use School Names as neighborhoods if none hardcoded
     if (empty($neighborhoods)) {
         foreach ($schools as $s) {
-            $neighborhoods[] = str_replace(['Campus', 'Academy by Early Start Early Learning'], '', $s['school_name']);
+            $neighborhoods[] = str_replace(['Campus', 'Clinic', 'Academy by Early Start Early Learning', 'Clinic by Chroma Early Start'], '', $s['school_name']);
         }
     }
 
@@ -205,7 +205,7 @@ foreach ($city_map as $city_name => $schools) {
 
     // 3. Create/Update Post
     // We do NOT generate HTML content anymore. The template handles it.
-    $page_title = "Best Daycare & Preschool in $city_name, GA | Early Start Early Learning";
+    $page_title = "Pediatric Therapy in $city_name, GA | Chroma Early Start";
 
     $existing_page = get_page_by_title($city_name, OBJECT, 'city');
 
@@ -244,10 +244,10 @@ foreach ($city_map as $city_name => $schools) {
 
     // SEO Meta
     update_post_meta($post_id, '_yoast_wpseo_title', $page_title);
-    update_post_meta($post_id, '_yoast_wpseo_metadesc', "Looking for 5-star rated daycare in $city_name? Early Start offers accredited infant care, toddler programs, and Free GA Pre-K at convenient locations near you.");
+    update_post_meta($post_id, '_yoast_wpseo_metadesc', "Looking for pediatric therapy in $city_name? Chroma Early Start offers ABA, speech, and occupational therapy through convenient regional clinics.");
 
     // Keywords
-    $keywords = array("daycare $city_name", "preschool $city_name", "child care $city_name", "early learning $city_name");
+    $keywords = array("pediatric therapy $city_name", "aba therapy $city_name", "speech therapy $city_name", "occupational therapy $city_name");
     foreach ($schools as $s) {
         $keywords[] = $s['school_name'];
     }

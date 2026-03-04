@@ -11,9 +11,44 @@ get_header();
 while (have_posts()):
 	the_post();
 	$page_id = get_the_ID();
+	$hero_badge = get_post_meta($page_id, 'careers_hero_badge', true) ?: __('Join Our Team', 'earlystart-early-learning');
+	$hero_title = get_post_meta($page_id, 'careers_hero_title', true) ?: __('Do Your Best Work<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">With Us.</span>', 'earlystart-early-learning');
+	$hero_description = get_post_meta($page_id, 'careers_hero_description', true) ?: __('We are building a workplace that prioritizes clinician burnout prevention, professional growth, and assent-based care. If you love kids but hate "the grind," you belong here.', 'earlystart-early-learning');
+	$hero_button_text = get_post_meta($page_id, 'careers_hero_button_text', true) ?: __('View Open Positions', 'earlystart-early-learning');
+	$hero_button_url = get_post_meta($page_id, 'careers_hero_button_url', true) ?: '#openings';
+	$culture_title = get_post_meta($page_id, 'careers_culture_title', true) ?: __('Why Clinicians Choose Early Start', 'earlystart-early-learning');
+	$culture_description = get_post_meta($page_id, 'careers_culture_description', true) ?: __('We take care of our team so they can take care of our families.', 'earlystart-early-learning');
+	$openings_title = get_post_meta($page_id, 'careers_openings_title', true) ?: __('Current Opportunities', 'earlystart-early-learning');
+	$cta_title = get_post_meta($page_id, 'careers_cta_title', true) ?: __('New to the field? We\'ll train you.', 'earlystart-early-learning');
+	$cta_description = get_post_meta($page_id, 'careers_cta_description', true) ?: __('We offer a paid RBT Training Program for compassionate individuals. We cover your 40-hour coursework, background checks, and exam fees.', 'earlystart-early-learning');
+	$cta_button_text = get_post_meta($page_id, 'careers_cta_button_text', true) ?: __('Apply for Training', 'earlystart-early-learning');
+	$cta_button_url = get_post_meta($page_id, 'careers_cta_button_url', true) ?: earlystart_get_page_link('contact');
 
 	// Fetch jobs from API or internal logic
 	$jobs = function_exists('earlystart_get_careers') ? earlystart_get_careers() : array();
+	$benefits = array();
+	for ($i = 1; $i <= 3; $i++) {
+		$benefits[] = array(
+			'icon' => get_post_meta($page_id, "careers_benefit{$i}_icon", true),
+			'title' => get_post_meta($page_id, "careers_benefit{$i}_title", true),
+			'desc' => get_post_meta($page_id, "careers_benefit{$i}_desc", true),
+			'color' => array(1 => 'rose', 2 => 'orange', 3 => 'amber')[$i],
+		);
+	}
+	$fallback_jobs = array();
+	for ($i = 1; $i <= 3; $i++) {
+		$title = get_post_meta($page_id, "careers_job{$i}_title", true);
+		if ($title) {
+			$fallback_jobs[] = array(
+				'title' => $title,
+				'location' => get_post_meta($page_id, "careers_job{$i}_location", true),
+				'type' => get_post_meta($page_id, "careers_job{$i}_type", true),
+				'url' => get_post_meta($page_id, "careers_job{$i}_url", true),
+				'description' => '',
+			);
+		}
+	}
+	$display_jobs = !empty($jobs) ? $jobs : $fallback_jobs;
 	?>
 
 	<main class="pt-20">
@@ -22,21 +57,18 @@ while (have_posts()):
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 				<span
 					class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
-					<?php _e('Join Our Team', 'earlystart-early-learning'); ?>
+					<?php echo esc_html($hero_badge); ?>
 				</span>
 				<h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
-					<?php _e('Do Your Best Work', 'earlystart-early-learning'); ?><br>
-					<span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">
-						<?php _e('With Us.', 'earlystart-early-learning'); ?>
-					</span>
+					<?php echo wp_kses_post($hero_title); ?>
 				</h1>
 				<p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
-					<?php _e('We are building a workplace that prioritizes clinician burnout prevention, professional growth, and assent-based care. If you love kids but hate "the grind," you belong here.', 'earlystart-early-learning'); ?>
+					<?php echo esc_html($hero_description); ?>
 				</p>
 				<div class="mt-10 fade-in-up">
-					<a href="#openings"
+					<a href="<?php echo esc_url($hero_button_url); ?>"
 						class="bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-stone-800 transition-all shadow-lg inline-flex items-center">
-						<?php _e('View Open Positions', 'earlystart-early-learning'); ?>
+						<?php echo esc_html($hero_button_text); ?>
 						<i data-lucide="arrow-down" class="ml-2 w-5 h-5"></i>
 					</a>
 				</div>
@@ -48,25 +80,23 @@ while (have_posts()):
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="text-center mb-16 fade-in-up">
 					<h2 class="text-3xl font-bold text-stone-900 mb-4">
-						<?php _e('Why Clinicians Choose Early Start', 'earlystart-early-learning'); ?></h2>
+						<?php echo esc_html($culture_title); ?></h2>
 					<p class="text-stone-700">
-						<?php _e('We take care of our team so they can take care of our families.', 'earlystart-early-learning'); ?>
+						<?php echo esc_html($culture_description); ?>
 					</p>
 				</div>
 
 				<div class="grid md:grid-cols-3 gap-8">
-					<?php
-					$benefits = array(
-						array('icon' => 'scale', 'title' => 'Manageable Caseloads', 'desc' => 'We cap our BCBA caseloads below industry standards to ensure you have time for quality supervision and parent training.', 'color' => 'rose'),
-						array('icon' => 'graduation-cap', 'title' => 'Free Supervision', 'desc' => 'For RBTs pursuing their BCBA, we offer free, high-quality restricted and unrestricted supervision hours with mentorship.', 'color' => 'orange'),
-						array('icon' => 'heart-handshake', 'title' => 'Full Benefits', 'desc' => 'Competitive salary, health/dental/vision insurance, 401k matching, and generous paid time off for full-time staff.', 'color' => 'amber'),
-					);
-					foreach ($benefits as $b): ?>
+					<?php foreach ($benefits as $b): ?>
 						<div
 							class="bg-white p-10 rounded-[2.5rem] shadow-sm border border-stone-100 group hover:shadow-lg transition-all fade-in-up">
 							<div
 								class="w-14 h-14 bg-<?php echo $b['color']; ?>-100 rounded-2xl flex items-center justify-center mb-6 text-<?php echo $b['color']; ?>-600 group-hover:scale-110 transition-transform">
-								<i data-lucide="<?php echo $b['icon']; ?>" class="w-7 h-7"></i>
+								<?php if (!empty($b['icon']) && 0 === strpos($b['icon'], 'fa-')): ?>
+									<i class="<?php echo esc_attr($b['icon']); ?> text-2xl"></i>
+								<?php else: ?>
+									<i data-lucide="<?php echo esc_attr($b['icon'] ?: 'sparkles'); ?>" class="w-7 h-7"></i>
+								<?php endif; ?>
 							</div>
 							<h3 class="text-xl font-bold text-stone-900 mb-4"><?php echo esc_html($b['title']); ?></h3>
 							<p class="text-stone-700 leading-relaxed text-sm">
@@ -86,7 +116,7 @@ while (have_posts()):
 						<span
 							class="text-rose-700 font-bold tracking-widest text-sm uppercase mb-2 block"><?php _e("We're Hiring", 'earlystart-early-learning'); ?></span>
 						<h2 class="text-3xl font-bold text-stone-900">
-							<?php _e('Current Opportunities', 'earlystart-early-learning'); ?></h2>
+							<?php echo esc_html($openings_title); ?></h2>
 					</div>
 					<div class="hidden md:block">
 						<span
@@ -95,8 +125,8 @@ while (have_posts()):
 				</div>
 
 				<div class="space-y-6">
-					<?php if (!empty($jobs)): ?>
-						<?php foreach ($jobs as $job): ?>
+					<?php if (!empty($display_jobs)): ?>
+						<?php foreach ($display_jobs as $job): ?>
 							<div
 								class="border border-stone-200 rounded-[2rem] p-8 hover:shadow-lg transition-shadow bg-stone-50/50 fade-in-up relative group">
 								<div class="md:flex justify-between items-start">
@@ -147,13 +177,13 @@ while (have_posts()):
 					<i data-lucide="sparkles" class="w-10 h-10 text-amber-300"></i>
 				</div>
 				<h2 class="text-3xl md:text-5xl font-bold mb-6">
-					<?php _e('New to the field? We\'ll train you.', 'earlystart-early-learning'); ?></h2>
+					<?php echo esc_html($cta_title); ?></h2>
 				<p class="text-white text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
-					<?php _e('We offer a paid RBT Training Program for compassionate individuals. We cover your 40-hour coursework, background checks, and exam fees.', 'earlystart-early-learning'); ?>
+					<?php echo esc_html($cta_description); ?>
 				</p>
-				<a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
+				<a href="<?php echo esc_url($cta_button_url); ?>"
 					class="bg-white text-rose-700 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-50 transition-colors shadow-2xl active:scale-95 inline-block">
-					<?php _e('Apply for Training', 'earlystart-early-learning'); ?>
+					<?php echo esc_html($cta_button_text); ?>
 				</a>
 			</div>
 		</section>

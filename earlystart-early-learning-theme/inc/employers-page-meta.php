@@ -423,8 +423,8 @@ function earlystart_seed_employers_page_defaults( $post_id ) {
 	// Default values array
 	$defaults = array(
 		'employers_hero_badge'       => 'Workforce Solutions',
-		'employers_hero_title'       => 'Childcare is critical infrastructure.',
-		'employers_hero_description' => 'Retain top talent and reduce absenteeism by offering premium childcare benefits. Early Start partners with Metro Atlanta\'s leading employers to support working parents.',
+		'employers_hero_title'       => 'Family support is workforce infrastructure.',
+		'employers_hero_description' => 'Retain top talent and reduce absenteeism by helping employees access trusted pediatric therapy and developmental support. Chroma Early Start partners with Metro Atlanta employers to support working families.',
 
 		'employers_solution1_title' => 'Priority Access',
 		'employers_solution1_desc'  => 'Skip the waitlist. Reserve dedicated spots at our 19+ locations exclusively for your employees\' children.',
@@ -437,19 +437,19 @@ function earlystart_seed_employers_page_defaults( $post_id ) {
 
 		'employers_tax_badge'       => 'Financial Incentives',
 		'employers_tax_title'       => 'Maximize Your ROI with Tax Credits',
-		'employers_tax_description' => 'Partnering with Early Start isn\'t just an investment in your company cultureit\'s a smart financial move. State and Federal programs significantly offset the cost of providing childcare benefits.',
+		'employers_tax_description' => 'Partnering with Chroma Early Start is not just a culture investment. Depending on program structure, tax incentives and workforce-support strategies may help offset family benefit costs.',
 
 		'employers_federal_icon'       => 'fa-solid fa-landmark',
 		'employers_federal_title'      => 'Federal 45F Credit',
-		'employers_federal_subtitle'   => 'Employer-Provided Child Care Credit',
-		'employers_federal_desc'       => 'Under the "One Big Beautiful Bill Act" (effective 2026), businesses can claim a tax credit of up to <strong>$500,000 annually</strong>. This covers <strong>40%</strong> of qualified childcare expenditures (rising to <strong>50%</strong> and <strong>$600,000</strong> for small businesses).',
+		'employers_federal_subtitle'   => 'Employer-Provided Care Credit',
+		'employers_federal_desc'       => 'Under the "One Big Beautiful Bill Act" (effective 2026), businesses can claim a tax credit of up to <strong>$500,000 annually</strong>. This covers <strong>40%</strong> of qualified family-support expenditures (rising to <strong>50%</strong> and <strong>$600,000</strong> for small businesses).',
 		'employers_federal_link_text'  => 'View IRS Form 8882',
 		'employers_federal_link_url'   => 'https://www.irs.gov/forms-pubs/about-form-8882',
 
 		'employers_georgia_icon'       => 'fa-solid fa-map-location-dot',
 		'employers_georgia_title'      => 'Georgia Employer\'s Credit',
-		'employers_georgia_subtitle'   => 'Georgia Child Care Tax Credit',
-		'employers_georgia_desc'       => 'Georgia maintains its generous <strong>75% credit</strong> for employer-sponsored care costs. New for 2026: Employers can also claim a supplemental credit of <strong>$1,000 per child</strong> for eligible childcare payments provided to employees.',
+		'employers_georgia_subtitle'   => 'Georgia Care Tax Credit',
+		'employers_georgia_desc'       => 'Georgia maintains its generous <strong>75% credit</strong> for employer-sponsored care costs. New for 2026: Employers can also claim a supplemental credit of <strong>$1,000 per child</strong> for eligible family-support payments provided to employees.',
 		'employers_georgia_link_text'  => 'View Georgia DOR Details',
 		'employers_georgia_link_url'   => 'https://dor.georgia.gov/tax-credits-business',
 

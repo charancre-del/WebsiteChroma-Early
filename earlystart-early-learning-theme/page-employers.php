@@ -12,8 +12,8 @@ $page_id = get_the_ID();
 
 // Hero Section
 $hero_badge = earlystart_get_translated_meta($page_id, 'employers_hero_badge') ?: __('Workforce Solutions', 'earlystart-early-learning');
-$hero_title = earlystart_get_translated_meta($page_id, 'employers_hero_title') ?: __('Childcare is critical infrastructure.', 'earlystart-early-learning');
-$hero_description = earlystart_get_translated_meta($page_id, 'employers_hero_description') ?: __('Retain top talent and reduce absenteeism by offering premium childcare benefits. Early Start partners with Metro Atlanta\'s leading employers to support working parents.', 'earlystart-early-learning');
+$hero_title = earlystart_get_translated_meta($page_id, 'employers_hero_title') ?: __('Family support is workforce infrastructure.', 'earlystart-early-learning');
+$hero_description = earlystart_get_translated_meta($page_id, 'employers_hero_description') ?: __('Retain top talent and reduce absenteeism by helping employees access trusted pediatric therapy and developmental support. Chroma Early Start partners with Metro Atlanta employers to support working families.', 'earlystart-early-learning');
 
 // Solutions Section (3 cards)
 $solutions = array(
@@ -34,21 +34,21 @@ $solutions = array(
 // Tax Incentives Section
 $tax_badge = earlystart_get_translated_meta($page_id, 'employers_tax_badge') ?: __('Financial Incentives', 'earlystart-early-learning');
 $tax_title = earlystart_get_translated_meta($page_id, 'employers_tax_title') ?: __('Maximize Your ROI with Tax Credits', 'earlystart-early-learning');
-$tax_description = earlystart_get_translated_meta($page_id, 'employers_tax_description') ?: __('Partnering with Early Start isn\'t just an investment in your company culture—it\'s a smart financial move. State and Federal programs significantly offset the cost of providing childcare benefits.', 'earlystart-early-learning');
+$tax_description = earlystart_get_translated_meta($page_id, 'employers_tax_description') ?: __('Partnering with Chroma Early Start is not just a culture investment. Depending on your program structure, tax incentives and workforce-support strategies may help offset family benefit costs.', 'earlystart-early-learning');
 
 // Federal Credit Card
 $federal_icon = earlystart_get_translated_meta($page_id, 'employers_federal_icon') ?: 'fa-solid fa-landmark';
 $federal_title = earlystart_get_translated_meta($page_id, 'employers_federal_title') ?: __('Federal 45F Credit', 'earlystart-early-learning');
-$federal_subtitle = earlystart_get_translated_meta($page_id, 'employers_federal_subtitle') ?: __('Employer-Provided Child Care Credit', 'earlystart-early-learning');
-$federal_desc = earlystart_get_translated_meta($page_id, 'employers_federal_desc') ?: __('Under the "One Big Beautiful Bill Act" (effective 2026), businesses can claim a tax credit of up to <strong>$500,000 annually</strong>. This covers <strong>40%</strong> of qualified childcare expenditures (rising to <strong>50%</strong> and <strong>$600,000</strong> for small businesses).', 'earlystart-early-learning');
+$federal_subtitle = earlystart_get_translated_meta($page_id, 'employers_federal_subtitle') ?: __('Employer-Provided Care Credit', 'earlystart-early-learning');
+$federal_desc = earlystart_get_translated_meta($page_id, 'employers_federal_desc') ?: __('Under the "One Big Beautiful Bill Act" (effective 2026), businesses can claim a tax credit of up to <strong>$500,000 annually</strong>. This covers <strong>40%</strong> of qualified family-support expenditures (rising to <strong>50%</strong> and <strong>$600,000</strong> for small businesses).', 'earlystart-early-learning');
 $federal_link_text = earlystart_get_translated_meta($page_id, 'employers_federal_link_text') ?: __('View IRS Form 8882', 'earlystart-early-learning');
 $federal_link_url = earlystart_get_translated_meta($page_id, 'employers_federal_link_url') ?: 'https://www.irs.gov/forms-pubs/about-form-8882';
 
 // Georgia Credit Card
 $georgia_icon = earlystart_get_translated_meta($page_id, 'employers_georgia_icon') ?: 'fa-solid fa-map-location-dot';
 $georgia_title = earlystart_get_translated_meta($page_id, 'employers_georgia_title') ?: __('Georgia Employer\'s Credit', 'earlystart-early-learning');
-$georgia_subtitle = earlystart_get_translated_meta($page_id, 'employers_georgia_subtitle') ?: __('Georgia Child Care Tax Credit', 'earlystart-early-learning');
-$georgia_desc = earlystart_get_translated_meta($page_id, 'employers_georgia_desc') ?: __('Georgia maintains its generous <strong>75% credit</strong> for employer-sponsored care costs. New for 2026: Employers can also claim a supplemental credit of <strong>$1,000 per child</strong> for eligible childcare payments provided to employees.', 'earlystart-early-learning');
+$georgia_subtitle = earlystart_get_translated_meta($page_id, 'employers_georgia_subtitle') ?: __('Georgia Care Tax Credit', 'earlystart-early-learning');
+$georgia_desc = earlystart_get_translated_meta($page_id, 'employers_georgia_desc') ?: __('Georgia maintains its generous <strong>75% credit</strong> for employer-sponsored care costs. New for 2026: Employers can also claim a supplemental credit of <strong>$1,000 per child</strong> for eligible family-support payments provided to employees.', 'earlystart-early-learning');
 $georgia_link_text = earlystart_get_translated_meta($page_id, 'employers_georgia_link_text') ?: __('View Georgia DOR Details', 'earlystart-early-learning');
 $georgia_link_url = earlystart_get_translated_meta($page_id, 'employers_georgia_link_url') ?: 'https://dor.georgia.gov/tax-credits-business';
 
@@ -68,7 +68,7 @@ $contact_title = earlystart_get_translated_meta($page_id, 'employers_contact_tit
 					<?php echo esc_html($hero_badge); ?>
 				</span>
 				<h1 class="font-serif text-5xl md:text-6xl text-brand-ink mb-6">
-					<?php _e('Corporate Childcare Solutions:', 'earlystart-early-learning'); ?> <span class="italic text-chroma-blue"><?php _e('Critical Infrastructure for Your Team', 'earlystart-early-learning'); ?></span>
+					<?php _e('Employer Family Support Solutions:', 'earlystart-early-learning'); ?> <span class="italic text-chroma-blue"><?php _e('Practical support for your team', 'earlystart-early-learning'); ?></span>
 				</h1>
 				<p class="text-lg text-brand-ink/80 max-w-2xl mx-auto">
 					<?php echo esc_html($hero_description); ?>

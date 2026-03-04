@@ -927,7 +927,7 @@ function earlystart_home_locations_preview()
         $meta_cta_label = earlystart_get_translated_meta($post_id, 'home_locations_cta_label', true);
 
         $heading = sanitize_text_field($meta_heading ?: earlystart_get_theme_mod('earlystart_home_locations_heading', '19+ neighborhood locations across Metro Atlanta'));
-        $subheading = sanitize_text_field($meta_subheading ?: earlystart_get_theme_mod('earlystart_home_locations_subheading', 'Find a Early Start campus near your home or work. All locations share the same safety standards, curriculum framework, and warm Early Start culture.'));
+        $subheading = sanitize_text_field($meta_subheading ?: earlystart_get_theme_mod('earlystart_home_locations_subheading', 'Find a Chroma Early Start clinic near your home or work. All locations share the same safety standards, care model, and family-centered culture.'));
         $cta_label = sanitize_text_field($meta_cta_label ?: earlystart_get_theme_mod('earlystart_home_locations_cta_label', 'View All Locations'));
         $cta_link = earlystart_get_localized_url(esc_url_raw(earlystart_get_theme_mod('earlystart_home_locations_cta_link', '/locations/')));
         $taxonomy = 'location_region';
@@ -1064,7 +1064,7 @@ function earlystart_home_tour_cta()
 {
         return array(
                 'heading' => 'Schedule a private tour',
-                'subheading' => 'Share a few details and your preferred campus. A Early Start Director will reach out to confirm tour times.',
+                'subheading' => 'Share a few details and your preferred clinic. A Chroma Early Start team member will reach out to confirm visit times.',
                 'trust_text' => 'No obligation. We’ll never share your information.',
         );
 }
@@ -1110,19 +1110,19 @@ function earlystart_home_default_parent_reviews()
         return array(
                 array(
                         'name' => 'Sarah M.',
-                        'location' => __('Marietta Campus', 'earlystart-early-learning'),
+                        'location' => __('Marietta Clinic', 'earlystart-early-learning'),
                         'rating' => '5',
                         'review' => __('Our daughter has flourished at Early Start. The teachers genuinely care, and the Prismpath curriculum has her excited to learn every day. We couldn\'t ask for a better early learning experience.', 'earlystart-early-learning'),
                 ),
                 array(
                         'name' => 'James & Lisa T.',
-                        'location' => __('Johns Creek Campus', 'earlystart-early-learning'),
+                        'location' => __('Johns Creek Clinic', 'earlystart-early-learning'),
                         'rating' => '5',
                         'review' => __('After touring several centers, Early Start stood out immediately. The transparency, the warmth, and the expert care made our decision easy. Our son has been there for two years and we\'ve never looked back.', 'earlystart-early-learning'),
                 ),
                 array(
                         'name' => 'Maria G.',
-                        'location' => __('Austell Campus', 'earlystart-early-learning'),
+                        'location' => __('Austell Clinic', 'earlystart-early-learning'),
                         'rating' => '5',
                         'review' => __('The family-style meals, the daily communication, the beautiful facilities — everything exceeds expectations. Early Start feels like an extension of our family, and our twins are thriving.', 'earlystart-early-learning'),
                 ),
