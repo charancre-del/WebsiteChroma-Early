@@ -30,6 +30,22 @@ $optimize_unsplash = static function ($url, $width, $height = 900, $quality = 70
 	return (string) $url;
 };
 
+$normalize_url = static function ($value) {
+	if (is_string($value)) {
+		return trim($value);
+	}
+
+	if (is_array($value)) {
+		foreach (array('url', 'link', 'href') as $key) {
+			if (!empty($value[$key]) && is_string($value[$key])) {
+				return trim($value[$key]);
+			}
+		}
+	}
+
+	return '';
+};
+
 while (have_posts()):
 	the_post();
 	$location_id = get_the_ID();
@@ -93,8 +109,8 @@ while (have_posts()):
 
 	$maps_embed = $get_location_meta($location_id, 'location_maps_embed');
 	$virtual_tour_embed = $get_location_meta($location_id, 'location_virtual_tour_embed');
-	$tour_booking_link = $get_location_meta($location_id, 'location_tour_booking_link');
-	$gmb_url = $get_location_meta($location_id, 'location_gmb_url');
+	$tour_booking_link = $normalize_url($get_location_meta($location_id, 'location_tour_booking_link'));
+	$gmb_url = $normalize_url($get_location_meta($location_id, 'location_gmb_url'));
 	$seo_content_title = $get_location_meta($location_id, 'location_seo_content_title');
 	$seo_content_text = $get_location_meta($location_id, 'location_seo_content_text');
 	$service_areas_raw = $get_location_meta($location_id, 'location_service_areas');
@@ -226,6 +242,7 @@ while (have_posts()):
 			$gmb_url = $location_live_url;
 		}
 	}
+	$gmb_url = $normalize_url($gmb_url);
 	$is_google_profile_link = is_string($gmb_url) && (
 		strpos($gmb_url, 'google.') !== false ||
 		strpos($gmb_url, 'maps.') !== false
