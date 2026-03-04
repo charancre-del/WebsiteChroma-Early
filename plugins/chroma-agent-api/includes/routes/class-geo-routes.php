@@ -137,7 +137,7 @@ class Geo_Routes
                 'brand' => ['name', 'description', 'site_url', 'contact'],
                 'curriculum' => ['prismpath', 'chroma_spectrum'],
                 'locations_list' => [
-                    'location_id', 'slug', 'campus_name', 'canonical_url', 'last_updated_gmt',
+                    'location_id', 'slug', 'campus_name', 'canonical_url', 'url', 'location_url', 'last_updated_gmt',
                     'record_hash', 'verification_status', 'address', 'geo', 'service_radius_miles',
                     'programs', 'features', 'campus_contact', 'hours', 'short_description', 'policies_summary',
                 ],
@@ -150,7 +150,7 @@ class Geo_Routes
                     'short_description', 'age_range', 'features', 'locations_served', 'lesson_plan_url', 'faqs',
                 ],
                 'events' => [
-                    'location_id', 'location_name', 'location_canonical_url', 'name',
+                    'location_id', 'location_name', 'location_canonical_url', 'location_url', 'name',
                     'start', 'description', 'url', 'last_updated_gmt',
                 ],
             ],
@@ -453,6 +453,9 @@ class Geo_Routes
                 'slug' => (string) $post->post_name,
                 'campus_name' => get_the_title($post_id),
                 'canonical_url' => get_permalink($post_id),
+                // Backward-compatible aliases used by older downstream consumers.
+                'url' => get_permalink($post_id),
+                'location_url' => get_permalink($post_id),
                 'last_updated_gmt' => self::get_post_last_updated_gmt($post_id),
                 'record_hash' => null,
                 'verification_status' => self::determine_location_verification_status($address),
@@ -585,6 +588,7 @@ class Geo_Routes
                     'location_id' => $location_id,
                     'location_name' => $location_name,
                     'location_canonical_url' => $location_url,
+                    'location_url' => $location_url,
                     'name' => self::nullable_string($event['name'] ?? ''),
                     'start' => self::nullable_string($event['start'] ?? ''),
                     'description' => self::nullable_string($event['description'] ?? ''),
@@ -598,6 +602,7 @@ class Geo_Routes
                     'location_id' => $location_id,
                     'location_name' => $location_name,
                     'location_canonical_url' => $location_url,
+                    'location_url' => $location_url,
                     'name' => 'Open House',
                     'start' => (string) $location['open_house_date'],
                     'description' => null,
@@ -789,6 +794,9 @@ class Geo_Routes
             'slug' => $location['slug'] ?? null,
             'campus_name' => $location['campus_name'] ?? null,
             'canonical_url' => $location['canonical_url'] ?? null,
+            // Backward-compatible aliases.
+            'url' => $location['canonical_url'] ?? null,
+            'location_url' => $location['canonical_url'] ?? null,
             'last_updated_gmt' => $location['last_updated_gmt'] ?? null,
             'record_hash' => $location['record_hash'] ?? null,
             'verification_status' => $location['verification_status'] ?? null,
