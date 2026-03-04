@@ -296,10 +296,10 @@ while (have_posts()):
 	}
 	?>
 
-	<main class="pt-20">
+		<div class="location-page-content">
 		<!-- Premium Hero Section -->
-		<section
-			class="relative pt-24 pb-32 lg:pt-32 lg:pb-40 bg-stone-900 flex items-center justify-center overflow-hidden">
+			<section
+				class="relative pt-16 pb-24 lg:pt-24 lg:pb-32 bg-stone-900 flex items-center justify-center overflow-hidden">
 			<?php if ($hero_image_markup): ?>
 				<?php echo $hero_image_markup; ?>
 			<?php endif; ?>
@@ -359,8 +359,8 @@ while (have_posts()):
 			<div class="absolute bottom-0 w-full h-16 bg-stone-50 rounded-t-[100%] z-20 translate-y-1/2 scale-x-110"></div>
 		</section>
 
-		<section class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-			<div class="grid lg:grid-cols-12 gap-12">
+			<section class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+				<div class="grid lg:grid-cols-12 gap-12 items-start">
 				<div class="lg:col-span-8 space-y-24">
 					<div class="prose prose-lg text-stone-600 max-w-none">
 						<h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
@@ -678,30 +678,32 @@ while (have_posts()):
 						</div>
 					<?php endif; ?>
 
-						<div class="mt-16 pt-16 border-t border-stone-200">
-							<div class="flex items-center gap-3 mb-8">
-								<h3 class="text-3xl font-bold text-stone-900">
-									<?php echo esc_html($faq_heading); ?></h3>
-								<div class="flex-1 h-px bg-stone-200 ml-4"></div>
-							</div>
-							<div class="space-y-4">
-							<?php foreach ($location_faqs as $index => $item): ?>
-								<div class="bg-white border border-stone-200 rounded-2xl p-6 cursor-pointer transition-colors <?php echo esc_attr($faq_hover_border_class); ?>"
-									data-faq-item>
-									<div class="flex justify-between items-center">
-										<h4 class="font-bold text-stone-800"><?php echo esc_html($item['question']); ?></h4>
-										<i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-stone-400"></i>
-									</div>
-									<div class="faq-answer text-stone-600 mt-0">
-										<p class="pt-4"><?php echo wp_kses_post($item['answer']); ?></p>
-									</div>
+						<?php if (!empty($location_faqs)): ?>
+							<div class="mt-16 pt-16 border-t border-stone-200">
+								<div class="flex items-center gap-3 mb-8">
+									<h3 class="text-3xl font-bold text-stone-900">
+										<?php echo esc_html($faq_heading); ?></h3>
+									<div class="flex-1 h-px bg-stone-200 ml-4"></div>
 								</div>
-							<?php endforeach; ?>
-						</div>
-					</div>
+								<div class="space-y-4">
+									<?php foreach ($location_faqs as $index => $item): ?>
+										<div class="bg-white border border-stone-200 rounded-2xl p-6 cursor-pointer transition-colors <?php echo esc_attr($faq_hover_border_class); ?>"
+											data-faq-item>
+											<div class="flex justify-between items-center">
+												<h4 class="font-bold text-stone-800"><?php echo esc_html($item['question']); ?></h4>
+												<i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-stone-400"></i>
+											</div>
+											<div class="faq-answer text-stone-600 mt-0">
+												<p class="pt-4"><?php echo wp_kses_post($item['answer']); ?></p>
+											</div>
+										</div>
+									<?php endforeach; ?>
+								</div>
+							</div>
+						<?php endif; ?>
 				</div>
 
-				<div class="lg:col-span-4" id="tour">
+					<div class="lg:col-span-4 self-start" id="tour">
 					<div class="lg:sticky lg:top-24 space-y-6">
 						<div class="bg-white rounded-[2rem] p-8 shadow-xl border border-stone-100 relative overflow-hidden">
 							<div
@@ -785,17 +787,19 @@ while (have_posts()):
 							</div>
 						</div>
 
-						<div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
-							<h4 class="font-bold text-stone-900 mb-4 flex items-center">
-								<i data-lucide="shield-check" class="w-5 h-5 text-green-500 mr-2"></i>
-								<?php _e('Insurance Accepted Here', 'earlystart-early-learning'); ?>
-							</h4>
-								<div class="flex flex-wrap gap-2 text-xs font-bold text-stone-600">
-									<?php foreach ($supported_insurances as $insurance): ?>
-									<span class="bg-stone-50 px-3 py-1.5 rounded-lg border border-stone-200"><?php echo esc_html($insurance); ?></span>
-								<?php endforeach; ?>
-							</div>
-						</div>
+							<?php if (!empty($supported_insurances)): ?>
+								<div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
+									<h4 class="font-bold text-stone-900 mb-4 flex items-center">
+										<i data-lucide="shield-check" class="w-5 h-5 text-green-500 mr-2"></i>
+										<?php _e('Insurance Accepted Here', 'earlystart-early-learning'); ?>
+									</h4>
+									<div class="flex flex-wrap gap-2 text-xs font-bold text-stone-600">
+										<?php foreach ($supported_insurances as $insurance): ?>
+											<span class="bg-stone-50 px-3 py-1.5 rounded-lg border border-stone-200"><?php echo esc_html($insurance); ?></span>
+										<?php endforeach; ?>
+									</div>
+								</div>
+							<?php endif; ?>
 
 						<?php if (!empty($service_areas) || !empty($school_pickups)): ?>
 							<div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
@@ -910,7 +914,7 @@ while (have_posts()):
 				<?php endif; ?>
 			</div>
 		</section>
-	</main>
+		</div>
 
 <?php endwhile; ?>
 
