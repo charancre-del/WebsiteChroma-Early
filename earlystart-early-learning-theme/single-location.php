@@ -132,11 +132,26 @@ while (have_posts()):
 
 	$hero_gallery = array();
 	if (!empty($hero_gallery_raw)) {
-		$lines = explode("\n", $hero_gallery_raw);
-		foreach ($lines as $line) {
-			$url = trim($line);
+		if (is_array($hero_gallery_raw)) {
+			$gallery_candidates = $hero_gallery_raw;
+		} elseif (is_string($hero_gallery_raw)) {
+			$gallery_candidates = preg_split('/\r\n|\r|\n/', $hero_gallery_raw);
+		} else {
+			$gallery_candidates = array((string) $hero_gallery_raw);
+		}
+
+		foreach ((array) $gallery_candidates as $candidate) {
+			$url = '';
+			if (is_string($candidate)) {
+				$url = trim($candidate);
+			} elseif (is_numeric($candidate)) {
+				$url = (string) wp_get_attachment_image_url((int) $candidate, 'full');
+			} elseif (is_array($candidate) && !empty($candidate['url']) && is_string($candidate['url'])) {
+				$url = trim($candidate['url']);
+			}
+
 			if (!empty($url) && filter_var($url, FILTER_VALIDATE_URL)) {
-				$hero_gallery[] = esc_url($url);
+				$hero_gallery[] = esc_url_raw($url);
 			}
 		}
 	}
@@ -197,7 +212,11 @@ while (have_posts()):
 		$hero_image_markup .= ' alt="' . esc_attr($hero_image_alt) . '" class="absolute inset-0 w-full h-full object-cover" width="1600" height="900" fetchpriority="high" loading="eager" decoding="async">';
 	}
 
-	$map_query = trim($address . ', ' . $city . ', ' . $state . ' ' . $zip);
+	$address_text = is_scalar($address) ? (string) $address : '';
+	$city_text = is_scalar($city) ? (string) $city : '';
+	$state_text = is_scalar($state) ? (string) $state : '';
+	$zip_text = is_scalar($zip) ? (string) $zip : '';
+	$map_query = trim($address_text . ', ' . $city_text . ', ' . $state_text . ' ' . $zip_text);
 	$map_link = $map_query ? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($map_query) : '#';
 	$location_live_url = get_permalink($location_id);
 	if (empty($gmb_url)) {
