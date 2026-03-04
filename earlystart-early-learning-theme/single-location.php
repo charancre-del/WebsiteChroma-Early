@@ -42,6 +42,35 @@ while (have_posts()):
 	$maps_embed = earlystart_get_translated_meta($location_id, 'location_maps_embed');
 	$tour_booking_link = earlystart_get_translated_meta($location_id, 'location_tour_booking_link');
 	$is_clinic_hub = '1' === get_post_meta($location_id, 'location_featured', true);
+	$is_partner_location = !$is_clinic_hub;
+
+	$location_type_label = $is_clinic_hub ? __('Clinic Location', 'earlystart-early-learning') : __('Partner Location', 'earlystart-early-learning');
+	$location_type_icon = $is_clinic_hub ? 'stethoscope' : 'school';
+	$location_type_icon_color = $is_clinic_hub ? 'text-rose-300' : 'text-blue-300';
+
+	$hero_badge_classes = $is_clinic_hub
+		? 'bg-rose-500/20 border-rose-400/30 text-rose-200'
+		: 'bg-blue-500/20 border-blue-400/30 text-blue-200';
+	$hero_badge_dot_class = $is_clinic_hub ? 'bg-rose-400' : 'bg-blue-400';
+	$hero_pin_class = $is_clinic_hub ? 'text-rose-500' : 'text-blue-400';
+
+	$hours_label = $is_clinic_hub ? __('Clinic Hours', 'earlystart-early-learning') : __('Partner Hours', 'earlystart-early-learning');
+	$inside_heading = $is_clinic_hub ? __('Inside Our Clinic', 'earlystart-early-learning') : __('Inside Our Partner Location', 'earlystart-early-learning');
+	$faq_heading = $is_clinic_hub ? __('Clinic FAQs', 'earlystart-early-learning') : __('Partner Location FAQs', 'earlystart-early-learning');
+	$tour_heading = $is_clinic_hub ? __('Book a Tour', 'earlystart-early-learning') : __('Book a Visit', 'earlystart-early-learning');
+	$tour_description = $is_clinic_hub
+		? __('Come see the facility and meet our team. No commitment required.', 'earlystart-early-learning')
+		: __('Come see the partner location and meet our local team. No commitment required.', 'earlystart-early-learning');
+	$details_heading = $is_clinic_hub ? __('Clinic Details', 'earlystart-early-learning') : __('Partner Location Details', 'earlystart-early-learning');
+
+	$cta_gradient_classes = $is_clinic_hub
+		? 'bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500'
+		: 'bg-gradient-to-r from-blue-500 via-cyan-500 to-indigo-500';
+	$cta_button_classes = $is_clinic_hub ? 'bg-rose-600 hover:bg-rose-700' : 'bg-blue-600 hover:bg-blue-700';
+	$accent_text_class = $is_clinic_hub ? 'text-rose-600' : 'text-blue-600';
+	$faq_hover_border_class = $is_clinic_hub ? 'hover:border-rose-300' : 'hover:border-blue-300';
+	$map_card_icon_classes = $is_clinic_hub ? 'bg-rose-100 text-rose-600' : 'bg-blue-100 text-blue-600';
+	$map_open_button_classes = $is_clinic_hub ? 'hover:bg-rose-600' : 'hover:bg-blue-600';
 
 	$hero_gallery = array();
 	if (!empty($hero_gallery_raw)) {
@@ -104,23 +133,19 @@ while (have_posts()):
 
 			<div class="relative z-20 text-center text-white px-4 max-w-4xl mx-auto fade-in-up">
 				<span
-					class="inline-flex items-center px-4 py-2 bg-rose-500/20 border border-rose-400/30 text-rose-200 rounded-full text-xs font-bold tracking-widest uppercase mb-6 shadow-lg backdrop-blur-md">
-					<span class="w-2 h-2 bg-rose-400 rounded-full mr-2 animate-pulse"></span>
+					class="inline-flex items-center px-4 py-2 border rounded-full text-xs font-bold tracking-widest uppercase mb-6 shadow-lg backdrop-blur-md <?php echo esc_attr($hero_badge_classes); ?>">
+					<span class="w-2 h-2 rounded-full mr-2 animate-pulse <?php echo esc_attr($hero_badge_dot_class); ?>"></span>
 					<?php echo esc_html($hero_subtitle); ?>
 				</span>
 				<span
 					class="inline-flex items-center px-4 py-2 bg-white/10 border border-white/20 text-white rounded-full text-xs font-bold tracking-widest uppercase mb-6 shadow-lg backdrop-blur-md">
-					<?php if ($is_clinic_hub): ?>
-						<i data-lucide="stethoscope" class="w-4 h-4 mr-2 text-rose-300"></i>
-						<?php _e('Clinic Location', 'earlystart-early-learning'); ?>
-					<?php else: ?>
-						<i data-lucide="school" class="w-4 h-4 mr-2 text-blue-300"></i>
-						<?php _e('Partner Location', 'earlystart-early-learning'); ?>
-					<?php endif; ?>
+					<i data-lucide="<?php echo esc_attr($location_type_icon); ?>"
+						class="w-4 h-4 mr-2 <?php echo esc_attr($location_type_icon_color); ?>"></i>
+					<?php echo esc_html($location_type_label); ?>
 				</span>
 				<h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight"><?php echo esc_html($location_name); ?></h1>
 				<p class="text-xl text-stone-300 mb-10 flex items-center justify-center gap-2">
-					<i data-lucide="map-pin" class="w-5 h-5 text-rose-500"></i>
+					<i data-lucide="map-pin" class="w-5 h-5 <?php echo esc_attr($hero_pin_class); ?>"></i>
 					<?php echo esc_html($address); ?>	<?php echo $city ? ', ' . esc_html($city) : ''; ?>	<?php echo $state ? ', ' . esc_html($state) : ''; ?>	<?php echo $zip ? ' ' . esc_html($zip) : ''; ?>
 				</p>
 
@@ -140,7 +165,7 @@ while (have_posts()):
 						<div class="text-left">
 							<span class="block text-sm font-bold"><?php echo esc_html($hours); ?></span>
 							<span
-								class="block text-xs text-stone-400"><?php _e('Clinic Hours', 'earlystart-early-learning'); ?></span>
+								class="block text-xs text-stone-400"><?php echo esc_html($hours_label); ?></span>
 						</div>
 					</div>
 					<div
@@ -252,7 +277,7 @@ while (have_posts()):
 					<div>
 						<div class="flex items-center gap-3 mb-8">
 							<h3 class="text-2xl font-bold text-stone-900">
-								<?php _e('Inside Our Clinic', 'earlystart-early-learning'); ?></h3>
+								<?php echo esc_html($inside_heading); ?></h3>
 							<div class="flex-1 h-px bg-stone-200 ml-4"></div>
 						</div>
 						<div class="grid sm:grid-cols-2 gap-6">
@@ -335,7 +360,7 @@ while (have_posts()):
 							<h3 class="text-2xl font-bold text-stone-900">
 								<?php _e('Take a Look Inside', 'earlystart-early-learning'); ?></h3>
 							<a href="#tour"
-								class="text-rose-600 font-bold text-sm hover:underline flex items-center"><?php _e('Book a Tour', 'earlystart-early-learning'); ?>
+								class="<?php echo esc_attr($accent_text_class); ?> font-bold text-sm hover:underline flex items-center"><?php echo esc_html($tour_heading); ?>
 								<i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i></a>
 						</div>
 						<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -411,7 +436,7 @@ while (have_posts()):
 									<h4 class="text-2xl font-bold text-stone-900">
 										<?php echo esc_html($director_name ?: __('Clinical Director', 'earlystart-early-learning')); ?>
 									</h4>
-									<p class="text-rose-600 font-bold text-sm uppercase tracking-wide mb-3">
+									<p class="<?php echo esc_attr($accent_text_class); ?> font-bold text-sm uppercase tracking-wide mb-3">
 										<?php _e('Clinical Director', 'earlystart-early-learning'); ?></p>
 									<p class="text-stone-600 italic mb-4 text-sm leading-relaxed">
 										<?php echo esc_html($director_bio ?: __('Our clinical leadership team is dedicated to creating a joyful, evidence-based environment for every child.', 'earlystart-early-learning')); ?>
@@ -459,15 +484,15 @@ while (have_posts()):
 						</div>
 					<?php endif; ?>
 
-					<div class="mt-16 pt-16 border-t border-stone-200">
-						<div class="flex items-center gap-3 mb-8">
-							<h3 class="text-3xl font-bold text-stone-900">
-								<?php _e('Clinic FAQs', 'earlystart-early-learning'); ?></h3>
-							<div class="flex-1 h-px bg-stone-200 ml-4"></div>
-						</div>
-						<div class="space-y-4">
+						<div class="mt-16 pt-16 border-t border-stone-200">
+							<div class="flex items-center gap-3 mb-8">
+								<h3 class="text-3xl font-bold text-stone-900">
+									<?php echo esc_html($faq_heading); ?></h3>
+								<div class="flex-1 h-px bg-stone-200 ml-4"></div>
+							</div>
+							<div class="space-y-4">
 							<?php foreach ($location_faqs as $index => $item): ?>
-								<div class="bg-white border border-stone-200 rounded-2xl p-6 cursor-pointer hover:border-rose-300 transition-colors"
+								<div class="bg-white border border-stone-200 rounded-2xl p-6 cursor-pointer transition-colors <?php echo esc_attr($faq_hover_border_class); ?>"
 									data-faq-item>
 									<div class="flex justify-between items-center">
 										<h4 class="font-bold text-stone-800"><?php echo esc_html($item['question']); ?></h4>
@@ -486,12 +511,12 @@ while (have_posts()):
 					<div class="sticky top-24 space-y-6">
 						<div class="bg-white rounded-[2rem] p-8 shadow-xl border border-stone-100 relative overflow-hidden">
 							<div
-								class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500">
+								class="absolute top-0 left-0 w-full h-2 <?php echo esc_attr($cta_gradient_classes); ?>">
 							</div>
 							<h3 class="text-2xl font-bold text-stone-900 mb-2 mt-2">
-								<?php _e('Book a Tour', 'earlystart-early-learning'); ?></h3>
+								<?php echo esc_html($tour_heading); ?></h3>
 							<p class="text-sm text-stone-500 mb-6">
-								<?php _e('Come see the facility and meet our team. No commitment required.', 'earlystart-early-learning'); ?>
+								<?php echo esc_html($tour_description); ?>
 							</p>
 							<div class="clinical-form">
 								<?php
@@ -505,7 +530,7 @@ while (have_posts()):
 							<?php if ($tour_booking_link): ?>
 								<div class="mt-6 pt-6 border-t border-stone-100 text-center">
 									<a href="<?php echo esc_url($tour_booking_link); ?>"
-										class="booking-btn w-full inline-flex items-center justify-center bg-rose-600 text-white py-3 rounded-xl font-bold hover:bg-rose-700 transition-colors shadow-md">
+										class="booking-btn w-full inline-flex items-center justify-center text-white py-3 rounded-xl font-bold transition-colors shadow-md <?php echo esc_attr($cta_button_classes); ?>">
 										<?php _e('Book Direct via Calendar', 'earlystart-early-learning'); ?>
 									</a>
 								</div>
@@ -514,11 +539,11 @@ while (have_posts()):
 
 						<div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
 							<h3 class="text-lg font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4">
-								<?php _e('Clinic Details', 'earlystart-early-learning'); ?></h3>
+								<?php echo esc_html($details_heading); ?></h3>
 							<div class="space-y-6 text-sm">
 								<div class="flex items-start group">
 									<div
-										class="w-10 h-10 bg-rose-50 rounded-full flex items-center justify-center text-rose-600 mr-4 shrink-0 group-hover:bg-rose-100 transition-colors">
+										class="w-10 h-10 rounded-full flex items-center justify-center mr-4 shrink-0 transition-colors <?php echo esc_attr($map_card_icon_classes); ?>">
 										<i data-lucide="map-pin" class="w-5 h-5"></i></div>
 									<div class="pt-1">
 										<p class="text-stone-900 font-medium">
@@ -526,7 +551,7 @@ while (have_posts()):
 										</p>
 										<?php if ($map_query): ?>
 											<a href="<?php echo esc_url($map_link); ?>"
-												class="text-rose-600 font-bold mt-1 block hover:underline" target="_blank"
+												class="<?php echo esc_attr($accent_text_class); ?> font-bold mt-1 block hover:underline" target="_blank"
 												rel="noopener">
 												<?php _e('Get Directions', 'earlystart-early-learning'); ?>
 											</a>
@@ -605,7 +630,7 @@ while (have_posts()):
 			<div
 				class="relative z-10 bg-white/95 backdrop-blur-md px-10 py-8 rounded-[2.5rem] shadow-2xl text-center border border-white max-w-sm w-full mx-4 transform hover:-translate-y-2 transition-transform duration-300">
 				<div
-					class="w-16 h-16 bg-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-rose-600 shadow-sm">
+					class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm <?php echo esc_attr($map_card_icon_classes); ?>">
 					<i data-lucide="map-pin" class="w-8 h-8"></i>
 				</div>
 				<h3 class="font-bold text-xl text-stone-900 mb-2"><?php echo esc_html($location_name); ?></h3>
@@ -613,7 +638,7 @@ while (have_posts()):
 					<?php echo esc_html($address); ?><br><?php echo esc_html($city . ', ' . $state . ' ' . $zip); ?></p>
 				<?php if ($map_query): ?>
 					<a href="<?php echo esc_url($map_link); ?>"
-						class="inline-flex items-center justify-center w-full bg-stone-900 text-white py-3 rounded-xl font-bold hover:bg-rose-600 transition-colors shadow-md"
+						class="inline-flex items-center justify-center w-full bg-stone-900 text-white py-3 rounded-xl font-bold transition-colors shadow-md <?php echo esc_attr($map_open_button_classes); ?>"
 						target="_blank" rel="noopener">
 						<?php _e('Open in Google Maps', 'earlystart-early-learning'); ?>
 					</a>

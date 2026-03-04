@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1024" viewBox="0 0 1440 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6fbff"/>
+      <stop offset="100%" stop-color="#eef4ff"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 44px 'Segoe UI', Arial, sans-serif; fill: #0f2544; }
+      .h2 { font: 700 28px 'Segoe UI', Arial, sans-serif; fill: #12345b; }
+      .text { font: 500 20px 'Segoe UI', Arial, sans-serif; fill: #304a6e; }
+      .label { font: 600 17px 'Segoe UI', Arial, sans-serif; fill: #4b6385; }
+      .btn { font: 700 20px 'Segoe UI', Arial, sans-serif; fill: #ffffff; }
+      .chip { font: 600 16px 'Segoe UI', Arial, sans-serif; fill: #1b3f70; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="1024" fill="url(#bg)"/>
+  <rect x="40" y="32" width="1360" height="72" rx="16" fill="#ffffff" stroke="#dce7f5"/>
+  <text x="80" y="78" class="h2">Location Template (Standard)</text>
+  <text x="1040" y="78" class="label">Nav: Services | Reviews | Contact</text>
+
+  <rect x="40" y="124" width="1360" height="250" rx="20" fill="#ffffff" stroke="#dce7f5"/>
+  <text x="80" y="194" class="title">Early Start Therapy - Downtown</text>
+  <text x="80" y="235" class="text">Personalized care, local specialists, same-week availability.</text>
+  <rect x="80" y="270" width="220" height="52" rx="10" fill="#0f5cc9"/>
+  <text x="118" y="303" class="btn">Book Assessment</text>
+  <rect x="320" y="270" width="200" height="52" rx="10" fill="#e8f1ff"/>
+  <text x="362" y="303" class="chip">Call Location</text>
+  <rect x="920" y="160" width="420" height="170" rx="14" fill="#edf4ff" stroke="#cddff7"/>
+  <text x="955" y="215" class="h2">Hours + Quick Facts</text>
+  <text x="955" y="252" class="label">Mon-Sat 8:00AM-7:00PM</text>
+  <text x="955" y="282" class="label">Insurance accepted</text>
+
+  <rect x="40" y="394" width="880" height="260" rx="20" fill="#ffffff" stroke="#dce7f5"/>
+  <text x="80" y="448" class="h2">Services at This Location</text>
+  <rect x="80" y="475" width="250" height="140" rx="12" fill="#f3f8ff"/>
+  <rect x="350" y="475" width="250" height="140" rx="12" fill="#f3f8ff"/>
+  <rect x="620" y="475" width="250" height="140" rx="12" fill="#f3f8ff"/>
+  <text x="110" y="555" class="label">ABA Therapy</text>
+  <text x="378" y="555" class="label">Speech Therapy</text>
+  <text x="640" y="555" class="label">Parent Coaching</text>
+
+  <rect x="940" y="394" width="460" height="260" rx="20" fill="#ffffff" stroke="#dce7f5"/>
+  <text x="980" y="448" class="h2">Trust + Ratings</text>
+  <rect x="980" y="478" width="380" height="54" rx="10" fill="#fff8e7" stroke="#f0e0b4"/>
+  <text x="1010" y="513" class="label">4.9 average from 220+ families</text>
+  <rect x="980" y="545" width="180" height="40" rx="20" fill="#eaf7ef"/>
+  <text x="1015" y="571" class="chip">Verified Staff</text>
+  <rect x="1170" y="545" width="190" height="40" rx="20" fill="#eaf1ff"/>
+  <text x="1210" y="571" class="chip">HIPAA Ready</text>
+
+  <rect x="40" y="674" width="1360" height="310" rx="20" fill="#ffffff" stroke="#dce7f5"/>
+  <text x="80" y="730" class="h2">Map + Contact</text>
+  <rect x="80" y="755" width="760" height="190" rx="14" fill="#edf3fa" stroke="#cfdceb"/>
+  <text x="360" y="850" class="label">Embedded Map Placeholder</text>
+  <rect x="860" y="755" width="500" height="190" rx="14" fill="#f5f9ff" stroke="#d7e4f7"/>
+  <text x="900" y="808" class="label">Address, phone, parking notes</text>
+  <text x="900" y="845" class="label">Primary CTA: Start Enrollment</text>
+  <rect x="900" y="875" width="220" height="46" rx="10" fill="#0f5cc9"/>
+  <text x="947" y="905" class="btn">Start Enrollment</text>
+</svg>

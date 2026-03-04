@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1024" viewBox="0 0 1440 1024">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff9f2"/>
+      <stop offset="100%" stop-color="#fdf2e8"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 44px 'Segoe UI', Arial, sans-serif; fill: #4a2b13; }
+      .h2 { font: 700 28px 'Segoe UI', Arial, sans-serif; fill: #5b371b; }
+      .text { font: 500 20px 'Segoe UI', Arial, sans-serif; fill: #714829; }
+      .label { font: 600 17px 'Segoe UI', Arial, sans-serif; fill: #81573b; }
+      .btn { font: 700 20px 'Segoe UI', Arial, sans-serif; fill: #ffffff; }
+      .chip { font: 600 16px 'Segoe UI', Arial, sans-serif; fill: #6a4022; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="1024" fill="url(#bg2)"/>
+  <rect x="40" y="32" width="1360" height="72" rx="16" fill="#ffffff" stroke="#f0ddca"/>
+  <text x="80" y="78" class="h2">Partner Location Template</text>
+  <text x="1010" y="78" class="label">Nav: Referral Path | Outcomes | Contact</text>
+
+  <rect x="40" y="124" width="1360" height="270" rx="20" fill="#ffffff" stroke="#f0ddca"/>
+  <rect x="70" y="158" width="230" height="62" rx="12" fill="#f8e7d8"/>
+  <text x="95" y="198" class="chip">Partner Logo Lockup</text>
+  <text x="320" y="196" class="title">Early Start x Partner Clinic</text>
+  <text x="320" y="238" class="text">Coordinated intake and referral-first service model.</text>
+  <rect x="320" y="272" width="260" height="52" rx="10" fill="#cc5f18"/>
+  <text x="360" y="305" class="btn">Start Partner Referral</text>
+  <rect x="600" y="272" width="250" height="52" rx="10" fill="#fcefe4"/>
+  <text x="640" y="305" class="chip">Contact Liaison</text>
+  <rect x="930" y="170" width="420" height="185" rx="14" fill="#fff3e8" stroke="#f1d8c1"/>
+  <text x="970" y="220" class="h2">Partner Snapshot</text>
+  <text x="970" y="255" class="label">Referral SLA: 24h response</text>
+  <text x="970" y="285" class="label">Coordinator: Jane Doe</text>
+  <text x="970" y="315" class="label">Coverage: 3 counties</text>
+
+  <rect x="40" y="414" width="660" height="270" rx="20" fill="#ffffff" stroke="#f0ddca"/>
+  <text x="80" y="468" class="h2">Referral Workflow</text>
+  <rect x="80" y="495" width="170" height="140" rx="12" fill="#fff6ee"/>
+  <rect x="270" y="495" width="170" height="140" rx="12" fill="#fff6ee"/>
+  <rect x="460" y="495" width="170" height="140" rx="12" fill="#fff6ee"/>
+  <text x="118" y="560" class="label">1. Submit</text>
+  <text x="305" y="560" class="label">2. Verify</text>
+  <text x="500" y="560" class="label">3. Schedule</text>
+
+  <rect x="720" y="414" width="680" height="270" rx="20" fill="#ffffff" stroke="#f0ddca"/>
+  <text x="760" y="468" class="h2">Partner Outcomes + Trust</text>
+  <rect x="760" y="498" width="300" height="70" rx="10" fill="#fff6ee"/>
+  <rect x="1080" y="498" width="280" height="70" rx="10" fill="#fff6ee"/>
+  <text x="790" y="540" class="label">Avg intake time: 2.3 days</text>
+  <text x="1110" y="540" class="label">Completion rate: 91%</text>
+  <rect x="760" y="584" width="600" height="64" rx="10" fill="#f9f0e7"/>
+  <text x="790" y="622" class="label">Compliance + co-brand policy badge row</text>
+
+  <rect x="40" y="704" width="1360" height="280" rx="20" fill="#ffffff" stroke="#f0ddca"/>
+  <text x="80" y="758" class="h2">Partner Contact + Escalation</text>
+  <rect x="80" y="784" width="840" height="170" rx="14" fill="#fff7ef" stroke="#f0ddca"/>
+  <text x="120" y="834" class="label">Partner-specific address, secure fax, liaison details</text>
+  <text x="120" y="872" class="label">Escalation chain and referral office hours</text>
+  <rect x="940" y="784" width="420" height="170" rx="14" fill="#fdf1e5" stroke="#f0ddca"/>
+  <text x="975" y="834" class="label">Secondary CTA: Download Referral Packet</text>
+  <rect x="975" y="868" width="320" height="48" rx="10" fill="#cc5f18"/>
+  <text x="1020" y="900" class="btn">Download Referral Packet</text>
+</svg>

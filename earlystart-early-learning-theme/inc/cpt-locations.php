@@ -90,6 +90,7 @@ function earlystart_location_admin_columns($columns)
 	$new_columns = array();
 	$new_columns['cb'] = $columns['cb'];
 	$new_columns['title'] = $columns['title'];
+	$new_columns['location_type'] = __('Type', 'earlystart-early-learning');
 	$new_columns['city'] = __('City', 'earlystart-early-learning');
 	$new_columns['state'] = __('State', 'earlystart-early-learning');
 	$new_columns['phone'] = __('Phone', 'earlystart-early-learning');
@@ -106,6 +107,10 @@ add_filter('manage_location_posts_columns', 'earlystart_location_admin_columns')
 function earlystart_location_admin_column_content($column, $post_id)
 {
 	switch ($column) {
+		case 'location_type':
+			$is_clinic = '1' === get_post_meta($post_id, 'location_featured', true);
+			echo esc_html($is_clinic ? __('Clinic', 'earlystart-early-learning') : __('Partner', 'earlystart-early-learning'));
+			break;
 		case 'city':
 			echo esc_html(get_post_meta($post_id, 'location_city', true) ?: '—');
 			break;
@@ -472,9 +477,9 @@ function earlystart_render_location_custom_fields_meta_box($post)
 		<label for="location_featured">
 			<input type="checkbox" id="location_featured" name="location_featured" value="1"
 				<?php checked(get_post_meta($post->ID, 'location_featured', true), '1'); ?> />
-			<?php _e('Clinic Location (Featured)', 'earlystart-early-learning'); ?>
+			<?php _e('Location Type: Clinic', 'earlystart-early-learning'); ?>
 		</label>
-		<small><?php _e('Check to feature this location as a Clinical Hub on the Locations page.', 'earlystart-early-learning'); ?></small>
+		<small><?php _e('Checked = Clinic Location. Unchecked = Partner Location.', 'earlystart-early-learning'); ?></small>
 	</div>
 
 	<div class="chroma-meta-field">
@@ -801,7 +806,7 @@ function earlystart_save_location_custom_fields($post_id)
 	$quality_rated = isset($_POST['location_quality_rated']) ? '1' : '';
 	update_post_meta($post_id, 'location_quality_rated', $quality_rated);
 
-	// Save checkbox field for featured clinics
+	// Save checkbox field for location type (clinic vs partner)
 	$featured = isset($_POST['location_featured']) ? '1' : '';
 	update_post_meta($post_id, 'location_featured', $featured);
 }
