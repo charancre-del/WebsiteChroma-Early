@@ -7,48 +7,98 @@
 
 get_header();
 
+$get_meta_value = static function ($post_id, $key, $default = '') {
+	$value = get_post_meta($post_id, $key, true);
+	return ('' === $value || null === $value) ? $default : $value;
+};
+
+$get_location_meta = static function ($post_id, $key, $default = '') use ($get_meta_value) {
+	if (function_exists('earlystart_get_translated_meta')) {
+		$value = earlystart_get_translated_meta($post_id, $key);
+	} else {
+		$value = $get_meta_value($post_id, $key, $default);
+	}
+
+	return ('' === $value || null === $value) ? $default : $value;
+};
+
+$optimize_unsplash = static function ($url, $width, $height = 900, $quality = 70) {
+	if (function_exists('earlystart_get_optimized_unsplash_url')) {
+		return earlystart_get_optimized_unsplash_url($url, $width, $height, $quality);
+	}
+
+	return (string) $url;
+};
+
 while (have_posts()):
 	the_post();
-	$location_fields = earlystart_get_location_fields();
 	$location_id = get_the_ID();
 	$location_name = get_the_title();
 
+	if (function_exists('earlystart_get_location_fields')) {
+		$location_fields = earlystart_get_location_fields($location_id);
+	} else {
+		$location_fields = array(
+			'address' => $get_meta_value($location_id, 'location_address', ''),
+			'city' => $get_meta_value($location_id, 'location_city', ''),
+			'state' => $get_meta_value($location_id, 'location_state', 'GA'),
+			'zip' => $get_meta_value($location_id, 'location_zip', ''),
+			'phone' => $get_meta_value($location_id, 'location_phone', ''),
+			'email' => $get_meta_value($location_id, 'location_email', ''),
+			'latitude' => $get_meta_value($location_id, 'location_latitude', ''),
+			'longitude' => $get_meta_value($location_id, 'location_longitude', ''),
+		);
+	}
+	$location_fields = wp_parse_args(
+		is_array($location_fields) ? $location_fields : array(),
+		array(
+			'address' => '',
+			'city' => '',
+			'state' => '',
+			'zip' => '',
+			'phone' => '',
+			'email' => '',
+		)
+	);
+
 	$phone = $location_fields['phone'];
 	$email = $location_fields['email'];
-	$address = earlystart_location_address_line();
+	$address = function_exists('earlystart_location_address_line')
+		? earlystart_location_address_line()
+		: (string) $location_fields['address'];
 	$city = $location_fields['city'];
 	$state = $location_fields['state'];
 	$zip = $location_fields['zip'];
 
-	$hero_subtitle = earlystart_get_translated_meta($location_id, 'location_hero_subtitle') ?: __('Now Enrolling', 'earlystart-early-learning');
-	$hero_gallery_raw = earlystart_get_translated_meta($location_id, 'location_hero_gallery');
-	$tagline = earlystart_get_translated_meta($location_id, 'location_tagline') ?: sprintf(__('Personalized therapy for %s families.', 'earlystart-early-learning'), $city ?: __('your community', 'earlystart-early-learning'));
-	$description = earlystart_get_translated_meta($location_id, 'location_description');
+	$hero_subtitle = $get_location_meta($location_id, 'location_hero_subtitle') ?: __('Now Enrolling', 'earlystart-early-learning');
+	$hero_gallery_raw = $get_location_meta($location_id, 'location_hero_gallery');
+	$tagline = $get_location_meta($location_id, 'location_tagline') ?: sprintf(__('Personalized therapy for %s families.', 'earlystart-early-learning'), $city ?: __('your community', 'earlystart-early-learning'));
+	$description = $get_location_meta($location_id, 'location_description');
 	if (empty($description)) {
 		$description = get_the_content();
 	}
 
-	$google_rating = earlystart_get_translated_meta($location_id, 'location_google_rating') ?: '4.9';
-	$hours = earlystart_get_translated_meta($location_id, 'location_hours') ?: __('Mon - Fri: 8:00 AM - 6:00 PM', 'earlystart-early-learning');
-	$ages_served = earlystart_get_translated_meta($location_id, 'location_ages_served') ?: __('18mo - 12yrs', 'earlystart-early-learning');
+	$google_rating = $get_location_meta($location_id, 'location_google_rating') ?: '4.9';
+	$hours = $get_location_meta($location_id, 'location_hours') ?: __('Mon - Fri: 8:00 AM - 6:00 PM', 'earlystart-early-learning');
+	$ages_served = $get_location_meta($location_id, 'location_ages_served') ?: __('18mo - 12yrs', 'earlystart-early-learning');
 
-	$director_name = earlystart_get_translated_meta($location_id, 'location_director_name');
-	$director_heading = earlystart_get_translated_meta($location_id, 'location_director_heading') ?: __('Your Local Leadership', 'earlystart-early-learning');
-	$director_bio = earlystart_get_translated_meta($location_id, 'location_director_bio');
-	$director_photo = earlystart_get_translated_meta($location_id, 'location_director_photo');
-	$director_signature = earlystart_get_translated_meta($location_id, 'location_director_signature');
+	$director_name = $get_location_meta($location_id, 'location_director_name');
+	$director_heading = $get_location_meta($location_id, 'location_director_heading') ?: __('Your Local Leadership', 'earlystart-early-learning');
+	$director_bio = $get_location_meta($location_id, 'location_director_bio');
+	$director_photo = $get_location_meta($location_id, 'location_director_photo');
+	$director_signature = $get_location_meta($location_id, 'location_director_signature');
 
-	$hero_review_text = earlystart_get_translated_meta($location_id, 'location_hero_review_text');
-	$hero_review_author = earlystart_get_translated_meta($location_id, 'location_hero_review_author') ?: __('Parent Review', 'earlystart-early-learning');
+	$hero_review_text = $get_location_meta($location_id, 'location_hero_review_text');
+	$hero_review_author = $get_location_meta($location_id, 'location_hero_review_author') ?: __('Parent Review', 'earlystart-early-learning');
 
-	$maps_embed = earlystart_get_translated_meta($location_id, 'location_maps_embed');
-	$virtual_tour_embed = earlystart_get_translated_meta($location_id, 'location_virtual_tour_embed');
-	$tour_booking_link = earlystart_get_translated_meta($location_id, 'location_tour_booking_link');
-	$gmb_url = earlystart_get_translated_meta($location_id, 'location_gmb_url');
-	$seo_content_title = earlystart_get_translated_meta($location_id, 'location_seo_content_title');
-	$seo_content_text = earlystart_get_translated_meta($location_id, 'location_seo_content_text');
-	$service_areas_raw = earlystart_get_translated_meta($location_id, 'location_service_areas');
-	$school_pickups_raw = earlystart_get_translated_meta($location_id, 'location_school_pickups');
+	$maps_embed = $get_location_meta($location_id, 'location_maps_embed');
+	$virtual_tour_embed = $get_location_meta($location_id, 'location_virtual_tour_embed');
+	$tour_booking_link = $get_location_meta($location_id, 'location_tour_booking_link');
+	$gmb_url = $get_location_meta($location_id, 'location_gmb_url');
+	$seo_content_title = $get_location_meta($location_id, 'location_seo_content_title');
+	$seo_content_text = $get_location_meta($location_id, 'location_seo_content_text');
+	$service_areas_raw = $get_location_meta($location_id, 'location_service_areas');
+	$school_pickups_raw = $get_location_meta($location_id, 'location_school_pickups');
 	$is_clinic_hub = '1' === get_post_meta($location_id, 'location_featured', true);
 	$is_partner_location = !$is_clinic_hub;
 
@@ -134,9 +184,9 @@ while (have_posts()):
 			$hero_widths = array(640, 960, 1280, 1600, 1920);
 			$srcset_parts = array();
 			foreach ($hero_widths as $hero_width) {
-				$srcset_parts[] = esc_url(earlystart_get_optimized_unsplash_url($hero_image_url, $hero_width, 900, 70)) . ' ' . $hero_width . 'w';
+				$srcset_parts[] = esc_url($optimize_unsplash($hero_image_url, $hero_width, 900, 70)) . ' ' . $hero_width . 'w';
 			}
-			$hero_src = earlystart_get_optimized_unsplash_url($hero_image_url, 1600, 900, 70);
+			$hero_src = $optimize_unsplash($hero_image_url, 1600, 900, 70);
 			$hero_srcset = implode(', ', $srcset_parts);
 		}
 
@@ -182,7 +232,12 @@ while (have_posts()):
 		),
 	));
 
-	$location_faqs = earlystart_get_location_faq_items($location_id);
+	$location_faqs = function_exists('earlystart_get_location_faq_items')
+		? earlystart_get_location_faq_items($location_id)
+		: array();
+	$supported_insurances = function_exists('earlystart_get_supported_insurances')
+		? earlystart_get_supported_insurances()
+		: array();
 	?>
 
 	<main class="pt-20">
@@ -679,8 +734,8 @@ while (have_posts()):
 								<i data-lucide="shield-check" class="w-5 h-5 text-green-500 mr-2"></i>
 								<?php _e('Insurance Accepted Here', 'earlystart-early-learning'); ?>
 							</h4>
-							<div class="flex flex-wrap gap-2 text-xs font-bold text-stone-600">
-								<?php foreach (earlystart_get_supported_insurances() as $insurance): ?>
+								<div class="flex flex-wrap gap-2 text-xs font-bold text-stone-600">
+									<?php foreach ($supported_insurances as $insurance): ?>
 									<span class="bg-stone-50 px-3 py-1.5 rounded-lg border border-stone-200"><?php echo esc_html($insurance); ?></span>
 								<?php endforeach; ?>
 							</div>
