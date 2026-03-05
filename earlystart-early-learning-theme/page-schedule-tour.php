@@ -51,7 +51,7 @@ if ($locations_query->have_posts()) {
         $post_data = array(
             'title' => get_the_title(),
             'permalink' => get_permalink(),
-            'thumb' => get_the_post_thumbnail_url($id, 'large') ?: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80&fm=webp?w=600&fit=crop&q=80&fm=webp',
+            'thumb' => get_the_post_thumbnail_url($id, 'large') ?: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=600&q=80&fm=webp',
             'address' => get_post_meta($id, 'location_address', true),
             'city' => get_post_meta($id, 'location_city', true),
             'booking' => get_post_meta($id, 'location_tour_booking_link', true),
@@ -116,7 +116,7 @@ if ($locations_query->have_posts()) {
                 <div class="relative fade-in-up">
                     <div
                         class="aspect-[4/3] rounded-[3rem] bg-stone-50 overflow-hidden shadow-2xl border-8 border-white">
-                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&fm=webp?w=1200&fit=crop&q=80&fm=webp"
+                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1200&q=80&fm=webp"
                             class="w-full h-full object-cover" alt="Parent and child">
                     </div>
                     <div class="absolute -bottom-8 -left-8 w-48 h-48 bg-amber-50 rounded-full blur-3xl -z-10"></div>

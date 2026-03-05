@@ -25,6 +25,55 @@ define('EARLYSTART_SEO_VERSION', '1.0.1');
 define('EARLYSTART_SEO_PATH', plugin_dir_path(__FILE__));
 define('EARLYSTART_SEO_URL', plugin_dir_url(__FILE__));
 
+if (!function_exists('earlystart_seo_get_head_mode')) {
+    /**
+     * Resolve shared SEO head ownership mode.
+     *
+     * @return string One of theme_primary|plugin_primary|hybrid.
+     */
+    function earlystart_seo_get_head_mode()
+    {
+        $allowed = array('theme_primary', 'plugin_primary', 'hybrid');
+        $mode = get_option('earlystart_seo_head_mode', 'theme_primary');
+
+        if (!in_array($mode, $allowed, true)) {
+            $mode = 'theme_primary';
+        }
+
+        $mode = apply_filters('earlystart_seo_head_mode', $mode);
+
+        if (!in_array($mode, $allowed, true)) {
+            $mode = 'theme_primary';
+        }
+
+        return $mode;
+    }
+}
+
+if (!function_exists('earlystart_seo_plugin_owns_head_meta')) {
+    /**
+     * Plugin owns meta/social only in plugin_primary mode.
+     *
+     * @return bool
+     */
+    function earlystart_seo_plugin_owns_head_meta()
+    {
+        return earlystart_seo_get_head_mode() === 'plugin_primary';
+    }
+}
+
+if (!function_exists('earlystart_seo_plugin_owns_canonical_schema')) {
+    /**
+     * Plugin owns canonical/schema in plugin_primary and hybrid modes.
+     *
+     * @return bool
+     */
+    function earlystart_seo_plugin_owns_canonical_schema()
+    {
+        return earlystart_seo_get_head_mode() !== 'theme_primary';
+    }
+}
+
 /**
  * Load plugin textdomain for translations.
  */

@@ -295,39 +295,43 @@ function earlystart_advanced_seo_init()
 		}
 	}
 
+	$plugin_owns_schema = !function_exists('earlystart_seo_plugin_owns_canonical_schema') || earlystart_seo_plugin_owns_canonical_schema();
+
 	// Schema Builders (Hooks)
-	if (class_exists('earlystart_Event_Schema_Builder'))
-		add_action('wp_head', ['earlystart_Event_Schema_Builder', 'output']);
-	if (class_exists('earlystart_HowTo_Schema_Builder'))
-		add_action('wp_head', ['earlystart_HowTo_Schema_Builder', 'output']);
-	if (class_exists('earlystart_Schema_Injector'))
-		add_action('wp_head', ['earlystart_Schema_Injector', 'output_person_schema']);
-	if (class_exists('earlystart_Schema_Injector'))
-		add_action('wp_head', ['earlystart_Schema_Injector', 'output_profile_page_schema']);
-	if (class_exists('earlystart_Schema_Injector'))
-		add_action('wp_head', ['earlystart_Schema_Injector', 'output_job_posting_schema']);
-	if (class_exists('earlystart_Schema_Injector'))
-		add_action('wp_head', ['earlystart_Schema_Injector', 'output_course_schema']);
-	// FAQ schema auto-injection intentionally disabled.
-	// FAQPage should only come from explicit modular/builder schema entries.
-	if (class_exists('earlystart_Page_Type_Builder'))
-		add_action('wp_head', ['earlystart_Page_Type_Builder', 'output']);
-	if (class_exists('earlystart_Schema_Injector'))
-		add_action('wp_head', ['earlystart_Schema_Injector', 'output_website_schema']);
-	if (class_exists('earlystart_Archive_ItemList_Builder'))
-		add_action('wp_head', ['earlystart_Archive_ItemList_Builder', 'output']);
-	if (class_exists('earlystart_Article_Builder'))
-		add_action('wp_head', ['earlystart_Article_Builder', 'output']);
-	
-	// Advanced Schema (New Builders)
-	if (class_exists('earlystart_Special_Announcement_Builder'))
-		add_action('wp_head', ['earlystart_Special_Announcement_Builder', 'output']);
-	if (class_exists('earlystart_Learning_Resource_Builder'))
-		add_action('wp_head', ['earlystart_Learning_Resource_Builder', 'output']);
-	
-	// Modular Schemas from Schema Builder (stored in _earlystart_post_schemas meta)
-	if (class_exists('earlystart_Schema_Injector'))
-		add_action('wp_head', ['earlystart_Schema_Injector', 'output_modular_schemas'], 20);
+	if ($plugin_owns_schema) {
+		if (class_exists('earlystart_Event_Schema_Builder'))
+			add_action('wp_head', ['earlystart_Event_Schema_Builder', 'output']);
+		if (class_exists('earlystart_HowTo_Schema_Builder'))
+			add_action('wp_head', ['earlystart_HowTo_Schema_Builder', 'output']);
+		if (class_exists('earlystart_Schema_Injector'))
+			add_action('wp_head', ['earlystart_Schema_Injector', 'output_person_schema']);
+		if (class_exists('earlystart_Schema_Injector'))
+			add_action('wp_head', ['earlystart_Schema_Injector', 'output_profile_page_schema']);
+		if (class_exists('earlystart_Schema_Injector'))
+			add_action('wp_head', ['earlystart_Schema_Injector', 'output_job_posting_schema']);
+		if (class_exists('earlystart_Schema_Injector'))
+			add_action('wp_head', ['earlystart_Schema_Injector', 'output_course_schema']);
+		// FAQ schema auto-injection intentionally disabled.
+		// FAQPage should only come from explicit modular/builder schema entries.
+		if (class_exists('earlystart_Page_Type_Builder'))
+			add_action('wp_head', ['earlystart_Page_Type_Builder', 'output']);
+		if (class_exists('earlystart_Schema_Injector'))
+			add_action('wp_head', ['earlystart_Schema_Injector', 'output_website_schema']);
+		if (class_exists('earlystart_Archive_ItemList_Builder'))
+			add_action('wp_head', ['earlystart_Archive_ItemList_Builder', 'output']);
+		if (class_exists('earlystart_Article_Builder'))
+			add_action('wp_head', ['earlystart_Article_Builder', 'output']);
+		
+		// Advanced Schema (New Builders)
+		if (class_exists('earlystart_Special_Announcement_Builder'))
+			add_action('wp_head', ['earlystart_Special_Announcement_Builder', 'output']);
+		if (class_exists('earlystart_Learning_Resource_Builder'))
+			add_action('wp_head', ['earlystart_Learning_Resource_Builder', 'output']);
+		
+		// Modular Schemas from Schema Builder (stored in _earlystart_post_schemas meta)
+		if (class_exists('earlystart_Schema_Injector'))
+			add_action('wp_head', ['earlystart_Schema_Injector', 'output_modular_schemas'], 20);
+	}
 
 	// Flush Rewrite Rules if KML rule is missing (One-time check)
 	if (get_option('earlystart_seo_flush_rewrite_v6') !== 'done') {

@@ -11,6 +11,11 @@ if (!defined('ABSPATH')) {
 
 function earlystart_output_location_schema()
 {
+    $should_emit = apply_filters('earlystart_should_emit_theme_schema', true);
+    if (!$should_emit) {
+        return;
+    }
+
     if (!is_singular('location')) {
         return;
     }

@@ -113,6 +113,9 @@ function earlystart_footer_nav_fallback()
 
 	foreach ($pages as $slug => $title) {
 		$url = ($slug === 'home') ? home_url('/') : home_url('/' . $slug . '/');
+		if (function_exists('earlystart_normalize_internal_url')) {
+			$url = earlystart_normalize_internal_url($url);
+		}
 		echo '<a href="' . esc_url($url) . '" class="block hover:text-white transition">' . esc_html($title) . '</a>';
 	}
 }
@@ -152,6 +155,9 @@ function earlystart_footer_contact_nav()
 
 		foreach ($pages as $slug => $title) {
 			$url = home_url('/' . $slug . '/');
+			if (function_exists('earlystart_normalize_internal_url')) {
+				$url = earlystart_normalize_internal_url($url);
+			}
 			echo '<a href="' . esc_url($url) . '" class="block hover:text-white transition">' . esc_html($title) . '</a>';
 		}
 	}
@@ -181,11 +187,8 @@ class earlystart_Primary_Nav_Walker extends Walker_Nav_Menu
 		}
 
 		$url = $item->url;
-		// Enforce trailing slash for internal links
-		if (strpos($url, home_url()) !== false) {
-			$parts = explode('#', $url, 2);
-			$path = user_trailingslashit($parts[0]);
-			$url = $path . (isset($parts[1]) ? '#' . $parts[1] : '');
+		if (function_exists('earlystart_normalize_internal_url')) {
+			$url = earlystart_normalize_internal_url($url);
 		}
 
 		$output .= '<a href="' . esc_url($url) . '" class="' . esc_attr($classes) . '">';
@@ -217,11 +220,8 @@ class earlystart_Footer_Nav_Walker extends Walker_Nav_Menu
 	function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
 	{
 		$url = $item->url;
-		// Enforce trailing slash for internal links
-		if (strpos($url, home_url()) !== false) {
-			$parts = explode('#', $url, 2);
-			$path = user_trailingslashit($parts[0]);
-			$url = $path . (isset($parts[1]) ? '#' . $parts[1] : '');
+		if (function_exists('earlystart_normalize_internal_url')) {
+			$url = earlystart_normalize_internal_url($url);
 		}
 
 		$output .= '<a href="' . esc_url($url) . '" class="hover:text-rose-400 transition-colors">';
@@ -276,6 +276,9 @@ function earlystart_mobile_nav_fallback()
 
 	foreach ($pages as $slug => $title) {
 		$url = ($slug === 'home') ? home_url('/') : home_url('/' . $slug . '/');
+		if (function_exists('earlystart_normalize_internal_url')) {
+			$url = earlystart_normalize_internal_url($url);
+		}
 		echo '<a href="' . esc_url($url) . '" class="block w-full text-left text-lg font-medium text-stone-700 py-3 border-b border-stone-50">' . esc_html($title) . '</a>';
 	}
 }
@@ -304,11 +307,8 @@ class earlystart_Mobile_Nav_Walker extends Walker_Nav_Menu
 		}
 
 		$url = $item->url;
-		// Enforce trailing slash for internal links
-		if (strpos($url, home_url()) !== false) {
-			$parts = explode('#', $url, 2);
-			$path = user_trailingslashit($parts[0]);
-			$url = $path . (isset($parts[1]) ? '#' . $parts[1] : '');
+		if (function_exists('earlystart_normalize_internal_url')) {
+			$url = earlystart_normalize_internal_url($url);
 		}
 
 		$output .= '<a href="' . esc_url($url) . '" class="' . esc_attr($classes) . '">';

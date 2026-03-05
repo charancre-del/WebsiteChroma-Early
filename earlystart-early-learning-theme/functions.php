@@ -198,6 +198,8 @@ if (is_admin()) {
 require_once earlystart_THEME_DIR . '/inc/translation-helpers.php';
 require_once earlystart_THEME_DIR . '/inc/template-tags.php';
 require_once earlystart_THEME_DIR . '/inc/dynamic-links.php';
+require_once earlystart_THEME_DIR . '/inc/seo-head-tags.php';
+require_once earlystart_THEME_DIR . '/inc/seo-head-orchestrator.php';
 // require_once earlystart_THEME_DIR . '/inc/about-seo.php';
 
 // Customizer (Only load in Customizer preview or Admin)
@@ -519,9 +521,12 @@ add_filter('user_trailingslashit', 'earlystart_enforce_trailing_slash', 10, 2);
  */
 function earlystart_optimize_title_length($title_parts)
 {
-    // Truncate very long titles
-    if (isset($title_parts['title']) && mb_strlen($title_parts['title']) > 50) {
-        $title_parts['title'] = mb_substr($title_parts['title'], 0, 47) . '...';
+    if (isset($title_parts['title']) && mb_strlen($title_parts['title']) > 100) {
+        $title_parts['title'] = mb_substr($title_parts['title'], 0, 97) . '...';
+    }
+
+    if (isset($title_parts['title']) && is_singular(array('location', 'program', 'city')) && mb_strlen($title_parts['title']) < 30) {
+        $title_parts['title'] = $title_parts['title'] . ' | Chroma Early Start';
     }
 
     // Use shorter site name suffix on blog posts

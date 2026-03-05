@@ -17,7 +17,7 @@ $location_ids = get_post_meta($id, 'city_nearby_locations', true);
 $intro_text = get_post_meta($id, 'city_intro_text', true);
 
 // Local fallback image
-$local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&fm=webp?w=1200&fit=crop&q=80&fm=webp';
+$local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1200&q=80&fm=webp';
 ?>
 
 <main class="pt-20">
@@ -106,7 +106,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                                     <?php if (has_post_thumbnail()): ?>
                                         <?php the_post_thumbnail('large', ['class' => 'w-full h-full object-cover']); ?>
                                     <?php else: ?>
-                                        <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dee7a?auto=format&fit=crop&q=80&fm=webp?w=600&fit=crop&q=80&fm=webp"
+                                        <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dee7a?auto=format&fit=crop&w=600&q=80&fm=webp"
                                             class="w-full h-full object-cover" alt="Clinic">
                                     <?php endif; ?>
                                 </div>

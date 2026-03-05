@@ -44,7 +44,7 @@ while (have_posts()):
                     <div class="relative fade-in-up">
                         <div
                             class="aspect-square rounded-[3rem] bg-stone-50 overflow-hidden shadow-2xl border-8 border-white p-4">
-                            <img src="https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?q=80&w=1000&auto=format&fit=crop&q=80&fm=webp"
+                            <img src="https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&w=1000&q=80&fm=webp"
                                 class="w-full h-full object-cover rounded-[2rem]" alt="Chroma Care Model">
                         </div>
                         <div class="absolute -bottom-8 -right-8 w-48 h-48 bg-amber-50 rounded-full blur-3xl -z-10"></div>

@@ -14,6 +14,22 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+if (!function_exists('earlystart_theme_schema_compat_enabled')) {
+    /**
+     * Schema compat output is enabled only when plugin owns canonical/schema.
+     *
+     * @return bool
+     */
+    function earlystart_theme_schema_compat_enabled()
+    {
+        if (!function_exists('earlystart_seo_plugin_owns_canonical_schema')) {
+            return true;
+        }
+
+        return earlystart_seo_plugin_owns_canonical_schema();
+    }
+}
+
 /**
  * Safely output schema override JSON-LD.
  *
@@ -91,7 +107,9 @@ if (!function_exists('earlystart_general_content_schema_pro')) {
         }
     }
 }
-add_action('wp_head', 'earlystart_general_content_schema_pro', 1);
+if (earlystart_theme_schema_compat_enabled()) {
+    add_action('wp_head', 'earlystart_general_content_schema_pro', 1);
+}
 
 /**
  * Helper: Get Schema Value (English or Spanish)
@@ -367,7 +385,9 @@ if (!function_exists('earlystart_location_schema_pro')) {
         }
     }
 }
-add_action('wp_head', 'earlystart_location_schema_pro');
+if (earlystart_theme_schema_compat_enabled()) {
+    add_action('wp_head', 'earlystart_location_schema_pro');
+}
 
 /**
  * Add Service Schema to City Pages
@@ -456,7 +476,9 @@ if (!function_exists('earlystart_city_schema_pro')) {
         earlystart_Schema_Registry::register($schema, ['source' => 'theme-compat-city']);
     }
 }
-add_action('wp_head', 'earlystart_city_schema_pro');
+if (earlystart_theme_schema_compat_enabled()) {
+    add_action('wp_head', 'earlystart_city_schema_pro');
+}
 
 /**
  * Add Service Schema to Program Pages
@@ -617,8 +639,10 @@ if (!function_exists('earlystart_city_faq_schema_output')) {
         $earlystart_faq_output_done = true;
     }
 }
-add_action('wp_head', 'earlystart_city_faq_schema_output');
-add_action('wp_head', 'earlystart_program_schema_pro');
+if (earlystart_theme_schema_compat_enabled()) {
+    add_action('wp_head', 'earlystart_city_faq_schema_output');
+    add_action('wp_head', 'earlystart_program_schema_pro');
+}
 
 
 /**
@@ -691,7 +715,9 @@ if (!function_exists('earlystart_organization_schema_pro')) {
         earlystart_Schema_Registry::register($schema, ['source' => 'theme-compat-organization']);
     }
 }
-add_action('wp_head', 'earlystart_organization_schema_pro', 5);
+if (earlystart_theme_schema_compat_enabled()) {
+    add_action('wp_head', 'earlystart_organization_schema_pro', 5);
+}
 
 if (!function_exists('earlystart_website_schema_pro')) {
     function earlystart_website_schema_pro()
@@ -727,7 +753,9 @@ if (!function_exists('earlystart_website_schema_pro')) {
         earlystart_Schema_Registry::register($schema, ['source' => 'theme-compat-website']);
     }
 }
-add_action('wp_head', 'earlystart_website_schema_pro', 6);
+if (earlystart_theme_schema_compat_enabled()) {
+    add_action('wp_head', 'earlystart_website_schema_pro', 6);
+}
 
 if (!function_exists('earlystart_faq_schema_pro')) {
     function earlystart_faq_schema_pro()
@@ -744,6 +772,10 @@ if (!function_exists('earlystart_faq_schema_pro')) {
  */
 function earlystart_remove_legacy_theme_schema()
 {
+    if (!earlystart_theme_schema_compat_enabled()) {
+        return;
+    }
+
     // Legacy theme used default priority 10 for these (mostly)
     remove_action('wp_head', 'earlystart_organization_schema', 10);
     remove_action('wp_head', 'earlystart_website_schema', 10);

@@ -115,6 +115,10 @@ class earlystart_Canonical_Enforcer
      * Output canonical tag
      */
     public function output_canonical() {
+        if (function_exists('earlystart_seo_plugin_owns_canonical_schema') && !earlystart_seo_plugin_owns_canonical_schema()) {
+            return;
+        }
+
         if (!get_option('earlystart_seo_enable_canonical', true)) {
             return;
         }
@@ -135,6 +139,10 @@ class earlystart_Canonical_Enforcer
      * Enforce canonical URL via redirect
      */
     public function enforce_canonical() {
+        if (function_exists('earlystart_seo_plugin_owns_canonical_schema') && !earlystart_seo_plugin_owns_canonical_schema()) {
+            return;
+        }
+
         if (!get_option('earlystart_seo_redirect_canonical', false)) {
             return;
         }

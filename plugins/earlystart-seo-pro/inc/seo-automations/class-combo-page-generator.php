@@ -174,16 +174,21 @@ class earlystart_Combo_Page_Generator
         // Dynamic Meta Description (60-160 chars target)
         $meta_desc = $this->generate_combo_meta_description($program, $city_name, $state, $age_range);
         
-        add_filter('wpseo_metadesc', function($current) use ($meta_desc) {
-            return $meta_desc;
-        }, PHP_INT_MAX);
-        
-        add_filter('wpseo_opengraph_desc', function($current) use ($meta_desc) {
-            return $meta_desc;
-        }, PHP_INT_MAX);
+        if (!function_exists('earlystart_seo_plugin_owns_head_meta') || earlystart_seo_plugin_owns_head_meta()) {
+            add_filter('wpseo_metadesc', function($current) use ($meta_desc) {
+                return $meta_desc;
+            }, PHP_INT_MAX);
+
+            add_filter('wpseo_opengraph_desc', function($current) use ($meta_desc) {
+                return $meta_desc;
+            }, PHP_INT_MAX);
+        }
         
         // Also output meta description tag directly (in case Yoast isn't outputting it)
         add_action('wp_head', function() use ($meta_desc) {
+            if (function_exists('earlystart_seo_plugin_owns_head_meta') && !earlystart_seo_plugin_owns_head_meta()) {
+                return;
+            }
             echo '<meta name="description" content="' . esc_attr($meta_desc) . '" />' . "\n";
         }, 1);
         

@@ -13,6 +13,69 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Normalize internal URLs to canonical paths.
+ *
+ * @param string $url URL to normalize.
+ * @return string
+ */
+function earlystart_normalize_internal_url($url)
+{
+    $url = trim((string) $url);
+    if ($url === '') {
+        return $url;
+    }
+
+    if (strpos($url, '#') === 0) {
+        return $url;
+    }
+
+    $home = home_url('/');
+    $home_parts = wp_parse_url($home);
+    $url_parts = wp_parse_url($url);
+
+    if (empty($url_parts)) {
+        return $url;
+    }
+
+    $is_relative = empty($url_parts['host']);
+    $is_internal = $is_relative;
+
+    if (!$is_internal && !empty($url_parts['host']) && !empty($home_parts['host'])) {
+        $is_internal = (strtolower($url_parts['host']) === strtolower($home_parts['host']));
+    }
+
+    if (!$is_internal) {
+        return $url;
+    }
+
+    $path = isset($url_parts['path']) ? '/' . ltrim((string) $url_parts['path'], '/') : '/';
+    $path_no_slash = untrailingslashit($path);
+
+    $legacy_map = array(
+        '/programs/aba' => '/programs/aba-therapy/',
+        '/programs/speech' => '/programs/speech-therapy/',
+    );
+
+    if (isset($legacy_map[$path_no_slash])) {
+        $path = $legacy_map[$path_no_slash];
+    } elseif (!preg_match('/\\.[a-zA-Z0-9]+$/', $path_no_slash)) {
+        $path = trailingslashit($path_no_slash);
+    }
+
+    $normalized = rtrim($home, '/') . $path;
+
+    if (!empty($url_parts['query'])) {
+        $normalized .= '?' . $url_parts['query'];
+    }
+
+    if (!empty($url_parts['fragment'])) {
+        $normalized .= '#' . $url_parts['fragment'];
+    }
+
+    return $normalized;
+}
+
+/**
  * Get permalink by post slug
  * 
  * @param string $slug The post/page slug
@@ -33,7 +96,7 @@ function earlystart_get_link_by_slug($slug, $post_type = 'page')
     $post = get_page_by_path($slug, OBJECT, $post_type);
 
     if ($post) {
-        return get_permalink($post);
+        return earlystart_normalize_internal_url(get_permalink($post));
     }
 
     return false;
@@ -62,17 +125,17 @@ function earlystart_get_program_link($slug)
     // Try program CPT first
     $post = get_page_by_path($slug, OBJECT, 'program');
     if ($post) {
-        return get_permalink($post);
+        return earlystart_normalize_internal_url(get_permalink($post));
     }
 
     // Try as a page under /programs/
     $post = get_page_by_path('programs/' . $slug, OBJECT, 'page');
     if ($post) {
-        return get_permalink($post);
+        return earlystart_normalize_internal_url(get_permalink($post));
     }
 
     // Fallback to constructed URL with trailing slash
-    return home_url('/programs/' . $slug . '/');
+    return earlystart_normalize_internal_url(home_url('/programs/' . $slug . '/'));
 }
 
 /**
@@ -89,17 +152,17 @@ function earlystart_get_location_link($slug)
     // Try location CPT first
     $post = get_page_by_path($slug, OBJECT, 'location');
     if ($post) {
-        return get_permalink($post);
+        return earlystart_normalize_internal_url(get_permalink($post));
     }
 
     // Try as a page under /locations/
     $post = get_page_by_path('locations/' . $slug, OBJECT, 'page');
     if ($post) {
-        return get_permalink($post);
+        return earlystart_normalize_internal_url(get_permalink($post));
     }
 
     // Fallback to constructed URL with trailing slash
-    return home_url('/locations/' . $slug . '/');
+    return earlystart_normalize_internal_url(home_url('/locations/' . $slug . '/'));
 }
 
 /**
@@ -116,7 +179,7 @@ function earlystart_smart_link($slug)
 
     // If empty, return home
     if (empty($slug)) {
-        return home_url('/');
+        return earlystart_normalize_internal_url(home_url('/'));
     }
 
     // Define post types to search
@@ -126,7 +189,7 @@ function earlystart_smart_link($slug)
     if (strpos($slug, '/') !== false) {
         $post = get_page_by_path($slug, OBJECT, $post_types);
         if ($post) {
-            return get_permalink($post);
+            return earlystart_normalize_internal_url(get_permalink($post));
         }
 
         // Try just the last part of the slug
@@ -134,18 +197,18 @@ function earlystart_smart_link($slug)
         $last_slug = end($parts);
         $post = get_page_by_path($last_slug, OBJECT, $post_types);
         if ($post) {
-            return get_permalink($post);
+            return earlystart_normalize_internal_url(get_permalink($post));
         }
     }
 
     // Try standard pages first
     $post = get_page_by_path($slug, OBJECT, $post_types);
     if ($post) {
-        return get_permalink($post);
+        return earlystart_normalize_internal_url(get_permalink($post));
     }
 
     // Fallback to home_url with trailing slash
-    return trailingslashit(home_url('/' . $slug));
+    return earlystart_normalize_internal_url(trailingslashit(home_url('/' . $slug)));
 }
 
 /**

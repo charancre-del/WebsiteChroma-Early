@@ -20,6 +20,11 @@ function earlystart_get_optimized_unsplash_url($base_url, $width, $height = null
     if (empty($base_url))
         return '';
 
+    $normalized_unsplash = earlystart_normalize_unsplash_url($base_url, $width, $height, $quality);
+    if (!empty($normalized_unsplash)) {
+        return $normalized_unsplash;
+    }
+
     // Clean up existing parameters
     $url_parts = explode('?', $base_url);
     $clean_url = $url_parts[0];
@@ -37,6 +42,67 @@ function earlystart_get_optimized_unsplash_url($base_url, $width, $height = null
     }
 
     return add_query_arg($params, $clean_url);
+}
+
+/**
+ * Normalize Unsplash URLs and enforce a clean single query string.
+ *
+ * @param string   $url Original URL.
+ * @param int      $w Width.
+ * @param int|null $h Height.
+ * @param int      $q Quality.
+ * @return string
+ */
+function earlystart_normalize_unsplash_url($url, $w, $h = null, $q = 80)
+{
+    $url = trim((string) $url);
+    if ($url === '') {
+        return '';
+    }
+
+    $parts = wp_parse_url($url);
+    if (empty($parts) || empty($parts['host']) || empty($parts['path'])) {
+        return '';
+    }
+
+    $host = strtolower((string) $parts['host']);
+    if ($host !== 'images.unsplash.com' && $host !== 'source.unsplash.com') {
+        return '';
+    }
+
+    $w = max(1, absint($w));
+    $h = is_null($h) ? null : absint($h);
+    if ($h !== null && $h <= 0) {
+        $h = null;
+    }
+
+    $q = absint($q);
+    if ($q < 30 || $q > 100) {
+        $q = 80;
+    }
+
+    $scheme = !empty($parts['scheme']) ? $parts['scheme'] : 'https';
+    $base = $scheme . '://' . $parts['host'] . $parts['path'];
+
+    $params = array(
+        'auto' => 'format',
+        'fit' => 'crop',
+        'w' => $w,
+        'q' => $q,
+        'fm' => 'webp',
+    );
+
+    if (!is_null($h)) {
+        $params['h'] = $h;
+    }
+
+    $normalized = add_query_arg($params, $base);
+
+    if (!empty($parts['fragment'])) {
+        $normalized .= '#' . $parts['fragment'];
+    }
+
+    return $normalized;
 }
 
 /**

@@ -143,4 +143,3 @@ function chroma_enforce_canonical()
                 echo '<link rel="canonical" href="' . esc_url($canonical_url) . '" />' . "\n";
         }
 }
-add_action('wp_head', 'chroma_enforce_canonical', 2);

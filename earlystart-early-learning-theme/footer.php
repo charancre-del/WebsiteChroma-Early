@@ -50,6 +50,9 @@
 				}
 				$footer_twitter_url = trim((string) earlystart_get_theme_mod('earlystart_footer_twitter', ''));
 				$footer_youtube_url = trim((string) earlystart_get_theme_mod('earlystart_footer_youtube', ''));
+				$normalize_internal_url = static function ($url) {
+					return function_exists('earlystart_normalize_internal_url') ? earlystart_normalize_internal_url($url) : $url;
+				};
 				?>
 				<div class="flex items-center gap-3 mb-8">
 					<?php if (has_custom_logo()): ?>
@@ -135,15 +138,15 @@
 				} else {
 					?>
 					<div class="flex flex-col space-y-4 text-sm font-medium">
-						<a href="<?php echo esc_url(earlystart_get_page_link('about')); ?>"
+						<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_page_link('about'))); ?>"
 							class="hover:text-rose-400 transition-colors"><?php _e('About Us', 'earlystart-early-learning'); ?></a>
-						<a href="<?php echo esc_url(earlystart_get_page_link('locations')); ?>"
+						<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_page_link('locations'))); ?>"
 							class="hover:text-rose-400 transition-colors"><?php _e('Find a Clinic', 'earlystart-early-learning'); ?></a>
-						<a href="<?php echo esc_url(earlystart_get_page_link('parents')); ?>"
+						<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_page_link('parents'))); ?>"
 							class="hover:text-rose-400 transition-colors"><?php _e('For Families', 'earlystart-early-learning'); ?></a>
-						<a href="<?php echo esc_url(earlystart_get_page_link('careers')); ?>"
+						<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_page_link('careers'))); ?>"
 							class="hover:text-rose-400 transition-colors"><?php _e('Join Our Team', 'earlystart-early-learning'); ?></a>
-						<a href="<?php echo esc_url(earlystart_get_page_link('faq')); ?>"
+						<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_page_link('faq'))); ?>"
 							class="hover:text-rose-400 transition-colors"><?php _e('FAQs', 'earlystart-early-learning'); ?></a>
 					</div>
 				<?php } ?>
@@ -188,13 +191,13 @@
 							wp_reset_postdata();
 						} else {
 							?>
-							<a href="<?php echo esc_url(earlystart_get_program_link('aba')); ?>"
+							<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_program_link('aba'))); ?>"
 								class="hover:text-rose-400 transition-colors">ABA Therapy</a>
-							<a href="<?php echo esc_url(earlystart_get_program_link('speech')); ?>"
+							<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_program_link('speech'))); ?>"
 								class="hover:text-rose-400 transition-colors">Speech Therapy</a>
-							<a href="<?php echo esc_url(earlystart_get_program_link('ot')); ?>"
+							<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_program_link('ot'))); ?>"
 								class="hover:text-rose-400 transition-colors">Occupational Therapy</a>
-							<a href="<?php echo esc_url(earlystart_get_program_link('bridge')); ?>"
+							<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_program_link('bridge'))); ?>"
 								class="hover:text-rose-400 transition-colors">Bridge Program</a>
 						<?php } ?>
 					</div>
@@ -254,11 +257,11 @@
 				</div>
 			<?php endif; ?>
 			<div class="flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-stone-400">
-				<a href="<?php echo esc_url(earlystart_get_page_link('privacy-policy')); ?>"
+				<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_page_link('privacy-policy'))); ?>"
 					class="hover:text-stone-200 transition-colors">Privacy Policy</a>
-				<a href="<?php echo esc_url(earlystart_get_page_link('terms')); ?>"
+				<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_page_link('terms'))); ?>"
 					class="hover:text-stone-200 transition-colors">Terms of Use</a>
-				<a href="<?php echo esc_url(earlystart_get_page_link('hipaa')); ?>"
+				<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_page_link('hipaa'))); ?>"
 					class="hover:text-stone-200 transition-colors">HIPAA Notice</a>
 			</div>
 		</div>

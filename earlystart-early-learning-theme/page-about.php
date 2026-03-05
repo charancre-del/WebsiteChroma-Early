@@ -73,7 +73,7 @@ while (have_posts()):
 		$story_title = get_post_meta($page_id, 'about_story_title', true) ?: __('From One Classroom to a Community', 'earlystart-early-learning');
 		$story_p1 = get_post_meta($page_id, 'about_story_paragraph1', true);
 		$story_p2 = get_post_meta($page_id, 'about_story_paragraph2', true);
-		$story_image = get_post_meta($page_id, 'about_story_image', true) ?: 'https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp';
+		$story_image = get_post_meta($page_id, 'about_story_image', true) ?: 'https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&w=800&q=80&fm=webp';
 		?>
 		<section class="py-24 bg-stone-50 overflow-hidden">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

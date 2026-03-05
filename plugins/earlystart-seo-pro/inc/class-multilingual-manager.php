@@ -545,6 +545,11 @@ class earlystart_Multilingual_Manager
      */
     public function localize_meta_description()
     {
+        // Theme owns description/meta in theme_primary and hybrid modes.
+        if (function_exists('earlystart_seo_plugin_owns_head_meta') && !earlystart_seo_plugin_owns_head_meta()) {
+            return;
+        }
+
         if (!self::is_spanish())
             return;
 

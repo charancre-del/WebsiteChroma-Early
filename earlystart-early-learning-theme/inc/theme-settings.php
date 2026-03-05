@@ -38,6 +38,15 @@ function earlystart_register_theme_settings()
     $option_name = 'earlystart_global_settings';
 
     register_setting($option_group, $option_name);
+    register_setting(
+        $option_group,
+        'earlystart_seo_head_mode',
+        array(
+            'type' => 'string',
+            'sanitize_callback' => 'earlystart_sanitize_seo_head_mode',
+            'default' => 'theme_primary',
+        )
+    );
 
     // Section: Contact Info
     add_settings_section(
@@ -92,8 +101,42 @@ function earlystart_register_theme_settings()
             array('id' => $id, 'option_name' => $option_name)
         );
     }
+
+    // Section: SEO Ownership
+    add_settings_section(
+        'earlystart_seo_ownership_section',
+        __('SEO Ownership', 'earlystart-early-learning'),
+        null,
+        'earlystart-theme-settings'
+    );
+
+    add_settings_field(
+        'earlystart_seo_head_mode',
+        __('SEO Head Mode', 'earlystart-early-learning'),
+        'earlystart_render_seo_head_mode_field',
+        'earlystart-theme-settings',
+        'earlystart_seo_ownership_section'
+    );
 }
 add_action('admin_init', 'earlystart_register_theme_settings');
+
+/**
+ * Sanitize SEO head ownership mode.
+ *
+ * @param string $mode Raw setting.
+ * @return string
+ */
+function earlystart_sanitize_seo_head_mode($mode)
+{
+    $allowed = array('theme_primary', 'plugin_primary', 'hybrid');
+    $mode = sanitize_key((string) $mode);
+
+    if (!in_array($mode, $allowed, true)) {
+        return 'theme_primary';
+    }
+
+    return $mode;
+}
 
 /**
  * Render Text Field Callback
@@ -103,6 +146,28 @@ function earlystart_render_text_field($args)
     $options = get_option($args['option_name']);
     $value = isset($options[$args['id']]) ? $options[$args['id']] : '';
     echo '<input type="text" name="' . esc_attr($args['option_name']) . '[' . esc_attr($args['id']) . ']" value="' . esc_attr($value) . '" class="regular-text" />';
+}
+
+/**
+ * Render SEO head ownership select field.
+ */
+function earlystart_render_seo_head_mode_field()
+{
+    $value = get_option('earlystart_seo_head_mode', 'theme_primary');
+    $value = earlystart_sanitize_seo_head_mode($value);
+
+    $choices = array(
+        'theme_primary' => __('Theme Primary', 'earlystart-early-learning'),
+        'plugin_primary' => __('Plugin Primary', 'earlystart-early-learning'),
+        'hybrid' => __('Hybrid', 'earlystart-early-learning'),
+    );
+
+    echo '<select name="earlystart_seo_head_mode" id="earlystart_seo_head_mode">';
+    foreach ($choices as $mode => $label) {
+        echo '<option value="' . esc_attr($mode) . '" ' . selected($value, $mode, false) . '>' . esc_html($label) . '</option>';
+    }
+    echo '</select>';
+    echo '<p class="description">' . esc_html__('Theme Primary = theme emits canonical/meta/schema. Plugin Primary = plugin owns SEO head. Hybrid = plugin canonical/schema + theme social/meta.', 'earlystart-early-learning') . '</p>';
 }
 
 /**

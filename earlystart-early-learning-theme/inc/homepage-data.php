@@ -51,7 +51,7 @@ function earlystart_home_default_services()
                         'icon' => 'puzzle',
                         'heading' => __('Individualized Behavioral Growth', 'earlystart-early-learning'),
                         'description' => __('Our ABA therapy focuses on increasing helpful behaviors and decreasing harmful ones to improve learning and social skills.', 'earlystart-early-learning'),
-                        'image' => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp',
+                        'image' => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'bullets' => array(
                                 __('One-on-one sessions', 'earlystart-early-learning'),
                                 __('Data-driven progress tracking', 'earlystart-early-learning'),
@@ -65,7 +65,7 @@ function earlystart_home_default_services()
                         'icon' => 'message-circle',
                         'heading' => __('Unlocking Every Voice', 'earlystart-early-learning'),
                         'description' => __('Specialized support for articulation, language comprehension, and social communication milestones.', 'earlystart-early-learning'),
-                        'image' => 'https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp',
+                        'image' => 'https://images.unsplash.com/photo-1544717305-27a734ef202e?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'bullets' => array(
                                 __('Articulation support', 'earlystart-early-learning'),
                                 __('Social language skills', 'earlystart-early-learning'),
@@ -79,7 +79,7 @@ function earlystart_home_default_services()
                         'icon' => 'hand',
                         'heading' => __('Developing Independence', 'earlystart-early-learning'),
                         'description' => __('Helping children build the fine motor, sensory, and cognitive skills needed for daily life and play.', 'earlystart-early-learning'),
-                        'image' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp',
+                        'image' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'bullets' => array(
                                 __('Fine motor development', 'earlystart-early-learning'),
                                 __('Sensory integration', 'earlystart-early-learning'),
@@ -93,7 +93,7 @@ function earlystart_home_default_services()
                         'icon' => 'graduation-cap',
                         'heading' => __('Prepared for the Classroom', 'earlystart-early-learning'),
                         'description' => __('An integrated program designed to bridge the gap between clinical therapy and traditional classroom success.', 'earlystart-early-learning'),
-                        'image' => 'https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&q=80&fm=webp?w=800&fit=crop&q=80&fm=webp',
+                        'image' => 'https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'bullets' => array(
                                 __('Social-emotional prep', 'earlystart-early-learning'),
                                 __('Group routine practice', 'earlystart-early-learning'),
@@ -537,7 +537,7 @@ function earlystart_home_default_schedule_tracks()
                         'description' => 'Individualized schedules follow infants’ cues for sleeping and eating, with gentle sensory play.',
                         'color' => 'chroma-blue',
                         'background' => 'bg-chroma-blueLight',
-                        'image' => 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&q=80&fm=webp?q=80&w=800&auto=format&fit=crop&q=80&fm=webp',
+                        'image' => 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'steps' => array(
                                 array(
                                         'time' => 'AM',
@@ -563,7 +563,7 @@ function earlystart_home_default_schedule_tracks()
                         'description' => 'Structured circle time and communal meals help toddlers understand social cues and transitions.',
                         'color' => 'chroma-yellow',
                         'background' => 'bg-chroma-yellowLight',
-                        'image' => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&fm=webp?q=80&w=800&auto=format&fit=crop&q=80&fm=webp',
+                        'image' => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'steps' => array(
                                 array(
                                         'time' => '9:00',
@@ -589,7 +589,7 @@ function earlystart_home_default_schedule_tracks()
                         'description' => 'The Pre-K rhythm mirrors elementary flow, building stamina and focus.',
                         'color' => 'chroma-red',
                         'background' => 'bg-chroma-redLight',
-                        'image' => 'https://images.unsplash.com/photo-1503919545874-86c1d9a04595?auto=format&fit=crop&q=80&fm=webp?q=80&w=800&auto=format&fit=crop&q=80&fm=webp',
+                        'image' => 'https://images.unsplash.com/photo-1503919545874-86c1d9a04595?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'steps' => array(
                                 array(
                                         'time' => '9:00',
@@ -666,7 +666,7 @@ function earlystart_home_program_wizard_options()
                 // Get image with fallback
                 $image_url = get_the_post_thumbnail_url($post_id, 'large');
                 if (!$image_url) {
-                        $image_url = 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&q=80&fm=webp?q=80&w=800&auto=format&fit=crop&q=80&fm=webp';
+                        $image_url = 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=800&q=80&fm=webp';
                 }
 
                 // Build label with line break for display
