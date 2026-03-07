@@ -321,8 +321,48 @@ function earlystart_render_location_custom_fields_meta_box($post)
 		}
 
 		.chroma-meta-field input[type="text"],
+		.chroma-meta-field input[type="email"],
+		.chroma-meta-field input[type="url"],
 		.chroma-meta-field textarea {
 			width: 100%;
+			max-width: 100%;
+		}
+
+		.chroma-icons-grid {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 10px;
+			margin-top: 10px;
+		}
+
+		.chroma-meta-grid-2 {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 10px;
+		}
+
+		.chroma-meta-grid-3 {
+			display: grid;
+			grid-template-columns: 2fr 1fr 1fr;
+			gap: 10px;
+		}
+
+		.chroma-image-field-row {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto auto;
+			gap: 8px;
+			align-items: center;
+		}
+
+		.chroma-meta-field label.chroma-checkbox-label {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			margin-bottom: 0;
+		}
+
+		.chroma-meta-field label.chroma-checkbox-label input[type="checkbox"] {
+			margin: 0;
 		}
 
 		.chroma-meta-field small {
@@ -371,6 +411,15 @@ function earlystart_render_location_custom_fields_meta_box($post)
 			padding: 5px;
 			border-radius: 4px;
 		}
+
+		@media (max-width: 782px) {
+			.chroma-icons-grid,
+			.chroma-meta-grid-2,
+			.chroma-meta-grid-3,
+			.chroma-image-field-row {
+				grid-template-columns: 1fr;
+			}
+		}
 	</style>
 
 	<div class="chroma-meta-section" style="border-top: none; padding-top: 0; margin-top: 0;">
@@ -382,7 +431,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 			<p style="margin: 0; font-size: 13px; color: #555;">
 				The following icons will appear on your location page:
 			</p>
-			<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;">
+			<div class="chroma-icons-grid">
 				<div class="chroma-icon-preview">
 					<i class="fa-solid fa-location-dot"></i>
 					<span>Address</span>
@@ -474,7 +523,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 		</div>
 
 	<div class="chroma-meta-field">
-		<label for="location_featured">
+		<label for="location_featured" class="chroma-checkbox-label">
 			<input type="checkbox" id="location_featured" name="location_featured" value="1"
 				<?php checked(get_post_meta($post->ID, 'location_featured', true), '1'); ?> />
 			<?php _e('Location Type: Clinic', 'earlystart-early-learning'); ?>
@@ -483,7 +532,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 	</div>
 
 	<div class="chroma-meta-field">
-		<label for="location_quality_rated">
+		<label for="location_quality_rated" class="chroma-checkbox-label">
 			<input type="checkbox" id="location_quality_rated" name="location_quality_rated" value="1"
 				<?php checked(get_post_meta($post->ID, 'location_quality_rated', true), '1'); ?> />
 			<?php _e('Quality Rated by Georgia DECAL', 'earlystart-early-learning'); ?>
@@ -525,8 +574,8 @@ function earlystart_render_location_custom_fields_meta_box($post)
 		<div class="chroma-meta-field">
 			<label for="location_director_heading"><?php _e('Director Section Heading', 'earlystart-early-learning'); ?></label>
 			<input type="text" id="location_director_heading" name="location_director_heading"
-				value="<?php echo esc_attr($director_heading); ?>" placeholder="e.g., Welcome to Early Start Marietta." />
-			<small><?php _e('Headline for the director section (fallback: Welcome to Early Start [City].)', 'earlystart-early-learning'); ?></small>
+				value="<?php echo esc_attr($director_heading); ?>" placeholder="e.g., Welcome to Chroma Early Start Marietta." />
+			<small><?php _e('Headline for the director section (fallback: Welcome to Chroma Early Start [City].)', 'earlystart-early-learning'); ?></small>
 		</div>
 
 		<div class="chroma-meta-field">
@@ -538,34 +587,32 @@ function earlystart_render_location_custom_fields_meta_box($post)
 
 		<div class="chroma-meta-field">
 			<label for="location_director_photo"><?php _e('Director Photo', 'earlystart-early-learning'); ?></label>
-			<input type="text" id="location_director_photo" name="location_director_photo" class="chroma-image-field"
-				value="<?php echo esc_attr($director_photo); ?>" placeholder="https://..."
-				style="width: calc(100% - 220px); display: inline-block;" />
-			<button type="button" class="button chroma-upload-button" data-field="location_director_photo"
-				style="margin-left: 5px;">
-				<i class="fa-solid fa-upload"></i> Upload Image
-			</button>
-			<button type="button" class="button chroma-clear-button" data-field="location_director_photo"
-				style="margin-left: 5px;">
-				<i class="fa-solid fa-times"></i> Clear
-			</button>
+			<div class="chroma-image-field-row">
+				<input type="text" id="location_director_photo" name="location_director_photo" class="chroma-image-field"
+					value="<?php echo esc_attr($director_photo); ?>" placeholder="https://..." />
+				<button type="button" class="button chroma-upload-button" data-field="location_director_photo">
+					<i class="fa-solid fa-upload"></i> Upload Image
+				</button>
+				<button type="button" class="button chroma-clear-button" data-field="location_director_photo">
+					<i class="fa-solid fa-times"></i> Clear
+				</button>
+			</div>
 			<div class="chroma-image-preview"></div>
 			<small><?php _e('Director photo (optional)', 'earlystart-early-learning'); ?></small>
 		</div>
 
 		<div class="chroma-meta-field">
 			<label for="location_director_signature"><?php _e('Director Signature Image', 'earlystart-early-learning'); ?></label>
-			<input type="text" id="location_director_signature" name="location_director_signature"
-				class="chroma-image-field" value="<?php echo esc_attr($director_signature); ?>" placeholder="https://..."
-				style="width: calc(100% - 220px); display: inline-block;" />
-			<button type="button" class="button chroma-upload-button" data-field="location_director_signature"
-				style="margin-left: 5px;">
-				<i class="fa-solid fa-upload"></i> Upload Image
-			</button>
-			<button type="button" class="button chroma-clear-button" data-field="location_director_signature"
-				style="margin-left: 5px;">
-				<i class="fa-solid fa-times"></i> Clear
-			</button>
+			<div class="chroma-image-field-row">
+				<input type="text" id="location_director_signature" name="location_director_signature"
+					class="chroma-image-field" value="<?php echo esc_attr($director_signature); ?>" placeholder="https://..." />
+				<button type="button" class="button chroma-upload-button" data-field="location_director_signature">
+					<i class="fa-solid fa-upload"></i> Upload Image
+				</button>
+				<button type="button" class="button chroma-clear-button" data-field="location_director_signature">
+					<i class="fa-solid fa-times"></i> Clear
+				</button>
+			</div>
 			<div class="chroma-image-preview"></div>
 			<small><?php _e('Director signature image (optional)', 'earlystart-early-learning'); ?></small>
 		</div>
@@ -580,7 +627,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 				placeholder="e.g., 123 Main Street" />
 		</div>
 
-		<div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px;">
+		<div class="chroma-meta-grid-3">
 			<div class="chroma-meta-field">
 				<label for="location_city"><?php _e('City', 'earlystart-early-learning'); ?></label>
 				<input type="text" id="location_city" name="location_city" value="<?php echo esc_attr($city); ?>"
@@ -600,7 +647,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 			</div>
 		</div>
 
-		<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+		<div class="chroma-meta-grid-2">
 			<div class="chroma-meta-field">
 				<label for="location_phone"><?php _e('Phone', 'earlystart-early-learning'); ?></label>
 				<input type="text" id="location_phone" name="location_phone" value="<?php echo esc_attr($phone); ?>"
@@ -614,7 +661,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 			</div>
 		</div>
 
-		<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+		<div class="chroma-meta-grid-2">
 			<div class="chroma-meta-field">
 				<label for="location_latitude"><?php _e('Latitude', 'earlystart-early-learning'); ?></label>
 				<input type="text" id="location_latitude" name="location_latitude"
