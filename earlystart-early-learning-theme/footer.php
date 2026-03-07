@@ -17,7 +17,7 @@
 					$footer_logo_width = 70;
 				}
 
-				$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
+				$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Chroma Early Start\nPediatric Therapy");
 				$header_lines = explode("\n", $header_text_raw);
 				$footer_primary_line = isset($header_lines[0]) && '' !== trim($header_lines[0]) ? trim($header_lines[0]) : get_bloginfo('name');
 				$footer_secondary_line = isset($header_lines[1]) ? trim($header_lines[1]) : '';
@@ -87,31 +87,31 @@
 				<div class="flex space-x-4">
 					<?php if ($footer_facebook_url): ?>
 						<a href="<?php echo esc_url($footer_facebook_url); ?>" target="_blank" rel="noopener"
-							aria-label="<?php esc_attr_e('Follow Early Start on Facebook', 'earlystart-early-learning'); ?>"
+							aria-label="<?php esc_attr_e('Follow Chroma Early Start on Facebook', 'earlystart-early-learning'); ?>"
 							class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 								data-lucide="facebook" class="w-5 h-5"></i></a>
 					<?php endif; ?>
 					<?php if ($footer_instagram_url): ?>
 						<a href="<?php echo esc_url($footer_instagram_url); ?>" target="_blank" rel="noopener"
-							aria-label="<?php esc_attr_e('Follow Early Start on Instagram', 'earlystart-early-learning'); ?>"
+							aria-label="<?php esc_attr_e('Follow Chroma Early Start on Instagram', 'earlystart-early-learning'); ?>"
 							class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 								data-lucide="instagram" class="w-5 h-5"></i></a>
 					<?php endif; ?>
 					<?php if ($footer_linkedin_url): ?>
 						<a href="<?php echo esc_url($footer_linkedin_url); ?>" target="_blank" rel="noopener"
-							aria-label="<?php esc_attr_e('Follow Early Start on LinkedIn', 'earlystart-early-learning'); ?>"
+							aria-label="<?php esc_attr_e('Follow Chroma Early Start on LinkedIn', 'earlystart-early-learning'); ?>"
 							class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 								data-lucide="linkedin" class="w-5 h-5"></i></a>
 					<?php endif; ?>
 					<?php if ($footer_twitter_url): ?>
 						<a href="<?php echo esc_url($footer_twitter_url); ?>" target="_blank" rel="noopener"
-							aria-label="<?php esc_attr_e('Follow Early Start on Twitter/X', 'earlystart-early-learning'); ?>"
+							aria-label="<?php esc_attr_e('Follow Chroma Early Start on Twitter/X', 'earlystart-early-learning'); ?>"
 							class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 								data-lucide="twitter" class="w-5 h-5"></i></a>
 					<?php endif; ?>
 					<?php if ($footer_youtube_url): ?>
 						<a href="<?php echo esc_url($footer_youtube_url); ?>" target="_blank" rel="noopener"
-							aria-label="<?php esc_attr_e('Follow Early Start on YouTube', 'earlystart-early-learning'); ?>"
+							aria-label="<?php esc_attr_e('Follow Chroma Early Start on YouTube', 'earlystart-early-learning'); ?>"
 							class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-stone-300 hover:bg-rose-600 hover:text-white transition-all"><i
 								data-lucide="youtube" class="w-5 h-5"></i></a>
 					<?php endif; ?>
@@ -238,7 +238,7 @@
 			$is_spanish = class_exists('earlystart_Multilingual_Manager') && method_exists('earlystart_Multilingual_Manager', 'is_spanish') && earlystart_Multilingual_Manager::is_spanish();
 			?>
 			<p class="text-xs text-stone-400">&copy; <?php echo date('Y'); ?>
-				<?php _e('Early Start. All rights reserved.', 'earlystart-early-learning'); ?>
+				<?php _e('Chroma Early Start. All rights reserved.', 'earlystart-early-learning'); ?>
 			</p>
 			<?php if (!empty($footer_alternates['en']) || !empty($footer_alternates['es'])): ?>
 				<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">

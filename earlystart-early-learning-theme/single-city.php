@@ -37,7 +37,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                         <?php printf(__('Top-Rated Clinical Care in <span class="text-rose-700">%s.</span>', 'earlystart-early-learning'), esc_html($city)); ?>
                     </h1>
                     <p class="text-xl text-stone-700 leading-relaxed mb-10 max-w-xl">
-                        <?php printf(__('Are you looking for specialized pediatric therapy near you? Discover Early Start’s clinical excellence in the %s area, featuring the Chroma Care Model.', 'earlystart-early-learning'), esc_html($city)); ?>
+                        <?php printf(__('Are you looking for specialized pediatric therapy near you? Discover Chroma Early Startâ€™s clinical excellence in the %s area, featuring the Chroma Care Model.', 'earlystart-early-learning'), esc_html($city)); ?>
                     </p>
 
                     <a href="#locations"
@@ -67,7 +67,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                 <?php if ($intro_text): ?>
                     <?php echo wp_kses_post(wpautop($intro_text)); ?>
                 <?php else: ?>
-                    <p><?php printf(__('Early Start ELA provides a haven for clinical growth in %s. Our dedicated team of therapists and educators work in harmony to provide intensive, evidence-based care in a nurturing environment.', 'earlystart-early-learning'), esc_html($city)); ?>
+                    <p><?php printf(__('Chroma Early Start provides a haven for clinical growth in %s. Our dedicated team of therapists and educators work in harmony to provide intensive, evidence-based care in a nurturing environment.', 'earlystart-early-learning'), esc_html($city)); ?>
                     </p>
                 <?php endif; ?>
             </div>
@@ -153,7 +153,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                         <a href="<?php the_permalink(); ?>"
                             class="group block p-8 rounded-[2rem] bg-stone-800 border border-stone-700 hover:bg-stone-700 hover:border-sky-500/50 transition-all text-center fade-in-up">
                             <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">
-                                <?php echo get_post_meta(get_the_ID(), 'program_icon', true) ?: '🩺'; ?>
+                                <?php echo get_post_meta(get_the_ID(), 'program_icon', true) ?: 'ðŸ©º'; ?>
                             </div>
                             <h4 class="font-bold text-white"><?php the_title(); ?></h4>
                         </a>

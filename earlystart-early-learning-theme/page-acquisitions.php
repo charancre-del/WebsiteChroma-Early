@@ -47,7 +47,7 @@ get_header();
         <section class="py-16 bg-brand-cream">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl font-bold text-brand-ink mb-10 text-center">
-                    <?php _e('Why Partner With Early Start?', 'earlystart-early-learning'); ?>
+                    <?php _e('Why Partner With Chroma Early Start?', 'earlystart-early-learning'); ?>
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <?php foreach ($benefits as $benefit): ?>
@@ -91,7 +91,7 @@ get_header();
                     ?>
                     <div class="text-center text-brand-ink/90 py-8">
                         <p class="mb-4"><?php _e('Acquisitions form plugin not activated.', 'earlystart-early-learning'); ?></p>
-                        <p class="text-sm"><?php _e('Please activate the "Early Start Acquisitions Form" plugin to display the acquisition form.', 'earlystart-early-learning'); ?></p>
+                        <p class="text-sm"><?php _e('Please activate the "Chroma Early Start Acquisitions Form" plugin to display the acquisition form.', 'earlystart-early-learning'); ?></p>
                         <p class="mt-6"><?php _e('In the meantime, reach out to:', 'earlystart-early-learning'); ?></p>
                         <p class="font-semibold text-chroma-teal mt-2">
                             <a href="mailto:acquisitions@chromaearlystart.com">acquisitions@chromaearlystart.com</a>

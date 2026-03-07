@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Early Start Bridge Program
+ * Template Name: Chroma Early Start Bridge Program
  * Focuses on School Readiness and the transition from 1:1 to small group learning.
  *
  * @package EarlyStart_Early_Start
@@ -28,7 +28,7 @@ while (have_posts()):
                             </span>
                         </div>
                         <h1 class="text-5xl md:text-6xl font-bold text-stone-900 mb-6 leading-tight">
-                            <?php _e('The Early Start', 'earlystart-early-learning'); ?><br><span class="text-blue-600">
+                            <?php _e('The Chroma Early Start', 'earlystart-early-learning'); ?><br><span class="text-blue-600">
                                 <?php _e('Bridge Program.', 'earlystart-early-learning'); ?>
                             </span>
                         </h1>
@@ -142,7 +142,7 @@ while (have_posts()):
                         class="bg-blue-600 p-10 rounded-[2.5rem] shadow-xl border border-blue-500 relative transform scale-105 z-10 text-white fade-in-up">
                         <div
                             class="absolute -top-6 left-8 bg-white text-blue-600 px-4 py-2 rounded-lg font-bold text-xs uppercase shadow-sm">
-                            <?php _e('Early Start Bridge', 'earlystart-early-learning'); ?>
+                            <?php _e('Chroma Early Start Bridge', 'earlystart-early-learning'); ?>
                         </div>
                         <h3 class="text-2xl font-bold mb-4 mt-4">
                             <?php _e('Classroom Skills', 'earlystart-early-learning'); ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Early Start Theme Functions
+ * Chroma Early Start Theme Functions
  *
  * Homepage Template: front-page.php (WordPress default)
  *
@@ -40,7 +40,7 @@ define('earlystart_THEME_URI', get_template_directory_uri());
 
 /**
  * Plugin Polyfills
- * Prevent theme crash if Early Start SEO Pro plugin is disabled
+ * Prevent theme crash if Chroma Early Start SEO Pro plugin is disabled
  */
 if (!function_exists('earlystart_url')) {
     function earlystart_url($path = '')
@@ -531,7 +531,7 @@ function earlystart_optimize_title_length($title_parts)
 
     // Use shorter site name suffix on blog posts
     if (is_single() && isset($title_parts['site'])) {
-        $title_parts['site'] = 'Early Start';
+        $title_parts['site'] = 'Chroma Early Start';
     }
 
     return $title_parts;

@@ -18,7 +18,7 @@ while (have_posts()):
 		<?php
 		$hero_badge = get_post_meta($page_id, 'about_hero_badge_text', true) ?: __('Established 2022', 'earlystart-early-learning');
 		$hero_title = get_post_meta($page_id, 'about_hero_title', true) ?: __('More than a clinic. <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">A second home.</span>', 'earlystart-early-learning');
-		$hero_desc = get_post_meta($page_id, 'about_hero_description', true) ?: __('We founded Early Start on a simple belief: Clinical therapy should be a perfect blend of rigorous skill development and the comforting warmth of family life.', 'earlystart-early-learning');
+		$hero_desc = get_post_meta($page_id, 'about_hero_description', true) ?: __('We founded Chroma Early Start on a simple belief: Clinical therapy should be a perfect blend of rigorous skill development and the comforting warmth of family life.', 'earlystart-early-learning');
 		$hero_image = get_post_meta($page_id, 'about_hero_image', true);
 		?>
 		<section class="relative bg-white pt-24 pb-24 lg:pt-32 overflow-hidden">
@@ -99,7 +99,7 @@ while (have_posts()):
 								</p>
 							<?php else: ?>
 								<p><strong>
-										<?php _e('Early Start', 'earlystart-early-learning'); ?>
+										<?php _e('Chroma Early Start', 'earlystart-early-learning'); ?>
 									</strong>
 									<?php _e('was created to bring that same "second home" philosophy to pediatric therapy.', 'earlystart-early-learning'); ?>
 								</p>
@@ -159,9 +159,9 @@ while (have_posts()):
 					<div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
 						<?php
 						$milestones = array(
-							array('year' => '2022', 'title' => 'The Beginning', 'desc' => 'Chroma Early Start opens its first flagship clinic.', 'color' => 'rose'),
-							array('year' => '2023', 'title' => 'Regional Growth', 'desc' => 'Expansion to 10+ clinics serving more families across metro Atlanta.', 'color' => 'orange'),
-							array('year' => '2024', 'title' => 'Early Start', 'desc' => 'Official launch of our specialized ABA & Therapy division.', 'color' => 'amber'),
+							array('year' => '2022', 'title' => 'The Beginning', 'desc' => 'Chroma Early Learning Academy opens its first childcare center.', 'color' => 'rose'),
+							array('year' => '2023-2025', 'title' => 'Regional Growth', 'desc' => 'Regional expansion across Metro Atlanta.', 'color' => 'orange'),
+							array('year' => '2026', 'title' => 'Chroma Early Start', 'desc' => 'Official launch of Chroma Early Start.', 'color' => 'amber'),
 							array('year' => 'Today', 'title' => 'A Holistic Network', 'desc' => '19+ locations integrating education and clinical therapy.', 'color' => 'rose'),
 						);
 						foreach ($milestones as $m): ?>
@@ -186,7 +186,7 @@ while (have_posts()):
 
 		<!-- Clinicians Section (Mapped to Educators Meta) -->
 		<?php
-		$edu_title = get_post_meta($page_id, 'about_educators_title', true) ?: __('The Heart of Early Start', 'earlystart-early-learning');
+		$edu_title = get_post_meta($page_id, 'about_educators_title', true) ?: __('The Heart of Chroma Early Start', 'earlystart-early-learning');
 		$edu_desc = get_post_meta($page_id, 'about_educators_description', true) ?: __('We don\'t just hire technicians; we hire career clinicians.', 'earlystart-early-learning');
 		?>
 		<section class="py-24 bg-white overflow-hidden">
@@ -349,7 +349,7 @@ while (have_posts()):
 							<?php _e('A Place Where Everyone Belongs', 'earlystart-early-learning'); ?>
 						</h2>
 						<p class="text-stone-300 text-lg leading-relaxed mb-8">
-							<?php _e('We believe that diversity strengthens our care. Early Start is committed to creating an inclusive environment where every child, family, and team member is celebrated for exactly who they are.', 'earlystart-early-learning'); ?>
+							<?php _e('We believe that diversity strengthens our care. Chroma Early Start is committed to creating an inclusive environment where every child, family, and team member is celebrated for exactly who they are.', 'earlystart-early-learning'); ?>
 						</p>
 						<div class="space-y-4">
 							<div class="flex items-center">
@@ -377,7 +377,7 @@ while (have_posts()):
 						<div class="relative bg-stone-800 rounded-[2.5rem] p-10 border border-stone-700">
 							<blockquote class="text-xl italic text-stone-200 mb-6">
 								"
-								<?php _e('Our son has never fit into a \'box\' before. At Early Start, they didn\'t try to change him; they built a world where he could succeed just as he is.', 'earlystart-early-learning'); ?>"
+								<?php _e('Our son has never fit into a \'box\' before. At Chroma Early Start, they didn\'t try to change him; they built a world where he could succeed just as he is.', 'earlystart-early-learning'); ?>"
 							</blockquote>
 							<div class="flex items-center">
 								<div
@@ -388,7 +388,7 @@ while (have_posts()):
 										<?php _e('Marcus J.', 'earlystart-early-learning'); ?>
 									</div>
 									<div class="text-xs text-stone-300">
-										<?php _e('Early Start Parent', 'earlystart-early-learning'); ?>
+										<?php _e('Chroma Early Start Parent', 'earlystart-early-learning'); ?>
 									</div>
 								</div>
 							</div>

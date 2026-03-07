@@ -122,7 +122,7 @@ add_action('wp_head', function () {
       <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-chroma-blue mb-6">
         <span class="w-2 h-2 bg-chroma-blue rounded-full"></span>
         <?php echo esc_html($primary_category); ?>
-        <span class="text-brand-ink/70">•</span>
+        <span class="text-brand-ink/70">â€¢</span>
         <?php echo esc_html($post_date); ?>
       </div>
       <h1 class="font-serif text-4xl md:text-6xl text-brand-ink mb-8 leading-tight">
@@ -170,7 +170,7 @@ add_action('wp_head', function () {
     <section class="bg-white py-20 border-t border-brand-ink/5">
       <div class="max-w-6xl mx-auto px-4 lg:px-6">
         <h3 class="font-serif text-3xl font-bold mb-8 text-center">
-          <?php _e('More from Early Start', 'earlystart-early-learning'); ?>
+          <?php _e('More from Chroma Early Start', 'earlystart-early-learning'); ?>
         </h3>
         <div class="grid md:grid-cols-3 gap-8">
           <?php while ($related_query->have_posts()):

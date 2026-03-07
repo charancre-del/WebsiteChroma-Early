@@ -547,6 +547,7 @@ function earlystart_get_supported_insurances()
         'Ambetter',
         'Blue Cross Blue Shield',
         'Cigna',
+        'Other Insurance',
     );
 }
 

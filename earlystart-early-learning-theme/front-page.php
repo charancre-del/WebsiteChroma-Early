@@ -19,7 +19,7 @@ get_header();
 <!-- Services Tabs (Therapy in Action) -->
 <?php get_template_part('template-parts/home/services-tabs'); ?>
 
-<!-- Why Early Start (Bento Grid) -->
+<!-- Why Chroma Early Start (Bento Grid) -->
 <?php get_template_part('template-parts/home/chroma-care-model'); ?>
 
 <!-- Clinical Team Section (Removed for Launch) -->

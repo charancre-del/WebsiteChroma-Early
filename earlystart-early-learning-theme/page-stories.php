@@ -73,7 +73,7 @@ get_header();
   <section class="py-20 bg-white text-center">
     <div class="max-w-4xl mx-auto px-4">
       <span class="text-chroma-red font-bold tracking-[0.2em] text-xs uppercase mb-3 block"><?php _e('The Blog', 'earlystart-early-learning'); ?></span>
-      <h1 class="font-serif text-5xl md:text-6xl text-brand-ink mb-6"><?php _e('Early Start Stories', 'earlystart-early-learning'); ?></h1>
+      <h1 class="font-serif text-5xl md:text-6xl text-brand-ink mb-6"><?php _e('Chroma Early Start Stories', 'earlystart-early-learning'); ?></h1>
       <p class="text-lg text-brand-ink/90"><?php _e('Parenting tips, classroom spotlights, and insights from our educators.', 'earlystart-early-learning'); ?></p>
 
       <!-- Categories -->

@@ -31,7 +31,7 @@ $team_query = new WP_Query(array(
             <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
                 <?php _e('The Heart of', 'earlystart-early-learning'); ?><br>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">
-                    <?php _e('Early Start.', 'earlystart-early-learning'); ?>
+                    <?php _e('Chroma Early Start.', 'earlystart-early-learning'); ?>
                 </span>
             </h1>
             <p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">

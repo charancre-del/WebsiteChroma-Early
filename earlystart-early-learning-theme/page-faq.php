@@ -41,7 +41,7 @@ get_header();
                 array(
                     'title' => 'Therapy & Services',
                     'questions' => array(
-                        array('q' => 'What is the "Early Start Standard" for ABA?', 'a' => 'We practice assent-based, play-led ABA. This means we prioritize the child\'s happiness and willingness to participate. We don\'t use forced compliance; we build skills through trust and meaningful reinforcement.'),
+                        array('q' => 'What is the "Chroma Early Start Standard" for ABA?', 'a' => 'We practice assent-based, play-led ABA. This means we prioritize the child\'s happiness and willingness to participate. We don\'t use forced compliance; we build skills through trust and meaningful reinforcement.'),
                         array('q' => 'Do you offer Speech and OT alongside ABA?', 'a' => 'Yes. We are a holistic provider. Our BCBAs collaborate daily with our Speech and Occupational therapists to ensure goals are aligned and the child isn\'t overwhelmed by conflicting approaches.'),
                         array('q' => 'How many hours of therapy will my child need?', 'a' => 'This is determined during our initial assessment. We look at your child\'s specific needs, age, and goals. Some children thrive with 15 hours, while others require more intensive support.'),
                     )

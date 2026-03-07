@@ -244,7 +244,7 @@ while (have_posts()):
 					?>
 				</h2>
 				<p class="text-stone-700 mb-10 max-w-2xl mx-auto">
-					<?php _e('With specialized therapy centers across the region, there is likely a Early Start clinic in your community.', 'earlystart-early-learning'); ?>
+					<?php _e('With specialized therapy centers across the region, there is likely a Chroma Early Start clinic in your community.', 'earlystart-early-learning'); ?>
 				</p>
 				<a href="<?php echo esc_url(earlystart_get_page_link('locations')); ?>"
 					class="inline-flex items-center text-rose-700 font-bold hover:underline gap-2">

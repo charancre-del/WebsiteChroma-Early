@@ -44,7 +44,7 @@ function earlystart_get_wizard_color_classes($key)
 
         <div class="text-center mb-10 fade-in-up">
             <h2 class="font-serif text-3xl md:text-4xl font-bold text-brand-ink mb-3"><?php _e('Find the right program in 10 seconds', 'earlystart-early-learning'); ?></h2>
-            <p class="text-brand-ink text-sm md:text-base max-w-2xl mx-auto"><?php _e('Choose your child\'s age and we\'ll suggest the Early Start program designed for their development stage and your family\'s needs.', 'earlystart-early-learning'); ?></p>
+            <p class="text-brand-ink text-sm md:text-base max-w-2xl mx-auto"><?php _e('Choose your child\'s age and we\'ll suggest the Chroma Early Start program designed for their development stage and your family\'s needs.', 'earlystart-early-learning'); ?></p>
         </div>
 
         <div class="bg-white rounded-3xl p-6 md:p-8 border border-chroma-blue/10 shadow-soft fade-in-up"

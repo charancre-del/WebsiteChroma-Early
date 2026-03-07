@@ -32,7 +32,7 @@ while (have_posts()):
                             </span>
                         </h1>
                         <p class="text-xl text-stone-700 leading-relaxed mb-10">
-                            <?php _e('At Early Start, we use the Chroma Care Model—our signature assent-based ABA model. We prioritize the child\'s happiness and willingness to participate above all else.', 'earlystart-early-learning'); ?>
+                            <?php _e('At Chroma Early Start, we use the Chroma Care Modelâ€”our signature assent-based ABA model. We prioritize the child\'s happiness and willingness to participate above all else.', 'earlystart-early-learning'); ?>
                         </p>
                         <div class="flex flex-wrap gap-4">
                             <a href="#model"
@@ -63,7 +63,7 @@ while (have_posts()):
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                 <span
                     class="inline-block px-4 py-2 bg-rose-500/10 text-rose-400 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
-                    <?php _e('The Early Start Difference', 'earlystart-early-learning'); ?>
+                    <?php _e('The Chroma Early Start Difference', 'earlystart-early-learning'); ?>
                 </span>
                 <h2 class="text-4xl md:text-5xl font-bold mb-8">
                     <?php _e('Clinical Precision,', 'earlystart-early-learning'); ?> <br>
@@ -155,7 +155,7 @@ while (have_posts()):
                             <?php _e('Holistic Sync', 'earlystart-early-learning'); ?>
                         </h3>
                         <p class="text-stone-700 leading-relaxed">
-                            <?php _e('ABA, Speech, and OT goals are synchronized in one clinical roadmap. No conflicting advice—just one unified team.', 'earlystart-early-learning'); ?>
+                            <?php _e('ABA, Speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
                 </div>
@@ -203,7 +203,7 @@ while (have_posts()):
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16 fade-in-up">
                     <h2 class="text-3xl font-bold text-stone-900 mb-4">
-                        <?php _e('The Early Start Difference', 'earlystart-early-learning'); ?>
+                        <?php _e('The Chroma Early Start Difference', 'earlystart-early-learning'); ?>
                     </h2>
                     <p class="text-stone-700">
                         <?php _e('How our assent-based model compares to traditional approaches.', 'earlystart-early-learning'); ?>

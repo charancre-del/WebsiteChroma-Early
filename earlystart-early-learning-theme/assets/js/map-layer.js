@@ -1,97 +1,140 @@
 /**
- * Leaflet Map Layer
- *
- * @package EarlyStart_Early_Start
+ * Leaflet map layer.
  */
-
 (function () {
+  const escapeHtml = (value) =>
+    String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+  const getPopupLabel = () => {
+    if (!window.chromaData) {
+      return 'View clinic';
+    }
+
+    return window.chromaData.viewClinic || window.chromaData.viewCampus || 'View clinic';
+  };
+
   const getMarkerIcon = (kind) => {
     const color = kind === 'clinic' ? '#e11d48' : '#2563eb';
 
     return L.divIcon({
       className: 'chroma-map-pin',
-      html: `<span style="display:block;width:18px;height:18px;border-radius:9999px;background:${color};border:3px solid #ffffff;box-shadow:0 10px 24px rgba(15,23,42,.18);"></span>`,
+      html: `<span style=\"display:block;width:18px;height:18px;border-radius:9999px;background:${color};border:3px solid #ffffff;box-shadow:0 10px 24px rgba(15,23,42,.18);\"></span>`,
       iconSize: [18, 18],
       iconAnchor: [9, 9],
       popupAnchor: [0, -8],
     });
   };
 
-  const initMaps = () => {
-    const mapContainers = document.querySelectorAll('[data-chroma-map]');
+  const parseLocations = (raw) => {
+    if (!raw) {
+      return [];
+    }
 
-    if (!mapContainers.length || typeof L === 'undefined') {
+    try {
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) {
+        return [];
+      }
+
+      return parsed
+        .map((location) => ({
+          ...location,
+          lat: Number(location.lat),
+          lng: Number(location.lng),
+        }))
+        .filter((location) => Number.isFinite(location.lat) && Number.isFinite(location.lng));
+    } catch (error) {
+      console.error('Invalid JSON in data-chroma-locations', error);
+      return [];
+    }
+  };
+
+  const initMap = (container) => {
+    if (!container || container.dataset.chromaMapReady === '1' || container._leaflet_id) {
       return;
     }
 
-    mapContainers.forEach((container) => {
-      // Check if map already initialized
-      if (container._leaflet_id) return;
+    const locations = parseLocations(container.getAttribute('data-chroma-locations'));
+    if (!locations.length) {
+      return;
+    }
 
-      const locationsData = container.getAttribute('data-chroma-locations');
+    const first = locations[0];
+    const map = L.map(container, {
+      zoomControl: true,
+      scrollWheelZoom: false,
+    }).setView([first.lat, first.lng], 12);
 
-      if (!locationsData) {
-        return;
-      }
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19,
+    }).addTo(map);
 
-      let locations;
-      try {
-        locations = JSON.parse(locationsData);
-      } catch (e) {
-        console.error('Invalid JSON in data-chroma-locations');
-        return;
-      }
+    const popupLabel = escapeHtml(getPopupLabel());
+    const bounds = [];
 
-      if (!locations || !locations.length) {
-        return;
-      }
-
-      // Create map
-      const map = L.map(container).setView([locations[0].lat, locations[0].lng], 12);
-
-      // Add tile layer
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
+    locations.forEach((location) => {
+      const marker = L.marker([location.lat, location.lng], {
+        icon: getMarkerIcon(location.kind),
       }).addTo(map);
 
-      // Add markers
-      const bounds = [];
-      locations.forEach((location) => {
-        const marker = L.marker([location.lat, location.lng], {
-          icon: getMarkerIcon(location.kind),
-        }).addTo(map);
-        const popupLabel = (window.chromaData && (chromaData.viewClinic || chromaData.viewCampus)) || 'View clinic';
+      const name = escapeHtml(location.name);
+      const city = escapeHtml(location.city);
+      const url = String(location.url || '#');
 
-        const popupContent = `
-        <div class="text-center p-2">
-          <strong class="block text-base mb-1">${location.name}</strong>
-          <p class="text-sm text-gray-600 mb-2">${location.city}</p>
-          <a href="${location.url}" class="text-sm text-blue-600 hover:underline">${chromaData.viewCampus || 'View clinic'} →</a>
+      const popupContent = `
+        <div class=\"text-center p-2\">
+          <strong class=\"block text-base mb-1\">${name}</strong>
+          <p class=\"text-sm text-gray-600 mb-2\">${city}</p>
+          <a href=\"${url}\" class=\"text-sm text-blue-600 hover:underline\">${popupLabel} &rarr;</a>
         </div>
       `;
-        const normalizedPopupContent = popupContent
-          .replace(chromaData.viewCampus || 'View clinic', popupLabel)
-          .replace('â†’', '&rarr;');
 
-        marker.bindPopup(normalizedPopupContent);
-        bounds.push([location.lat, location.lng]);
-      });
-
-      // Fit bounds if multiple locations
-      if (bounds.length > 1) {
-        map.fitBounds(bounds, {
-          padding: [50, 50]
-        });
-      }
+      marker.bindPopup(popupContent);
+      bounds.push([location.lat, location.lng]);
     });
+
+    if (bounds.length > 1) {
+      map.fitBounds(bounds, { padding: [40, 40] });
+    } else {
+      map.setView(bounds[0], 13);
+    }
+
+    container.dataset.chromaMapReady = '1';
+
+    requestAnimationFrame(() => map.invalidateSize());
+    window.addEventListener(
+      'resize',
+      () => {
+        map.invalidateSize();
+      },
+      { passive: true }
+    );
   };
 
-  // Run immediately if Leaflet is ready (dynamic load), otherwise wait for DOM (static load fallback)
-  if (typeof L !== 'undefined') {
-    initMaps();
-  } else {
+  const initMaps = () => {
+    if (typeof L === 'undefined') {
+      return;
+    }
+
+    const mapContainers = document.querySelectorAll('[data-chroma-map]');
+    if (!mapContainers.length) {
+      return;
+    }
+
+    mapContainers.forEach(initMap);
+  };
+
+  window.chromaInitMaps = initMaps;
+
+  if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initMaps);
+  } else {
+    initMaps();
   }
 })();
-
-

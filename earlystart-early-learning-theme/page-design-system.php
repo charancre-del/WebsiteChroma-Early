@@ -31,7 +31,7 @@ get_header();
                 </div>
                 <div>
                     <span class="text-xs text-stone-300 block mb-2">Body XL / Regular</span>
-                    <p class="text-xl text-stone-700 max-w-3xl">We founded Early Start on a simple belief: Clinical therapy
+                    <p class="text-xl text-stone-700 max-w-3xl">We founded Chroma Early Start on a simple belief: Clinical therapy
                         should be a perfect blend of rigorous skill development and the comforting warmth of family
                         life. This is the cornerstone of our approach.</p>
                 </div>

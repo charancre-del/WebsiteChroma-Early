@@ -95,12 +95,12 @@ while (have_posts()):
                 </div>
 
                 <div class="grid lg:grid-cols-2 gap-12 items-center mb-12">
-                    <div class="rounded-[2.5rem] overflow-hidden bg-stone-100 min-h-[320px] border border-stone-100 shadow-sm relative">
+                    <div class="rounded-[2.5rem] overflow-hidden bg-stone-100 h-[260px] sm:h-[320px] lg:h-[360px] border border-stone-100 shadow-sm relative">
                         <?php if ($parents_events_image): ?>
-                            <img src="<?php echo esc_url($parents_events_image); ?>" alt="<?php echo esc_attr($parents_events_title); ?>" class="absolute inset-0 w-full h-full object-cover">
+                            <img src="<?php echo esc_url($parents_events_image); ?>" alt="<?php echo esc_attr($parents_events_title); ?>" class="absolute inset-0 w-full h-full object-cover object-center">
                             <div class="absolute inset-0 bg-stone-900/35"></div>
                         <?php endif; ?>
-                        <div class="relative z-10 p-10 h-full flex flex-col justify-end <?php echo $parents_events_image ? 'text-white' : 'text-stone-900'; ?>">
+                        <div class="relative z-10 p-6 sm:p-10 h-full flex flex-col justify-end <?php echo $parents_events_image ? 'text-white' : 'text-stone-900'; ?>">
                             <h3 class="text-3xl font-bold mb-4"><?php echo esc_html($parents_events_title); ?></h3>
                             <p class="text-sm leading-relaxed <?php echo $parents_events_image ? 'text-white/90' : 'text-stone-700'; ?>"><?php echo esc_html($parents_events_description); ?></p>
                         </div>
@@ -135,7 +135,7 @@ while (have_posts()):
                         <p class="text-stone-700 leading-relaxed mb-6"><?php echo esc_html($parents_nutrition_description); ?></p>
                         <?php if ($parents_nutrition_image): ?>
                             <div class="rounded-3xl overflow-hidden mb-6">
-                                <img src="<?php echo esc_url($parents_nutrition_image); ?>" alt="<?php echo esc_attr($parents_nutrition_title); ?>" class="w-full h-56 object-cover">
+                                <img src="<?php echo esc_url($parents_nutrition_image); ?>" alt="<?php echo esc_attr($parents_nutrition_title); ?>" class="w-full h-56 sm:h-64 md:h-72 object-cover object-center">
                             </div>
                         <?php endif; ?>
                         <div class="space-y-3">
@@ -226,7 +226,7 @@ while (have_posts()):
                                 <?php _e('Research consistently shows that children who receive intensive, high-quality intervention before age 5 have significantly better long-term outcomes in communication, social skills, and independence.', 'earlystart-early-learning'); ?>
                             </p>
                             <p>
-                                <?php _e('At Early Start, we leverage this critical time to build a strong foundation. We don\'t just focus on "catching up"; we focus on giving your child the tools to thrive for a lifetime.', 'earlystart-early-learning'); ?>
+                                <?php _e('At Chroma Early Start, we leverage this critical time to build a strong foundation. We don\'t just focus on "catching up"; we focus on giving your child the tools to thrive for a lifetime.', 'earlystart-early-learning'); ?>
                             </p>
                         </div>
                     </div>
@@ -301,7 +301,7 @@ while (have_posts()):
                             <?php _e('We Make Insurance Simple', 'earlystart-early-learning'); ?>
                         </h2>
                         <p class="text-lg text-stone-700 leading-relaxed mb-8">
-                            <?php _e('Understanding your benefits shouldn\'t require a degree. Our dedicated admissions team handles the heavy lifting—verifying benefits, obtaining authorizations, and clearly explaining your coverage options before you start. We advocate for your child to ensure they get the coverage they deserve.', 'earlystart-early-learning'); ?>
+                            <?php _e('Understanding your benefits shouldn\'t require a degree. Our dedicated admissions team handles the heavy liftingâ€”verifying benefits, obtaining authorizations, and clearly explaining your coverage options before you start. We advocate for your child to ensure they get the coverage they deserve.', 'earlystart-early-learning'); ?>
                         </p>
 
                         <div class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100 mb-8">
@@ -528,7 +528,7 @@ while (have_posts()):
                             W2</div>
                         <h3 class="text-xl font-bold mb-3"><?php _e('Routine Building', 'earlystart-early-learning'); ?></h3>
                         <p class="text-stone-300 text-sm leading-relaxed">
-                            <?php _e('We gently introduce the daily schedule—arrival, circle time, snack. We start identifying what motivates your child to learn and establishing patterns of reinforcement.', 'earlystart-early-learning'); ?>
+                            <?php _e('We gently introduce the daily scheduleâ€”arrival, circle time, snack. We start identifying what motivates your child to learn and establishing patterns of reinforcement.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
                     <div class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20">
@@ -625,7 +625,7 @@ while (have_posts()):
                             <?php _e('Community Access', 'earlystart-early-learning'); ?>
                         </h4>
                         <p class="text-stone-700 text-sm leading-relaxed">
-                            <?php _e('We work on skills that make outings easier—like waiting in line, tolerating loud noises, or safety in parking lots—so you can enjoy family trips again.', 'earlystart-early-learning'); ?>
+                            <?php _e('We work on skills that make outings easierâ€”like waiting in line, tolerating loud noises, or safety in parking lotsâ€”so you can enjoy family trips again.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
                 </div>
@@ -635,7 +635,7 @@ while (have_posts()):
         <!-- Parent Training & Workshops -->
         <section class="py-24 bg-rose-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
                     <div class="fade-in-up">
                         <span
                             class="text-rose-700 font-bold tracking-widest text-sm uppercase mb-3 block"><?php _e('Education', 'earlystart-early-learning'); ?></span>
@@ -671,17 +671,17 @@ while (have_posts()):
                             </div>
                         </div>
                     </div>
-                    <div class="relative fade-in-up">
-                        <div class="absolute inset-0 bg-white rounded-[3rem] transform rotate-3"></div>
+                    <div class="relative fade-in-up mt-2 lg:mt-0">
+                        <div class="absolute inset-0 bg-white rounded-[3rem] transform rotate-1 md:rotate-2"></div>
                         <div
-                            class="relative bg-rose-200 rounded-[3rem] h-[280px] md:h-[400px] flex items-center justify-center overflow-hidden shadow-lg border border-white">
+                            class="relative bg-rose-200 rounded-[3rem] min-h-[280px] md:min-h-[360px] flex items-center justify-center overflow-hidden shadow-lg border border-white p-6 md:p-10">
                             <!-- Visual placeholder for parent meeting -->
-                            <div class="text-center p-8">
-                                <i data-lucide="users" class="w-24 h-24 text-rose-500 mx-auto mb-6"></i>
-                                <h3 class="text-2xl font-bold text-rose-900">
+                            <div class="text-center">
+                                <i data-lucide="users" class="w-16 h-16 md:w-24 md:h-24 text-rose-500 mx-auto mb-5 md:mb-6"></i>
+                                <h3 class="text-xl md:text-2xl font-bold text-rose-900">
                                     <?php _e('You are the expert on your child.', 'earlystart-early-learning'); ?>
                                 </h3>
-                                <p class="text-rose-800 mt-2">
+                                <p class="text-base md:text-lg text-rose-800 mt-2">
                                     <?php _e('We are just here to give you more tools.', 'earlystart-early-learning'); ?>
                                 </p>
                             </div>

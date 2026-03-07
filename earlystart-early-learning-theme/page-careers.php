@@ -16,7 +16,7 @@ while (have_posts()):
 	$hero_description = get_post_meta($page_id, 'careers_hero_description', true) ?: __('We are building a workplace that prioritizes clinician burnout prevention, professional growth, and assent-based care. If you love kids but hate "the grind," you belong here.', 'earlystart-early-learning');
 	$hero_button_text = get_post_meta($page_id, 'careers_hero_button_text', true) ?: __('View Open Positions', 'earlystart-early-learning');
 	$hero_button_url = get_post_meta($page_id, 'careers_hero_button_url', true) ?: '#openings';
-	$culture_title = get_post_meta($page_id, 'careers_culture_title', true) ?: __('Why Clinicians Choose Early Start', 'earlystart-early-learning');
+	$culture_title = get_post_meta($page_id, 'careers_culture_title', true) ?: __('Why Clinicians Choose Chroma Early Start', 'earlystart-early-learning');
 	$culture_description = get_post_meta($page_id, 'careers_culture_description', true) ?: __('We take care of our team so they can take care of our families.', 'earlystart-early-learning');
 	$openings_title = get_post_meta($page_id, 'careers_openings_title', true) ?: __('Current Opportunities', 'earlystart-early-learning');
 	$cta_title = get_post_meta($page_id, 'careers_cta_title', true) ?: __('New to the field? We\'ll train you.', 'earlystart-early-learning');
@@ -120,7 +120,7 @@ while (have_posts()):
 					</div>
 					<div class="hidden md:block">
 						<span
-							class="text-sm text-stone-700"><?php _e('Early Start Regional Openings', 'earlystart-early-learning'); ?></span>
+							class="text-sm text-stone-700"><?php _e('Chroma Early Start Regional Openings', 'earlystart-early-learning'); ?></span>
 					</div>
 				</div>
 

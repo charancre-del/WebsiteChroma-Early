@@ -32,11 +32,11 @@ $grouped = $locations_data['grouped'] ?? array();
             </a>
         </div>
 
-        <div class="flex flex-col lg:flex-row gap-8">
+        <div class="flex flex-col lg:flex-row gap-8 lg:items-start">
             <!-- Map Section (Left, larger) -->
             <?php if (!empty($locations_data['map_points'])): ?>
                 <div class="w-full lg:w-2/3">
-                    <div class="rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 h-[360px] md:h-[500px] lg:h-[700px] relative z-10 fade-in-up"
+                    <div class="rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 bg-stone-200 h-[360px] md:h-[500px] lg:h-[700px] relative z-10 fade-in-up"
                         data-chroma-map="true"
                         data-chroma-locations="<?php echo esc_attr(json_encode($locations_data['map_points'])); ?>">
                     </div>
@@ -44,9 +44,9 @@ $grouped = $locations_data['grouped'] ?? array();
             <?php endif; ?>
 
             <!-- Locations List Section (Right, scrollable) -->
-            <div class="w-full <?php echo !empty($locations_data['map_points']) ? 'lg:w-1/3' : ''; ?>">
+            <div class="w-full <?php echo !empty($locations_data['map_points']) ? 'lg:w-1/3 lg:min-h-0' : ''; ?>">
                 <?php if (!empty($grouped)): ?>
-                    <div class="flex flex-col gap-4 pr-2 lg:max-h-[700px] lg:overflow-y-auto">
+                    <div class="flex flex-col gap-4 lg:h-[700px] lg:overflow-y-auto lg:pr-2 custom-scrollbar">
                         <?php
                         $count = 0;
                         foreach ($grouped as $group):

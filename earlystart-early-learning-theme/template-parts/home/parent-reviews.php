@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Part: Parent Reviews Carousel
- * Testimonials from Early Start parents
+ * Testimonials from Chroma Early Start parents
  *
  * @package EarlyStart_Early_Start
  */
@@ -18,7 +18,7 @@ if (empty($reviews)) {
                 <div class="text-center mb-12">
                         <span class="text-chroma-red font-bold tracking-[0.2em] text-xs uppercase mb-4 block"><?php _e('What Parents Say', 'earlystart-early-learning'); ?></span>
                         <h2 class="text-3xl md:text-4xl font-serif text-brand-ink mb-3"><?php _e('Trusted by thousands of Atlanta families', 'earlystart-early-learning'); ?></h2>
-                        <p class="text-brand-ink max-w-2xl mx-auto"><?php _e('Don\'t just take our word for it. Here\'s what parents have to say about their experience with Early Start Early Learning.', 'earlystart-early-learning'); ?></p>
+                        <p class="text-brand-ink max-w-2xl mx-auto"><?php _e('Don\'t just take our word for it. Here\'s what parents have to say about their experience with Chroma Early Start.', 'earlystart-early-learning'); ?></p>
                 </div>
 
                 <div class="relative" data-reviews-carousel>

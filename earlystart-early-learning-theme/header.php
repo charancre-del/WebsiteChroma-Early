@@ -77,12 +77,12 @@
 						<!-- 2. The Text (Always Visible) -->
 						<div class="flex flex-col">
 							<?php
-							$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Early Start\nPediatric Therapy");
+							$header_text_raw = earlystart_get_theme_mod('earlystart_header_text', "Chroma Early Start\nPediatric Therapy");
 							$header_lines = preg_split('/\r\n|\r|\n/', (string) $header_text_raw);
 							$header_lines = array_values(array_filter(array_map('trim', (array) $header_lines), static function ($line) {
 								return $line !== '';
 							}));
-							$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Early Start';
+							$primary_line = isset($header_lines[0]) ? $header_lines[0] : 'Chroma Early Start';
 							$extra_lines = array_slice($header_lines, 1);
 							?>
 							<span
