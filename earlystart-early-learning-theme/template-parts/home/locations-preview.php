@@ -11,9 +11,41 @@ if (!$locations_data) {
 }
 
 $grouped = $locations_data['grouped'] ?? array();
+$has_map = !empty($locations_data['map_points']);
 ?>
 
-<section id="locations" class="py-24 bg-stone-50 overflow-hidden">
+<section id="locations" class="py-24 bg-stone-50 overflow-hidden <?php echo $has_map ? 'chroma-locations-has-map' : ''; ?>">
+    <style id="chroma-home-locations-layout">
+        #locations .chroma-home-map {
+            height: 380px;
+        }
+
+        #locations .chroma-home-locations-list {
+            max-height: none;
+            overflow: visible;
+        }
+
+        @media (min-width: 768px) {
+            #locations .chroma-home-map {
+                height: 520px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #locations.chroma-locations-has-map .chroma-home-map {
+                height: min(80vh, 920px);
+            }
+
+            #locations.chroma-locations-has-map .chroma-home-locations-list {
+                height: min(80vh, 920px);
+                overflow-y: auto;
+                overflow-x: hidden;
+                overscroll-behavior: contain;
+                scrollbar-gutter: stable;
+                padding-right: 0.5rem;
+            }
+        }
+    </style>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row justify-between items-end mb-16 gap-8 fade-in-up">
             <div class="max-w-2xl">
@@ -34,9 +66,9 @@ $grouped = $locations_data['grouped'] ?? array();
 
         <div class="flex flex-col lg:flex-row gap-8 lg:items-start">
             <!-- Map Section (Left, larger) -->
-            <?php if (!empty($locations_data['map_points'])): ?>
+            <?php if ($has_map): ?>
                 <div class="w-full lg:w-2/3">
-                    <div class="rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 bg-stone-200 h-[360px] md:h-[500px] lg:h-[700px] relative z-10 fade-in-up"
+                    <div class="chroma-home-map rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 bg-stone-200 relative z-10 fade-in-up"
                         data-chroma-map="true"
                         data-chroma-locations="<?php echo esc_attr(json_encode($locations_data['map_points'])); ?>">
                     </div>
@@ -44,9 +76,9 @@ $grouped = $locations_data['grouped'] ?? array();
             <?php endif; ?>
 
             <!-- Locations List Section (Right, scrollable) -->
-            <div class="w-full <?php echo !empty($locations_data['map_points']) ? 'lg:w-1/3 lg:min-h-0' : ''; ?>">
+            <div class="w-full <?php echo $has_map ? 'lg:w-1/3 lg:min-h-0' : ''; ?>">
                 <?php if (!empty($grouped)): ?>
-                    <div class="flex flex-col gap-4 lg:h-[700px] lg:overflow-y-auto lg:pr-2 custom-scrollbar">
+                    <div class="chroma-home-locations-list flex flex-col gap-4 custom-scrollbar">
                         <?php
                         $count = 0;
                         foreach ($grouped as $group):
