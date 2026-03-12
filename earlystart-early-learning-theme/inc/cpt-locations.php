@@ -859,4 +859,87 @@ function earlystart_save_location_custom_fields($post_id)
 }
 add_action('save_post_location', 'earlystart_save_location_custom_fields');
 
+/**
+ * Force two-column edit layout for Location posts so the sidebar remains available.
+ */
+function earlystart_force_location_editor_columns($columns, $screen)
+{
+	if (isset($screen->post_type) && 'location' === $screen->post_type) {
+		$columns['post'] = 2;
+	}
+	return $columns;
+}
+add_filter('screen_layout_columns', 'earlystart_force_location_editor_columns', 10, 2);
+
+/**
+ * Override user screen layout option for Location posts to keep sidebar visible.
+ */
+function earlystart_force_location_screen_layout($current)
+{
+	return 2;
+}
+add_filter('get_user_option_screen_layout_location', 'earlystart_force_location_screen_layout');
+
+/**
+ * Ensure core side meta boxes are registered on Location edit screens.
+ */
+function earlystart_restore_location_side_metaboxes()
+{
+	add_meta_box('submitdiv', __('Publish'), 'post_submit_meta_box', 'location', 'side', 'core');
+	add_meta_box('postimagediv', __('Featured image'), 'post_thumbnail_meta_box', 'location', 'side', 'low');
+}
+add_action('add_meta_boxes_location', 'earlystart_restore_location_side_metaboxes', 1000);
+
+/**
+ * Clear per-user hidden side meta box settings that can hide the Location sidebar.
+ */
+function earlystart_repair_location_editor_user_options()
+{
+	if (!function_exists('get_current_screen')) {
+		return;
+	}
+
+	$screen = get_current_screen();
+	if (!$screen || 'location' !== $screen->id) {
+		return;
+	}
+
+	$user_id = get_current_user_id();
+	if (!$user_id) {
+		return;
+	}
+
+	$hidden_key = 'metaboxhidden_' . $screen->id;
+	$hidden = get_user_option($hidden_key, $user_id);
+	if (is_array($hidden) && !empty($hidden)) {
+		$required_visible = array('submitdiv', 'postimagediv');
+		$updated_hidden = array_values(array_diff($hidden, $required_visible));
+		if ($updated_hidden !== $hidden) {
+			update_user_option($user_id, $hidden_key, $updated_hidden, true);
+		}
+	}
+
+	$order_key = 'meta-box-order_' . $screen->id;
+	$order = get_user_option($order_key, $user_id);
+	if (!is_array($order)) {
+		$order = array();
+	}
+
+	$side_order = isset($order['side']) ? (string) $order['side'] : '';
+	$side_ids = array_filter(array_map('trim', explode(',', $side_order)));
+
+	if (!in_array('submitdiv', $side_ids, true)) {
+		array_unshift($side_ids, 'submitdiv');
+	}
+
+	if (current_theme_supports('post-thumbnails') && !in_array('postimagediv', $side_ids, true)) {
+		$side_ids[] = 'postimagediv';
+	}
+
+	$order['side'] = implode(',', $side_ids);
+	update_user_option($user_id, $order_key, $order, true);
+}
+add_action('load-post.php', 'earlystart_repair_location_editor_user_options');
+add_action('load-post-new.php', 'earlystart_repair_location_editor_user_options');
+
 
