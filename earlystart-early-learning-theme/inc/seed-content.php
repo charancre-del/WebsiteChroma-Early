@@ -425,7 +425,8 @@ function earlystart_seed_core_content()
         'schedule-tour' => array('title' => 'Schedule a Tour', 'template' => 'page-schedule-tour.php'),
         'stories' => array('title' => 'Stories', 'template' => 'page-stories.php'),
         'team' => array('title' => 'Team', 'template' => 'page-team.php'),
-        'terms' => array('title' => 'Terms of Service', 'template' => 'page-terms.php'),
+        'terms' => array('title' => 'Terms of Use', 'template' => 'page-terms.php'),
+        'hipaa' => array('title' => 'HIPAA Notice', 'template' => 'page-hipaa.php'),
         'acquisitions' => array('title' => 'Acquisitions', 'template' => 'page-acquisitions.php'),
     );
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: Terms of Service
+ * Template Name: Terms of Use
  *
- * Terms of Service page template
+ * Terms of Use page template
  *
  * @package EarlyStart_Early_Start
  * @since 1.0.0
@@ -12,115 +12,68 @@ get_header();
 
 $page_id = get_the_ID();
 
-// Get last updated date
-$last_updated = earlystart_get_translated_meta($page_id, 'tos_last_updated') ?: 'December 26, 2024';
+// Maintain backward compatibility with older tos_* meta keys.
+$last_updated = earlystart_get_translated_meta($page_id, 'tou_last_updated')
+    ?: earlystart_get_translated_meta($page_id, 'tos_last_updated')
+    ?: 'December 26, 2024';
 
-// Default Terms of Service content
+// Default Terms of Use content.
 $default_sections = array(
     array(
         'title' => __('Acceptance of Terms', 'earlystart-early-learning'),
-        'content' => '<p>' . __('By enrolling with Chroma Early Start or using our website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.', 'earlystart-early-learning') . '</p>
-        <p>' . __('These terms apply to all parents, guardians, and visitors to our facilities and website. We reserve the right to modify these terms at any time, and such modifications will be effective immediately upon posting.', 'earlystart-early-learning') . '</p>'
+        'content' => '<p>' . __('By accessing our website, contacting us, or using our services, you agree to these Terms of Use. If you do not agree, do not use the website or services.', 'earlystart-early-learning') . '</p>'
     ),
     array(
-        'title' => __('Enrollment & Registration', 'earlystart-early-learning'),
-        'content' => '<p>' . __('Enrollment at Chroma Early Start is subject to:', 'earlystart-early-learning') . '</p>
-        <ul>
-            <li><strong>' . __('Age Requirements:', 'earlystart-early-learning') . '</strong> ' . __('Children must meet age requirements for their specific program (6 weeks to 12 years)', 'earlystart-early-learning') . '</li>
-            <li><strong>' . __('Documentation:', 'earlystart-early-learning') . '</strong> ' . __('Complete enrollment forms, immunization records, and emergency contact information must be provided', 'earlystart-early-learning') . '</li>
-            <li><strong>' . __('Registration Fee:', 'earlystart-early-learning') . '</strong> ' . __('A non-refundable registration fee is required to secure enrollment', 'earlystart-early-learning') . '</li>
-            <li><strong>' . __('Availability:', 'earlystart-early-learning') . '</strong> ' . __('Enrollment is subject to space availability at your preferred location', 'earlystart-early-learning') . '</li>
-        </ul>
-        <p>' . __('We reserve the right to refuse or terminate enrollment for reasons including but not limited to: safety concerns, inability to meet the child\'s needs, or non-payment of fees.', 'earlystart-early-learning') . '</p>'
+        'title' => __('Scope of Services', 'earlystart-early-learning'),
+        'content' => '<p>' . __('Chroma Early Start provides pediatric therapy and related support services. Availability, eligibility, and care plans vary by child, location, and applicable payor requirements.', 'earlystart-early-learning') . '</p>'
     ),
     array(
-        'title' => __('Tuition & Payment', 'earlystart-early-learning'),
-        'content' => '<p>' . __('By enrolling, you agree to the following payment terms:', 'earlystart-early-learning') . '</p>
-        <ul>
-            <li>' . __('Tuition is due weekly/monthly in advance as specified in your enrollment agreement', 'earlystart-early-learning') . '</li>
-            <li>' . __('Late payments may incur additional fees as outlined in your enrollment contract', 'earlystart-early-learning') . '</li>
-            <li>' . __('Tuition is due regardless of absences, holidays, or closures (except extended closures beyond 5 consecutive days)', 'earlystart-early-learning') . '</li>
-            <li>' . __('A minimum of two weeks written notice is required for withdrawal', 'earlystart-early-learning') . '</li>
-            <li>' . __('We accept major credit cards, ACH transfers, and approved subsidy payments (CAPS)', 'earlystart-early-learning') . '</li>
-        </ul>
-        <p>' . __('Failure to maintain current payment may result in suspension or termination of enrollment.', 'earlystart-early-learning') . '</p>'
+        'title' => __('Website Content', 'earlystart-early-learning'),
+        'content' => '<p>' . __('Website content is for general information only and is not medical or legal advice. Service details may change without notice.', 'earlystart-early-learning') . '</p>'
     ),
     array(
-        'title' => __('Hours of Operation & Policies', 'earlystart-early-learning'),
-        'content' => '<p>' . __('Our standard hours of operation are 6:30 AM to 6:30 PM, Monday through Friday. Specific hours may vary by location.', 'earlystart-early-learning') . '</p>
-        <ul>
-            <li><strong>' . __('Drop-off/Pick-up:', 'earlystart-early-learning') . '</strong> ' . __('Children must be signed in and out daily by an authorized adult', 'earlystart-early-learning') . '</li>
-            <li><strong>' . __('Late Pick-up:', 'earlystart-early-learning') . '</strong> ' . __('Late fees apply for pick-ups after closing time ($1 per minute after 6:35 PM)', 'earlystart-early-learning') . '</li>
-            <li><strong>' . __('Illness Policy:', 'earlystart-early-learning') . '</strong> ' . __('Sick children may not attend and must be picked up within one hour of notification', 'earlystart-early-learning') . '</li>
-            <li><strong>' . __('Closures:', 'earlystart-early-learning') . '</strong> ' . __('We observe major holidays and may close for inclement weather or emergencies', 'earlystart-early-learning') . '</li>
-        </ul>
-        <p>' . __('Complete policies are provided in your enrollment packet and posted at each location.', 'earlystart-early-learning') . '</p>'
+        'title' => __('Enrollment and Accounts', 'earlystart-early-learning'),
+        'content' => '<p>' . __('You agree to provide accurate and current information during enrollment and communications. You are responsible for keeping contact and emergency details up to date.', 'earlystart-early-learning') . '</p>'
     ),
     array(
-        'title' => __('Health & Safety', 'earlystart-early-learning'),
-        'content' => '<p>' . __('The health and safety of every child is our top priority. By enrolling, you agree to:', 'earlystart-early-learning') . '</p>
-        <ul>
-            <li>' . __('Provide accurate and complete health information for your child', 'earlystart-early-learning') . '</li>
-            <li>' . __('Keep immunizations current as required by Georgia law', 'earlystart-early-learning') . '</li>
-            <li>' . __('Notify us immediately of any changes to your child\'s health, allergies, or medications', 'earlystart-early-learning') . '</li>
-            <li>' . __('Keep your child home when they are ill (fever, vomiting, diarrhea, contagious conditions)', 'earlystart-early-learning') . '</li>
-            <li>' . __('Authorize emergency medical treatment if we cannot reach you', 'earlystart-early-learning') . '</li>
-        </ul>
-        <p>' . __('We are licensed by Georgia DECAL and maintain all required health and safety standards.', 'earlystart-early-learning') . '</p>'
+        'title' => __('Payments and Financial Responsibility', 'earlystart-early-learning'),
+        'content' => '<p>' . __('Families are responsible for charges not covered by insurance, grants, or other programs, as described in signed enrollment or service agreements.', 'earlystart-early-learning') . '</p>'
     ),
     array(
-        'title' => __('Photography & Media', 'earlystart-early-learning'),
-        'content' => '<p>' . __('With your consent, we may photograph or video record your child for:', 'earlystart-early-learning') . '</p>
-        <ul>
-            <li>' . __('Daily activity updates shared through our parent communication app', 'earlystart-early-learning') . '</li>
-            <li>' . __('Marketing materials (website, social media, brochures) - separate opt-in required', 'earlystart-early-learning') . '</li>
-            <li>' . __('Internal training and curriculum development', 'earlystart-early-learning') . '</li>
-        </ul>
-        <p>' . __('You may opt out of marketing photography at any time by notifying your center director in writing.', 'earlystart-early-learning') . '</p>'
+        'title' => __('Permitted Use', 'earlystart-early-learning'),
+        'content' => '<p>' . __('You may use this site only for lawful purposes. You may not attempt to interfere with site operation, gain unauthorized access, or misuse site content.', 'earlystart-early-learning') . '</p>'
     ),
     array(
-        'title' => __('Liability & Indemnification', 'earlystart-early-learning'),
-        'content' => '<p>' . __('While we take every precaution to ensure your child\'s safety, you acknowledge that:', 'earlystart-early-learning') . '</p>
-        <ul>
-            <li>' . __('Children may occasionally sustain minor injuries during normal play activities', 'earlystart-early-learning') . '</li>
-            <li>' . __('You will be notified immediately of any injury requiring medical attention', 'earlystart-early-learning') . '</li>
-            <li>' . __('Chroma Early Start is not liable for lost or damaged personal items', 'earlystart-early-learning') . '</li>
-            <li>' . __('You agree to indemnify and hold harmless Chroma Early Start from claims arising from your or your child\'s actions', 'earlystart-early-learning') . '</li>
-        </ul>
-        <p>' . __('Our liability is limited to the extent permitted by Georgia law.', 'earlystart-early-learning') . '</p>'
+        'title' => __('Intellectual Property', 'earlystart-early-learning'),
+        'content' => '<p>' . __('Unless otherwise stated, website content and branding are owned by Chroma Early Start or its licensors and may not be reused without permission.', 'earlystart-early-learning') . '</p>'
     ),
     array(
-        'title' => __('Website Terms', 'earlystart-early-learning'),
-        'content' => '<p>' . __('Use of our website (chromaearlystart.com) is subject to the following:', 'earlystart-early-learning') . '</p>
-        <ul>
-            <li>' . __('Content is provided for informational purposes only', 'earlystart-early-learning') . '</li>
-            <li>' . __('We do not guarantee the accuracy or completeness of website information', 'earlystart-early-learning') . '</li>
-            <li>' . __('Links to third-party websites are provided for convenience and do not imply endorsement', 'earlystart-early-learning') . '</li>
-            <li>' . __('Unauthorized use of our website may give rise to a claim for damages', 'earlystart-early-learning') . '</li>
-        </ul>
-        <p>' . __('Our website uses cookies to improve your experience. See our', 'earlystart-early-learning') . ' <a href="/privacy-policy/" class="text-chroma-blue hover:underline">' . __('Privacy Policy', 'earlystart-early-learning') . '</a> ' . __('for details.', 'earlystart-early-learning') . '</p>'
+        'title' => __('Disclaimer and Limitation of Liability', 'earlystart-early-learning'),
+        'content' => '<p>' . __('The website is provided on an as-is and as-available basis. To the fullest extent permitted by law, Chroma Early Start disclaims warranties and limits liability for damages arising from site use.', 'earlystart-early-learning') . '</p>'
     ),
     array(
         'title' => __('Governing Law', 'earlystart-early-learning'),
-        'content' => '<p>' . __('These Terms of Service shall be governed by and construed in accordance with the laws of the State of Georgia, without regard to its conflict of law provisions.', 'earlystart-early-learning') . '</p>
-        <p>' . __('Any disputes arising from these terms or your use of our services shall be resolved through binding arbitration in Cobb County, Georgia, in accordance with the rules of the American Arbitration Association.', 'earlystart-early-learning') . '</p>'
+        'content' => '<p>' . __('These Terms are governed by applicable state and federal law in the jurisdiction where services are provided, unless a signed agreement states otherwise.', 'earlystart-early-learning') . '</p>'
     ),
     array(
         'title' => __('Contact Information', 'earlystart-early-learning'),
-        'content' => '<p>' . __('If you have questions about these Terms of Service, please contact us:', 'earlystart-early-learning') . '</p>
-        <p><strong>' . __('Chroma Early Start', 'earlystart-early-learning') . '</strong><br>
+        'content' => '<p><strong>' . __('Chroma Early Start', 'earlystart-early-learning') . '</strong><br>
         ' . __('Email: info@chromaearlystart.com', 'earlystart-early-learning') . '<br>
-        ' . __('Phone: (404) 800-8000', 'earlystart-early-learning') . '<br>
-        ' . __('Website: www.chromaearlystart.com', 'earlystart-early-learning') . '</p>'
+        ' . __('Phone: (404) 800-8000', 'earlystart-early-learning') . '</p>'
     ),
 );
 
-// Get stored sections or use defaults
+// Get stored sections or use defaults.
 $sections = array();
 $has_custom_content = false;
-for ($i = 1; $i <= 10; $i++) {
-    $title = earlystart_get_translated_meta($page_id, "tos_section{$i}_title");
-    $content = earlystart_get_translated_meta($page_id, "tos_section{$i}_content");
+for ($i = 1; $i <= 12; $i++) {
+    $title = earlystart_get_translated_meta($page_id, "tou_section{$i}_title");
+    $content = earlystart_get_translated_meta($page_id, "tou_section{$i}_content");
+
+    if (empty($title) && empty($content)) {
+        $title = earlystart_get_translated_meta($page_id, "tos_section{$i}_title");
+        $content = earlystart_get_translated_meta($page_id, "tos_section{$i}_content");
+    }
 
     if (!empty($title) || !empty($content)) {
         $has_custom_content = true;
@@ -131,43 +84,81 @@ for ($i = 1; $i <= 10; $i++) {
     }
 }
 
-// If no custom content, use defaults
 if (!$has_custom_content) {
     $sections = $default_sections;
 }
+
+$privacy_url = earlystart_get_link_by_slug('privacy-policy', 'page');
+if (!$privacy_url) {
+    $privacy_url = earlystart_get_link_by_slug('privacy', 'page');
+}
+if (!$privacy_url) {
+    $privacy_url = earlystart_get_page_link('privacy-policy');
+}
+
+$hipaa_url = earlystart_get_link_by_slug('hipaa', 'page');
+if (!$hipaa_url) {
+    $hipaa_url = earlystart_get_page_link('hipaa');
+}
 ?>
 
-<main class="min-h-screen bg-brand-cream py-24">
-    <div class="max-w-3xl mx-auto px-4 lg:px-6">
-        <h1 class="font-serif text-4xl md:text-5xl font-bold text-brand-ink mb-8"><?php the_title(); ?></h1>
-        <p class="text-sm text-brand-ink/60 mb-12"><?php _e('Last Updated:', 'earlystart-early-learning'); ?> <?php echo esc_html($last_updated); ?></p>
-
-        <div class="prose prose-lg text-brand-ink/80 max-w-none">
-            <p class="text-lg leading-relaxed mb-8">
-                <?php _e('Welcome to Chroma Early Start. These Terms of Service ("Terms") govern your use of our pediatric therapy services and website. Please read them carefully before enrolling your child or using our services.', 'earlystart-early-learning'); ?>
+<main id="primary" class="bg-stone-50 min-h-screen">
+    <section class="relative bg-white pt-24 pb-20 lg:pt-32 border-b border-stone-100 overflow-hidden">
+        <div class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[520px] h-[520px] bg-amber-50 rounded-full blur-3xl opacity-60"></div>
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <span class="inline-block px-4 py-2 bg-amber-50 text-amber-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
+                <?php _e('Legal & Compliance', 'earlystart-early-learning'); ?>
+            </span>
+            <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up"><?php the_title(); ?></h1>
+            <p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
+                <?php _e('These Terms of Use govern use of Chroma Early Start services and website content.', 'earlystart-early-learning'); ?>
             </p>
+            <p class="mt-8 inline-flex items-center rounded-full bg-stone-100 px-5 py-2 text-xs font-bold tracking-widest uppercase text-stone-700">
+                <?php _e('Last Updated:', 'earlystart-early-learning'); ?> <?php echo esc_html($last_updated); ?>
+            </p>
+        </div>
+    </section>
 
-            <?php foreach ($sections as $index => $section): ?>
-                <?php if (!empty($section['title'])): ?>
-                    <h2 class="font-serif font-bold text-2xl text-brand-ink mt-12 mb-4">
-                        <?php echo ($index + 1) . '. ' . esc_html($section['title']); ?>
-                    </h2>
-                    <?php if (!empty($section['content'])): ?>
-                        <div class="tos-section-content space-y-4">
-                            <?php echo wp_kses_post($section['content']); ?>
-                        </div>
+    <section class="py-20 border-b border-stone-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="space-y-5">
+                <?php foreach ($sections as $index => $section): ?>
+                    <?php if (!empty($section['title'])): ?>
+                        <article class="rounded-[2rem] border border-stone-100 bg-white p-8 shadow-sm fade-in-up">
+                            <div class="flex items-center gap-4 mb-5">
+                                <span class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 text-sm font-bold flex items-center justify-center shrink-0">
+                                    <?php echo esc_html((string) ($index + 1)); ?>
+                                </span>
+                                <h2 class="text-2xl md:text-3xl font-bold text-stone-900"><?php echo esc_html($section['title']); ?></h2>
+                            </div>
+                            <?php if (!empty($section['content'])): ?>
+                                <div class="legal-content prose prose-lg text-stone-700 max-w-none">
+                                    <?php echo wp_kses_post($section['content']); ?>
+                                </div>
+                            <?php endif; ?>
+                        </article>
                     <?php endif; ?>
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
         </div>
+    </section>
 
-        <div class="mt-16 pt-8 border-t border-chroma-blue/20">
-            <a href="<?php echo esc_url(earlystart_get_page_link('privacy-policy')); ?>" class="text-chroma-blue hover:underline">
-                <?php _e('View our Privacy Policy →', 'earlystart-early-learning'); ?>
-            </a>
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="rounded-[2.5rem] border border-stone-100 bg-stone-900 p-8 md:p-10 text-white">
+                <h2 class="text-3xl font-bold mb-3"><?php _e('Related Policies', 'earlystart-early-learning'); ?></h2>
+                <p class="text-stone-300 mb-8"><?php _e('Review the full set of legal notices that apply to our services and website.', 'earlystart-early-learning'); ?></p>
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <a href="<?php echo esc_url($privacy_url); ?>" class="rounded-2xl border border-white/15 bg-white/5 px-5 py-4 font-bold hover:bg-white/10 transition-colors">
+                        <?php _e('View Privacy Policy', 'earlystart-early-learning'); ?>
+                    </a>
+                    <a href="<?php echo esc_url($hipaa_url); ?>" class="rounded-2xl border border-white/15 bg-white/5 px-5 py-4 font-bold hover:bg-white/10 transition-colors">
+                        <?php _e('View HIPAA Notice', 'earlystart-early-learning'); ?>
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 </main>
 
 <?php get_footer(); ?>
-
