@@ -43,6 +43,22 @@ function earlystart_register_location_cpt()
 add_action('init', 'earlystart_register_location_cpt', 0);
 
 /**
+ * Force Classic Editor for Locations.
+ *
+ * The location edit screen is meta-box heavy and can fail to boot block editor
+ * UI when third-party admin scripts error. Classic editor keeps publishing
+ * controls and side metaboxes available.
+ */
+function earlystart_use_classic_editor_for_locations($use_block_editor, $post_type)
+{
+	if ('location' === $post_type) {
+		return false;
+	}
+	return $use_block_editor;
+}
+add_filter('use_block_editor_for_post_type', 'earlystart_use_classic_editor_for_locations', 100, 2);
+
+/**
  * Register Location taxonomy (counties/regions)
  */
 function earlystart_register_location_taxonomy()
