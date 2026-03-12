@@ -123,7 +123,13 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         // JS for Translation
         ?>
         <script>
-        jQuery(document).ready(function($) {
+        (function () {
+            var $ = window.jQuery;
+            if (!$) {
+                return;
+            }
+
+            $(function () {
             $('#chroma-auto-translate-btn').click(function(e) {
                 e.preventDefault();
                 var btn = $(this);
@@ -260,7 +266,8 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
                     }
                 });
             });
-        });
+            });
+        })();
         </script>
         <?php
     }

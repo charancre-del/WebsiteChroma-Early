@@ -94,30 +94,37 @@ class earlystart_Location_Events_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         </div>
 
         <script>
-            jQuery(document).ready(function ($) {
-                // Custom handler for Event repeater
-                $(document).on('click', '.chroma-add-item-event', function (e) {
-                    e.preventDefault();
-                    var $wrapper = $(this).closest('.chroma-repeater-field');
-                    var $items = $wrapper.find('.chroma-repeater-items');
+            (function () {
+                var $ = window.jQuery;
+                if (!$) {
+                    return;
+                }
 
-                    var $newItem = $('<div class="chroma-repeater-item" style="align-items: flex-start;">' +
-                        '<div style="flex: 1; display: flex; gap: 10px; flex-direction: column;">' +
-                        '<div style="display: flex; gap: 10px;">' +
-                        '<input type="text" name="location_events[name][]" class="widefat" placeholder="Event Name" />' +
-                        '<input type="datetime-local" name="location_events[start][]" style="width: 200px;" />' +
-                        '</div>' +
-                        '<div style="display: flex; gap: 10px;">' +
-                        '<input type="text" name="location_events[description][]" class="widefat" placeholder="Short Description" />' +
-                        '<input type="url" name="location_events[url][]" class="widefat" placeholder="RSVP URL (Optional)" />' +
-                        '</div>' +
-                        '</div>' +
-                        '<button type="button" class="button chroma-remove-item">Remove</button>' +
-                        '</div>');
+                $(function () {
+                    // Custom handler for Event repeater
+                    $(document).on('click', '.chroma-add-item-event', function (e) {
+                        e.preventDefault();
+                        var $wrapper = $(this).closest('.chroma-repeater-field');
+                        var $items = $wrapper.find('.chroma-repeater-items');
 
-                    $items.append($newItem);
+                        var $newItem = $('<div class="chroma-repeater-item" style="align-items: flex-start;">' +
+                            '<div style="flex: 1; display: flex; gap: 10px; flex-direction: column;">' +
+                            '<div style="display: flex; gap: 10px;">' +
+                            '<input type="text" name="location_events[name][]" class="widefat" placeholder="Event Name" />' +
+                            '<input type="datetime-local" name="location_events[start][]" style="width: 200px;" />' +
+                            '</div>' +
+                            '<div style="display: flex; gap: 10px;">' +
+                            '<input type="text" name="location_events[description][]" class="widefat" placeholder="Short Description" />' +
+                            '<input type="url" name="location_events[url][]" class="widefat" placeholder="RSVP URL (Optional)" />' +
+                            '</div>' +
+                            '</div>' +
+                            '<button type="button" class="button chroma-remove-item">Remove</button>' +
+                            '</div>');
+
+                        $items.append($newItem);
+                    });
                 });
-            });
+            })();
         </script>
         <?php
     }

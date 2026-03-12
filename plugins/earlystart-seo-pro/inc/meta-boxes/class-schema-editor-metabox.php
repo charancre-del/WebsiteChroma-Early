@@ -330,7 +330,11 @@ class earlystart_Schema_Editor_Metabox
         </style>
 
         <script>
-            jQuery(function ($) {
+            document.addEventListener('DOMContentLoaded', function () {
+                var $ = window.jQuery;
+                if (!$) {
+                    return;
+                }
                 // Toggle preview
                 $('#chroma-toggle-preview').on('click', function () {
                     $('#chroma-serp-preview').toggle();

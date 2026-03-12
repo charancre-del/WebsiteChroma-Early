@@ -104,17 +104,24 @@ class earlystart_Universal_FAQ extends earlystart_Advanced_SEO_Meta_Box_Base
         </div>
 
         <script>
-            jQuery(document).ready(function ($) {
-                // Enhanced repeater for block-style items
-                $('.chroma-add-item').off('click').on('click', function (e) {
-                    e.preventDefault();
-                    var $wrapper = $(this).closest('.chroma-repeater-field');
-                    var $items = $wrapper.find('.chroma-repeater-items');
-                    var $clone = $items.find('.chroma-repeater-item').first().clone();
-                    $clone.find('input, textarea').val('');
-                    $items.append($clone);
+            (function () {
+                var $ = window.jQuery;
+                if (!$) {
+                    return;
+                }
+
+                $(function () {
+                    // Enhanced repeater for block-style items
+                    $('.chroma-add-item').off('click').on('click', function (e) {
+                        e.preventDefault();
+                        var $wrapper = $(this).closest('.chroma-repeater-field');
+                        var $items = $wrapper.find('.chroma-repeater-items');
+                        var $clone = $items.find('.chroma-repeater-item').first().clone();
+                        $clone.find('input, textarea').val('');
+                        $items.append($clone);
+                    });
                 });
-            });
+            })();
         </script>
         <?php
     }

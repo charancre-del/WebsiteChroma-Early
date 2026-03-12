@@ -87,25 +87,32 @@ class earlystart_Location_HowTo_Meta_Box extends earlystart_Advanced_SEO_Meta_Bo
         </div>
 
         <script>
-            jQuery(document).ready(function ($) {
-                // Custom handler for HowTo repeater because it has multiple inputs per item
-                $(document).on('click', '.chroma-add-item-howto', function (e) {
-                    e.preventDefault();
-                    var $wrapper = $(this).closest('.chroma-repeater-field');
-                    var $items = $wrapper.find('.chroma-repeater-items');
+            (function () {
+                var $ = window.jQuery;
+                if (!$) {
+                    return;
+                }
 
-                    var $newItem = $('<div class="chroma-repeater-item" style="align-items: flex-start;">' +
-                        '<div style="flex: 1; display: flex; gap: 10px; flex-direction: column;">' +
-                        '<input type="text" name="location_enrollment_steps[title][]" class="widefat" placeholder="Step Title" />' +
-                        '<textarea name="location_enrollment_steps[text][]" class="widefat" rows="2" placeholder="Step Description"></textarea>' +
-                        '<input type="url" name="location_enrollment_steps[url][]" class="widefat" placeholder="URL (Optional)" />' +
-                        '</div>' +
-                        '<button type="button" class="button chroma-remove-item">Remove</button>' +
-                        '</div>');
+                $(function () {
+                    // Custom handler for HowTo repeater because it has multiple inputs per item
+                    $(document).on('click', '.chroma-add-item-howto', function (e) {
+                        e.preventDefault();
+                        var $wrapper = $(this).closest('.chroma-repeater-field');
+                        var $items = $wrapper.find('.chroma-repeater-items');
 
-                    $items.append($newItem);
+                        var $newItem = $('<div class="chroma-repeater-item" style="align-items: flex-start;">' +
+                            '<div style="flex: 1; display: flex; gap: 10px; flex-direction: column;">' +
+                            '<input type="text" name="location_enrollment_steps[title][]" class="widefat" placeholder="Step Title" />' +
+                            '<textarea name="location_enrollment_steps[text][]" class="widefat" rows="2" placeholder="Step Description"></textarea>' +
+                            '<input type="url" name="location_enrollment_steps[url][]" class="widefat" placeholder="URL (Optional)" />' +
+                            '</div>' +
+                            '<button type="button" class="button chroma-remove-item">Remove</button>' +
+                            '</div>');
+
+                        $items.append($newItem);
+                    });
                 });
-            });
+            })();
         </script>
         <?php
     }

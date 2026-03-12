@@ -360,6 +360,15 @@ function earlystart_advanced_seo_admin_assets($hook)
 		return;
 	}
 
+	if ($is_post_edit && $is_allowed_type) {
+		// Some optimization stacks move jQuery to footer in admin, but these
+		// metaboxes include inline scripts in the page body.
+		wp_enqueue_script('jquery');
+		wp_script_add_data('jquery', 'group', 0);
+		wp_script_add_data('jquery-core', 'group', 0);
+		wp_script_add_data('jquery-migrate', 'group', 0);
+	}
+
 	$css = <<<CSS
 .chroma-seo-meta-box {
 	background: #fff;

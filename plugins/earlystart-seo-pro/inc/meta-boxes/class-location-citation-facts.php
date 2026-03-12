@@ -64,39 +64,46 @@ class earlystart_Location_Citation_Facts_Meta_Box extends earlystart_Advanced_SE
         // JavaScript for repeater
         ?>
         <script>
-            jQuery(document).ready(function ($) {
-                var factIndex = <?php echo !empty($facts) ? count($facts) : 1; ?>;
+            (function () {
+                var $ = window.jQuery;
+                if (!$) {
+                    return;
+                }
 
-                $('#add-citation-fact').on('click', function (e) {
-                    e.preventDefault();
-                    var html = `<div class="citation-fact-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; background: #f9f9f9;">
-                    <div style="margin-bottom: 10px;">
-                        <label>Fact Label</label>
-                        <input type="text" name="seo_llm_citation_facts[${factIndex}][label]" class="regular-text" placeholder="State Quality Rating" />
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label>Value</label>
-                        <input type="text" name="seo_llm_citation_facts[${factIndex}][value]" class="regular-text" placeholder="3-Star Quality Rated" />
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label>Source (optional)</label>
-                        <input type="text" name="seo_llm_citation_facts[${factIndex}][source]" class="regular-text" placeholder="Georgia DECAL" />
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label>Context (optional)</label>
-                        <textarea name="seo_llm_citation_facts[${factIndex}][context]" rows="2" class="large-text"></textarea>
-                    </div>
-                    <button type="button" class="button citation-fact-remove">Remove Fact</button>
-                </div>`;
+                $(function () {
+                    var factIndex = <?php echo !empty($facts) ? count($facts) : 1; ?>;
 
-                    $('#citation-facts-container').append(html);
-                    factIndex++;
+                    $('#add-citation-fact').on('click', function (e) {
+                        e.preventDefault();
+                        var html = `<div class="citation-fact-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; background: #f9f9f9;">
+                        <div style="margin-bottom: 10px;">
+                            <label>Fact Label</label>
+                            <input type="text" name="seo_llm_citation_facts[${factIndex}][label]" class="regular-text" placeholder="State Quality Rating" />
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label>Value</label>
+                            <input type="text" name="seo_llm_citation_facts[${factIndex}][value]" class="regular-text" placeholder="3-Star Quality Rated" />
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label>Source (optional)</label>
+                            <input type="text" name="seo_llm_citation_facts[${factIndex}][source]" class="regular-text" placeholder="Georgia DECAL" />
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label>Context (optional)</label>
+                            <textarea name="seo_llm_citation_facts[${factIndex}][context]" rows="2" class="large-text"></textarea>
+                        </div>
+                        <button type="button" class="button citation-fact-remove">Remove Fact</button>
+                    </div>`;
+
+                        $('#citation-facts-container').append(html);
+                        factIndex++;
+                    });
+
+                    $(document).on('click', '.citation-fact-remove', function () {
+                        $(this).closest('.citation-fact-item').remove();
+                    });
                 });
-
-                $(document).on('click', '.citation-fact-remove', function () {
-                    $(this).closest('.citation-fact-item').remove();
-                });
-            });
+            })();
         </script>
         <?php
     }
