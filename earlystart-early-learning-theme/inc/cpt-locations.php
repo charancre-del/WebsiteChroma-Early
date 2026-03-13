@@ -907,16 +907,11 @@ function earlystart_restore_location_side_metaboxes()
 add_action('add_meta_boxes_location', 'earlystart_restore_location_side_metaboxes', 1000);
 
 /**
- * Clear per-user hidden side meta box settings that can hide the Location sidebar.
+ * Clear per-user metabox state once the location editor screen is initialized.
  */
-function earlystart_repair_location_editor_user_options()
+function earlystart_repair_location_editor_user_options($screen)
 {
-	if (!function_exists('get_current_screen')) {
-		return;
-	}
-
-	$screen = get_current_screen();
-	if (!$screen || 'location' !== $screen->id) {
+	if (!$screen || 'location' !== $screen->post_type || 'post' !== $screen->base) {
 		return;
 	}
 
@@ -925,17 +920,30 @@ function earlystart_repair_location_editor_user_options()
 		return;
 	}
 
-	$hidden_key = 'metaboxhidden_' . $screen->id;
+	$screen_id = 'location';
+	$required_visible = array('submitdiv', 'postimagediv');
+
+	$hidden_key = 'metaboxhidden_' . $screen_id;
 	$hidden = get_user_option($hidden_key, $user_id);
-	if (is_array($hidden) && !empty($hidden)) {
-		$required_visible = array('submitdiv', 'postimagediv');
-		$updated_hidden = array_values(array_diff($hidden, $required_visible));
-		if ($updated_hidden !== $hidden) {
-			update_user_option($user_id, $hidden_key, $updated_hidden, true);
-		}
+	if (!is_array($hidden)) {
+		$hidden = array();
+	}
+	$updated_hidden = array_values(array_diff($hidden, $required_visible));
+	if ($updated_hidden !== $hidden) {
+		update_user_option($user_id, $hidden_key, $updated_hidden, true);
 	}
 
-	$order_key = 'meta-box-order_' . $screen->id;
+	$closed_key = 'closedpostboxes_' . $screen_id;
+	$closed = get_user_option($closed_key, $user_id);
+	if (!is_array($closed)) {
+		$closed = array();
+	}
+	$updated_closed = array_values(array_diff($closed, $required_visible));
+	if ($updated_closed !== $closed) {
+		update_user_option($user_id, $closed_key, $updated_closed, true);
+	}
+
+	$order_key = 'meta-box-order_' . $screen_id;
 	$order = get_user_option($order_key, $user_id);
 	if (!is_array($order)) {
 		$order = array();
@@ -943,19 +951,12 @@ function earlystart_repair_location_editor_user_options()
 
 	$side_order = isset($order['side']) ? (string) $order['side'] : '';
 	$side_ids = array_filter(array_map('trim', explode(',', $side_order)));
-
-	if (!in_array('submitdiv', $side_ids, true)) {
-		array_unshift($side_ids, 'submitdiv');
-	}
-
-	if (current_theme_supports('post-thumbnails') && !in_array('postimagediv', $side_ids, true)) {
-		$side_ids[] = 'postimagediv';
-	}
-
-	$order['side'] = implode(',', $side_ids);
+	$side_ids = array_values(array_diff($side_ids, $required_visible));
+	array_unshift($side_ids, 'postimagediv');
+	array_unshift($side_ids, 'submitdiv');
+	$order['side'] = implode(',', array_unique($side_ids));
 	update_user_option($user_id, $order_key, $order, true);
 }
-add_action('load-post.php', 'earlystart_repair_location_editor_user_options');
-add_action('load-post-new.php', 'earlystart_repair_location_editor_user_options');
+add_action('current_screen', 'earlystart_repair_location_editor_user_options');
 
 
