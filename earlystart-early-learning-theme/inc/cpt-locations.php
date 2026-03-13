@@ -897,6 +897,81 @@ function earlystart_force_location_screen_layout($current)
 add_filter('get_user_option_screen_layout_location', 'earlystart_force_location_screen_layout');
 
 /**
+ * Register and enforce the two-column admin editor layout for Location posts.
+ */
+function earlystart_force_location_editor_layout($screen)
+{
+	if (!$screen || 'location' !== $screen->post_type || 'post' !== $screen->base) {
+		return;
+	}
+
+	add_screen_option(
+		'layout_columns',
+		array(
+			'max'     => 2,
+			'default' => 2,
+		)
+	);
+}
+add_action('current_screen', 'earlystart_force_location_editor_layout', 5);
+
+/**
+ * The location editor can lose the core `columns-2` layout class, which lets
+ * the main column overlap the sidebar and block clicks on Screen Options and
+ * the side metabox controls.
+ */
+function earlystart_print_location_editor_layout_fix()
+{
+	if (!function_exists('get_current_screen')) {
+		return;
+	}
+
+	$screen = get_current_screen();
+	if (!$screen || 'location' !== $screen->post_type || 'post' !== $screen->base) {
+		return;
+	}
+	?>
+	<style>
+		#post-body.columns-2 {
+			margin-right: 300px;
+		}
+
+		#post-body.columns-2 #postbox-container-1 {
+			float: right;
+			margin-right: -300px;
+			width: 280px;
+			position: relative;
+			z-index: 2;
+		}
+
+		#post-body.columns-2 #post-body-content {
+			margin-right: 0;
+			width: 100%;
+		}
+	</style>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var postBody = document.getElementById('post-body');
+			var sideColumn = document.getElementById('postbox-container-1');
+			if (!postBody || !sideColumn) {
+				return;
+			}
+
+			postBody.classList.remove('columns-1');
+			postBody.classList.add('columns-2');
+
+			var layoutInput = document.getElementById('screen_layout_columns');
+			if (layoutInput) {
+				layoutInput.value = '2';
+			}
+		});
+	</script>
+	<?php
+}
+add_action('admin_head-post.php', 'earlystart_print_location_editor_layout_fix');
+add_action('admin_head-post-new.php', 'earlystart_print_location_editor_layout_fix');
+
+/**
  * Ensure core side meta boxes are registered on Location edit screens.
  */
 function earlystart_restore_location_side_metaboxes()
