@@ -39,7 +39,7 @@ class earlystart_Page_Type_Builder
                 '@context' => 'https://schema.org',
                 '@type' => 'AboutPage',
                 'mainEntity' => [
-                    '@type' => 'Organization',
+                    '@type' => 'MedicalBusiness',
                     '@id' => home_url() . '#organization',
                     'name' => get_bloginfo('name'),
                     'description' => get_the_excerpt($post_id)
@@ -55,7 +55,7 @@ class earlystart_Page_Type_Builder
                 '@context' => 'https://schema.org',
                 '@type' => 'ContactPage',
                 'mainEntity' => [
-                    '@type' => 'Organization',
+                    '@type' => 'MedicalBusiness',
                     '@id' => home_url() . '#organization'
                 ],
                 'name' => get_the_title($post_id),

@@ -91,7 +91,7 @@ class earlystart_Admin_Help
                     <h3>📊 Schema Builder</h3>
                     <p><strong>New Feature!</strong> Each page now has intelligent default schemas.</p>
                     <ul>
-                        <li><strong>Locations:</strong> Automatically get ChildCare schema with address, phone, description</li>
+                        <li><strong>Locations:</strong> Automatically get MedicalBusiness schema with address, phone, description, and therapy services</li>
                         <li><strong>Programs:</strong> Service schema with provider information and service type</li>
                         <li><strong>Pages:</strong> Organization schema for About page</li>
                     </ul>
@@ -103,7 +103,7 @@ class earlystart_Admin_Help
                     <h3>🎯 LLM Targeting Tab</h3>
                     <p>Centralized control for how AI assistants recommend your pages.</p>
                     <ul>
-                        <li><strong>Primary Intent:</strong> Define the main user goal (e.g., "childcare_discovery")</li>
+                        <li><strong>Primary Intent:</strong> Define the main user goal (e.g., "pediatric_therapy_discovery")</li>
                         <li><strong>Target Queries:</strong> Add natural language queries where LLMs should cite you</li>
                         <li><strong>Key Differentiators:</strong> Unique strengths LLMs can mention</li>
                     </ul>

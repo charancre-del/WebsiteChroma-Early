@@ -133,7 +133,7 @@ class earlystart_Job_Posting_Builder
                 'name' => 'USA'
             ];
             $schema['jobLocationType'] = 'TELECOMMUTE'; // Assume remote if no location? Or generic?
-            // Actually, for child care, onsite is expected. Let's use Organization address fallback?
+            // For clinic roles, onsite is expected. Use Organization address fallback when present.
             // Safer to just leave generic if unknown.
         }
 

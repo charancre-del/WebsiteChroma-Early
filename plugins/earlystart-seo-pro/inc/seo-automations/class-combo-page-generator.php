@@ -241,18 +241,16 @@ class earlystart_Combo_Page_Generator
         $program_title = get_the_title($program);
         $program_slug = $program->post_name;
         
-        // Define templates based on program type
+        // Define templates based on therapy service type.
         $templates = [
-            'infant-care' => "Trusted Infant Care in {$city_name}, {$state} for babies {$age_range}. Safe sleep, sensory play & nurturing caregivers. Tour today!",
-            'toddler-care' => "Quality Toddler Care in {$city_name}, {$state} for ages {$age_range}. Language-rich learning, guided play & caring teachers. Enroll now!",
-            'preschool' => "Explore Preschool in {$city_name}, {$state} for ages {$age_range}. Hands-on learning, small classes & dedicated teachers. Schedule a tour!",
-            'pre-k-prep' => "Pre-K Prep in {$city_name}, {$state} for ages {$age_range}. Kindergarten readiness, structured learning & social growth. Enroll today!",
-            'ga-pre-k' => "Free GA Pre-K in {$city_name} for 4-year-olds. State-funded, kindergarten-ready curriculum at Chroma. Limited spots—enroll now!",
-            'after-school' => "After School program in {$city_name}, {$state} for ages {$age_range}. Homework help, enrichment activities & safe transportation. Join us!",
-            'camp-summer-winter-fall' => "Summer & Holiday Camps in {$city_name}, {$state}. Fun activities, field trips & friendships for kids {$age_range}. Register today!",
-            'parents-day-out' => "Parents Day Out in {$city_name}, {$state} for ages {$age_range}. Flexible care, engaging activities & peace of mind. Book your spot!",
+            'aba' => "ABA therapy in {$city_name}, {$state}. Evidence-based care for children and family goals. Start intake today!",
+            'aba-therapy' => "ABA therapy in {$city_name}, {$state}. Evidence-based care for children and family goals. Start intake today!",
+            'speech' => "Speech therapy in {$city_name}, {$state}. Support for communication, language, and feeding needs. Talk with intake today!",
+            'speech-therapy' => "Speech therapy in {$city_name}, {$state}. Support for communication, language, and feeding needs. Talk with intake today!",
+            'ot' => "Occupational therapy in {$city_name}, {$state}. Sensory, motor, and daily living support for children. Start intake today!",
+            'occupational-therapy' => "Occupational therapy in {$city_name}, {$state}. Sensory, motor, and daily living support for children. Start intake today!",
         ];
-        
+
         // Get template or generate a generic one
         if (isset($templates[$program_slug])) {
             $description = $templates[$program_slug];
@@ -262,7 +260,7 @@ class earlystart_Combo_Page_Generator
             if ($age_range) {
                 $description .= " for ages {$age_range}";
             }
-            $description .= ". Quality early learning with caring teachers at Chroma Early Learning. Schedule a tour today!";
+            $description .= ". Pediatric therapy with Chroma Early Start. Start intake today!";
         }
         
         // Handle empty age range
@@ -415,8 +413,8 @@ class earlystart_Combo_Page_Generator
         $str_why_choose = sprintf(__('Why %s Parents Choose Our %s', 'chroma-excellence'), $t_city_name, $t_prog_title);
         $str_understanding = sprintf(__('We understand that choosing care in %s is a big decision. Here is what sets our %s apart.', 'chroma-excellence'), $t_city_name, $t_prog_title);
         $str_low_ratios = __('Low Ratios', 'chroma-excellence');
-        $str_ratios_desc = sprintf(__('Our %s campus maintains strict teacher-to-student ratios, ensuring your child gets the individual attention they need.', 'chroma-excellence'), $t_city_name);
-        $str_curriculum_title = __('Prismpath™ Curriculum', 'chroma-excellence');
+        $str_ratios_desc = sprintf(__('Our %s clinic keeps care intentionally coordinated so each child gets individualized support.', 'chroma-excellence'), $t_city_name);
+        $str_curriculum_title = __('Chroma Care Model', 'chroma-excellence');
         
         // Handle ternary for age label safely
         $t_early_learners = __('early learners', 'chroma-excellence');
@@ -431,9 +429,9 @@ class earlystart_Combo_Page_Generator
         
         $str_locations_serving = sprintf(__('Chroma Locations Serving %s', 'chroma-excellence'), $t_city_name);
         $str_select_campus = __('Select the campus closest to your home or work.', 'chroma-excellence');
-        $str_view_campus = __('View Campus', 'chroma-excellence');
-        $str_visit_classroom = sprintf(__('Visit Our %s Classroom', 'chroma-excellence'), $t_city_name);
-        $str_see_environment = sprintf(__('See the %s environment in person. Meet our Director and teachers.', 'chroma-excellence'), $t_prog_title);
+        $str_view_campus = __('View Clinic', 'chroma-excellence');
+        $str_visit_classroom = sprintf(__('Visit Our %s Clinic', 'chroma-excellence'), $t_city_name);
+        $str_see_environment = sprintf(__('See the %s therapy environment in person. Meet our clinical team.', 'chroma-excellence'), $t_prog_title);
         $str_more_options = sprintf(__('More Pediatric Therapy Options in %s', 'chroma-excellence'), $t_city_name);
         
         // Location Text Logic
@@ -713,13 +711,13 @@ class earlystart_Combo_Page_Generator
                         
                         <details class="group bg-brand-cream rounded-2xl p-6 shadow-sm border border-brand-ink/5 cursor-pointer">
                             <summary class="flex items-center justify-between font-bold text-brand-ink list-none">
-                                <span>Are the teachers at <?php echo esc_html($city_name); ?> certified?</span>
+                                <span>Are the clinicians at <?php echo esc_html($city_name); ?> credentialed?</span>
                                 <span class="text-chroma-blue group-open:rotate-180 transition-transform">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 </span>
                             </summary>
                             <p class="mt-3 text-sm text-brand-ink/70 leading-relaxed">
-                                Absolutely. All lead teachers hold a CDA, TCC, or higher degree in Early Childhood Education. Every staff member is also CPR/First Aid certified and undergoes rigorous background checks.
+                                Yes. Our clinical services are delivered or supervised by appropriately credentialed professionals, and team members complete required safety and background checks.
                             </p>
                         </details>
                         
@@ -783,8 +781,8 @@ class earlystart_Combo_Page_Generator
             '@type' => 'Service',
             'serviceType' => $program->post_title,
             'provider' => [
-                '@type' => 'Preschool',
-                'name' => 'Chroma Early Learning Academy - ' . $city_name,
+                '@type' => 'MedicalBusiness',
+                'name' => 'Chroma Early Start - ' . $city_name,
                 'address' => [
                     '@type' => 'PostalAddress',
                     'addressLocality' => $city_name,
@@ -803,8 +801,7 @@ class earlystart_Combo_Page_Generator
 
         if ($age_range) {
             $schema['audience'] = [
-                '@type' => 'EducationalAudience',
-                'educationalRole' => 'student',
+                '@type' => 'PeopleAudience',
                 'audienceType' => 'Children ' . $age_range
             ];
         }

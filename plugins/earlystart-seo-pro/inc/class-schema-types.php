@@ -26,7 +26,6 @@ class earlystart_Schema_Types
             'NewsArticle' => self::get_article_schema(), // Inherits from Article
             'LocalBusiness' => self::get_local_business_schema(),
             'MedicalClinic' => self::get_medical_clinic_schema(),
-            'SpeechPathology' => self::get_speech_pathology_schema(),
             'OccupationalTherapy' => self::get_occupational_therapy_schema(),
             'Organization' => self::get_organization_schema(),
             'Person' => self::get_person_schema(),
@@ -55,17 +54,17 @@ class earlystart_Schema_Types
     private static function get_childcare_schema()
     {
         $schema = self::get_local_business_schema();
-        $schema['label'] = 'Child Care / Preschool';
+        $schema['label'] = 'Legacy Child Care / Preschool';
         return $schema;
     }
 
     /**
-     * MedicalClinic (used for ABA clinic/service pages)
+     * MedicalClinic (used for therapy clinic pages)
      */
     private static function get_medical_clinic_schema()
     {
         $schema = self::get_local_business_schema();
-        $schema['label'] = 'Medical Clinic / ABA Therapy';
+        $schema['label'] = 'Medical Clinic / Pediatric Therapy';
         return $schema;
     }
 
@@ -858,18 +857,18 @@ class earlystart_Schema_Types
     }
 
     /**
-     * Course (for curriculum programs)
+     * Course (legacy educational content)
      */
     private static function get_course_schema()
     {
         return [
-            'label' => 'Course / Curriculum Program',
-            'description' => 'An educational course or program (e.g., Infant Care, Pre-K)',
+            'label' => 'Course / Legacy Educational Content',
+            'description' => 'Legacy educational schema. Therapy services should use Service or OccupationalTherapy.',
             'fields' => [
                 'name' => [
                     'type' => 'text',
-                    'label' => 'Program Name',
-                    'description' => 'e.g., Pre-K Academy'
+                    'label' => 'Name',
+                    'description' => 'e.g., Family Training Workshop'
                 ],
                 'description' => [
                     'type' => 'textarea',
@@ -883,7 +882,7 @@ class earlystart_Schema_Types
                 'educationalLevel' => [
                     'type' => 'text',
                     'label' => 'Educational Level',
-                    'description' => 'e.g., Infant, Toddler, Preschool, Pre-K'
+                    'description' => 'e.g., Parent training, clinical education'
                 ],
                 'coursePrerequisites' => [
                     'type' => 'text',

@@ -65,17 +65,18 @@ class earlystart_Related_Programs
         }
         
         $color_map = array(
-            'infant' => array('bg' => 'chroma-redLight', 'text' => 'chroma-red', 'border' => 'chroma-red/30'),
-            'toddler' => array('bg' => 'chroma-blueLight', 'text' => 'chroma-blue', 'border' => 'chroma-blue/30'),
-            'preschool' => array('bg' => 'chroma-yellowLight', 'text' => 'chroma-yellow', 'border' => 'chroma-yellow/30'),
-            'prek' => array('bg' => 'chroma-greenLight', 'text' => 'chroma-green', 'border' => 'chroma-green/30'),
-            'afterschool' => array('bg' => 'chroma-blueLight', 'text' => 'chroma-blue', 'border' => 'chroma-blue/30'),
+            'aba' => array('bg' => 'chroma-redLight', 'text' => 'chroma-red', 'border' => 'chroma-red/30'),
+            'aba-therapy' => array('bg' => 'chroma-redLight', 'text' => 'chroma-red', 'border' => 'chroma-red/30'),
+            'speech' => array('bg' => 'chroma-blueLight', 'text' => 'chroma-blue', 'border' => 'chroma-blue/30'),
+            'speech-therapy' => array('bg' => 'chroma-blueLight', 'text' => 'chroma-blue', 'border' => 'chroma-blue/30'),
+            'ot' => array('bg' => 'chroma-greenLight', 'text' => 'chroma-green', 'border' => 'chroma-green/30'),
+            'occupational-therapy' => array('bg' => 'chroma-greenLight', 'text' => 'chroma-green', 'border' => 'chroma-green/30'),
         );
 
         ob_start();
         ?>
         <section class="chroma-related-programs py-12 border-t border-brand-ink/5 mt-16">
-            <h2 class="font-serif text-3xl font-bold text-brand-ink mb-8"><?php _e('Programs at This Location', 'chroma-excellence'); ?></h2>
+            <h2 class="font-serif text-3xl font-bold text-brand-ink mb-8"><?php _e('Services at This Location', 'chroma-excellence'); ?></h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <?php foreach ($programs as $prog): 
                     $prog_id = is_object($prog) ? $prog->ID : $prog;
@@ -84,7 +85,7 @@ class earlystart_Related_Programs
                     
                     $age_range = get_post_meta($prog_id, 'program_age_range', true);
                     $slug = $prog_obj->post_name;
-                    $colors = $color_map[$slug] ?? $color_map['toddler'];
+                    $colors = $color_map[$slug] ?? $color_map['speech'];
                 ?>
                 <div class="program-card bg-white rounded-3xl shadow-card border border-brand-ink/5 hover:border-<?php echo esc_attr($colors['border']); ?> transition group overflow-hidden flex items-center p-4 relative">
                     <a href="<?php echo get_permalink($prog_id); ?>" class="absolute inset-0 z-10" aria-label="<?php echo esc_attr($prog_obj->post_title); ?>"></a>

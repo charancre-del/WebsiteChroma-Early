@@ -53,19 +53,19 @@ class earlystart_Image_Alt_Automation
         if ($post_type === 'location') {
             $city = get_post_meta($post_id, 'location_city', true);
             $auto_alt = sprintf(
-                __('Pediatric Therapy facility at %s in %s - Quality Rated learning environment', 'chroma-excellence'),
+                __('Pediatric therapy clinic at %s in %s', 'chroma-excellence'),
                 $title,
                 $city ? $city : 'Georgia'
             );
         } elseif ($post_type === 'program') {
             $auto_alt = sprintf(
-                __('%s program for early childhood education - Hands-on learning activities', 'chroma-excellence'),
+                __('%s pediatric therapy service', 'chroma-excellence'),
                 $title
             );
         } else {
             // Generic fallback using site name
             $auto_alt = sprintf(
-                __('%s - Early Childhood Education Center', 'chroma-excellence'),
+                __('%s - Pediatric Therapy Services', 'chroma-excellence'),
                 get_bloginfo('name')
             );
         }

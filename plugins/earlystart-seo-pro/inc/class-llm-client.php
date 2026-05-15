@@ -415,10 +415,10 @@ class earlystart_LLM_Client
         $prompt .= "IMPORTANT: Website data is the source of truth. Only use GMB/web data to FILL GAPS, not override.\n\n";
 
         $prompt .= "=== BUSINESS CONTEXT ===\n";
-        $prompt .= "- Industry: Early Childhood Education / Licensed Pediatric Therapy\n";
-        $prompt .= "- Service Type: Pediatric Therapy, Early Intervention, ABA, Speech\n";
+        $prompt .= "- Industry: Licensed Pediatric Therapy\n";
+        $prompt .= "- Service Type: ABA Therapy, Speech Therapy, Occupational Therapy, Early Intervention\n";
         $prompt .= "- Location Type: Physical Business Locations in Georgia\n";
-        $prompt .= "- Brand: Chroma Early Learning\n\n";
+        $prompt .= "- Brand: Chroma Early Start\n\n";
 
         $prompt .= "=== SCHEMA TYPE SPECIFIC INSTRUCTIONS ===\n";
 
@@ -427,7 +427,7 @@ class earlystart_LLM_Client
                 $prompt .= "- Focus on: title, datePosted, validThrough, employmentType\n";
                 $prompt .= "- EXTRACT SALARY: Look for baseSalary. Output as simple text (e.g., '50000 USD' or '$15/hour'). DO NOT return an object.\n";
                 $prompt .= "- JOB LOCATION: Output as simple text (e.g. 'Atlanta, GA'). DO NOT return an object.\n";
-                $prompt .= "- HIRING ORG: hiringOrganization should be 'Chroma Early Learning'. Output as text name.\n";
+                $prompt .= "- HIRING ORG: hiringOrganization should be 'Chroma Early Start'. Output as text name.\n";
                 $prompt .= "- DESCRIPTION: Include full job description HTML\n";
                 break;
 
@@ -444,7 +444,7 @@ class earlystart_LLM_Client
                 $prompt .= "- Focus on: headline, image, datePublished, dateModified, author\n";
                 $prompt .= "- HEADLINE: Limit to 110 characters max\n";
                 $prompt .= "- AUTHOR: Must be a Person or Organization object\n";
-                $prompt .= "- PUBLISHER: default to organization 'Chroma Early Learning'\n";
+                $prompt .= "- PUBLISHER: default to organization 'Chroma Early Start'\n";
                 break;
 
             case 'FAQPage':
@@ -468,7 +468,7 @@ class earlystart_LLM_Client
 
             case 'Course':
                 $prompt .= "- Focus on: name, description, provider, educationalLevel, coursePrerequisites, hasCourseInstance\n";
-                $prompt .= "- PROVIDER: Organization 'Chroma Early Learning'\n";
+                $prompt .= "- PROVIDER: Organization 'Chroma Early Start'\n";
                 $prompt .= "- REQUIREMENTS: Extract age or grade requirements into 'coursePrerequisites'\n";
                 $prompt .= "- INSTANCE: Include 'hasCourseInstance' with courseMode (Onsite) + courseWorkload (e.g. Full time, Part time)\n";
                 $prompt .= "- TUITION: Map pricing to 'offers' array\n";
@@ -482,7 +482,7 @@ class earlystart_LLM_Client
 
             case 'Service':
                 $prompt .= "- Focus on: name, serviceType, provider, areaServed, hasOfferCatalog\n";
-                $prompt .= "- PROVIDER: Organization 'Chroma Early Learning'\n";
+                $prompt .= "- PROVIDER: Organization 'Chroma Early Start'\n";
                 break;
 
             case 'Review':
@@ -509,7 +509,6 @@ class earlystart_LLM_Client
                 break;
 
             case 'LocalBusiness':
-            case 'ChildCare':
             default:
                 $prompt .= "- Focus on: geo coordinates (latitude/longitude) for local pack ranking\n";
                 $prompt .= "- OUTPUT GEO AS FLAT FIELDS: 'geo_lat' and 'geo_lng' (do not return a GeoCoordinates object)\n";
@@ -527,7 +526,7 @@ class earlystart_LLM_Client
         $prompt .= "- URLs must start with https://\n";
         $prompt .= "- Dates must be ISO 8601 format (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS)\n";
         $prompt .= "- Telephone should include area code (e.g., 770-555-0123)\n";
-        if ($schema_type === 'LocalBusiness' || $schema_type === 'ChildCare') {
+        if ($schema_type === 'LocalBusiness' || $schema_type === 'MedicalClinic' || $schema_type === 'MedicalBusiness') {
             $prompt .= "- priceRange should be $, $$, or $$$\n";
             $prompt .= "- geo coordinates must be valid lat/lng decimals\n";
         }

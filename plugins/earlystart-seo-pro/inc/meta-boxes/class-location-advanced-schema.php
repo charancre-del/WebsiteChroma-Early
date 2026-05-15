@@ -67,8 +67,8 @@ class earlystart_Location_Advanced_Schema
             </label>
             <input type="text" id="location_quality_rated" name="location_quality_rated" 
                    value="<?php echo esc_attr($quality); ?>" class="widefat"
-                   placeholder="e.g., 2-Star, 3-Star">
-            <p class="description">Official Quality Rated status.</p>
+                   placeholder="e.g., Licensed, Accredited, Quality Rated">
+            <p class="description">Optional clinic credential or quality status.</p>
         </div>
 
         <div style="margin-bottom: 15px;">
@@ -87,14 +87,14 @@ class earlystart_Location_Advanced_Schema
             <p style="margin-bottom: 5px;">
                 <label style="cursor: pointer;">
                     <input type="checkbox" name="earlystart_caps_accepted" value="1" <?php checked($caps, '1'); ?>>
-                    <span>Accepts CAPS (Subsidies)</span>
+                    <span>Accepts public funding / subsidies</span>
                 </label>
             </p>
 
             <p style="margin-bottom: 5px;">
                 <label style="cursor: pointer;">
                     <input type="checkbox" name="earlystart_ga_pre_k_accepted" value="1" <?php checked($prek, '1'); ?>>
-                    <span>Offers GA Lottery Pre-K</span>
+                    <span>Offers early intervention support</span>
                 </label>
             </p>
 

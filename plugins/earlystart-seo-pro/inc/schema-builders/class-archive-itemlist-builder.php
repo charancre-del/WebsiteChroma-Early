@@ -48,10 +48,10 @@ class earlystart_Archive_ItemList_Builder
         }
 
         // Determine schema type based on post type
-        $list_name = ($post_type === 'location') ? 'Our Locations' : 'Our Programs';
+        $list_name = ($post_type === 'location') ? 'Our Clinics' : 'Our Therapy Services';
         $list_desc = ($post_type === 'location') 
-            ? 'All Chroma Early Learning pediatric therapy locations' 
-            : 'All educational programs at Chroma Early Learning';
+            ? 'All Chroma Early Start pediatric therapy clinics' 
+            : 'All ABA, speech, and occupational therapy services at Chroma Early Start';
 
         $schema = [
             '@context' => 'https://schema.org',

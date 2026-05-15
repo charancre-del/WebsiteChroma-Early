@@ -46,7 +46,7 @@ class earlystart_Near_Me_Pages
      */
     public function add_rewrite_rules()
     {
-        // Generic: /daycare-near-me/
+        // Generic: /aba-therapy-near-me/
         foreach ($this->keywords as $kw) {
             add_rewrite_rule(
                 '^' . $kw . '-near-me/?$',
@@ -54,7 +54,7 @@ class earlystart_Near_Me_Pages
                 'top'
             );
 
-            // City-specific: /daycare-near-cumming-ga/
+            // City-specific: /aba-therapy-near-cumming-ga/
             add_rewrite_rule(
                 '^' . $kw . '-near-([a-z-]+)-([a-z]{2})/?$',
                 'index.php?' . self::REWRITE_TAG . '=' . $kw . '&near_city=$matches[1]&near_state=$matches[2]',
@@ -229,18 +229,18 @@ class earlystart_Near_Me_Pages
                                     <div class="flex flex-wrap gap-2 mb-8">
                                         <span
                                             class="inline-flex items-center gap-1.5 px-3 py-1 bg-chroma-blueLight/50 text-chroma-blueDark text-[9px] font-bold uppercase rounded-full">
-                                            <i class="fa-solid fa-graduation-cap"></i> DECAL
+                                            <i class="fa-solid fa-hand-holding-medical"></i> Therapy
                                         </span>
                                         <span
                                             class="inline-flex items-center gap-1.5 px-3 py-1 bg-chroma-yellowLight/50 text-chroma-yellowDark text-[9px] font-bold uppercase rounded-full">
-                                            <i class="fa-solid fa-star"></i> Quality Rated
+                                            <i class="fa-solid fa-star"></i> Family Centered
                                         </span>
                                     </div>
 
                                     <div class="grid grid-cols-2 gap-3 mt-auto">
                                         <a href="<?php echo esc_url($loc['url']); ?>"
                                             class="flex items-center justify-center py-4 rounded-2xl bg-brand-ink text-white text-[10px] font-bold uppercase tracking-widest hover:bg-chroma-blueDark transition-colors">
-                                            <?php _e('View Campus', 'chroma-excellence'); ?>
+                                            <?php _e('View Clinic', 'chroma-excellence'); ?>
                                         </a>
                                         <?php if ($loc['phone']): ?>
                                             <a href="tel:<?php echo esc_attr($loc['phone']); ?>"

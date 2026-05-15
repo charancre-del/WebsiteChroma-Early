@@ -182,7 +182,7 @@ class earlystart_LLM_Bulk_Processor
 
         if ($post_type === 'program') {
             if (strpos($title, 'speech') !== false || strpos($slug, 'speech') !== false) {
-                return 'SpeechPathology';
+                return 'Service';
             }
 
             if (
@@ -194,7 +194,7 @@ class earlystart_LLM_Bulk_Processor
             }
 
             if (strpos($title, 'aba') !== false || strpos($slug, 'aba') !== false) {
-                return 'MedicalClinic';
+                return 'Service';
             }
 
             return 'Service';

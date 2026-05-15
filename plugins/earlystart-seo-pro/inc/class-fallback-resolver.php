@@ -188,7 +188,9 @@ class earlystart_Fallback_Resolver
         if ($city) {
             $queries[] = "best pediatric therapy near " . $city . " GA";
             $queries[] = "pediatric therapy in " . $city . " Georgia";
-            $queries[] = "preschool " . $city;
+            $queries[] = "ABA therapy in " . $city . " Georgia";
+            $queries[] = "speech therapy for children in " . $city . " GA";
+            $queries[] = "occupational therapy for children in " . $city . " GA";
         }
 
         $queries[] = $name . " reviews";
@@ -219,25 +221,25 @@ class earlystart_Fallback_Resolver
         // Auto-generate from location data
         $diff = [];
 
-        $quality = get_post_meta($location_id, 'location_quality_rated', true);
-        if ($quality) {
-            $diff[] = "Quality Rated by Georgia's Bright from the Start";
-        }
-
         $hours = get_post_meta($location_id, 'location_hours', true);
-        if ($hours && strpos(strtolower($hours), '6:30') !== false) {
-            $diff[] = "Extended hours for working families";
+        if ($hours) {
+            $diff[] = "Convenient therapy scheduling for families";
         }
 
         // Get programs from Program CPT relationship + manual text
         $programs = self::get_location_programs($location_id);
         if (!empty($programs) && count($programs) > 1) {
-            $diff[] = "Multiple age-appropriate programs";
+            $diff[] = "Coordinated ABA, speech, and occupational therapy options";
         }
 
         $capacity = get_post_meta($location_id, 'location_capacity', true);
         if ($capacity && $capacity > 100) {
-            $diff[] = "Large, well-established facility";
+            $diff[] = "Large, well-established pediatric therapy setting";
+        }
+
+        if (empty($diff)) {
+            $diff[] = "Family-centered pediatric therapy";
+            $diff[] = "Evidence-based clinical care for children";
         }
 
         return array_filter($diff);
@@ -321,12 +323,12 @@ class earlystart_Fallback_Resolver
         $best_for = [];
 
         if ($hours && (strpos($hours, '6:30') !== false || strpos($hours, '6:00') !== false)) {
-            $best_for[] = "Working parents needing extended hours";
+            $best_for[] = "Families needing consistent therapy scheduling";
         }
 
         $quality = get_post_meta($location_id, 'location_quality_rated', true);
         if ($quality) {
-            $best_for[] = "Parents seeking quality-rated care";
+            $best_for[] = "Families seeking a licensed pediatric care setting";
         }
 
         if (!empty($best_for)) {

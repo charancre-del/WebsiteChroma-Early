@@ -421,7 +421,7 @@ class earlystart_Breadcrumbs
                 if(type === 'combo') {
                     // Direct simulation
                     target.prop('disabled', false);
-                    target.append($('<option></option>').val('-1').text('Simulated: Preschool in Canton, GA'));
+                    target.append($('<option></option>').val('-1').text('Simulated: ABA Therapy in Canton, GA'));
                     target.val('-1').trigger('change');
                     return;
                 }
@@ -535,7 +535,7 @@ class earlystart_Breadcrumbs
             // Mock Query Vars for get_breadcrumb_items
             set_query_var('earlystart_combo', 1);
             set_query_var('combo_city', 'canton-ga');
-            set_query_var('combo_program', 'preschool');
+            set_query_var('combo_program', 'aba');
             
             // We need to pass a valid ID for syntax, but the function will check query vars first
             $items = $this->get_breadcrumb_items(0);

@@ -27,7 +27,7 @@ class earlystart_LLM_Context_Builder
         // Primary intent
         $intent = get_post_meta($location_id, 'seo_llm_primary_intent', true);
         if (!$intent) {
-            $intent = 'childcare_discovery';
+            $intent = 'pediatric_therapy_discovery';
         }
         $context['primary_intent'] = $intent;
 

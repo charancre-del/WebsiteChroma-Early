@@ -48,9 +48,13 @@ class earlystart_General_LLM_Context extends earlystart_Advanced_SEO_Meta_Box_Ba
         // Primary intent (Dropdown)
         $intent_options = [
             '' => 'Select Intent...',
-            'informational' => 'Informational (Learn about program)',
-            'transactional' => 'Transactional (Enroll / Tour)',
-            'navigational' => 'Navigational (Find Campus / Contact)'
+            'pediatric_therapy_discovery' => 'Pediatric Therapy Discovery',
+            'aba_therapy_discovery' => 'ABA Therapy Discovery',
+            'speech_therapy_discovery' => 'Speech Therapy Discovery',
+            'ot_discovery' => 'Occupational Therapy Discovery',
+            'informational' => 'Informational (Learn about services)',
+            'transactional' => 'Transactional (Schedule / Intake)',
+            'navigational' => 'Navigational (Find Clinic / Contact)'
         ];
 
         echo '<div class="chroma-meta-field-row" style="margin-bottom: 15px;">';
@@ -75,7 +79,7 @@ class earlystart_General_LLM_Context extends earlystart_Advanced_SEO_Meta_Box_Ba
             'id' => 'seo_llm_target_queries',
             'label' => '',
             'values' => $target_queries,
-            'placeholder' => 'e.g., "best preschool curriculum"',
+            'placeholder' => 'e.g., "ABA therapy near me"',
             'button_text' => 'Add Query',
         ]);
 
@@ -91,7 +95,7 @@ class earlystart_General_LLM_Context extends earlystart_Advanced_SEO_Meta_Box_Ba
             'id' => 'seo_llm_key_differentiators',
             'label' => '',
             'values' => $key_differentiators,
-            'placeholder' => 'e.g., "Award-winning curriculum"',
+            'placeholder' => 'e.g., "Coordinated ABA, speech, and OT care"',
             'button_text' => 'Add Differentiator',
         ]);
     }

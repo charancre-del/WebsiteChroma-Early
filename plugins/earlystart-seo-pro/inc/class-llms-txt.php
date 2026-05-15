@@ -284,8 +284,8 @@ class earlystart_LLMs_Txt_Generator
         }
 
         $output .= "## About Us\n\n";
-        $output .= "Chroma Early Learning Academy is a network of premium pediatric therapy and early education centers across Metro Atlanta.\n";
-        $output .= "We use the Prismpath™ curriculum, focusing on physical, emotional, social, academic, and creative development.\n";
+        $output .= "Chroma Early Start is a network of pediatric therapy clinics across Metro Atlanta.\n";
+        $output .= "We provide coordinated ABA therapy, speech therapy, occupational therapy, and early intervention support for children and families.\n";
 
         return $output;
     }

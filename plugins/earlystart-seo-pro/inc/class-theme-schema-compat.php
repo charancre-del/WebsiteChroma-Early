@@ -198,7 +198,7 @@ if (!function_exists('earlystart_location_schema_pro')) {
         }
 
         // Schema Construction
-        $types = array('ChildCare', 'Preschool', 'EducationalOrganization', 'LocalBusiness');
+        $types = array('MedicalBusiness', 'LocalBusiness');
 
         if (get_post_meta($location_id, '_earlystart_is_event_venue', true)) {
             $types[] = 'EventVenue';
@@ -230,6 +230,18 @@ if (!function_exists('earlystart_location_schema_pro')) {
                 'postalCode' => $location_fields['zip'] ?? '',
                 'addressCountry' => 'US'
             ),
+            'medicalSpecialty' => array(
+                'https://schema.org/SpeechPathology',
+                'Occupational Therapy',
+                'Applied Behavior Analysis (ABA) therapy',
+            ),
+            'availableService' => function_exists('earlystart_seo_all_service_schemas') ? earlystart_seo_all_service_schemas([
+                'provider' => [
+                    '@type' => 'MedicalBusiness',
+                    'name' => $name,
+                    'url' => get_permalink($location_id),
+                ],
+            ]) : array(),
         );
 
         // Social Profiles
@@ -350,7 +362,7 @@ if (!function_exists('earlystart_location_schema_pro')) {
             $schema['employee'] = array(
                 '@type' => 'Person',
                 'name' => $director_name,
-                'jobTitle' => (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) ? 'Director del Centro' : 'Center Director',
+                'jobTitle' => (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) ? 'Director clinico' : 'Clinical Director',
                 'description' => $director_bio ? wp_strip_all_tags($director_bio) : ''
             );
             if ($director_photo) {
@@ -415,7 +427,7 @@ if (!function_exists('earlystart_city_schema_pro')) {
         $en_name = get_the_title();
         $city_name = earlystart_get_schema_val($post_id, '_earlystart_es_title', $en_name);
 
-        $en_desc = get_the_excerpt() ?: "Premier child care and early education services in $en_name, GA.";
+        $en_desc = get_the_excerpt() ?: "Evidence-based pediatric therapy services in $en_name, GA, including ABA, speech, and occupational therapy.";
         $desc = earlystart_get_schema_val($post_id, '_earlystart_es_excerpt', $en_desc);
 
         // Localize English Fallback if needed
@@ -434,7 +446,7 @@ if (!function_exists('earlystart_city_schema_pro')) {
             '@context' => 'https://schema.org',
             '@type' => 'Service',
             'name' => $service_name,
-            'serviceType' => 'Child Care',
+            'serviceType' => 'Pediatric Therapy',
             'provider' => array(
                 '@type' => 'Organization',
                 'name' => get_bloginfo('name'),
@@ -445,7 +457,12 @@ if (!function_exists('earlystart_city_schema_pro')) {
                 'name' => $city_name
             ),
             'description' => $desc,
-            'url' => get_permalink()
+            'url' => get_permalink(),
+            'hasOfferCatalog' => array(
+                '@type' => 'OfferCatalog',
+                'name' => "ABA, Speech, and OT services in $city_name",
+                'itemListElement' => function_exists('earlystart_seo_all_service_schemas') ? earlystart_seo_all_service_schemas() : array(),
+            ),
         );
 
         if (!empty($location_ids) && is_array($location_ids)) {
@@ -455,15 +472,15 @@ if (!function_exists('earlystart_city_schema_pro')) {
                 $offers[] = array(
                     '@type' => 'Offer',
                     'itemOffered' => array(
-                        '@type' => 'ChildCare',
+                        '@type' => 'MedicalBusiness',
                         'name' => $loc_name,
                         'url' => get_permalink($loc_id)
                     )
                 );
             }
-            $catalog_name = "Schools serving $city_name";
+            $catalog_name = "Clinics serving $city_name";
             if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) {
-                $catalog_name = "Escuelas que sirven a $city_name";
+                $catalog_name = "Clinicas que sirven a $city_name";
             }
 
             $schema['hasOfferCatalog'] = array(
@@ -508,9 +525,11 @@ if (!function_exists('earlystart_program_schema_pro')) {
         $en_desc = get_post_meta($program_id, 'schema_prog_description', true) ?: get_the_excerpt();
         $description = earlystart_get_schema_val($program_id, '_earlystart_es_excerpt', $en_desc);
 
-        $service_type = get_post_meta($program_id, 'schema_prog_service_type', true) ?: 'Early Childhood Education';
-        if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish() && $service_type === 'Early Childhood Education') {
-            $service_type = 'Educación de la Primera Infancia';
+        $detected_line = function_exists('earlystart_seo_detect_service_line') ? earlystart_seo_detect_service_line($program_id) : '';
+        $line = $detected_line && function_exists('earlystart_seo_get_service_line') ? earlystart_seo_get_service_line($detected_line) : null;
+        $service_type = get_post_meta($program_id, 'schema_prog_service_type', true) ?: ($line['service_type'] ?? 'Pediatric Therapy Program');
+        if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish() && $service_type === 'Pediatric Therapy Program') {
+            $service_type = 'Programa de terapia pediatrica';
         }
 
         $provider_name = get_post_meta($program_id, 'schema_prog_provider_name', true) ?: get_bloginfo('name');
@@ -519,11 +538,11 @@ if (!function_exists('earlystart_program_schema_pro')) {
         if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish() && $area_served === 'Metro Atlanta') {
             $area_served = 'Área Metropolitana de Atlanta';
         }
-        $category = get_post_meta($program_id, 'schema_prog_category', true);
+        $category = get_post_meta($program_id, 'schema_prog_category', true) ?: ($line['category'] ?? '');
 
         $schema = array(
             '@context' => 'https://schema.org',
-            '@type' => 'Service',
+            '@type' => $line['schema_type'] ?? 'Service',
             'name' => $name,
             'description' => $description,
             'url' => get_permalink(),
@@ -537,6 +556,10 @@ if (!function_exists('earlystart_program_schema_pro')) {
 
         if ($category) {
             $schema['category'] = $category;
+        }
+
+        if (!empty($line['medical_specialty'])) {
+            $schema['medicalSpecialty'] = $line['medical_specialty'];
         }
 
         earlystart_Schema_Registry::register($schema, ['source' => 'theme-compat-program']);
@@ -577,8 +600,8 @@ if (!function_exists('earlystart_city_faq_schema_output')) {
         // Questions and Answers
         $faq_items = array(
             array(
-                'question' => "Do you offer GA Lottery Pre-K in $city?",
-                'answer' => "Yes! Our locations serving $city participate in the Georgia Lottery Pre-K program. It is tuition-free for all 4-year-olds living in Georgia."
+                'question' => "Do you offer ABA therapy in $city?",
+                'answer' => "Yes. Families in $city can access ABA therapy through nearby Chroma Early Start clinics when it is clinically appropriate."
             ),
             array(
                 'question' => "Do you provide transportation from $city schools?",
@@ -586,7 +609,7 @@ if (!function_exists('earlystart_city_faq_schema_output')) {
             ),
             array(
                 'question' => "What ages do you accept at your $city centers?",
-                'answer' => "We serve children from 6 weeks old (Infant Care) up to 12 years old (After School). We also offer a Pre-K Prep option at select locations."
+                'answer' => "We serve children through pediatric therapy programs based on age, developmental needs, goals, and service availability."
             ),
             array(
                 'question' => "How do I enroll my child in $city?",
@@ -612,6 +635,46 @@ if (!function_exists('earlystart_city_faq_schema_output')) {
                 array(
                     'question' => "¿Cómo inscribo a mi hijo en $city?",
                     'answer' => "La mejor manera de comenzar es programando un recorrido en su ubicación preferida. Puede reservar en línea o llamarnos directamente. Lo guiaremos a través del proceso de inscripción y responderemos todas sus preguntas."
+                ),
+            );
+        }
+
+        $faq_items = array(
+            array(
+                'question' => "Do you offer ABA therapy in $city?",
+                'answer' => "Yes. Families in $city can access ABA therapy through nearby Chroma Early Start clinics when it is clinically appropriate for their child."
+            ),
+            array(
+                'question' => "Can families in $city access speech therapy?",
+                'answer' => "Yes. Our intake team can help determine speech therapy availability and match your family with the best nearby clinic or service option."
+            ),
+            array(
+                'question' => "Do you provide occupational therapy for children near $city?",
+                'answer' => "Yes. Occupational therapy may support sensory processing, motor skills, self-care routines, and participation in daily activities."
+            ),
+            array(
+                'question' => "How do I start pediatric therapy near $city?",
+                'answer' => "The best first step is to contact our intake team. We will review your goals, service needs, scheduling preferences, and nearby clinic options."
+            ),
+        );
+
+        if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) {
+            $faq_items = array(
+                array(
+                    'question' => "Ofrecen terapia ABA en $city?",
+                    'answer' => "Si. Las familias en $city pueden acceder a terapia ABA a traves de clinicas cercanas de Chroma Early Start cuando sea clinicamente apropiado."
+                ),
+                array(
+                    'question' => "Las familias en $city pueden acceder a terapia del habla?",
+                    'answer' => "Si. Nuestro equipo de admision puede ayudar a confirmar disponibilidad y encontrar la clinica o servicio cercano mas adecuado."
+                ),
+                array(
+                    'question' => "Ofrecen terapia ocupacional pediatrica cerca de $city?",
+                    'answer' => "Si. La terapia ocupacional puede apoyar el procesamiento sensorial, habilidades motoras, autocuidado y participacion diaria."
+                ),
+                array(
+                    'question' => "Como empiezo terapia pediatrica cerca de $city?",
+                    'answer' => "El primer paso es contactar a nuestro equipo de admision. Revisaremos metas, necesidades, horarios y opciones de clinicas cercanas."
                 ),
             );
         }
@@ -687,7 +750,7 @@ if (!function_exists('earlystart_organization_schema_pro')) {
 
         $schema = [
             '@context' => 'https://schema.org',
-            '@type' => 'ChildCare',
+            '@type' => 'MedicalBusiness',
             'name' => $name,
             'url' => $url,
             'logo' => $logo,
@@ -697,6 +760,7 @@ if (!function_exists('earlystart_organization_schema_pro')) {
                 'name' => $area_served,
             ],
             'sameAs' => [],
+            'availableService' => function_exists('earlystart_seo_all_service_schemas') ? earlystart_seo_all_service_schemas() : [],
         ];
 
         if (function_exists('earlystart_global_facebook_url')) {

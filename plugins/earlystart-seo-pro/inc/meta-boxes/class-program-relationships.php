@@ -103,7 +103,7 @@ class earlystart_Program_Relationships extends earlystart_Advanced_SEO_Meta_Box_
         <div class="chroma-field-wrapper">
             <label><?php _e('Prerequisites', 'chroma-excellence'); ?></label>
             <p class="description">
-                <?php _e('Select programs that must be completed before this one (e.g., Preschool before Pre-K).', 'chroma-excellence'); ?>
+                <?php _e('Select services that should be considered before this one (e.g., evaluation before ongoing therapy).', 'chroma-excellence'); ?>
             </p>
 
             <select name="program_prerequisites[]" class="widefat" multiple style="height: 150px;">

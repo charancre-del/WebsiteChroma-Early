@@ -1,6 +1,6 @@
 <?php
 /**
- * Chroma Facts Generator
+ * Early Start Facts Generator
  * Generates machine-readable (JSON) and human-readable (HTML) fact sheets for AI compliance.
  *
  * @package earlystart_Excellence
@@ -79,23 +79,21 @@ class earlystart_Facts_Generator
             $meta = get_post_meta($loc->ID);
             
             // Address logic (simplified or from meta)
-            $street = isset($meta['_earlystart_location_address'][0]) ? $meta['_earlystart_location_address'][0] : '';
-            $city = isset($meta['_earlystart_location_city'][0]) ? $meta['_earlystart_location_city'][0] : '';
-            $state = isset($meta['_earlystart_location_state'][0]) ? $meta['_earlystart_location_state'][0] : 'GA';
-            $zip = isset($meta['_earlystart_location_zip'][0]) ? $meta['_earlystart_location_zip'][0] : '';
+            $street = $meta['location_address'][0] ?? ($meta['_earlystart_location_address'][0] ?? '');
+            $city = $meta['location_city'][0] ?? ($meta['_earlystart_location_city'][0] ?? '');
+            $state = $meta['location_state'][0] ?? ($meta['_earlystart_location_state'][0] ?? 'GA');
+            $zip = $meta['location_zip'][0] ?? ($meta['_earlystart_location_zip'][0] ?? '');
             $full_address = "$street, $city, $state $zip";
 
             // Basic Data
-            $phone = isset($meta['_earlystart_location_phone'][0]) ? $meta['_earlystart_location_phone'][0] : '';
-            $email = isset($meta['_earlystart_location_email'][0]) ? $meta['_earlystart_location_email'][0] : '';
+            $phone = $meta['location_phone'][0] ?? ($meta['_earlystart_location_phone'][0] ?? '');
+            $email = $meta['location_email'][0] ?? ($meta['_earlystart_location_email'][0] ?? '');
             
             // Facts & Certifications
             $license = isset($meta['_earlystart_license_number'][0]) ? $meta['_earlystart_license_number'][0] : 'Pending';
             $quality_rated = isset($meta['location_quality_rated'][0]) ? $meta['location_quality_rated'][0] : 'Participating';
             
             // Verification Flags
-            $caps = !empty($meta['_earlystart_caps_accepted'][0]);
-            $prek = !empty($meta['_earlystart_ga_pre_k_accepted'][0]);
             $cameras = !empty($meta['_earlystart_security_cameras'][0]);
             
             // Programs
@@ -108,10 +106,10 @@ class earlystart_Facts_Generator
                 'phone' => $phone,
                 'license_number' => $license,
                 'quality_rated_level' => $quality_rated,
-                'accepts_caps_subsidies' => $caps ? 'Yes' : 'No',
-                'offers_ga_pre_k' => $prek ? 'Yes' : 'No',
+                'core_services' => 'ABA Therapy, Speech Therapy, Occupational Therapy',
                 'has_security_cameras' => $cameras ? 'Yes' : 'No',
-                'programs_offered' => implode(', ', $offered_programs)
+                'programs_offered' => implode(', ', $offered_programs),
+                'email' => $email
             ];
         }
 
@@ -128,7 +126,7 @@ class earlystart_Facts_Generator
             'meta' => [
                 'generated_at' => date('c'),
                 'source' => get_bloginfo('name'),
-                'description' => 'Official source of truth for location facts, certifications, and offerings.'
+                'description' => 'Official source of truth for pediatric therapy location facts, credentials, and services.'
             ],
             'locations' => $this->generate_dataset()
         ], JSON_PRETTY_PRINT);
@@ -162,7 +160,7 @@ class earlystart_Facts_Generator
             
             <div class="chroma-meta-header">
                 <h1>Official Location Facts</h1>
-                <p>Verified data for AI agents, auditors, and parents. Last updated: <?php echo date('F j, Y'); ?></p>
+                <p>Verified pediatric therapy data for AI agents, auditors, and families. Last updated: <?php echo date('F j, Y'); ?></p>
             </div>
 
             <div style="overflow-x: auto;">
@@ -171,7 +169,7 @@ class earlystart_Facts_Generator
                         <tr>
                             <th>Location</th>
                             <th>License & Verification</th>
-                            <th>Programs & Funding</th>
+                            <th>Therapy Services</th>
                             <th>Security & Safety</th>
                             <th>Contact</th>
                         </tr>
@@ -188,8 +186,7 @@ class earlystart_Facts_Generator
                                 <strong>Quality Rated:</strong> <?php echo esc_html($row['quality_rated_level']); ?>
                             </td>
                             <td>
-                                <strong>CAPS:</strong> <span class="<?php echo $row['accepts_caps_subsidies'] === 'Yes' ? 'chroma-check-yes' : 'chroma-check-no'; ?>"><?php echo $row['accepts_caps_subsidies']; ?></span><br>
-                                <strong>Pre-K:</strong> <span class="<?php echo $row['offers_ga_pre_k'] === 'Yes' ? 'chroma-check-yes' : 'chroma-check-no'; ?>"><?php echo $row['offers_ga_pre_k']; ?></span><br>
+                                <strong>Core:</strong> <?php echo esc_html($row['core_services']); ?><br>
                                 <hr style="margin: 4px 0; border:0; border-top:1px solid #eee;">
                                 <span style="font-size: 0.85em;"><?php echo esc_html($row['programs_offered']); ?></span>
                             </td>

@@ -41,13 +41,13 @@ class earlystart_Dynamic_Titles
     private function get_default_patterns() {
         return [
             'location' => '{title} | Pediatric Therapy in {city}, {state} | Chroma',
-            'program' => '{title} Program | Ages {age_range} | Chroma',
+            'program' => '{title} Service | Ages {age_range} | Chroma',
             'post' => '{title} | Parenting Tips | Chroma Blog',
-            'page' => '{title} | Chroma Early Learning',
+            'page' => '{title} | Chroma Early Start',
             'team_member' => '{title} | Meet Our Team | Chroma',
             'archive_location' => 'Our Pediatric Therapy Locations | Chroma',
             'archive_program' => 'Pediatric Therapy Programs | Chroma',
-            'home' => 'Chroma Early Learning | Quality Pediatric Therapy',
+            'home' => 'Chroma Early Start | ABA, Speech & OT Services',
             'search' => 'Search Results for "{query}" | Chroma'
         ];
     }
@@ -235,11 +235,11 @@ class earlystart_Dynamic_Titles
                     </tr>
                     <tr>
                         <td>Program</td>
-                        <td><?php echo esc_html(str_replace(['{title}', '{age_range}'], ['Pre-K', '4-5 years'], $patterns['program'])); ?></td>
+                        <td><?php echo esc_html(str_replace(['{title}', '{age_range}'], ['ABA Therapy', '18 months - 12 years'], $patterns['program'])); ?></td>
                     </tr>
                     <tr>
                         <td>Blog Post</td>
-                        <td><?php echo esc_html(str_replace('{title}', '10 Tips for First Day at Preschool', $patterns['post'])); ?></td>
+                        <td><?php echo esc_html(str_replace('{title}', 'How to Start Pediatric Therapy', $patterns['post'])); ?></td>
                     </tr>
                 </tbody>
             </table>

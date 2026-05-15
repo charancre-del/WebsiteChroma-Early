@@ -82,19 +82,19 @@ class earlystart_Entity_SEO
     public static function get_topic_clusters() {
         // Define topic clusters
         $clusters = [
-            'infant-care' => [
-                'name' => 'Infant Care',
-                'keywords' => ['infant', 'baby', 'newborn', '0-12 months'],
+            'aba' => [
+                'name' => 'ABA Therapy',
+                'keywords' => ['aba therapy', 'applied behavior analysis', 'behavior therapy'],
                 'hub_page' => null
             ],
-            'preschool' => [
-                'name' => 'Preschool',
-                'keywords' => ['preschool', 'pre-k', '3-4 years', 'kindergarten prep'],
+            'speech' => [
+                'name' => 'Speech Therapy',
+                'keywords' => ['speech therapy', 'speech-language therapy', 'communication support'],
                 'hub_page' => null
             ],
-            'child-development' => [
-                'name' => 'Child Development',
-                'keywords' => ['development', 'milestones', 'learning', 'growth'],
+            'ot' => [
+                'name' => 'Occupational Therapy',
+                'keywords' => ['occupational therapy', 'sensory support', 'motor skills'],
                 'hub_page' => null
             ]
         ];

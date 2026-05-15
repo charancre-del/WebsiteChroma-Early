@@ -1,7 +1,7 @@
 <?php
 /**
  * Schema Injector
- * Injects Organization, Person, and CourseInstance schema into relevant pages
+ * Injects Organization, Person, and therapy service schema into relevant pages
  *
  * @package earlystart_Excellence
  * @since 1.0.0
@@ -71,9 +71,9 @@ class earlystart_Schema_Injector
             '@id' => get_permalink($post_id) . '#director-profile',
             'url' => get_permalink($post_id) . '#director-profile',
             'name' => $director_name,
-            'jobTitle' => 'Center Director',
+            'jobTitle' => 'Clinical Director',
             'worksFor' => [
-                '@type' => 'ChildCare',
+                '@type' => 'MedicalBusiness',
                 'name' => get_the_title($post_id),
                 '@id' => get_permalink($post_id) . '#organization'
             ],
@@ -228,10 +228,10 @@ class earlystart_Schema_Injector
     }
 
     /**
-     * Output CourseInstance Schema for Pre-K Programs
+     * Legacy education schema disabled for therapy service pages.
      */
     /**
-     * Output CourseInstance Schema for Pre-K Programs
+     * Legacy education schema disabled for therapy service pages.
      */
     public static function output_course_schema()
     {
@@ -368,7 +368,7 @@ class earlystart_Schema_Injector
     }
 
     /**
-     * Output LocalBusiness/ChildCare Schema for Location Pages
+     * Output LocalBusiness/MedicalBusiness Schema for Location Pages
      * Consolidated from Theme's seo-engine.php with all advanced features
      */
     public static function output_location_schema()
@@ -386,7 +386,7 @@ class earlystart_Schema_Injector
         }
 
         // Build multi-type array
-        $types = ['ChildCare', 'Preschool', 'EducationalOrganization', 'LocalBusiness'];
+        $types = ['MedicalBusiness', 'LocalBusiness'];
         
         // Feature: Event Venue toggle
         if (get_post_meta($location_id, '_earlystart_is_event_venue', true)) {
@@ -424,6 +424,12 @@ class earlystart_Schema_Injector
                 'addressRegion' => $state,
                 'postalCode' => $zip,
                 'addressCountry' => 'US'
+            ],
+            'availableService' => function_exists('earlystart_seo_all_service_schemas') ? earlystart_seo_all_service_schemas() : [],
+            'medicalSpecialty' => [
+                'https://schema.org/SpeechPathology',
+                'Occupational Therapy',
+                'Applied Behavior Analysis (ABA) therapy',
             ],
             'sameAs' => array_filter([
                 get_theme_mod('earlystart_facebook_url'),
@@ -500,7 +506,7 @@ class earlystart_Schema_Injector
             }
             $schema['amenityFeature'][] = [
                 '@type' => 'LocationFeatureSpecification',
-                'name' => 'Quality Rated',
+                'name' => 'Licensed therapy setting',
                 'value' => true
             ];
         }
@@ -524,7 +530,7 @@ class earlystart_Schema_Injector
             $schema['employee'] = [
                 '@type' => 'Person',
                 'name' => $director_name,
-                'jobTitle' => 'Center Director',
+                'jobTitle' => 'Clinical Director',
                 'image' => get_post_meta($location_id, 'location_director_photo', true)
             ];
         }
@@ -580,7 +586,7 @@ class earlystart_Schema_Injector
                         'addressCountry' => 'US'
                     ]
                 ],
-                'description' => "Join us for an Open House at $name. Meet the teachers, tour the classrooms, and learn about our curriculum.",
+                'description' => "Join us for an Open House at $name. Meet our clinical team, tour the therapy environment, and learn about our services.",
                 'organizer' => [
                     '@type' => 'Organization',
                     'name' => $name,
@@ -640,7 +646,7 @@ class earlystart_Schema_Injector
 
         switch ($post_type) {
             case 'location':
-                // ChildCare schema for locations
+                // MedicalBusiness schema for locations
                 $location_name = get_the_title($post_id);
                 $address = get_post_meta($post_id, 'location_address', true);
                 $phone = get_post_meta($post_id, 'location_phone', true);
@@ -652,10 +658,10 @@ class earlystart_Schema_Injector
                 $description = $excerpt ?: get_post_meta($post_id, 'location_short_description', true);
 
                 $defaults[] = [
-                    'type' => 'ChildCare',
+                    'type' => 'MedicalClinic',
                     'data' => [
                         'name' => $location_name,
-                        'description' => $description ?: sprintf(__('Quality pediatric therapy and early education at %s', 'chroma-excellence'), $location_name),
+                        'description' => $description ?: sprintf(__('Pediatric therapy services at %s', 'chroma-excellence'), $location_name),
                         'address' => $address ?: '',
                         'telephone' => $phone ?: get_theme_mod('earlystart_phone_number', ''),
                         'url' => get_permalink($post_id),
@@ -698,13 +704,13 @@ class earlystart_Schema_Injector
                     'type' => 'Service',
                     'data' => [
                         'name' => $program_name,
-                        'description' => $program_desc ?: sprintf(__('%s program at Chroma Early Learning', 'chroma-excellence'), $program_name),
+                        'description' => $program_desc ?: sprintf(__('%s service at Chroma Early Start', 'chroma-excellence'), $program_name),
                         'provider' => [
                             '@type' => 'Organization',
                             'name' => get_bloginfo('name'),
                             'url' => home_url()
                         ],
-                        'serviceType' => 'Educational Program',
+                        'serviceType' => function_exists('earlystart_seo_detect_service_line') && earlystart_seo_detect_service_line($post_id) ? (earlystart_seo_get_service_line(earlystart_seo_detect_service_line($post_id))['service_type'] ?? 'Pediatric Therapy Program') : 'Pediatric Therapy Program',
                         'areaServed' => 'Metro Atlanta, Georgia',
                     ]
                 ];
@@ -1325,7 +1331,7 @@ class earlystart_Schema_Injector
             $schema['offers'] = $offers;
         }
 
-        if (in_array($schema_type, ['LocalBusiness', 'ChildCare', 'Preschool', 'EducationalOrganization'], true)) {
+        if (in_array($schema_type, ['LocalBusiness', 'MedicalBusiness', 'MedicalClinic'], true)) {
             $schema = self::normalize_local_business_like_schema($schema, $raw_fields, $post_id);
         }
 
@@ -1348,7 +1354,7 @@ class earlystart_Schema_Injector
     }
 
     /**
-     * Normalize LocalBusiness/ChildCare address and geo structures.
+     * Normalize LocalBusiness/MedicalBusiness address and geo structures.
      *
      * @param array $schema
      * @param array $raw_fields

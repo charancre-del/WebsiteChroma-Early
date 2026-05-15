@@ -29,8 +29,8 @@ class earlystart_Learning_Resource_Builder
             '@type' => 'LearningResource',
             'name' => $resource['name'],
             'description' => isset($resource['description']) ? $resource['description'] : get_the_excerpt(),
-            'learningResourceType' => isset($resource['type']) ? $resource['type'] : 'Curriculum',
-            'educationalLevel' => get_post_meta($post_id, 'program_age_range', true) ?: 'Early Childhood',
+            'learningResourceType' => isset($resource['type']) ? $resource['type'] : 'Clinical family resource',
+            'audience' => 'Families seeking pediatric therapy services',
         ];
 
         earlystart_Schema_Registry::register($schema, ['source' => 'learning-resource-builder']);

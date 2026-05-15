@@ -112,6 +112,7 @@ if (!function_exists('earlystart_seo_validate_remote_url')) {
  */
 earlystart_safe_require(__DIR__ . '/class-meta-box-base.php');
 earlystart_safe_require(__DIR__ . '/class-field-sanitizer.php');
+earlystart_safe_require(__DIR__ . '/class-service-lines.php');
 earlystart_safe_require(__DIR__ . '/class-fallback-resolver.php');
 
 /**

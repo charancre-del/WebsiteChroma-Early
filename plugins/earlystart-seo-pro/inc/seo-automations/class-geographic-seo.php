@@ -192,19 +192,27 @@ class earlystart_Geographic_SEO
      */
     public function add_service_area_rewrites()
     {
-        // County pages: /aba-therapy-in-forsyth-county/
-        add_rewrite_rule(
-            '^aba-therapy-in-([a-z-]+)-county/?$',
-            'index.php?earlystart_service_area=county&area_name=$matches[1]',
-            'top'
-        );
+        $lines = function_exists('earlystart_seo_service_lines') ? earlystart_seo_service_lines() : [
+            'aba' => ['slug' => 'aba-therapy'],
+            'speech' => ['slug' => 'speech-therapy'],
+            'ot' => ['slug' => 'occupational-therapy'],
+        ];
 
-        // ZIP pages: /aba-therapy-30041/
-        add_rewrite_rule(
-            '^aba-therapy-(\d{5})/?$',
-            'index.php?earlystart_service_area=zip&area_name=$matches[1]',
-            'top'
-        );
+        foreach ($lines as $key => $line) {
+            $slug = preg_quote((string) $line['slug'], '/');
+
+            add_rewrite_rule(
+                '^' . $slug . '-in-([a-z-]+)-county/?$',
+                'index.php?earlystart_service_area=county&earlystart_service_line=' . $key . '&area_name=$matches[1]',
+                'top'
+            );
+
+            add_rewrite_rule(
+                '^' . $slug . '-(\\d{5})/?$',
+                'index.php?earlystart_service_area=zip&earlystart_service_line=' . $key . '&area_name=$matches[1]',
+                'top'
+            );
+        }
     }
 
     /**
@@ -213,6 +221,7 @@ class earlystart_Geographic_SEO
     public function add_query_vars($vars)
     {
         $vars[] = 'earlystart_service_area';
+        $vars[] = 'earlystart_service_line';
         $vars[] = 'area_name';
         return $vars;
     }
@@ -229,6 +238,7 @@ class earlystart_Geographic_SEO
         }
 
         $area_name = sanitize_text_field(get_query_var('area_name'));
+        $service_line = sanitize_key(get_query_var('earlystart_service_line') ?: 'aba');
 
         // Get all locations
         $locations = get_posts([
@@ -240,9 +250,9 @@ class earlystart_Geographic_SEO
         get_header();
 
         if ($area_type === 'county') {
-            $this->render_county_page($area_name, $locations);
+            $this->render_county_page($area_name, $locations, $service_line);
         } elseif ($area_type === 'zip') {
-            $this->render_zip_page($area_name, $locations);
+            $this->render_zip_page($area_name, $locations, $service_line);
         }
 
         get_footer();
@@ -252,12 +262,13 @@ class earlystart_Geographic_SEO
     /**
      * Render county page
      */
-    private function render_county_page($county_slug, $locations)
+    private function render_county_page($county_slug, $locations, $service_line = 'aba')
     {
         $county_name = ucwords(str_replace('-', ' ', $county_slug)) . ' County';
+        $service_label = function_exists('earlystart_seo_service_label') ? earlystart_seo_service_label($service_line) : 'Pediatric Therapy';
         ?>
         <main class="service-area-page">
-            <h1>ABA Therapy in <?php echo esc_html($county_name); ?></h1>
+            <h1><?php echo esc_html($service_label); ?> in <?php echo esc_html($county_name); ?></h1>
             <p>Find quality pediatric therapy centers serving families in <?php echo esc_html($county_name); ?>.</p>
 
             <section class="locations-grid">
@@ -286,11 +297,12 @@ class earlystart_Geographic_SEO
     /**
      * Render ZIP page
      */
-    private function render_zip_page($zip, $locations)
+    private function render_zip_page($zip, $locations, $service_line = 'aba')
     {
+        $service_label = function_exists('earlystart_seo_service_label') ? earlystart_seo_service_label($service_line) : 'Pediatric Therapy';
         ?>
         <main class="service-area-page">
-            <h1>ABA Therapy Near <?php echo esc_html($zip); ?></h1>
+            <h1><?php echo esc_html($service_label); ?> Near <?php echo esc_html($zip); ?></h1>
             <p>Pediatric therapy centers serving the <?php echo esc_html($zip); ?> area.</p>
 
             <section class="locations-grid">

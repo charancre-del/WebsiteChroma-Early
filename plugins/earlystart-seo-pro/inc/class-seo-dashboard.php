@@ -218,7 +218,7 @@ class earlystart_SEO_Dashboard
                         <th scope="row"><label for="earlystart_seo_phonetic_name">Phonetic Name (Voice Search)</label></th>
                         <td>
                             <input name="earlystart_seo_phonetic_name" type="text" id="earlystart_seo_phonetic_name" value="<?php echo esc_attr(get_option('earlystart_seo_phonetic_name')); ?>" class="regular-text">
-                            <p class="description">How your brand name sounds (e.g., "Kro-Ma Early Learning"). Used for Siri/Alexa optimization.</p>
+                            <p class="description">How your brand name sounds (e.g., "Kro-Ma Early Start"). Used for Siri/Alexa optimization.</p>
                         </td>
                     </tr>
                     <tr>
@@ -788,14 +788,14 @@ class earlystart_SEO_Dashboard
                 // Add query row
                 $(document).on('click', '#add-llm-query', function (e) {
                     e.preventDefault();
-                    var html = '<div class="chroma-repeater-row" style="margin-bottom: 8px;"><input type="text" class="chroma-llm-query-input regular-text" placeholder="e.g., best preschool curriculum" style="width: 80%;"> <button class="button remove-llm-row">×</button></div>';
+                    var html = '<div class="chroma-repeater-row" style="margin-bottom: 8px;"><input type="text" class="chroma-llm-query-input regular-text" placeholder="e.g., ABA therapy near me" style="width: 80%;"> <button class="button remove-llm-row">×</button></div>';
                     $('#llm-queries-container').append(html);
                 });
 
                 // Add differentiator row
                 $(document).on('click', '#add-llm-diff', function (e) {
                     e.preventDefault();
-                    var html = '<div class="chroma-repeater-row" style="margin-bottom: 8px;"><input type="text" class="chroma-llm-diff-input regular-text" placeholder="e.g., STEAM-focused curriculum" style="width: 80%;"> <button class="button remove-llm-row">×</button></div>';
+                    var html = '<div class="chroma-repeater-row" style="margin-bottom: 8px;"><input type="text" class="chroma-llm-diff-input regular-text" placeholder="e.g., coordinated ABA, speech, and OT care" style="width: 80%;"> <button class="button remove-llm-row">×</button></div>';
                     $('#llm-diffs-container').append(html);
                 });
 
@@ -2046,7 +2046,7 @@ class earlystart_SEO_Dashboard
                         </label>
                         <input type="text" id="seo_llm_primary_intent" class="regular-text"
                             value="<?php echo esc_attr($primary_intent); ?>"
-                            placeholder="e.g., childcare_discovery, program_information" style="width: 100%; max-width: 500px;">
+                            placeholder="e.g., pediatric_therapy_discovery, aba_therapy_discovery" style="width: 100%; max-width: 500px;">
                         <?php if (empty($primary_intent)): ?>
                                 <p class="description" style="color: #646970;">
                                     <em>Default: informational</em>
@@ -2069,7 +2069,7 @@ class earlystart_SEO_Dashboard
                             <?php foreach ($target_queries as $query): ?>
                                     <div class="chroma-repeater-row" style="margin-bottom: 8px;">
                                         <input type="text" class="chroma-llm-query-input regular-text" value="<?php echo esc_attr($query); ?>"
-                                            placeholder="e.g., best preschool curriculum" style="width: 80%;">
+                                            placeholder="e.g., speech therapy for children near me" style="width: 80%;">
                                         <button class="button remove-llm-row">×</button>
                                     </div>
                             <?php endforeach; ?>
@@ -2092,7 +2092,7 @@ class earlystart_SEO_Dashboard
                             <?php foreach ($key_differentiators as $diff): ?>
                                     <div class="chroma-repeater-row" style="margin-bottom: 8px;">
                                         <input type="text" class="chroma-llm-diff-input regular-text" value="<?php echo esc_attr($diff); ?>"
-                                            placeholder="e.g., STEAM-focused curriculum" style="width: 80%;">
+                                            placeholder="e.g., family-centered therapy model" style="width: 80%;">
                                         <button class="button remove-llm-row">×</button>
                                     </div>
                             <?php endforeach; ?>
@@ -3912,10 +3912,10 @@ class earlystart_SEO_Dashboard
         $builder_schemas = [];
         
         $aliases = [
-            'Preschool' => 'ChildCare',
-            'School' => 'ChildCare',
-            'EducationalOrganization' => 'ChildCare',
-            'DayCare' => 'ChildCare',
+            'Preschool' => 'MedicalClinic',
+            'School' => 'MedicalClinic',
+            'EducationalOrganization' => 'MedicalClinic',
+            'DayCare' => 'MedicalClinic',
             'EmergencyService' => 'LocalBusiness',
             'Restaurant' => 'LocalBusiness',
         ];

@@ -28,6 +28,8 @@ class earlystart_Schema_Validator
      */
     private static $required_fields = [
         'LocalBusiness' => ['name', 'address'],
+        'MedicalBusiness' => ['name', 'address'],
+        'MedicalClinic' => ['name', 'address'],
         'ChildCare' => ['name', 'address'],
         'Article' => ['headline', 'author', 'datePublished'],
         'BlogPosting' => ['headline', 'author', 'datePublished'],
@@ -51,6 +53,8 @@ class earlystart_Schema_Validator
      */
     private static $recommended_fields = [
         'LocalBusiness' => ['telephone', 'openingHours', 'geo', 'image', 'priceRange'],
+        'MedicalBusiness' => ['telephone', 'openingHours', 'geo', 'image', 'priceRange'],
+        'MedicalClinic' => ['telephone', 'openingHours', 'geo', 'image', 'priceRange', 'availableService'],
         'ChildCare' => ['telephone', 'openingHours', 'geo', 'image', 'priceRange', 'aggregateRating'],
         'Article' => ['image', 'dateModified', 'publisher'],
         'Event' => ['endDate', 'image', 'description', 'offers'],
@@ -66,7 +70,8 @@ class earlystart_Schema_Validator
     private static $valid_types = [
         'Thing', 'Action', 'CreativeWork', 'Event', 'Intangible', 'Organization', 
         'Person', 'Place', 'Product', 'Article', 'BlogPosting', 'NewsArticle',
-        'LocalBusiness', 'ChildCare', 'Preschool', 'EducationalOrganization',
+        'LocalBusiness', 'MedicalBusiness', 'MedicalClinic', 'MedicalOrganization', 'MedicalTherapy',
+        'OccupationalTherapy', 'ChildCare', 'Preschool', 'EducationalOrganization',
         'Service', 'Review', 'AggregateRating', 'Rating', 'FAQPage', 'Question',
         'Answer', 'HowTo', 'HowToStep', 'JobPosting', 'VideoObject', 'ImageObject',
         'WebPage', 'WebSite', 'BreadcrumbList', 'ListItem', 'Offer', 'PostalAddress',
@@ -375,6 +380,8 @@ class earlystart_Schema_Validator
                 self::validate_person($schema, $context);
                 break;
             case 'LocalBusiness':
+            case 'MedicalBusiness':
+            case 'MedicalClinic':
             case 'ChildCare':
             case 'Preschool':
                 self::validate_local_business($schema, $context);
@@ -660,7 +667,7 @@ class earlystart_Schema_Validator
         // Check worksFor (should be Organization or subtype)
         if (isset($schema['worksFor']) && is_array($schema['worksFor'])) {
             $orgType = self::get_schema_type($schema['worksFor']);
-            $validOrgTypes = ['Organization', 'Corporation', 'LocalBusiness', 'ChildCare', 'Preschool', 'School', 'EducationalOrganization', 'NGO', 'GovernmentOrganization'];
+            $validOrgTypes = ['Organization', 'Corporation', 'LocalBusiness', 'MedicalBusiness', 'MedicalClinic', 'MedicalOrganization', 'ChildCare', 'Preschool', 'School', 'EducationalOrganization', 'NGO', 'GovernmentOrganization'];
             
             if (!in_array($orgType, $validOrgTypes)) {
                 self::$warnings[] = "$context > worksFor: Should be Organization type (or subtype), got: $orgType";
@@ -894,7 +901,7 @@ class earlystart_Schema_Validator
         // Validate provider if present
         if (isset($schema['provider']) && is_array($schema['provider'])) {
             $provType = self::get_schema_type($schema['provider']);
-            $validProviderTypes = ['Organization', 'Person', 'LocalBusiness', 'ChildCare', 'Preschool', 'EducationalOrganization'];
+            $validProviderTypes = ['Organization', 'Person', 'LocalBusiness', 'MedicalBusiness', 'MedicalClinic', 'MedicalOrganization', 'ChildCare', 'Preschool', 'EducationalOrganization'];
             if (!in_array($provType, $validProviderTypes)) {
                 self::$warnings[] = "$context > provider: Should be Organization or Person, got: $provType";
             }

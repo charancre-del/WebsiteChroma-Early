@@ -29,7 +29,7 @@ class earlystart_Schema_Editor_Metabox
 
         if ($post_type === 'program') {
             if (strpos($title, 'speech') !== false || strpos($slug, 'speech') !== false) {
-                return 'SpeechPathology';
+                return 'Service';
             }
 
             if (
@@ -41,7 +41,7 @@ class earlystart_Schema_Editor_Metabox
             }
 
             if (strpos($title, 'aba') !== false || strpos($slug, 'aba') !== false) {
-                return 'MedicalClinic';
+                return 'Service';
             }
 
             return 'Service';
