@@ -166,6 +166,7 @@ class Utils
             'page_for_posts',
             'earlystart_global_cares',
             'earlystart_global_alert',
+            'earlystart_agent_public_text_overrides',
         ];
 
         if (!is_array($saved)) {
@@ -192,10 +193,15 @@ class Utils
             $saved = [];
         }
 
-        return self::normalize_allowlist(array_merge(
+        $allowlist = self::normalize_allowlist(array_merge(
             $defaults,
             self::discover_theme_mod_keys(),
             $saved
+        ));
+
+        return self::normalize_allowlist(array_merge(
+            $allowlist,
+            self::get_spanish_variant_keys($allowlist)
         ));
     }
 
@@ -203,12 +209,19 @@ class Utils
     {
         $saved = get_option(self::OPTION_SEO_OPTION_ALLOWLIST, []);
         $defaults = [
+            'earlystart_openai_api_key',
+            'earlystart_google_places_api_key',
+            'earlystart_llm_model',
+            'earlystart_llm_base_url',
+            'earlystart_llm_rate_limit',
+            'earlystart_llm_cache_duration',
             'earlystart_citation_facts',
             'earlystart_llm_brand_voice',
             'earlystart_llm_brand_context',
             'earlystart_seo_phone',
             'earlystart_seo_email',
             'earlystart_seo_phonetic_name',
+            'earlystart_homepage_translations_es',
             'earlystart_validator_batch_size',
             'earlystart_validator_request_delay',
             'earlystart_validator_timeout',
@@ -218,7 +231,38 @@ class Utils
             'earlystart_validator_post_types',
             'earlystart_careers_feed_url',
             'earlystart_combo_auto_publish',
+            'earlystart_seo_manual_cities_raw',
             'earlystart_seo_manual_cities',
+            'earlystart_seo_show_related_locations',
+            'earlystart_seo_link_programs_locations',
+            'earlystart_seo_enable_keyword_linking',
+            'earlystart_seo_keyword_links',
+            'earlystart_seo_show_footer_cities',
+            'earlystart_seo_enable_dynamic_titles',
+            'earlystart_seo_title_patterns',
+            'earlystart_seo_enable_canonical',
+            'earlystart_seo_trailing_slash',
+            'earlystart_seo_show_author_meta',
+            'earlystart_seo_show_author_box',
+            'earlystart_seo_show_credential_badges',
+            'earlystart_seo_enable_skip_nav',
+            'earlystart_seo_enable_focus_indicators',
+            'earlystart_enable_speculation_rules',
+            'earlystart_enable_indexnow',
+            'earlystart_indexnow_key',
+            'earlystart_seo_enable_entity_markup',
+            'earlystart_seo_same_as_urls',
+            'earlystart_seo_founder_name',
+            'earlystart_seo_founded_date',
+            'earlystart_seo_enable_county_pages',
+            'earlystart_seo_enable_zip_pages',
+            'earlystart_seo_auto_generate_combos',
+            'earlystart_seo_enable_combo_links',
+            'earlystart_breadcrumbs_enabled',
+            'earlystart_breadcrumbs_home_text',
+            'earlystart_breadcrumbs_strip_html',
+            'earlystart_breadcrumbs_max_length',
+            'earlystart_breadcrumbs_truncate_suffix',
             'earlystart_faq_schema_disabled',
             'earlystart_breadcrumbs_schema_disabled',
         ];
@@ -239,6 +283,7 @@ class Utils
             '_earlystart_es_excerpt',
             '_earlystart_es_seo_title',
             '_earlystart_es_meta_description',
+            '_earlystart_es_earlystart_faq_items',
             '_earlystart_post_schemas',
             '_earlystart_schema_override',
             '_earlystart_schema_type',
@@ -250,6 +295,47 @@ class Utils
             '_earlystart_schema_validation_status',
             '_earlystart_schema_errors',
             'earlystart_faq_items',
+            'seo_llm_description',
+            'seo_llm_when_to_recommend',
+            'seo_llm_primary_intent',
+            'seo_llm_target_queries',
+            'seo_llm_key_differentiators',
+            'seo_llm_prompt',
+            'seo_llm_context',
+            'seo_llm_service_area_lat',
+            'seo_llm_service_area_lng',
+            'seo_llm_service_area_radius',
+            'seo_llm_service_area_cities',
+            'seo_llm_service_area_state',
+            'seo_llm_aggregate_rating_value',
+            'seo_llm_aggregate_rating_count',
+            'seo_llm_aggregate_rating_best',
+            'seo_llm_aggregate_rating_worst',
+            'seo_llm_price_min',
+            'seo_llm_price_max',
+            'seo_llm_price_currency',
+            'seo_llm_price_frequency',
+            'location_enrollment_steps',
+            'location_events',
+            'location_media',
+            'location_howto',
+            'location_citation_facts',
+            'location_advanced_schema',
+            'program_locations_served',
+            'program_prerequisites',
+            'program_related',
+            'city_county',
+            'city_intro_text',
+            'city_nearby_locations',
+            'alternate_url_en',
+            'alternate_url_es',
+            '_earlystart_show_in_newsroom',
+            'schema_org_type',
+            'schema_org_data',
+            'schema_loc_type',
+            'schema_loc_data',
+            'schema_prog_type',
+            'schema_prog_data',
         ];
 
         if (!is_array($saved)) {
@@ -257,6 +343,121 @@ class Utils
         }
 
         return self::normalize_allowlist(array_merge($defaults, $saved));
+    }
+
+    public static function get_plugin_setting_allowlist(): array
+    {
+        return self::normalize_allowlist([
+            'earlystart_contact_fields',
+            'earlystart_contact_webhook_url',
+            'earlystart_contact_email_recipient',
+            'earlystart_contact_form_id',
+            'earlystart_contact_form_height',
+            'earlystart_contact_form_name',
+            'earlystart_contact_lazy_load',
+            'earlystart_contact_lazy_delay',
+            'earlystart_career_fields',
+            'earlystart_career_webhook_url',
+            'earlystart_career_email_recipient',
+            'earlystart_career_form_id',
+            'earlystart_career_form_height',
+            'earlystart_career_form_name',
+            'earlystart_career_lazy_load',
+            'earlystart_career_lazy_delay',
+            'earlystart_tour_form_id',
+            'earlystart_tour_form_height',
+            'earlystart_tour_form_name',
+            'earlystart_tour_lazy_load',
+            'earlystart_tour_lazy_delay',
+            'earlystart_acquisition_fields',
+            'earlystart_acquisition_webhook_url',
+            'earlystart_acquisition_email_recipient',
+            'earlystart_lead_log_webhook_url',
+        ]);
+    }
+
+    public static function get_sensitive_option_keys(): array
+    {
+        return self::normalize_allowlist([
+            'earlystart_openai_api_key',
+            'earlystart_google_places_api_key',
+            'earlystart_contact_webhook_url',
+            'earlystart_career_webhook_url',
+            'earlystart_acquisition_webhook_url',
+            'earlystart_lead_log_webhook_url',
+            'earlystart_indexnow_key',
+        ]);
+    }
+
+    public static function get_embed_meta_keys(): array
+    {
+        return self::normalize_allowlist([
+            'location_maps_embed',
+            'location_virtual_tour_embed',
+        ]);
+    }
+
+    public static function sanitize_embed_html($value): string
+    {
+        $allowed_tags = wp_kses_allowed_html('post');
+        $allowed_tags['iframe'] = [
+            'src' => true,
+            'width' => true,
+            'height' => true,
+            'frameborder' => true,
+            'allowfullscreen' => true,
+            'allow' => true,
+            'loading' => true,
+            'style' => true,
+            'class' => true,
+            'title' => true,
+            'referrerpolicy' => true,
+        ];
+        $allowed_tags['script'] = [
+            'src' => true,
+            'type' => true,
+            'async' => true,
+            'defer' => true,
+        ];
+
+        return wp_kses((string) $value, $allowed_tags);
+    }
+
+    public static function sanitize_mixed_for_storage_by_key(string $key, $value)
+    {
+        if (in_array($key, self::get_embed_meta_keys(), true)) {
+            return self::sanitize_embed_html($value);
+        }
+
+        return self::sanitize_mixed_for_storage($value);
+    }
+
+    public static function invalidate_content_caches_for_post(int $post_id): void
+    {
+        if ($post_id <= 0) {
+            return;
+        }
+
+        clean_post_cache($post_id);
+
+        if (function_exists('earlystart_clear_query_cache')) {
+            earlystart_clear_query_cache($post_id);
+        }
+
+        do_action('chroma_agent_api_content_updated', $post_id);
+    }
+
+    public static function get_spanish_variant_keys(array $keys): array
+    {
+        $variants = [];
+        foreach ($keys as $key) {
+            if (!is_string($key) || $key === '' || substr($key, -3) === '_es') {
+                continue;
+            }
+            $variants[] = $key . '_es';
+        }
+
+        return self::normalize_allowlist($variants);
     }
 
     public static function get_theme_meta_key_inventory(): array

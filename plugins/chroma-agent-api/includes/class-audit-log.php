@@ -15,6 +15,8 @@ class Audit_Log
         'authorization',
         'api_key',
         'key_hash',
+        'webhook',
+        'indexnow_key',
     ];
 
     public static function log_write(array $record): int
@@ -114,7 +116,7 @@ class Audit_Log
             $out = [];
             foreach ($data as $key => $value) {
                 $normalized_key = is_string($key) ? strtolower($key) : '';
-                if ($normalized_key !== '' && in_array($normalized_key, self::$sensitive_keys, true)) {
+                if ($normalized_key !== '' && self::is_sensitive_key($normalized_key)) {
                     $out[$key] = '[REDACTED]';
                     continue;
                 }
@@ -138,5 +140,16 @@ class Audit_Log
 
         $decoded = json_decode($value, true);
         return (json_last_error() === JSON_ERROR_NONE) ? $decoded : null;
+    }
+
+    private static function is_sensitive_key(string $key): bool
+    {
+        foreach (self::$sensitive_keys as $sensitive_key) {
+            if ($key === $sensitive_key || strpos($key, $sensitive_key) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

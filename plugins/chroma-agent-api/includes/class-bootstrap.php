@@ -14,6 +14,7 @@ class Bootstrap
         Routes\Geo_Routes::init();
 
         add_action('rest_api_init', [__CLASS__, 'register_routes']);
+        add_filter('gettext', [__CLASS__, 'apply_public_text_overrides'], 10, 3);
 
         if (is_admin()) {
             Admin::init();
@@ -36,8 +37,36 @@ class Bootstrap
         Routes\Theme_Routes::register();
         Routes\SEO_Routes::register();
         Routes\Media_Routes::register();
+        Routes\Editables_Routes::register();
         Routes\Audit_Routes::register();
         Routes\Geo_Routes::register();
+    }
+
+    public static function apply_public_text_overrides(string $translation, string $text, string $domain): string
+    {
+        if ($domain !== 'earlystart-early-learning' || is_admin()) {
+            return $translation;
+        }
+
+        $overrides = get_option('earlystart_agent_public_text_overrides', []);
+        if (!is_array($overrides) || empty($overrides)) {
+            return $translation;
+        }
+
+        $candidates = [
+            $text,
+            $translation,
+            md5($text),
+            md5($translation),
+        ];
+
+        foreach ($candidates as $candidate) {
+            if (isset($overrides[$candidate]) && is_scalar($overrides[$candidate]) && (string) $overrides[$candidate] !== '') {
+                return (string) $overrides[$candidate];
+            }
+        }
+
+        return $translation;
     }
 
     private static function load_dependencies(): void
@@ -48,6 +77,7 @@ class Bootstrap
         require_once EARLYSTART_AGENT_API_DIR . 'includes/class-auth.php';
         require_once EARLYSTART_AGENT_API_DIR . 'includes/class-audit-log.php';
         require_once EARLYSTART_AGENT_API_DIR . 'includes/class-snapshot-store.php';
+        require_once EARLYSTART_AGENT_API_DIR . 'includes/class-editable-registry.php';
         require_once EARLYSTART_AGENT_API_DIR . 'includes/class-cli.php';
         require_once EARLYSTART_AGENT_API_DIR . 'includes/class-admin.php';
 
@@ -57,6 +87,7 @@ class Bootstrap
         require_once EARLYSTART_AGENT_API_DIR . 'includes/routes/class-theme-routes.php';
         require_once EARLYSTART_AGENT_API_DIR . 'includes/routes/class-seo-routes.php';
         require_once EARLYSTART_AGENT_API_DIR . 'includes/routes/class-media-routes.php';
+        require_once EARLYSTART_AGENT_API_DIR . 'includes/routes/class-editables-routes.php';
         require_once EARLYSTART_AGENT_API_DIR . 'includes/routes/class-audit-routes.php';
         require_once EARLYSTART_AGENT_API_DIR . 'includes/routes/class-geo-routes.php';
     }

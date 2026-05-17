@@ -278,6 +278,16 @@ class Content_Routes
             'post_content' => isset($params['post_content']) ? wp_kses_post((string) $params['post_content']) : (isset($params['content']) ? wp_kses_post((string) $params['content']) : ''),
         ];
 
+        foreach (['menu_order', 'post_parent', 'post_author'] as $int_field) {
+            if (isset($params[$int_field])) {
+                $postarr[$int_field] = (int) $params[$int_field];
+            }
+        }
+
+        if (isset($params['post_date'])) {
+            $postarr['post_date'] = sanitize_text_field((string) $params['post_date']);
+        }
+
         if (!post_type_exists($postarr['post_type'])) {
             return new \WP_Error('caa_invalid_post_type', 'Invalid post_type.', ['status' => 400]);
         }
@@ -296,6 +306,9 @@ class Content_Routes
                 'meta' => Utils::sanitize_mixed_for_storage($meta),
                 'tax' => Utils::sanitize_mixed_for_storage($tax),
             ];
+            if (array_key_exists('featured_media', $params)) {
+                $after['featured_media'] = (int) $params['featured_media'];
+            }
 
             Audit_Log::log_write([
                 'actor_key_id' => Auth::current_key_id(),
@@ -325,6 +338,7 @@ class Content_Routes
         }
 
         $write_mismatches = self::apply_meta_and_tax((int) $post_id, $meta, $tax, true);
+        self::apply_featured_media((int) $post_id, $params['featured_media'] ?? null, $write_mismatches, array_key_exists('featured_media', $params));
         $post = get_post((int) $post_id);
         $after = $post ? self::prepare_post_detail($post) : ['id' => (int) $post_id];
 
@@ -384,6 +398,10 @@ class Content_Routes
             'post_excerpt' => ['post_excerpt', 'excerpt'],
             'post_name' => ['post_name', 'slug'],
             'post_status' => ['post_status', 'status'],
+            'menu_order' => ['menu_order'],
+            'post_parent' => ['post_parent', 'parent'],
+            'post_author' => ['post_author', 'author'],
+            'post_date' => ['post_date'],
         ];
 
         foreach ($mapped as $target => $aliases) {
@@ -397,6 +415,10 @@ class Content_Routes
                         $postarr[$target] = sanitize_title((string) $params[$alias]);
                     } elseif ($target === 'post_status') {
                         $postarr[$target] = sanitize_key((string) $params[$alias]);
+                    } elseif (in_array($target, ['menu_order', 'post_parent', 'post_author'], true)) {
+                        $postarr[$target] = (int) $params[$alias];
+                    } elseif ($target === 'post_date') {
+                        $postarr[$target] = sanitize_text_field((string) $params[$alias]);
                     } else {
                         $postarr[$target] = sanitize_text_field((string) $params[$alias]);
                     }
@@ -415,7 +437,7 @@ class Content_Routes
 
         if ($dry_run) {
             $after = $before;
-            foreach (['post_title', 'post_content', 'post_excerpt', 'post_name', 'post_status'] as $field) {
+            foreach (['post_title', 'post_content', 'post_excerpt', 'post_name', 'post_status', 'menu_order', 'post_parent', 'post_author', 'post_date'] as $field) {
                 if (isset($postarr[$field])) {
                     $after[$field] = $postarr[$field];
                 }
@@ -427,9 +449,13 @@ class Content_Routes
                     if ($value === null) {
                         unset($after['meta'][$safe_key]);
                     } else {
-                        $after['meta'][$safe_key] = Utils::sanitize_mixed_for_storage($value);
+                        $after['meta'][$safe_key] = Utils::sanitize_mixed_for_storage_by_key($safe_key, $value);
                     }
                 }
+            }
+
+            if (array_key_exists('featured_media', $params)) {
+                $after['featured_media'] = (int) $params['featured_media'];
             }
 
             if (!empty($tax)) {
@@ -473,6 +499,7 @@ class Content_Routes
         }
 
         $write_mismatches = self::apply_meta_and_tax($id, $meta, $tax, true);
+        self::apply_featured_media($id, $params['featured_media'] ?? null, $write_mismatches, array_key_exists('featured_media', $params));
 
         $after_post = get_post($id);
         $after = $after_post ? self::prepare_post_detail($after_post) : ['id' => $id];
@@ -668,7 +695,7 @@ class Content_Routes
                 continue;
             }
 
-            $expected = Utils::sanitize_mixed_for_storage($value);
+            $expected = Utils::sanitize_mixed_for_storage_by_key($safe_key, $value);
             update_post_meta($post_id, $safe_key, $expected);
 
             if ($verify) {
@@ -732,7 +759,35 @@ class Content_Routes
             }
         }
 
+        if (!empty($meta) || !empty($tax)) {
+            Utils::invalidate_content_caches_for_post($post_id);
+        }
+
         return $mismatches;
+    }
+
+    private static function apply_featured_media(int $post_id, $value, array &$mismatches, bool $should_apply): void
+    {
+        if (!$should_apply) {
+            return;
+        }
+
+        $expected = (int) $value;
+        if ($expected <= 0) {
+            delete_post_thumbnail($post_id);
+        } else {
+            set_post_thumbnail($post_id, $expected);
+        }
+
+        $actual = (int) get_post_thumbnail_id($post_id);
+        if ($actual !== max(0, $expected)) {
+            $mismatches['featured_media'] = [
+                'expected' => max(0, $expected),
+                'actual' => $actual,
+            ];
+        }
+
+        Utils::invalidate_content_caches_for_post($post_id);
     }
 
     private static function meta_values_equivalent($expected, $actual): bool
@@ -818,6 +873,10 @@ class Content_Routes
             'post_date_gmt' => (string) $post->post_date_gmt,
             'post_modified_gmt' => (string) $post->post_modified_gmt,
             'author' => (int) $post->post_author,
+            'post_author' => (int) $post->post_author,
+            'post_parent' => (int) $post->post_parent,
+            'menu_order' => (int) $post->menu_order,
+            'featured_media' => (int) get_post_thumbnail_id((int) $post->ID),
             'link' => get_permalink($post),
         ];
     }

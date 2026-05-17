@@ -7,6 +7,14 @@
  */
 
 get_header();
+
+$faq_page_id = get_the_ID();
+$faq_hero_eyebrow = earlystart_get_translated_meta($faq_page_id, 'faq_hero_eyebrow', true) ?: __('Support & Clarity', 'earlystart-early-learning');
+$faq_hero_heading = earlystart_get_translated_meta($faq_page_id, 'faq_hero_heading', true) ?: __('How can we', 'earlystart-early-learning');
+$faq_hero_highlight = earlystart_get_translated_meta($faq_page_id, 'faq_hero_highlight', true) ?: __('Help you today?', 'earlystart-early-learning');
+$faq_hero_subheading = earlystart_get_translated_meta($faq_page_id, 'faq_hero_subheading', true) ?: __('Find answers to common questions about our clinical model, enrollment process, and how we support your child\'s unique journey.', 'earlystart-early-learning');
+$faq_cta_heading = earlystart_get_translated_meta($faq_page_id, 'faq_cta_heading', true) ?: __('Still have questions?', 'earlystart-early-learning');
+$faq_cta_text = earlystart_get_translated_meta($faq_page_id, 'faq_cta_text', true) ?: __('Our admissions coordinators are happy to jump on a call and talk through your specific situation. We are here to help.', 'earlystart-early-learning');
 ?>
 
 <main class="pt-20">
@@ -18,16 +26,16 @@ get_header();
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
             <span
                 class="inline-block px-4 py-2 bg-amber-50 text-amber-600 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
-                <?php _e('Support & Clarity', 'earlystart-early-learning'); ?>
+                <?php echo esc_html($faq_hero_eyebrow); ?>
             </span>
             <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
-                <?php _e('How can we', 'earlystart-early-learning'); ?><br>
+                <?php echo esc_html($faq_hero_heading); ?><br>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">
-                    <?php _e('Help you today?', 'earlystart-early-learning'); ?>
+                    <?php echo esc_html($faq_hero_highlight); ?>
                 </span>
             </h1>
             <p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
-                <?php _e('Find answers to common questions about our clinical model, enrollment process, and how we support your child\'s unique journey.', 'earlystart-early-learning'); ?>
+                <?php echo esc_html($faq_hero_subheading); ?>
             </p>
         </div>
     </section>
@@ -62,6 +70,14 @@ get_header();
                     )
                 )
             );
+
+            $faq_categories_json = earlystart_get_translated_meta($faq_page_id, 'faq_categories_json', true);
+            if (!empty($faq_categories_json)) {
+                $decoded_faq_categories = json_decode($faq_categories_json, true);
+                if (JSON_ERROR_NONE === json_last_error() && is_array($decoded_faq_categories)) {
+                    $faq_categories = $decoded_faq_categories;
+                }
+            }
 
             foreach ($faq_categories as $cat): ?>
                 <div class="mb-20 fade-in-up">
@@ -101,10 +117,10 @@ get_header();
         </div>
         <div class="max-w-4xl mx-auto px-4 relative z-10 fade-in-up">
             <h2 class="text-4xl md:text-5xl font-bold mb-6">
-                <?php _e('Still have questions?', 'earlystart-early-learning'); ?>
+                <?php echo esc_html($faq_cta_heading); ?>
             </h2>
             <p class="text-stone-300 text-xl mb-10 leading-relaxed">
-                <?php _e('Our admissions coordinators are happy to jump on a call and talk through your specific situation. We are here to help.', 'earlystart-early-learning'); ?>
+                <?php echo esc_html($faq_cta_text); ?>
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"

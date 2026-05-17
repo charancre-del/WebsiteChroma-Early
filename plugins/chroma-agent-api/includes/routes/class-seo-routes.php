@@ -134,8 +134,10 @@ class SEO_Routes
         }
 
         $data = [];
+        $sensitive = Utils::get_sensitive_option_keys();
         foreach ($allowlist as $option_name) {
-            $data[$option_name] = get_option($option_name, null);
+            $value = get_option($option_name, null);
+            $data[$option_name] = in_array($option_name, $sensitive, true) ? self::redacted_value($value) : $value;
         }
 
         return rest_ensure_response([
@@ -185,6 +187,7 @@ class SEO_Routes
         }
 
         $diff = Diff::compare($before, $after);
+        $public_diff = self::redact_sensitive_map($diff);
 
         Audit_Log::log_write([
             'actor_key_id' => Auth::current_key_id(),
@@ -205,8 +208,8 @@ class SEO_Routes
             'dry_run' => $dry_run,
             'blocked_keys' => $blocked,
             'snapshot_ids' => $snapshot_ids,
-            'diff' => $diff,
-            'data' => $dry_run ? $after : self::read_options_by_keys(array_keys($after)),
+            'diff' => $public_diff,
+            'data' => $dry_run ? self::redact_sensitive_map($after) : self::read_options_by_keys(array_keys($after), true),
         ]);
     }
 
@@ -285,6 +288,10 @@ class SEO_Routes
                     ];
                 }
             }
+        }
+
+        if (!$dry_run && !empty($after)) {
+            Utils::invalidate_content_caches_for_post($post_id);
         }
 
         $diff = Diff::compare($before, $after);
@@ -511,6 +518,10 @@ class SEO_Routes
             }
         }
 
+        if (!$dry_run && !empty($after)) {
+            Utils::invalidate_content_caches_for_post($post_id);
+        }
+
         $diff = Diff::compare($before, $after);
 
         Audit_Log::log_write([
@@ -565,11 +576,14 @@ class SEO_Routes
         return is_array($payload) ? $payload : [];
     }
 
-    private static function read_options_by_keys(array $keys): array
+    private static function read_options_by_keys(array $keys, bool $redact = false): array
     {
         $data = [];
+        $sensitive = Utils::get_sensitive_option_keys();
         foreach ($keys as $key) {
-            $data[$key] = get_option((string) $key, null);
+            $option_name = (string) $key;
+            $value = get_option($option_name, null);
+            $data[$option_name] = ($redact && in_array($option_name, $sensitive, true)) ? self::redacted_value($value) : $value;
         }
         return $data;
     }
@@ -671,5 +685,31 @@ class SEO_Routes
         }
 
         return $normalized;
+    }
+
+    private static function redacted_value($value): array
+    {
+        return [
+            'configured' => !empty($value),
+            'redacted' => true,
+            'value' => null,
+        ];
+    }
+
+    private static function redact_sensitive_map(array $data): array
+    {
+        $sensitive = Utils::get_sensitive_option_keys();
+        $out = [];
+
+        foreach ($data as $key => $value) {
+            if (is_string($key) && in_array($key, $sensitive, true)) {
+                $out[$key] = '[REDACTED]';
+                continue;
+            }
+
+            $out[$key] = is_array($value) ? self::redact_sensitive_map($value) : $value;
+        }
+
+        return $out;
     }
 }

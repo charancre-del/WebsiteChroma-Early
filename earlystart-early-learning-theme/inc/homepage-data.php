@@ -1062,10 +1062,27 @@ function earlystart_home_locations_preview()
  */
 function earlystart_home_tour_cta()
 {
+        $post_id = earlystart_get_home_page_id();
+        $defaults = array(
+                'heading' => __('Schedule a private tour', 'earlystart-early-learning'),
+                'subheading' => __('Share a few details and your preferred clinic. A Chroma Early Start team member will reach out to confirm visit times.', 'earlystart-early-learning'),
+                'trust_text' => __('No obligation. We’ll never share your information.', 'earlystart-early-learning'),
+                'cta_label' => __('Schedule a Tour', 'earlystart-early-learning'),
+                'cta_url' => '#contact',
+        );
+
+        $heading = earlystart_get_translated_meta($post_id, 'home_tour_cta_heading', true);
+        $subheading = earlystart_get_translated_meta($post_id, 'home_tour_cta_subheading', true);
+        $trust_text = earlystart_get_translated_meta($post_id, 'home_tour_cta_trust_text', true);
+        $cta_label = earlystart_get_translated_meta($post_id, 'home_tour_cta_label', true);
+        $cta_url = earlystart_get_translated_meta($post_id, 'home_tour_cta_url', true);
+
         return array(
-                'heading' => 'Schedule a private tour',
-                'subheading' => 'Share a few details and your preferred clinic. A Chroma Early Start team member will reach out to confirm visit times.',
-                'trust_text' => 'No obligation. We’ll never share your information.',
+                'heading' => wp_kses_post($heading ?: earlystart_get_theme_mod('earlystart_home_tour_cta_heading', $defaults['heading'])),
+                'subheading' => sanitize_text_field($subheading ?: earlystart_get_theme_mod('earlystart_home_tour_cta_subheading', $defaults['subheading'])),
+                'trust_text' => sanitize_text_field($trust_text ?: earlystart_get_theme_mod('earlystart_home_tour_cta_trust_text', $defaults['trust_text'])),
+                'cta_label' => sanitize_text_field($cta_label ?: earlystart_get_theme_mod('earlystart_home_tour_cta_label', $defaults['cta_label'])),
+                'cta_url' => earlystart_get_localized_url(esc_url_raw($cta_url ?: earlystart_get_theme_mod('earlystart_home_tour_cta_url', $defaults['cta_url']))),
         );
 }
 

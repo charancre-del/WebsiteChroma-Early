@@ -59,6 +59,12 @@ class Admin
             'write:seo',
             'read:media',
             'write:media',
+            'read:settings',
+            'write:settings',
+            'read:taxonomy',
+            'write:taxonomy',
+            'read:menus',
+            'write:menus',
             'admin:keys',
             'admin:audit',
         ];

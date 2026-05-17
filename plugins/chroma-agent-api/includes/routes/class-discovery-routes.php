@@ -73,6 +73,8 @@ class Discovery_Routes
                     'seo_meta' => Utils::get_seo_meta_allowlist(),
                 ],
                 'introspection' => [
+                    'editables_manifest_route' => '/wp-json/' . self::NS . '/editables',
+                    'editables_values_route' => '/wp-json/' . self::NS . '/editables/values',
                     'write_policy_route' => '/wp-json/' . self::NS . '/write-policy',
                     'content_meta_keys_route' => '/wp-json/' . self::NS . '/content/meta-keys',
                     'geo_contract_route' => '/wp-json/' . self::NS . '/geo-contract',
@@ -96,8 +98,11 @@ class Discovery_Routes
                 'theme_mod_allowlist' => Utils::get_theme_mod_allowlist(),
                 'seo_option_allowlist' => Utils::get_seo_option_allowlist(),
                 'seo_meta_allowlist' => Utils::get_seo_meta_allowlist(),
+                'plugin_setting_allowlist' => Utils::get_plugin_setting_allowlist(),
                 'content_meta_inventory' => Utils::get_theme_meta_key_inventory(),
                 'content_meta_write_policy' => Content_Routes::describe_meta_write_policy(),
+                'editables_manifest' => '/wp-json/' . self::NS . '/editables',
+                'editables_values' => '/wp-json/' . self::NS . '/editables/values',
                 'geo_feed_contract' => Geo_Routes::describe_contract(),
             ],
         ]);
