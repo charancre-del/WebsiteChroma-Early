@@ -183,7 +183,7 @@ class Geo_Routes
             'source' => [
                 'namespace' => self::NS,
                 'route' => '/geo-feed',
-                'authority' => 'ChromaELA WP',
+                'authority' => 'Chroma Early Start WP',
             ],
             'filters' => self::normalize_filter_output($filters),
             'summary' => [
@@ -224,7 +224,7 @@ class Geo_Routes
                 'source' => [
                     'namespace' => self::NS,
                     'route' => '/geo-feed/' . $location_id,
-                    'authority' => 'ChromaELA WP',
+                    'authority' => 'Chroma Early Start WP',
                 ],
                 'location' => $location,
             ]);
@@ -280,7 +280,7 @@ class Geo_Routes
             return;
         }
 
-        echo '<link rel="alternate" type="application/json" title="Chroma GEO Feed" href="' . esc_url(self::public_feed_url()) . '">' . "\n";
+        echo '<link rel="alternate" type="application/json" title="Chroma Early Start GEO Feed" href="' . esc_url(self::public_feed_url()) . '">' . "\n";
     }
 
     public static function output_geo_schema_signpost(): void
@@ -300,10 +300,10 @@ class Geo_Routes
             'subjectOf' => [
                 '@type' => 'DataFeed',
                 '@id' => $geo_url . '#feed',
-                'name' => 'Chroma Public GEO Feed',
+                'name' => 'Chroma Early Start Public GEO Feed',
                 'url' => $geo_url,
                 'encodingFormat' => 'application/json',
-                'description' => 'Machine-readable public feed for Chroma locations, programs, and events.',
+                'description' => 'Machine-readable public feed for Chroma Early Start locations, programs, and events.',
             ],
             'potentialAction' => [
                 '@type' => 'ViewAction',

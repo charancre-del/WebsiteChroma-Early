@@ -119,6 +119,12 @@ class Content_Routes
             'callback' => [__CLASS__, 'rollback_content'],
             'permission_callback' => [__CLASS__, 'write_permission'],
         ]);
+
+        register_rest_route(self::NS, '/content/meta-keys', [
+            'methods' => 'GET',
+            'callback' => [__CLASS__, 'list_meta_keys'],
+            'permission_callback' => [__CLASS__, 'read_permission'],
+        ]);
     }
 
     public static function read_permission(WP_REST_Request $request)
@@ -172,6 +178,23 @@ class Content_Routes
             'reason' => (string) ($policy['reason'] ?? ''),
             'preferred_route' => (string) ($policy['preferred_route'] ?? ''),
         ];
+    }
+
+    public static function list_meta_keys(WP_REST_Request $request)
+    {
+        return rest_ensure_response([
+            'success' => true,
+            'data' => [
+                'content_endpoint' => '/wp-json/' . self::NS . '/content/{id}',
+                'write_shape' => [
+                    'meta' => 'Object of post meta key/value pairs. Pass null as a value to delete a key.',
+                    'dry_run' => 'Truthy value returns the computed diff without persisting changes.',
+                    'strict_write' => 'Truthy value returns 409 if persisted meta differs from the requested value.',
+                ],
+                'inventory' => Utils::get_theme_meta_key_inventory(),
+                'write_policy' => self::describe_meta_write_policy(),
+            ],
+        ]);
     }
 
     public static function list_content(WP_REST_Request $request)

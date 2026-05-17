@@ -74,6 +74,7 @@ class Discovery_Routes
                 ],
                 'introspection' => [
                     'write_policy_route' => '/wp-json/' . self::NS . '/write-policy',
+                    'content_meta_keys_route' => '/wp-json/' . self::NS . '/content/meta-keys',
                     'geo_contract_route' => '/wp-json/' . self::NS . '/geo-contract',
                 ],
                 'scopes' => Auth::current_key()['scopes'] ?? [],
@@ -95,6 +96,7 @@ class Discovery_Routes
                 'theme_mod_allowlist' => Utils::get_theme_mod_allowlist(),
                 'seo_option_allowlist' => Utils::get_seo_option_allowlist(),
                 'seo_meta_allowlist' => Utils::get_seo_meta_allowlist(),
+                'content_meta_inventory' => Utils::get_theme_meta_key_inventory(),
                 'content_meta_write_policy' => Content_Routes::describe_meta_write_policy(),
                 'geo_feed_contract' => Geo_Routes::describe_contract(),
             ],

@@ -158,33 +158,45 @@ class Utils
     public static function get_theme_option_allowlist(): array
     {
         $saved = get_option(self::OPTION_THEME_OPTION_ALLOWLIST, []);
-        if (!is_array($saved) || empty($saved)) {
-            $saved = [
-                'blogname',
-                'blogdescription',
-                'show_on_front',
-                'page_on_front',
-                'page_for_posts',
-                'earlystart_global_cares',
-                'earlystart_global_alert',
-            ];
+        $defaults = [
+            'blogname',
+            'blogdescription',
+            'show_on_front',
+            'page_on_front',
+            'page_for_posts',
+            'earlystart_global_cares',
+            'earlystart_global_alert',
+        ];
+
+        if (!is_array($saved)) {
+            $saved = [];
         }
 
-        return self::normalize_allowlist($saved);
+        return self::normalize_allowlist(array_merge(
+            $defaults,
+            self::discover_theme_option_keys(),
+            $saved
+        ));
     }
 
     public static function get_theme_mod_allowlist(): array
     {
         $saved = get_option(self::OPTION_THEME_MOD_ALLOWLIST, []);
-        if (!is_array($saved) || empty($saved)) {
-            $saved = [
-                'custom_logo',
-                'background_color',
-                'header_textcolor',
-            ];
+        $defaults = [
+            'custom_logo',
+            'background_color',
+            'header_textcolor',
+        ];
+
+        if (!is_array($saved)) {
+            $saved = [];
         }
 
-        return self::normalize_allowlist($saved);
+        return self::normalize_allowlist(array_merge(
+            $defaults,
+            self::discover_theme_mod_keys(),
+            $saved
+        ));
     }
 
     public static function get_seo_option_allowlist(): array
@@ -245,6 +257,148 @@ class Utils
         }
 
         return self::normalize_allowlist(array_merge($defaults, $saved));
+    }
+
+    public static function get_theme_meta_key_inventory(): array
+    {
+        $surfaces = self::discover_theme_surfaces();
+
+        return [
+            'exact' => $surfaces['meta'],
+            'patterns' => $surfaces['meta_patterns'],
+        ];
+    }
+
+    private static function discover_theme_mod_keys(): array
+    {
+        $surfaces = self::discover_theme_surfaces();
+        return $surfaces['theme_mods'];
+    }
+
+    private static function discover_theme_option_keys(): array
+    {
+        $surfaces = self::discover_theme_surfaces();
+        return $surfaces['options'];
+    }
+
+    private static function discover_theme_surfaces(): array
+    {
+        static $cached = null;
+
+        if (is_array($cached)) {
+            return $cached;
+        }
+
+        $cached = [
+            'meta' => [],
+            'meta_patterns' => [],
+            'theme_mods' => [],
+            'options' => [],
+        ];
+
+        if (!function_exists('get_stylesheet_directory')) {
+            return $cached;
+        }
+
+        $theme_dir = get_stylesheet_directory();
+        if (!is_string($theme_dir) || $theme_dir === '' || !is_dir($theme_dir)) {
+            return $cached;
+        }
+
+        $meta = [];
+        $meta_patterns = [];
+        $theme_mods = [];
+        $options = [];
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($theme_dir, \FilesystemIterator::SKIP_DOTS)
+        );
+
+        foreach ($iterator as $file) {
+            if (!$file instanceof \SplFileInfo || !$file->isFile()) {
+                continue;
+            }
+
+            $path = $file->getPathname();
+            if (substr($path, -4) !== '.php' || strpos($path, DIRECTORY_SEPARATOR . 'node_modules' . DIRECTORY_SEPARATOR) !== false) {
+                continue;
+            }
+
+            $contents = file_get_contents($path);
+            if (!is_string($contents) || $contents === '') {
+                continue;
+            }
+
+            self::collect_regex_keys(
+                $contents,
+                '/(?:get_post_meta|update_post_meta|delete_post_meta|metadata_exists|register_post_meta)\s*\([^,]+,\s*([\'"])(.*?)\1/s',
+                $meta,
+                $meta_patterns
+            );
+            self::collect_regex_keys(
+                $contents,
+                '/name\s*=\s*([\'"])(.*?)\1/s',
+                $meta,
+                $meta_patterns,
+                '/^(about_|careers_|contact_|curriculum_|employers_|home_|parents_|privacy_|stories_|program_|location_|city_|schema_|meta_|alternate_|_earlystart_)/'
+            );
+            $ignored_patterns = [];
+            self::collect_regex_keys(
+                $contents,
+                '/(?:add_setting|get_theme_mod|set_theme_mod|earlystart_get_theme_mod)\s*\(\s*([\'"])(.*?)\1/s',
+                $theme_mods,
+                $ignored_patterns
+            );
+            $ignored_patterns = [];
+            self::collect_regex_keys(
+                $contents,
+                '/(?:get_option|update_option|delete_option)\s*\(\s*([\'"])(.*?)\1/s',
+                $options,
+                $ignored_patterns,
+                '/^(blogname|blogdescription|show_on_front|page_on_front|page_for_posts|earlystart_global_settings|earlystart_gtm_id|earlystart_program_base_slug|earlystart_seo_head_mode|earlystart_sitemap_options|earlystart_twitter_handle)$/'
+            );
+        }
+
+        $cached = [
+            'meta' => self::normalize_allowlist(array_keys($meta)),
+            'meta_patterns' => self::normalize_allowlist(array_keys($meta_patterns)),
+            'theme_mods' => self::normalize_allowlist(array_keys($theme_mods)),
+            'options' => self::normalize_allowlist(array_keys($options)),
+        ];
+
+        return $cached;
+    }
+
+    private static function collect_regex_keys(
+        string $contents,
+        string $pattern,
+        array &$exact,
+        ?array &$patterns = null,
+        ?string $allow_pattern = null
+    ): void {
+        if (!preg_match_all($pattern, $contents, $matches)) {
+            return;
+        }
+
+        foreach ((array) ($matches[2] ?? []) as $raw_key) {
+            $key = trim((string) $raw_key);
+            if ($key === '' || strpos($key, '<?php') !== false || strpos($key, '?>') !== false) {
+                continue;
+            }
+
+            if ($allow_pattern !== null && !preg_match($allow_pattern, $key)) {
+                continue;
+            }
+
+            if (strpos($key, '{$') !== false) {
+                if ($patterns !== null) {
+                    $patterns[preg_replace('/\{\$[^}]+\}/', '*', $key)] = true;
+                }
+                continue;
+            }
+
+            $exact[$key] = true;
+        }
     }
 
     public static function normalize_allowlist(array $values): array
