@@ -275,12 +275,17 @@ $hero_badge_text = sprintf(
 					class="bg-rose-600 text-white px-10 py-5 rounded-full font-bold hover:bg-white hover:text-stone-900 transition-all shadow-xl">
 					<?php _e('Talk to Intake', 'earlystart-early-learning'); ?>
 				</a>
-				<?php $global_phone = earlystart_global_phone(); ?>
-				<a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $global_phone)); ?>"
-					class="bg-stone-800 text-white px-10 py-5 rounded-full font-bold hover:bg-stone-700 transition-all">
-					<i data-lucide="phone" class="w-4 h-4 inline-block mr-2"></i>
-					<?php echo esc_html($global_phone ?: '404-555-0123'); ?>
-				</a>
+				<?php
+				$global_phone = trim((string) earlystart_global_phone());
+				$global_phone_href = preg_replace('/[^0-9+]/', '', $global_phone);
+				?>
+				<?php if ($global_phone && $global_phone_href): ?>
+					<a href="tel:<?php echo esc_attr($global_phone_href); ?>"
+						class="bg-stone-800 text-white px-10 py-5 rounded-full font-bold hover:bg-stone-700 transition-all">
+						<i data-lucide="phone" class="w-4 h-4 inline-block mr-2"></i>
+						<?php echo esc_html($global_phone); ?>
+					</a>
+				<?php endif; ?>
 			</div>
 		</div>
 	</section>

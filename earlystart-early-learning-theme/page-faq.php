@@ -15,6 +15,8 @@ $faq_hero_highlight = earlystart_get_translated_meta($faq_page_id, 'faq_hero_hig
 $faq_hero_subheading = earlystart_get_translated_meta($faq_page_id, 'faq_hero_subheading', true) ?: __('Find answers to common questions about our clinical model, enrollment process, and how we support your child\'s unique journey.', 'earlystart-early-learning');
 $faq_cta_heading = earlystart_get_translated_meta($faq_page_id, 'faq_cta_heading', true) ?: __('Still have questions?', 'earlystart-early-learning');
 $faq_cta_text = earlystart_get_translated_meta($faq_page_id, 'faq_cta_text', true) ?: __('Our admissions coordinators are happy to jump on a call and talk through your specific situation. We are here to help.', 'earlystart-early-learning');
+$global_phone = function_exists('earlystart_global_phone') ? trim((string) earlystart_global_phone()) : '';
+$global_phone_href = preg_replace('/[^0-9+]/', '', $global_phone);
 ?>
 
 <main class="pt-20">
@@ -127,10 +129,12 @@ $faq_cta_text = earlystart_get_translated_meta($faq_page_id, 'faq_cta_text', tru
                     class="bg-amber-600 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-amber-500 transition-all shadow-xl inline-block active:scale-95">
                     <?php _e('Message Admissions', 'earlystart-early-learning'); ?>
                 </a>
-                <a href="tel:5551234567"
-                    class="bg-white/10 text-white border border-white/20 px-10 py-5 rounded-full font-bold text-lg hover:bg-white/20 transition-all inline-block">
-                    <?php _e('Call (555) 123-4567', 'earlystart-early-learning'); ?>
-                </a>
+                <?php if ($global_phone && $global_phone_href): ?>
+                    <a href="tel:<?php echo esc_attr($global_phone_href); ?>"
+                        class="bg-white/10 text-white border border-white/20 px-10 py-5 rounded-full font-bold text-lg hover:bg-white/20 transition-all inline-block">
+                        <?php echo esc_html($global_phone); ?>
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </section>

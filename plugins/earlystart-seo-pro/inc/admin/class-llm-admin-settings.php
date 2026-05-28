@@ -233,7 +233,7 @@ class earlystart_LLM_Admin_Settings
                         <td>
                             <input type="text" name="earlystart_seo_phone" 
                                 value="<?php echo esc_attr(get_option('earlystart_seo_phone')); ?>" 
-                                class="regular-text" placeholder="(555) 123-4567">
+                                class="regular-text" placeholder="(404) 905-6775">
                         </td>
                     </tr>
                     <tr>

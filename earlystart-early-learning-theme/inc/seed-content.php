@@ -45,7 +45,7 @@ function earlystart_build_seed_location_meta(array $location)
         'location_state' => $state,
         'location_zip' => $zip,
         'location_phone' => $location['phone'] ?? '(678) 555-0100',
-        'location_email' => $location['email'] ?? 'hello@chromaearlystart.com',
+        'location_email' => $location['email'] ?? 'info@chromaearlystart.com',
         'location_latitude' => $location['latitude'] ?? '',
         'location_longitude' => $location['longitude'] ?? '',
         'location_service_areas' => $location['service_areas'] ?? sprintf("%s\nNearby %s County communities\nMetro Atlanta", $city, $region),
@@ -139,8 +139,8 @@ function earlystart_seed_core_content()
         'contact_form_submit_text' => 'Submit Request',
         'contact_corporate_title' => 'Corporate Office',
         'contact_corporate_name' => 'Chroma Early Start HQ',
-        'contact_corporate_address' => "123 Education Way, Suite 400\nAtlanta, GA 30309",
-        'contact_corporate_phone' => '(404) 555-0199',
+        'contact_corporate_address' => "3554 Old Milton Pkwy\nAlpharetta, GA 30005",
+        'contact_corporate_phone' => '(404) 905-6775',
         'contact_careers_title' => 'Careers',
         'contact_careers_description' => 'Passionate about child-centered clinical care? We are always looking for dedicated team members.',
         'contact_careers_link_text' => 'View Open Positions',
@@ -363,9 +363,12 @@ function earlystart_seed_core_content()
     );
 
     update_option('earlystart_global_settings', array(
-        'global_phone' => '(555) 123-4567',
-        'global_email' => 'hello@chromaearlystart.com',
-        'global_address' => "123 Wellness Blvd\nTherapy City, ST 12345",
+        'global_phone' => '(404) 905-6775',
+        'global_email' => 'info@chromaearlystart.com',
+        'global_address' => '3554 Old Milton Pkwy',
+        'global_city' => 'Alpharetta',
+        'global_state' => 'GA',
+        'global_zip' => '30005',
         'global_facebook_url' => 'https://facebook.com/chromaearlystart',
         'global_instagram_url' => 'https://instagram.com/chromaearlystart',
     ));

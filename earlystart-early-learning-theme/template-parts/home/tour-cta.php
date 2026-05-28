@@ -9,6 +9,9 @@ $tour_cta = earlystart_home_tour_cta();
 if (!$tour_cta) {
     return;
 }
+
+$global_phone = function_exists('earlystart_global_phone') ? trim((string) earlystart_global_phone()) : '';
+$global_phone_href = preg_replace('/[^0-9+]/', '', $global_phone);
 ?>
 
 <section id="contact" class="py-24 bg-rose-600 relative overflow-hidden">
@@ -34,11 +37,13 @@ if (!$tour_cta) {
                     class="bg-white text-rose-700 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-50 transition-all shadow-2xl hover:scale-105 active:scale-95">
                     <?php echo esc_html($tour_cta['cta_label'] ?: __('Schedule a Tour', 'earlystart-early-learning')); ?>
                 </a>
-                <a href="tel:4045550123"
-                    class="bg-stone-900 text-white border-2 border-stone-800 px-12 py-5 rounded-full font-bold text-lg hover:bg-stone-800 transition-all text-center"
-                    aria-label="<?php esc_attr_e('Call Chroma Early Start Admissions', 'earlystart-early-learning'); ?>">
-                    <?php _e('Call Now', 'earlystart-early-learning'); ?>
-                </a>
+                <?php if ($global_phone && $global_phone_href): ?>
+                    <a href="tel:<?php echo esc_attr($global_phone_href); ?>"
+                        class="bg-stone-900 text-white border-2 border-stone-800 px-12 py-5 rounded-full font-bold text-lg hover:bg-stone-800 transition-all text-center"
+                        aria-label="<?php esc_attr_e('Call Chroma Early Start Admissions', 'earlystart-early-learning'); ?>">
+                        <?php echo esc_html($global_phone); ?>
+                    </a>
+                <?php endif; ?>
             </div>
 
             <?php if (!empty($tour_cta['trust_text'])): ?>
