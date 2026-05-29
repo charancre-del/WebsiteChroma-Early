@@ -29,6 +29,12 @@ while (have_posts()):
 	$press_description = get_post_meta($page_id, 'contact_press_description', true) ?: '';
 	$press_link_text = get_post_meta($page_id, 'contact_press_link_text', true) ?: __('Visit Newsroom', 'earlystart-early-learning');
 	$press_link_url = get_post_meta($page_id, 'contact_press_link_url', true) ?: home_url('/newsroom/');
+	$department_contacts = array(
+		array('label' => __('Admissions:', 'earlystart-early-learning'), 'email' => function_exists('earlystart_global_admissions_email') ? earlystart_global_admissions_email() : earlystart_global_email()),
+		array('label' => __('Careers:', 'earlystart-early-learning'), 'email' => function_exists('earlystart_global_careers_email') ? earlystart_global_careers_email() : earlystart_global_email()),
+		array('label' => __('Billing:', 'earlystart-early-learning'), 'email' => function_exists('earlystart_global_billing_email') ? earlystart_global_billing_email() : earlystart_global_email()),
+		array('label' => __('Media:', 'earlystart-early-learning'), 'email' => function_exists('earlystart_global_media_email') ? earlystart_global_media_email() : earlystart_global_email()),
+	);
 	?>
 
 	<main class="pt-20">
@@ -142,18 +148,13 @@ while (have_posts()):
 								<?php _e('Departmental Emails', 'earlystart-early-learning'); ?>
 							</h4>
 							<div class="grid sm:grid-cols-2 gap-4 text-sm">
-								<a href="mailto:admissions@chromaearlystart.com"
-									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Admissions:', 'earlystart-early-learning'); ?></strong>
-									<span style="overflow-wrap:anywhere;word-break:break-word;">admissions@chromaearlystart.com</span></a>
-								<a href="mailto:careers@chromaearlystart.com"
-									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Careers:', 'earlystart-early-learning'); ?></strong>
-									<span style="overflow-wrap:anywhere;word-break:break-word;">careers@chromaearlystart.com</span></a>
-								<a href="mailto:billing@chromaearlystart.com"
-									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Billing:', 'earlystart-early-learning'); ?></strong>
-									<span style="overflow-wrap:anywhere;word-break:break-word;">billing@chromaearlystart.com</span></a>
-								<a href="mailto:media@chromaearlystart.com"
-									class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php _e('Media:', 'earlystart-early-learning'); ?></strong>
-									<span style="overflow-wrap:anywhere;word-break:break-word;">media@chromaearlystart.com</span></a>
+								<?php foreach ($department_contacts as $department_contact): ?>
+									<?php if (!empty($department_contact['email'])): ?>
+										<a href="mailto:<?php echo esc_attr($department_contact['email']); ?>"
+											class="block text-stone-700 hover:text-rose-700 transition-colors leading-relaxed"><strong><?php echo esc_html($department_contact['label']); ?></strong>
+											<span style="overflow-wrap:anywhere;word-break:break-word;"><?php echo esc_html($department_contact['email']); ?></span></a>
+									<?php endif; ?>
+								<?php endforeach; ?>
 							</div>
 						</div>
 					</div>

@@ -25,6 +25,11 @@ function earlystart_get_global_setting($key, $default = '')
                 'global_phone' => '',
                 'global_email' => '',
                 'global_tour_email' => '',
+                'global_admissions_email' => '',
+                'global_careers_email' => '',
+                'global_billing_email' => '',
+                'global_media_email' => '',
+                'global_privacy_email' => '',
                 'global_address' => '',
                 'global_city' => '',
                 'global_state' => 'GA',
@@ -69,6 +74,46 @@ function earlystart_global_email()
 function earlystart_global_tour_email()
 {
         return earlystart_get_global_setting('global_tour_email', earlystart_global_email());
+}
+
+/**
+ * Global Admissions Email Helper
+ */
+function earlystart_global_admissions_email()
+{
+        return earlystart_get_global_setting('global_admissions_email', earlystart_global_email());
+}
+
+/**
+ * Global Careers Email Helper
+ */
+function earlystart_global_careers_email()
+{
+        return earlystart_get_global_setting('global_careers_email', earlystart_global_email());
+}
+
+/**
+ * Global Billing Email Helper
+ */
+function earlystart_global_billing_email()
+{
+        return earlystart_get_global_setting('global_billing_email', earlystart_global_email());
+}
+
+/**
+ * Global Media Email Helper
+ */
+function earlystart_global_media_email()
+{
+        return earlystart_get_global_setting('global_media_email', earlystart_global_email());
+}
+
+/**
+ * Global Privacy Email Helper
+ */
+function earlystart_global_privacy_email()
+{
+        return earlystart_get_global_setting('global_privacy_email', earlystart_global_email());
 }
 
 /**

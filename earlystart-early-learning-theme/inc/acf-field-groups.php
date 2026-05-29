@@ -24,6 +24,42 @@ if (function_exists('acf_add_local_field_group')):
                 'type' => 'email',
             ),
             array(
+                'key' => 'field_global_tour_email',
+                'label' => 'Tour Email',
+                'name' => 'global_tour_email',
+                'type' => 'email',
+            ),
+            array(
+                'key' => 'field_global_admissions_email',
+                'label' => 'Admissions Email',
+                'name' => 'global_admissions_email',
+                'type' => 'email',
+            ),
+            array(
+                'key' => 'field_global_careers_email',
+                'label' => 'Careers Email',
+                'name' => 'global_careers_email',
+                'type' => 'email',
+            ),
+            array(
+                'key' => 'field_global_billing_email',
+                'label' => 'Billing Email',
+                'name' => 'global_billing_email',
+                'type' => 'email',
+            ),
+            array(
+                'key' => 'field_global_media_email',
+                'label' => 'Media Email',
+                'name' => 'global_media_email',
+                'type' => 'email',
+            ),
+            array(
+                'key' => 'field_global_privacy_email',
+                'label' => 'Privacy Email',
+                'name' => 'global_privacy_email',
+                'type' => 'email',
+            ),
+            array(
                 'key' => 'field_global_address',
                 'label' => 'Full Address',
                 'name' => 'global_address',

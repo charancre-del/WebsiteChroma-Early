@@ -15,6 +15,9 @@ $page_id = get_the_ID();
 // Get last updated date.
 $last_updated = earlystart_get_translated_meta($page_id, 'privacy_last_updated') ?: 'December 26, 2024';
 
+$global_privacy_email = function_exists('earlystart_global_privacy_email') ? earlystart_global_privacy_email() : (function_exists('earlystart_global_email') ? earlystart_global_email() : '');
+$global_contact_phone = function_exists('earlystart_global_phone') ? earlystart_global_phone() : '';
+
 // Default content if no sections are set.
 $default_sections = array(
     array(
@@ -48,7 +51,7 @@ $default_sections = array(
     array(
         'title' => __('Your Choices and Rights', 'earlystart-early-learning'),
         'content' => '<p>' . __('You may request access to, correction of, or updates to your information. You may also opt out of non-essential marketing communications. Rights related to PHI are detailed in our HIPAA Notice.', 'earlystart-early-learning') . '</p>
-        <p>' . __('To make a request, contact us at privacy@chromaearlystart.com.', 'earlystart-early-learning') . '</p>'
+        <p>' . sprintf(esc_html__('To make a request, contact us at %s.', 'earlystart-early-learning'), esc_html($global_privacy_email)) . '</p>'
     ),
     array(
         'title' => __('Children and Family Information', 'earlystart-early-learning'),
@@ -61,8 +64,8 @@ $default_sections = array(
     array(
         'title' => __('Contact Us', 'earlystart-early-learning'),
         'content' => '<p><strong>' . __('Chroma Early Start', 'earlystart-early-learning') . '</strong><br>
-        ' . __('Email: privacy@chromaearlystart.com', 'earlystart-early-learning') . '<br>
-        ' . __('Phone: (404) 800-8000', 'earlystart-early-learning') . '</p>'
+        ' . sprintf(esc_html__('Email: %s', 'earlystart-early-learning'), esc_html($global_privacy_email)) . '<br>
+        ' . sprintf(esc_html__('Phone: %s', 'earlystart-early-learning'), esc_html($global_contact_phone)) . '</p>'
     ),
 );
 

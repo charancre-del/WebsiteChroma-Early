@@ -185,7 +185,7 @@ function earlystart_seed_core_content()
         'careers_cta_title' => 'Do not see your role?',
         'careers_cta_description' => 'We are always growing. Send us your resume and we will keep it on file.',
         'careers_cta_button_text' => 'Email HR Team',
-        'careers_cta_button_url' => 'mailto:careers@chromaearlystart.com',
+        'careers_cta_button_url' => 'mailto:' . (function_exists('earlystart_global_careers_email') ? earlystart_global_careers_email() : 'careers@chromaearlystart.com'),
         '_careers_defaults_seeded' => '1',
     );
 
@@ -358,13 +358,19 @@ function earlystart_seed_core_content()
         'privacy_section4_title' => '4. Families\' Rights',
         'privacy_section4_content' => '<p class="mb-4">Early Start upholds the rights of all families to:</p><ul class="list-disc pl-6 mb-4 space-y-2"><li>Access their child\'s records upon request.</li><li>Refuse the use of their child\'s image in marketing materials.</li><li>Visit the center during operating hours under our open-door policy.</li></ul>',
         'privacy_section5_title' => '5. Contact Us',
-        'privacy_section5_content' => '<p class="mb-4">If you have questions regarding this policy, please contact our corporate office at privacy@chromaearlystart.com.</p>',
+        'privacy_section5_content' => '<p class="mb-4">If you have questions regarding this policy, please contact our corporate office at ' . esc_html(function_exists('earlystart_global_privacy_email') ? earlystart_global_privacy_email() : 'privacy@chromaearlystart.com') . '.</p>',
         '_privacy_defaults_seeded' => '1',
     );
 
     update_option('earlystart_global_settings', array(
         'global_phone' => '(404) 905-6775',
         'global_email' => 'info@chromaearlystart.com',
+        'global_tour_email' => 'info@chromaearlystart.com',
+        'global_admissions_email' => 'admissions@chromaearlystart.com',
+        'global_careers_email' => 'careers@chromaearlystart.com',
+        'global_billing_email' => 'billing@chromaearlystart.com',
+        'global_media_email' => 'media@chromaearlystart.com',
+        'global_privacy_email' => 'privacy@chromaearlystart.com',
         'global_address' => '3554 Old Milton Pkwy',
         'global_city' => 'Alpharetta',
         'global_state' => 'GA',

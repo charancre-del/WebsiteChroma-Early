@@ -147,7 +147,7 @@ function earlystart_contact_corporate_meta_box_render( $post ) {
 			<td>
 				<input type="text" id="contact_corporate_name" name="contact_corporate_name"
 					   value="<?php echo esc_attr( $corporate_name ); ?>"
-					   class="large-text" placeholder="e.g., Early Start Early Learning HQ" />
+					   class="large-text" placeholder="e.g., Chroma Early Start HQ" />
 			</td>
 		</tr>
 		<tr>
@@ -155,7 +155,7 @@ function earlystart_contact_corporate_meta_box_render( $post ) {
 			<td>
 				<textarea id="contact_corporate_address" name="contact_corporate_address"
 						  rows="3" class="large-text"
-						  placeholder="123 Education Way, Suite 400&#10;Atlanta, GA 30309"><?php echo esc_textarea( $corporate_address ); ?></textarea>
+						  placeholder="3554 Old Milton Pkwy&#10;Alpharetta, GA 30005"><?php echo esc_textarea( $corporate_address ); ?></textarea>
 				<p class="description">Enter each line of the address on a new line</p>
 			</td>
 		</tr>
@@ -164,7 +164,7 @@ function earlystart_contact_corporate_meta_box_render( $post ) {
 			<td>
 				<input type="text" id="contact_corporate_phone" name="contact_corporate_phone"
 					   value="<?php echo esc_attr( $corporate_phone ); ?>"
-					   placeholder="e.g., (404) 555-0199" />
+					   placeholder="e.g., (404) 905-6775" />
 			</td>
 		</tr>
 	</table>
@@ -351,9 +351,9 @@ function earlystart_seed_contact_page_defaults( $post_id ) {
 		'contact_form_submit_text' => 'Submit Request',
 
 		'contact_corporate_title'   => 'Corporate Office',
-		'contact_corporate_name'    => 'Early Start Early Learning HQ',
-		'contact_corporate_address' => "123 Education Way, Suite 400\nAtlanta, GA 30309",
-		'contact_corporate_phone'   => '(404) 555-0199',
+		'contact_corporate_name'    => 'Chroma Early Start HQ',
+		'contact_corporate_address' => "3554 Old Milton Pkwy\nAlpharetta, GA 30005",
+		'contact_corporate_phone'   => '(404) 905-6775',
 
 		'contact_careers_title'       => 'Careers',
 		'contact_careers_description' => 'Passionate about pediatric therapy and family support? We are always looking for dedicated clinicians, care coordinators, and operational leaders.',

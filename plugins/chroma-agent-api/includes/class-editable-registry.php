@@ -143,6 +143,10 @@ class Editable_Registry
                 $value = get_option((string) $storage['key'], null);
                 return ($redact && !empty($field['sensitive'])) ? self::redacted_value($value) : $value;
 
+            case 'option_path':
+                $value = self::read_option_path((string) $storage['key'], (array) ($storage['path'] ?? []));
+                return ($redact && !empty($field['sensitive'])) ? self::redacted_value($value) : $value;
+
             case 'theme_mod':
                 return get_theme_mod((string) $storage['key'], null);
 
@@ -204,6 +208,9 @@ class Editable_Registry
                     update_option($key, $new_value, false);
                 }
                 return true;
+
+            case 'option_path':
+                return self::write_option_path((string) $storage['key'], (array) ($storage['path'] ?? []), $new_value);
 
             case 'theme_mod':
                 $key = (string) $storage['key'];
@@ -286,6 +293,57 @@ class Editable_Registry
         }
 
         return new \WP_Error('caa_editable_storage_unsupported', 'Unsupported editable storage type.', ['status' => 400]);
+    }
+
+    private static function read_option_path(string $option_key, array $path)
+    {
+        if ($option_key === '' || empty($path)) {
+            return null;
+        }
+
+        $value = get_option($option_key, []);
+        foreach ($path as $segment) {
+            if (!is_array($value) || !array_key_exists($segment, $value)) {
+                return null;
+            }
+            $value = $value[$segment];
+        }
+
+        return $value;
+    }
+
+    private static function write_option_path(string $option_key, array $path, $value)
+    {
+        if ($option_key === '' || empty($path)) {
+            return new \WP_Error('caa_editable_option_path_invalid', 'Editable option path is invalid.', ['status' => 400]);
+        }
+
+        $option = get_option($option_key, []);
+        if (!is_array($option)) {
+            $option = [];
+        }
+
+        $cursor =& $option;
+        $last_index = count($path) - 1;
+        foreach ($path as $index => $segment) {
+            $segment = (string) $segment;
+            if ($index === $last_index) {
+                if ($value === null) {
+                    unset($cursor[$segment]);
+                } else {
+                    $cursor[$segment] = $value;
+                }
+                break;
+            }
+
+            if (!isset($cursor[$segment]) || !is_array($cursor[$segment])) {
+                $cursor[$segment] = [];
+            }
+            $cursor =& $cursor[$segment];
+        }
+
+        update_option($option_key, $option, false);
+        return true;
     }
 
     public static function sanitize_value(array $field, $value)
@@ -473,6 +531,8 @@ class Editable_Registry
             ]);
         }
 
+        self::add_global_setting_fields($fields);
+
         foreach (Utils::get_theme_mod_allowlist() as $key) {
             self::add_field($fields, [
                 'id' => 'theme.mod.' . $key,
@@ -484,6 +544,43 @@ class Editable_Registry
                 'read_scope' => 'read:theme',
                 'write_scope' => 'write:theme',
                 'multilingual_variant' => substr($key, -3) === '_es',
+            ]);
+        }
+    }
+
+    private static function add_global_setting_fields(array &$fields): void
+    {
+        $keys = [
+            'global_phone',
+            'global_email',
+            'global_tour_email',
+            'global_admissions_email',
+            'global_careers_email',
+            'global_billing_email',
+            'global_media_email',
+            'global_privacy_email',
+            'global_address',
+            'global_city',
+            'global_state',
+            'global_zip',
+            'global_facebook_url',
+            'global_instagram_url',
+            'global_linkedin_url',
+            'global_seo_default_title',
+            'global_seo_default_description',
+            'global_logo',
+        ];
+
+        foreach ($keys as $key) {
+            self::add_field($fields, [
+                'id' => 'theme.global_setting.' . $key,
+                'label' => self::label_from_key($key),
+                'group' => 'theme',
+                'type' => self::guess_type($key),
+                'sanitize' => self::guess_sanitizer($key),
+                'storage' => ['type' => 'option_path', 'key' => 'earlystart_global_settings', 'path' => [$key]],
+                'read_scope' => 'read:theme',
+                'write_scope' => 'write:theme',
             ]);
         }
     }

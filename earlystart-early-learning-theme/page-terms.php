@@ -17,6 +17,9 @@ $last_updated = earlystart_get_translated_meta($page_id, 'tou_last_updated')
     ?: earlystart_get_translated_meta($page_id, 'tos_last_updated')
     ?: 'December 26, 2024';
 
+$global_contact_email = function_exists('earlystart_global_email') ? earlystart_global_email() : '';
+$global_contact_phone = function_exists('earlystart_global_phone') ? earlystart_global_phone() : '';
+
 // Default Terms of Use content.
 $default_sections = array(
     array(
@@ -58,8 +61,8 @@ $default_sections = array(
     array(
         'title' => __('Contact Information', 'earlystart-early-learning'),
         'content' => '<p><strong>' . __('Chroma Early Start', 'earlystart-early-learning') . '</strong><br>
-        ' . __('Email: info@chromaearlystart.com', 'earlystart-early-learning') . '<br>
-        ' . __('Phone: (404) 800-8000', 'earlystart-early-learning') . '</p>'
+        ' . sprintf(esc_html__('Email: %s', 'earlystart-early-learning'), esc_html($global_contact_email)) . '<br>
+        ' . sprintf(esc_html__('Phone: %s', 'earlystart-early-learning'), esc_html($global_contact_phone)) . '</p>'
     ),
 );
 

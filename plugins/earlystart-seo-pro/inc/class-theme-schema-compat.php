@@ -745,8 +745,8 @@ if (!function_exists('earlystart_organization_schema_pro')) {
         $description = earlystart_get_schema_val($homepage_id, '_earlystart_es_excerpt', $en_desc);
 
         $area_served = get_post_meta($homepage_id, 'schema_org_area_served', true) ?: 'Atlanta';
-        $telephone = get_post_meta($homepage_id, 'schema_org_telephone', true);
-        $email = get_post_meta($homepage_id, 'schema_org_email', true);
+        $telephone = get_post_meta($homepage_id, 'schema_org_telephone', true) ?: (function_exists('earlystart_global_phone') ? earlystart_global_phone() : '');
+        $email = get_post_meta($homepage_id, 'schema_org_email', true) ?: (function_exists('earlystart_global_email') ? earlystart_global_email() : '');
 
         $schema = [
             '@context' => 'https://schema.org',
