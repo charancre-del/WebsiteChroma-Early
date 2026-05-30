@@ -35,6 +35,32 @@ document.addEventListener('DOMContentLoaded', function () {
     const titleSpan = document.getElementById('chroma-pdf-title');
     const backdrop = document.getElementById('chroma-pdf-backdrop');
 
+    function setLoadingError() {
+        if (!loadingSpinner) return;
+
+        loadingSpinner.textContent = '';
+
+        const errorBox = document.createElement('div');
+        errorBox.className = 'text-white text-center p-10';
+
+        const icon = document.createElement('i');
+        icon.className = 'fa-solid fa-circle-exclamation text-4xl mb-4 text-chroma-red';
+        icon.setAttribute('aria-hidden', 'true');
+
+        const message = document.createElement('span');
+        message.textContent = 'Failed to load document.';
+
+        const guidance = document.createElement('span');
+        guidance.textContent = 'Please use the download button above.';
+
+        errorBox.appendChild(icon);
+        errorBox.appendChild(document.createElement('br'));
+        errorBox.appendChild(message);
+        errorBox.appendChild(document.createElement('br'));
+        errorBox.appendChild(guidance);
+        loadingSpinner.appendChild(errorBox);
+    }
+
     // Discovery helpers
     function ensureCanvas() {
         if (!viewerState.canvas) {
@@ -123,6 +149,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateNavButtons() {
+        if (!viewerState.pdfDoc) {
+            if (prevBtn) prevBtn.disabled = true;
+            if (nextBtn) nextBtn.disabled = true;
+            return;
+        }
+
         if (prevBtn) prevBtn.disabled = viewerState.pageNum <= 1;
         if (nextBtn) nextBtn.disabled = viewerState.pageNum >= viewerState.pdfDoc.numPages;
     }
@@ -152,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * Displays next page.
      */
     function onNextPage() {
+        if (!viewerState.pdfDoc) return;
         if (viewerState.pageNum >= viewerState.pdfDoc.numPages) return;
         viewerState.pageNum++;
         queueRenderPage(viewerState.pageNum);
@@ -166,12 +199,18 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        if (!window.chromaPdfConfig || !chromaPdfConfig.pdfJsUrl || !chromaPdfConfig.pdfWorkerUrl) {
+            setLoadingError();
+            return;
+        }
+
         const script = document.createElement('script');
         script.src = chromaPdfConfig.pdfJsUrl;
         script.onload = function () {
             window.pdfjsLib.GlobalWorkerOptions.workerSrc = chromaPdfConfig.pdfWorkerUrl;
             callback();
         };
+        script.onerror = setLoadingError;
         document.body.appendChild(script);
     }
 
@@ -186,6 +225,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // Reset State
         viewerState.pageNum = 1;
         viewerState.pdfDoc = null;
+        viewerState.pageRendering = false;
+        viewerState.pageNumPending = null;
+        updateNavButtons();
+        if (pageNumSpan) pageNumSpan.textContent = '1';
+        if (pageCountSpan) pageCountSpan.textContent = '--';
 
         // Clear canvas while loading new doc
         if (ensureCanvas()) {
@@ -204,9 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(() => renderPage(viewerState.pageNum), 50);
             }).catch(err => {
                 console.error('PDF Error:', err);
-                if (loadingSpinner) {
-                    loadingSpinner.innerHTML = '<div class="text-white text-center p-10"><i class="fa-solid fa-circle-exclamation text-4xl mb-4 text-chroma-red"></i><br>Failed to load document.<br>Please use the download button above.</div>';
-                }
+                setLoadingError();
             });
         });
     }
