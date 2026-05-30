@@ -171,13 +171,26 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       const isValid = validZips.includes(zip);
+      const renderZipMessage = (icon, text, textClass) => {
+        zipMsg.textContent = '';
+
+        const wrapper = document.createElement('span');
+        wrapper.className = `${textClass} flex items-center justify-center gap-2`;
+
+        const iconEl = document.createElement('i');
+        iconEl.setAttribute('data-lucide', icon);
+        iconEl.className = 'w-4 h-4';
+
+        wrapper.appendChild(iconEl);
+        wrapper.appendChild(document.createTextNode(text));
+        zipMsg.appendChild(wrapper);
+        refreshIcons();
+      };
 
       if (isValid) {
-        zipMsg.innerHTML = `<span class="text-green-600 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i> Great news! We serve ${zip}.</span>`;
-        refreshIcons();
+        renderZipMessage('check-circle', `Great news! We serve ${zip}.`, 'text-green-600');
       } else {
-        zipMsg.innerHTML = `<span class="text-amber-600 flex items-center justify-center gap-2"><i data-lucide="info" class="w-4 h-4"></i> We're expanding! ${zip} isn't active yet, but contact us to confirm.</span>`;
-        refreshIcons();
+        renderZipMessage('info', `We're expanding! ${zip} isn't active yet, but contact us to confirm.`, 'text-amber-600');
       }
     };
 
