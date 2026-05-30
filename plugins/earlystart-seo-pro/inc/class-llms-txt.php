@@ -23,10 +23,12 @@ class earlystart_LLMs_Txt_Generator
         $this->add_rewrite_rule();
         add_filter('query_vars', [$this, 'add_query_var']);
         add_action('template_redirect', [$this, 'render_file']);
+        add_filter('robots_txt', [$this, 'add_robots_reference'], 20, 2);
 
         // Physical File Generation Hooks
         add_action('admin_init', [$this, 'write_physical_file']); // Force check on admin load
         add_action('save_post', [$this, 'write_physical_file']);
+        $this->maybe_refresh_physical_file();
     }
 
     /**
@@ -37,6 +39,30 @@ class earlystart_LLMs_Txt_Generator
         (new self())->write_physical_file(true);
     }
 
+    /**
+     * Refresh the root llms.txt once per plugin version so deployed generator fixes
+     * are not hidden behind an older physical file until the next admin visit.
+     */
+    public function maybe_refresh_physical_file()
+    {
+        $target_version = defined('EARLYSTART_SEO_VERSION') ? EARLYSTART_SEO_VERSION : 'unknown';
+        $file_path = ABSPATH . 'llms.txt';
+
+        if (get_option('earlystart_llms_txt_generated_version') === $target_version && file_exists($file_path)) {
+            return;
+        }
+
+        if (!is_admin() && get_option('earlystart_llms_txt_refresh_attempt_version') === $target_version) {
+            return;
+        }
+
+        update_option('earlystart_llms_txt_refresh_attempt_version', $target_version, false);
+
+        if ($this->write_physical_file(true)) {
+            update_option('earlystart_llms_txt_generated_version', $target_version, false);
+        }
+    }
+
     public function write_physical_file($context = false)
     {
         $force = ($context === true);
@@ -44,34 +70,34 @@ class earlystart_LLMs_Txt_Generator
 
         if (!$force) {
             if ($post_id > 0 && (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id))) {
-                return;
+                return false;
             }
 
             // Only run if we are in admin or it's an AJAX save.
             if (!is_admin() && !wp_doing_ajax()) {
-                return;
+                return false;
             }
 
             if (wp_doing_ajax()) {
                 $action = sanitize_text_field($_POST['action'] ?? '');
                 if ($action !== 'earlystart_save_llm_targeting') {
-                    return;
+                    return false;
                 }
 
                 if (!current_user_can('edit_posts')) {
-                    return;
+                    return false;
                 }
 
                 // Keep this callback independently secure, even if another callback validates first.
                 if (!check_ajax_referer('earlystart_seo_dashboard_nonce', 'nonce', false)) {
-                    return;
+                    return false;
                 }
             } elseif ($post_id > 0) {
                 if (!current_user_can('edit_post', $post_id)) {
-                    return;
+                    return false;
                 }
             } elseif (!current_user_can('manage_options')) {
-                return;
+                return false;
             }
         }
 
@@ -83,7 +109,10 @@ class earlystart_LLMs_Txt_Generator
         if ($handle) {
             fwrite($handle, $content);
             fclose($handle);
+            return true;
         }
+
+        return false;
     }
 
     public function add_rewrite_rule()
@@ -110,6 +139,20 @@ class earlystart_LLMs_Txt_Generator
         exit;
     }
 
+    public function add_robots_reference($output, $public)
+    {
+        if ('0' === (string) $public) {
+            return $output;
+        }
+
+        $llms_url = $this->canonical_url(home_url('/llms.txt'));
+        if (false !== strpos((string) $output, $llms_url)) {
+            return $output;
+        }
+
+        return rtrim((string) $output) . "\n\n# LLM-readable site guide\nLLMs: {$llms_url}\n";
+    }
+
     private function normalize_line($value)
     {
         $text = html_entity_decode(wp_strip_all_tags((string) $value), ENT_QUOTES, get_bloginfo('charset') ?: 'UTF-8');
@@ -122,13 +165,29 @@ class earlystart_LLMs_Txt_Generator
     {
         $label = $this->normalize_line($label);
         $label = str_replace(['[', ']'], ['\\[', '\\]'], $label);
-        $url = esc_url_raw((string) $url);
+        $url = esc_url_raw($this->canonical_url((string) $url));
 
         if ($label === '' || $url === '') {
             return '';
         }
 
         return "- [{$label}]({$url})\n";
+    }
+
+    private function canonical_url($url)
+    {
+        $url = esc_url_raw((string) $url);
+
+        if ($url === '' || false !== strpos($url, '?')) {
+            return $url;
+        }
+
+        $path = (string) wp_parse_url($url, PHP_URL_PATH);
+        if ($path !== '' && pathinfo($path, PATHINFO_EXTENSION)) {
+            return $url;
+        }
+
+        return trailingslashit($url);
     }
 
     private function blockquote_line($value)
@@ -186,11 +245,12 @@ class earlystart_LLMs_Txt_Generator
         $output .= '> ' . $this->normalize_line($site_desc) . "\n\n"; // Blockquote for description as per spec conventions
         
         $output .= "## Main Sections\n\n";
-        $output .= "- [Home](" . trailingslashit(home_url('/')) . ")\n";
-        $output .= "- [Locations](" . trailingslashit(home_url('/locations/')) . ")\n";
-        $output .= "- [Programs](" . trailingslashit(home_url('/programs/')) . ")\n";
-        $output .= "- [Blog](" . trailingslashit(home_url('/stories/')) . ")\n";
-        $output .= "- [Careers](" . trailingslashit(home_url('/careers/')) . ")\n\n";
+        $output .= $this->markdown_link('Home', home_url('/'));
+        $output .= $this->markdown_link('Locations', home_url('/locations/'));
+        $output .= $this->markdown_link('Programs', home_url('/programs/'));
+        $output .= $this->markdown_link('Blog', home_url('/stories/'));
+        $output .= $this->markdown_link('Careers', home_url('/careers/'));
+        $output .= "\n";
 
         // Programs
         $output .= "## Programs (Curriculum)\n\n";
