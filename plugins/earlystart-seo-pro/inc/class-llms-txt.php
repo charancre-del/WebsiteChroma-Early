@@ -110,6 +110,34 @@ class earlystart_LLMs_Txt_Generator
         exit;
     }
 
+    private function normalize_line($value)
+    {
+        $text = html_entity_decode(wp_strip_all_tags((string) $value), ENT_QUOTES, get_bloginfo('charset') ?: 'UTF-8');
+        $text = preg_replace('/\s+/', ' ', $text);
+
+        return trim($text);
+    }
+
+    private function markdown_link($label, $url)
+    {
+        $label = $this->normalize_line($label);
+        $label = str_replace(['[', ']'], ['\\[', '\\]'], $label);
+        $url = esc_url_raw((string) $url);
+
+        if ($label === '' || $url === '') {
+            return '';
+        }
+
+        return "- [{$label}]({$url})\n";
+    }
+
+    private function blockquote_line($value)
+    {
+        $line = $this->normalize_line($value);
+
+        return $line === '' ? '' : "  > {$line}\n";
+    }
+
     /**
      * Helper to get LLM Context
      */
@@ -122,15 +150,21 @@ class earlystart_LLMs_Txt_Generator
         $diffs = get_post_meta($post_id, 'seo_llm_key_differentiators', true) ?: [];
 
         if ($intent) {
-            $parts[] = "Primary Intent: {$intent}.";
+            $parts[] = 'Primary Intent: ' . $this->normalize_line($intent) . '.';
         }
 
         if (!empty($diffs)) {
-            $parts[] = "Key Features: " . implode('; ', array_slice($diffs, 0, 3)) . ".";
+            $diffs = array_filter(array_map([$this, 'normalize_line'], array_slice((array) $diffs, 0, 3)));
+            if (!empty($diffs)) {
+                $parts[] = 'Key Features: ' . implode('; ', $diffs) . '.';
+            }
         }
 
         if (!empty($queries)) {
-            $parts[] = "Relevant for: " . implode(', ', array_slice($queries, 0, 5)) . ".";
+            $queries = array_filter(array_map([$this, 'normalize_line'], array_slice((array) $queries, 0, 5)));
+            if (!empty($queries)) {
+                $parts[] = 'Relevant for: ' . implode(', ', $queries) . '.';
+            }
         }
 
         if (empty($parts)) {
@@ -138,7 +172,7 @@ class earlystart_LLMs_Txt_Generator
         }
 
         // Output as a single clean blockquote line for better parsing compliance
-        return "  > " . implode(' ', $parts) . "\n";
+        return $this->blockquote_line(implode(' ', $parts));
     }
 
     /**
@@ -148,8 +182,8 @@ class earlystart_LLMs_Txt_Generator
     {
         $site_name = get_bloginfo('name');
         $site_desc = get_bloginfo('description');
-        $output = "# {$site_name}\n";
-        $output .= "> {$site_desc}\n\n"; // Blockquote for description as per spec conventions
+        $output = '# ' . $this->normalize_line($site_name) . "\n";
+        $output .= '> ' . $this->normalize_line($site_desc) . "\n\n"; // Blockquote for description as per spec conventions
         
         $output .= "## Main Sections\n\n";
         $output .= "- [Home](" . trailingslashit(home_url('/')) . ")\n";
@@ -170,12 +204,10 @@ class earlystart_LLMs_Txt_Generator
 
         if ($programs) {
             foreach ($programs as $program) {
-                $output .= "- [{$program->post_title}](" . get_permalink($program->ID) . ")\n";
+                $output .= $this->markdown_link($program->post_title, get_permalink($program->ID));
                 // Add brief summary if available
                 if (!empty($program->post_excerpt)) {
-                    $excerpt = strip_tags($program->post_excerpt);
-                    $excerpt = str_replace(["\r", "\n"], " ", $excerpt);
-                    $output .= "  > {$excerpt}\n";
+                    $output .= $this->blockquote_line($program->post_excerpt);
                 }
                 // Add LLM Context
                 $output .= $this->get_llm_context($program->ID);
@@ -213,10 +245,10 @@ class earlystart_LLMs_Txt_Generator
 
                 $title = $location->post_title;
                 if ($city) {
-                    $title .= " ({$city})";
+                    $title .= ' (' . $this->normalize_line($city) . ')';
                 }
 
-                $output .= "- [{$title}](" . get_permalink($location->ID) . ")\n";
+                $output .= $this->markdown_link($title, get_permalink($location->ID));
                 
                 // Add LLM Context
                 $output .= $this->get_llm_context($location->ID);
@@ -236,7 +268,7 @@ class earlystart_LLMs_Txt_Generator
         if ($cities) {
             $output .= "## Service Areas (Cities)\n\n";
             foreach ($cities as $city) {
-                $output .= "- [{$city->post_title}](" . get_permalink($city->ID) . ")\n";
+                $output .= $this->markdown_link($city->post_title, get_permalink($city->ID));
                 $output .= $this->get_llm_context($city->ID);
             }
             $output .= "\n";
@@ -261,7 +293,7 @@ class earlystart_LLMs_Txt_Generator
         if ($pages) {
             $output .= "## Core Information\n\n";
             foreach ($pages as $page) {
-                $output .= "- [{$page->post_title}](" . get_permalink($page->ID) . ")\n";
+                $output .= $this->markdown_link($page->post_title, get_permalink($page->ID));
                 $output .= $this->get_llm_context($page->ID);
             }
             $output .= "\n";
@@ -286,7 +318,7 @@ class earlystart_LLMs_Txt_Generator
         if ($posts) {
             $output .= "## Blog & Updates\n\n";
             foreach ($posts as $p) {
-                $output .= "- [{$p->post_title}](" . get_permalink($p->ID) . ")\n";
+                $output .= $this->markdown_link($p->post_title, get_permalink($p->ID));
                 $output .= $this->get_llm_context($p->ID);
             }
             $output .= "\n";
@@ -316,7 +348,7 @@ class earlystart_LLMs_Txt_Generator
             if ($others) {
                 $output .= "## Other Resources\n\n";
                 foreach ($others as $other) {
-                    $output .= "- [{$other->post_title}](" . get_permalink($other->ID) . ")\n";
+                    $output .= $this->markdown_link($other->post_title, get_permalink($other->ID));
                     $output .= $this->get_llm_context($other->ID);
                 }
                 $output .= "\n";
