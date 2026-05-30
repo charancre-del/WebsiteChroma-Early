@@ -1079,7 +1079,6 @@ class earlystart_SEO_Dashboard
                         nonce: earlystart_nonce,
                         post_id: id
                     }, function (response) {
-                        console.log('Schema Inspector AJAX Response:', response);
                         $('#chroma-inspector-spinner').removeClass('is-active');
                         if (response && response.success) {
                             $('#chroma-inspector-content').html(response.data.html);
@@ -1091,7 +1090,13 @@ class earlystart_SEO_Dashboard
                             } else if (typeof response === 'string') {
                                 msg = 'Server returned non-JSON: ' + response.substring(0, 200);
                             }
-                            $('#chroma-inspector-content').html('<div style="background:#fee; padding:15px; border:1px solid #c00; color:#800;"><strong>Error:</strong> ' + msg + '</div>');
+                            $('#chroma-inspector-content').empty().append(
+                                $('<div/>')
+                                    .css({ background: '#fee', padding: '15px', border: '1px solid #c00', color: '#800' })
+                                    .append($('<strong/>').text('Error:'))
+                                    .append(' ')
+                                    .append($('<span/>').text(msg))
+                            );
                         }
                     }).fail(function () {
                         $('#chroma-inspector-spinner').removeClass('is-active');
@@ -3640,7 +3645,9 @@ class earlystart_SEO_Dashboard
                 });
 
                 function log(msg) {
-                    console.log('[Bulk Validator] ' + msg);
+                    if (window.earlystartSeoDebug && window.console && typeof window.console.log === 'function') {
+                        window.console.log('[Bulk Validator] ' + msg);
+                    }
                 }
             });
         </script>
