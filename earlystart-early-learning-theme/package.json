@@ -5,9 +5,10 @@
   "private": true,
   "scripts": {
     "dev:css": "postcss assets/css/input.css -o assets/css/main.css --watch",
-    "build:css": "postcss assets/css/input.css -o assets/css/main.css",
+    "build:css": "cross-env NODE_ENV=production postcss assets/css/input.css -o assets/css/main.css",
+    "build:js": "terser assets/js/main.js --compress --mangle --comments \"/^!/\" -o assets/js/main.min.js",
     "dev": "npm run dev:css",
-    "build": "npm run build:css"
+    "build": "npm run build:css && npm run build:js"
   },
   "keywords": [
     "wordpress",
@@ -22,12 +23,14 @@
     "@axe-core/cli": "^4.11.0",
     "autoprefixer": "^10.4.16",
     "chrome-launcher": "^1.2.1",
+    "cross-env": "^7.0.3",
     "cssnano": "^6.0.1",
     "eslint": "^9.39.2",
     "lighthouse": "^13.0.1",
     "postcss": "^8.4.32",
     "postcss-cli": "^11.0.0",
     "purgecss": "^7.0.2",
-    "tailwindcss": "^3.4.0"
+    "tailwindcss": "^3.4.0",
+    "terser": "^5.43.1"
   }
 }

@@ -5,7 +5,7 @@ jQuery(function ($) {
     'use strict';
 
     // Schema Preview Generator
-    window.Early StartSchemaPreview = {
+    window.ChromaSchemaPreview = {
         generate: function (schema) {
             if (!schema || !schema['@type']) return '';
 
@@ -41,7 +41,7 @@ jQuery(function ($) {
     };
 
     // Confidence Bar Renderer
-    window.Early StartConfidence = {
+    window.ChromaConfidence = {
         render: function (score) {
             var percent = Math.round(score * 100);
             var level = percent >= 80 ? 'high' : (percent >= 50 ? 'medium' : 'low');

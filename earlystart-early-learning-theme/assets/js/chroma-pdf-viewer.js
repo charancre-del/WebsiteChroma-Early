@@ -6,6 +6,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
+    const debugLog = window.chromaPdfConfig && window.chromaPdfConfig.debug ? console.log.bind(console) : function () {};
+
     // Viewer State
     const viewerState = {
         pdfDoc: null,
@@ -39,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
             viewerState.canvas = document.getElementById('chroma-pdf-canvas');
             if (viewerState.canvas) {
                 viewerState.ctx = viewerState.canvas.getContext('2d');
-                console.log('PDF Viewer: Canvas and Context discovered');
+                debugLog('PDF Viewer: Canvas and Context discovered');
             }
         }
         return !!(viewerState.canvas && viewerState.ctx);
@@ -57,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         viewerState.pageRendering = true;
-        console.log('PDF Viewer: Rendering page ' + num);
+        debugLog('PDF Viewer: Rendering page ' + num);
 
         // Fetch page
         viewerState.pdfDoc.getPage(num).then(function (page) {
@@ -77,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (desiredScale < 0.6) desiredScale = 0.6; // Allow more shrink for phone view
 
             const viewport = page.getViewport({ scale: desiredScale });
-            console.log(`PDF Viewer: Scaling to ${desiredScale.toFixed(2)}. Target res: ${viewport.width}x${viewport.height}`);
+            debugLog(`PDF Viewer: Scaling to ${desiredScale.toFixed(2)}. Target res: ${viewport.width}x${viewport.height}`);
 
             viewerState.canvas.height = viewport.height;
             viewerState.canvas.width = viewport.width;
@@ -93,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Wait for render to finish
             renderTask.promise.then(function () {
                 viewerState.pageRendering = false;
-                console.log('PDF Viewer: Page ' + num + ' rendered successfully');
+                debugLog('PDF Viewer: Page ' + num + ' rendered successfully');
 
                 // Hide loader
                 if (loadingSpinner) loadingSpinner.style.display = 'none';

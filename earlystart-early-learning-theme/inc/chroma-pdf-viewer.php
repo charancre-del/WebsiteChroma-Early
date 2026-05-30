@@ -105,7 +105,8 @@ function earlystart_enqueue_pdf_assets()
     // Config for JS
     $config = array(
         'pdfJsUrl' => get_template_directory_uri() . '/assets/js/pdf/pdf.min.js',
-        'pdfWorkerUrl' => get_template_directory_uri() . '/assets/js/pdf/pdf.worker.min.js'
+        'pdfWorkerUrl' => get_template_directory_uri() . '/assets/js/pdf/pdf.worker.min.js',
+        'debug' => defined('WP_DEBUG') && WP_DEBUG,
     );
     wp_localize_script('chroma-pdf-viewer', 'chromaPdfConfig', $config);
 

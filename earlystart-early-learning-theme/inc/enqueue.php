@@ -78,12 +78,12 @@ function earlystart_enqueue_assets()
         // chroma-utils is now INLINED in header.php for performance
 
         // Main JavaScript.
-        $js_path = earlystart_THEME_DIR . '/assets/js/main.js';
+        $js_path = earlystart_THEME_DIR . '/assets/js/main.min.js';
         $js_version = file_exists($js_path) ? filemtime($js_path) : earlystart_VERSION;
 
         wp_enqueue_script(
                 'chroma-main-js',
-                earlystart_THEME_URI . '/assets/js/main.js',
+                earlystart_THEME_URI . '/assets/js/main.min.js',
                 array(), // Removed jQuery dependency
                 $js_version,
                 true

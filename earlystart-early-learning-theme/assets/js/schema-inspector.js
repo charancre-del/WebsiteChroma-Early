@@ -52,9 +52,9 @@ jQuery(document).ready(function ($) {
         }
 
         // 2. Send to Backend
-        $.post(Early StartInspector.ajaxUrl, {
+        $.post(ChromaInspector.ajaxUrl, {
             action: 'earlystart_validate_page_schema',
-            nonce: Early StartInspector.nonce,
+            nonce: ChromaInspector.nonce,
             schemas: schemas
         }, function (response) {
             $loading.hide();
@@ -193,9 +193,9 @@ jQuery(document).ready(function ($) {
             const schema = decodeURIComponent($currentBtn.data('schema'));
             const errors = JSON.parse(decodeURIComponent($currentBtn.data('errors')));
 
-            $.post(Early StartInspector.ajaxUrl, {
+            $.post(ChromaInspector.ajaxUrl, {
                 action: 'earlystart_fix_schema_with_ai',
-                nonce: Early StartInspector.nonce,
+                nonce: ChromaInspector.nonce,
                 schema: schema,
                 errors: errors
             }, function (response) {
@@ -239,9 +239,9 @@ jQuery(document).ready(function ($) {
 
         btn.prop('disabled', true).html('<span class="chroma-spinner"></span> Fixing...');
 
-        $.post(Early StartInspector.ajaxUrl, {
+        $.post(ChromaInspector.ajaxUrl, {
             action: 'earlystart_fix_schema_with_ai',
-            nonce: Early StartInspector.nonce,
+            nonce: ChromaInspector.nonce,
             schema: schema,
             errors: errors
         }, function (response) {
