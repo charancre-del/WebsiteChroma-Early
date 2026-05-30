@@ -105,6 +105,7 @@ function earlystart_apply_seo_head_mode()
         }
 
         add_action('wp_head', 'chroma_enforce_canonical', 2);
+        add_action('wp_head', 'earlystart_shared_meta_description', 2);
         add_action('wp_head', 'earlystart_render_social_meta_tags', 5);
 
         if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -119,6 +120,7 @@ function earlystart_apply_seo_head_mode()
         }
 
         add_action('wp_head', 'chroma_enforce_canonical', 2);
+        add_action('wp_head', 'earlystart_shared_meta_description', 2);
         add_action('wp_head', 'earlystart_render_social_meta_tags', 5);
 
         // Disable plugin canonical while theme is primary canonical owner.
@@ -156,6 +158,7 @@ function earlystart_apply_seo_head_mode()
         if ($multilingual_manager) {
             remove_action('wp_head', array($multilingual_manager, 'localize_meta_description'), 1);
         }
+        add_action('wp_head', 'earlystart_shared_meta_description', 2);
         add_action('wp_head', 'earlystart_render_social_meta_tags', 5);
     }
 

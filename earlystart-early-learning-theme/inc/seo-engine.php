@@ -964,7 +964,6 @@ function earlystart_shared_meta_description()
 
         // 3. Global Default / Fallback
         if (empty($description)) {
-                echo "<!-- Debug: Description empty, trying global fallback -->\n";
                 // Preserve About page specific metadata if defined (legacy support)
                 if (function_exists('earlystart_is_about_template') && function_exists('earlystart_get_about_seo_fields') && earlystart_is_about_template()) {
                         $about_fields = earlystart_get_about_seo_fields();
@@ -984,8 +983,6 @@ function earlystart_shared_meta_description()
 
         if ($description) {
                 echo '<meta name="description" content="' . esc_attr(wp_strip_all_tags($description)) . '" />' . "\n";
-        } else {
-                echo "<!-- Debug: Final Description is EMPTY -->\n";
         }
 }
 add_action('wp_head', 'earlystart_shared_meta_description', 2);
