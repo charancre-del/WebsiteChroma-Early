@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const mapLayerScript = document.createElement('script');
-    mapLayerScript.src = `${themeUrl.replace(/\/$/, '')}/assets/js/map-layer.js`;
+    mapLayerScript.src = window.chromaData.mapLayerUrl || `${themeUrl.replace(/\/$/, '')}/assets/js/map-layer.js`;
     mapLayerScript.async = true;
     mapLayerScript.onload = () => {
       if (typeof window.chromaInitMaps === 'function') {

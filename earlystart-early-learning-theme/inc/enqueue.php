@@ -86,22 +86,29 @@ function earlystart_enqueue_assets()
 
         // Map Facade (Lazy Load Leaflet).
         $should_load_maps = earlystart_should_load_maps();
+        $map_layer_path = earlystart_THEME_DIR . '/assets/js/map-layer.js';
+        $map_layer_version = file_exists($map_layer_path) ? filemtime($map_layer_path) : earlystart_VERSION;
+        $map_layer_url = add_query_arg('ver', $map_layer_version, earlystart_THEME_URI . '/assets/js/map-layer.js');
+
+        $chart_path = earlystart_THEME_DIR . '/assets/js/chart.min.js';
+        $chart_version = file_exists($chart_path) ? filemtime($chart_path) : '4.4.0';
+        $chart_url = add_query_arg('ver', $chart_version, earlystart_THEME_URI . '/assets/js/chart.min.js');
 
         if ($should_load_maps) {
+                $map_facade_path = earlystart_THEME_DIR . '/assets/js/map-facade.js';
+                $map_facade_version = file_exists($map_facade_path) ? filemtime($map_facade_path) : earlystart_VERSION;
+
                 wp_enqueue_script(
                         'chroma-map-facade',
                         earlystart_THEME_URI . '/assets/js/map-facade.js',
                         array('chroma-main-js'), // Depend on main to ensure chromaData is available
-                        $js_version,
+                        $map_facade_version,
                         true
                 );
                 wp_script_add_data('chroma-map-facade', 'defer', true);
         }
 
         if (is_singular('program')) {
-                $chart_path = earlystart_THEME_DIR . '/assets/js/chart.min.js';
-                $chart_version = file_exists($chart_path) ? filemtime($chart_path) : '4.4.0';
-
                 wp_enqueue_script(
                         'chroma-chart',
                         earlystart_THEME_URI . '/assets/js/chart.min.js',
@@ -122,6 +129,8 @@ function earlystart_enqueue_assets()
                         'themeUrl' => earlystart_THEME_URI,
                         'homeUrl' => home_url(),
                         'viewCampus' => __('View clinic', 'earlystart-early-learning'),
+                        'mapLayerUrl' => $map_layer_url,
+                        'chartUrl' => $chart_url,
                 )
         );
 }

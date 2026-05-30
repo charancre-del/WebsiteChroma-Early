@@ -519,7 +519,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!window.chromaData || !window.chromaData.themeUrl) return;
 
         const script = document.createElement('script');
-        script.src = `${window.chromaData.themeUrl}/assets/js/chart.min.js`;
+        script.src = window.chromaData.chartUrl || `${window.chromaData.themeUrl}/assets/js/chart.min.js`;
         script.async = true;
         script.onload = initChart;
         document.body.appendChild(script);
