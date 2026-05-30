@@ -33,6 +33,28 @@
     return window.chromaData.viewClinic || window.chromaData.viewCampus || 'View clinic';
   };
 
+  const renderUnavailable = (container) => {
+    if (!container || container.dataset.chromaMapReady === '1') {
+      return;
+    }
+
+    container.textContent = '';
+    container.style.background = '#e7e5e4';
+
+    const message = document.createElement('div');
+    message.style.height = '100%';
+    message.style.display = 'flex';
+    message.style.alignItems = 'center';
+    message.style.justifyContent = 'center';
+    message.style.padding = '16px';
+    message.style.color = '#57534e';
+    message.style.fontWeight = '600';
+    message.textContent = 'Map unavailable';
+
+    container.appendChild(message);
+    container.dataset.chromaMapReady = '1';
+  };
+
   const getMarkerIcon = (kind) => {
     const color = kind === 'clinic' ? '#e11d48' : '#2563eb';
 
@@ -76,60 +98,67 @@
 
     const locations = parseLocations(container.getAttribute('data-chroma-locations'));
     if (!locations.length) {
+      renderUnavailable(container);
       return;
     }
 
     const first = locations[0];
-    const map = L.map(container, {
-      zoomControl: true,
-      scrollWheelZoom: false,
-    }).setView([first.lat, first.lng], 12);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-      maxZoom: 19,
-    }).addTo(map);
+    try {
+      const map = L.map(container, {
+        zoomControl: true,
+        scrollWheelZoom: false,
+      }).setView([first.lat, first.lng], 12);
 
-    const popupLabel = escapeHtml(getPopupLabel());
-    const bounds = [];
-
-    locations.forEach((location) => {
-      const marker = L.marker([location.lat, location.lng], {
-        icon: getMarkerIcon(location.kind),
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19,
       }).addTo(map);
 
-      const name = escapeHtml(location.name);
-      const city = escapeHtml(location.city);
-      const url = escapeHtml(sanitizeUrl(location.url));
+      const popupLabel = escapeHtml(getPopupLabel());
+      const bounds = [];
 
-      const popupContent = `
-        <div class=\"text-center p-2\">
-          <strong class=\"block text-base mb-1\">${name}</strong>
-          <p class=\"text-sm text-gray-600 mb-2\">${city}</p>
-          <a href=\"${url}\" class=\"text-sm text-blue-600 hover:underline\">${popupLabel} &rarr;</a>
-        </div>
-      `;
+      locations.forEach((location) => {
+        const marker = L.marker([location.lat, location.lng], {
+          icon: getMarkerIcon(location.kind),
+        }).addTo(map);
 
-      marker.bindPopup(popupContent);
-      bounds.push([location.lat, location.lng]);
-    });
+        const name = escapeHtml(location.name);
+        const city = escapeHtml(location.city);
+        const url = escapeHtml(sanitizeUrl(location.url));
 
-    if (bounds.length > 1) {
-      map.fitBounds(bounds, { padding: [40, 40] });
-    } else {
-      map.setView(bounds[0], 13);
+        const popupContent = `
+          <div class=\"text-center p-2\">
+            <strong class=\"block text-base mb-1\">${name}</strong>
+            <p class=\"text-sm text-gray-600 mb-2\">${city}</p>
+            <a href=\"${url}\" class=\"text-sm text-blue-600 hover:underline\">${popupLabel} &rarr;</a>
+          </div>
+        `;
+
+        marker.bindPopup(popupContent);
+        bounds.push([location.lat, location.lng]);
+      });
+
+      if (bounds.length > 1) {
+        map.fitBounds(bounds, { padding: [40, 40] });
+      } else {
+        map.setView(bounds[0], 13);
+      }
+
+      container.dataset.chromaMapReady = '1';
+
+      requestAnimationFrame(() => map.invalidateSize());
+      window.addEventListener(
+        'resize',
+        () => {
+          map.invalidateSize();
+        },
+        { passive: true }
+      );
+    } catch (error) {
+      console.error('Unable to initialize map', error);
+      renderUnavailable(container);
     }
-
-    container.dataset.chromaMapReady = '1';
-
-    requestAnimationFrame(() => map.invalidateSize());
-    window.addEventListener(
-      'resize',
-      () => {
-        map.invalidateSize();
-      },
-      { passive: true }
-    );
   };
 
   const initMaps = () => {

@@ -65,7 +65,16 @@ document.addEventListener('DOMContentLoaded', function () {
     container.style.background = '#e7e5e4';
 
     if (!first) {
-      container.innerHTML = '<div style="height:100%;display:flex;align-items:center;justify-content:center;padding:16px;color:#57534e;font-weight:600;">Map unavailable</div>';
+      const fallback = document.createElement('div');
+      fallback.style.height = '100%';
+      fallback.style.display = 'flex';
+      fallback.style.alignItems = 'center';
+      fallback.style.justifyContent = 'center';
+      fallback.style.padding = '16px';
+      fallback.style.color = '#57534e';
+      fallback.style.fontWeight = '600';
+      fallback.textContent = 'Map unavailable';
+      container.appendChild(fallback);
       container.dataset.chromaMapReady = '1';
       return;
     }
