@@ -86,13 +86,12 @@ $hero_badge_text = sprintf(
 						class="w-full pl-14 pr-6 py-4 rounded-full focus:outline-none text-stone-900 bg-transparent" />
 				</div>
 				<div class="flex gap-2 p-1 overflow-x-auto no-scrollbar">
-					<button onclick="filterLocations('all')" data-region="all"
+					<button type="button" data-region="all" aria-pressed="true"
 						class="filter-btn px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest bg-stone-900 text-white hover:bg-rose-600 transition-all duration-300 whitespace-nowrap">
 						<?php _e('All Locations', 'earlystart-early-learning'); ?>
 					</button>
 					<?php foreach ($all_regions as $region): ?>
-						<button onclick="filterLocations('<?php echo esc_attr($region->slug); ?>')"
-							data-region="<?php echo esc_attr($region->slug); ?>"
+						<button type="button" data-region="<?php echo esc_attr($region->slug); ?>" aria-pressed="false"
 							class="filter-btn px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest bg-white text-stone-700 border border-stone-100 hover:bg-stone-50 transition-all duration-300 whitespace-nowrap">
 							<?php echo esc_html($region->name); ?>
 						</button>
@@ -292,47 +291,58 @@ $hero_badge_text = sprintf(
 </main>
 
 <script>
-	function filterLocations(region) {
+	document.addEventListener('DOMContentLoaded', function () {
 		const cards = document.querySelectorAll('.location-card');
 		const buttons = document.querySelectorAll('.filter-btn');
 		const searchInput = document.getElementById('location-search');
 
-		if (region) searchInput.value = '';
+		function setActiveButton(region) {
+			buttons.forEach(function (btn) {
+				const isActive = region === btn.dataset.region;
+				btn.classList.toggle('bg-white', !isActive);
+				btn.classList.toggle('text-stone-700', !isActive);
+				btn.classList.toggle('border', !isActive);
+				btn.classList.toggle('border-stone-100', !isActive);
+				btn.classList.toggle('bg-stone-900', isActive);
+				btn.classList.toggle('text-white', isActive);
+				btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+			});
+		}
 
-		buttons.forEach(btn => {
-			if (region === btn.dataset.region) {
-				btn.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-100');
-				btn.classList.add('bg-stone-900', 'text-white');
-			} else {
-				btn.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-100');
-				btn.classList.remove('bg-stone-900', 'text-white');
+		function filterLocations(region) {
+			const selectedRegion = region || 'all';
+			if (searchInput) {
+				searchInput.value = '';
 			}
+
+			setActiveButton(selectedRegion);
+
+			cards.forEach(function (card) {
+				const isVisible = selectedRegion === 'all' || card.dataset.region === selectedRegion;
+				card.style.display = isVisible ? 'block' : 'none';
+				if (isVisible) {
+					card.classList.add('fade-in-up');
+				}
+			});
+		}
+
+		buttons.forEach(function (button) {
+			button.addEventListener('click', function () {
+				filterLocations(button.dataset.region || 'all');
+			});
 		});
 
-		cards.forEach(card => {
-			if (region === 'all' || card.dataset.region === region) {
-				card.style.display = 'block';
-				card.classList.add('fade-in-up');
-			} else {
-				card.style.display = 'none';
-			}
-		});
-	}
+		if (searchInput) {
+			searchInput.addEventListener('input', function (e) {
+				const term = e.target.value.toLowerCase();
+				setActiveButton('');
 
-	document.getElementById('location-search').addEventListener('keyup', function (e) {
-		const term = e.target.value.toLowerCase();
-		const cards = document.querySelectorAll('.location-card');
-		const buttons = document.querySelectorAll('.filter-btn');
-
-		buttons.forEach(btn => {
-			btn.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-100');
-			btn.classList.remove('bg-stone-900', 'text-white');
-		});
-
-		cards.forEach(card => {
-			const text = card.dataset.name.toLowerCase();
-			card.style.display = text.includes(term) ? 'block' : 'none';
-		});
+				cards.forEach(function (card) {
+					const text = (card.dataset.name || '').toLowerCase();
+					card.style.display = text.includes(term) ? 'block' : 'none';
+				});
+			});
+		}
 	});
 </script>
 

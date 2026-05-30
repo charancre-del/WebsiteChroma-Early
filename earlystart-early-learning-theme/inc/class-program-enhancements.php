@@ -595,48 +595,56 @@ class earlystart_Program_Enhancements
         </div>
 
         <script>
-            document.getElementById('check-age').addEventListener('click', function () {
-                var birthday = document.getElementById('child-birthday').value;
-                if (!birthday) { alert('Please enter a birthday'); return; }
-
-                var dob = new Date(birthday);
-                var today = new Date();
-                var ageMonths = (today.getFullYear() - dob.getFullYear()) * 12 + (today.getMonth() - dob.getMonth());
-
+            document.addEventListener('DOMContentLoaded', function () {
+                var checkAgeButton = document.getElementById('check-age');
+                var birthdayInput = document.getElementById('child-birthday');
                 var result = document.getElementById('age-result');
                 var message = document.getElementById('age-message');
                 var cta = document.getElementById('age-cta');
                 var alt = document.getElementById('age-alt');
 
-                var minMonths = <?php echo $min_months; ?>;
-                var maxMonths = <?php echo $max_months; ?>;
-
-                result.classList.remove('hidden', 'bg-green-100', 'bg-yellow-100', 'bg-red-100');
-                cta.classList.add('hidden');
-                alt.classList.add('hidden');
-
-                var years = Math.floor(ageMonths / 12);
-                var months = ageMonths % 12;
-                var ageText = years > 0 ? years + ' year' + (years > 1 ? 's' : '') + (months > 0 ? ', ' + months + ' month' + (months > 1 ? 's' : '') : '') : months + ' months';
-
-                if (ageMonths >= minMonths && ageMonths <= maxMonths) {
-                    result.classList.add('bg-green-100');
-                    message.innerHTML = '✅ <strong>Perfect!</strong> Your child is ' + ageText + ' old — ideal for our <?php echo esc_js($program_title); ?> program!';
-                    cta.classList.remove('hidden');
-                } else if (ageMonths < minMonths) {
-                    result.classList.add('bg-yellow-100');
-                    var monthsUntil = minMonths - ageMonths;
-                    message.innerHTML = '🕐 Your child (' + ageText + ') will be eligible in ' + monthsUntil + ' month' + (monthsUntil > 1 ? 's' : '') + '.';
-                    alt.href = '<?php echo esc_url(earlystart_get_program_archive_url()); ?>';
-                    alt.textContent = 'View programs for younger children →';
-                    alt.classList.remove('hidden');
-                } else {
-                    result.classList.add('bg-yellow-100');
-                    message.innerHTML = '📈 Your child (' + ageText + ') may be ready for an older age group.';
-                    alt.href = '<?php echo esc_url(earlystart_get_program_archive_url()); ?>';
-                    alt.textContent = 'View all programs →';
-                    alt.classList.remove('hidden');
+                if (!checkAgeButton || !birthdayInput || !result || !message || !cta || !alt) {
+                    return;
                 }
+
+                checkAgeButton.addEventListener('click', function () {
+                    var birthday = birthdayInput.value;
+                    if (!birthday) { alert('Please enter a birthday'); return; }
+
+                    var dob = new Date(birthday);
+                    var today = new Date();
+                    var ageMonths = (today.getFullYear() - dob.getFullYear()) * 12 + (today.getMonth() - dob.getMonth());
+
+                    var minMonths = <?php echo $min_months; ?>;
+                    var maxMonths = <?php echo $max_months; ?>;
+
+                    result.classList.remove('hidden', 'bg-green-100', 'bg-yellow-100', 'bg-red-100');
+                    cta.classList.add('hidden');
+                    alt.classList.add('hidden');
+
+                    var years = Math.floor(ageMonths / 12);
+                    var months = ageMonths % 12;
+                    var ageText = years > 0 ? years + ' year' + (years > 1 ? 's' : '') + (months > 0 ? ', ' + months + ' month' + (months > 1 ? 's' : '') : '') : months + ' months';
+
+                    if (ageMonths >= minMonths && ageMonths <= maxMonths) {
+                        result.classList.add('bg-green-100');
+                        message.innerHTML = '✅ <strong>Perfect!</strong> Your child is ' + ageText + ' old — ideal for our <?php echo esc_js($program_title); ?> program!';
+                        cta.classList.remove('hidden');
+                    } else if (ageMonths < minMonths) {
+                        result.classList.add('bg-yellow-100');
+                        var monthsUntil = minMonths - ageMonths;
+                        message.innerHTML = '🕐 Your child (' + ageText + ') will be eligible in ' + monthsUntil + ' month' + (monthsUntil > 1 ? 's' : '') + '.';
+                        alt.href = '<?php echo esc_url(earlystart_get_program_archive_url()); ?>';
+                        alt.textContent = 'View programs for younger children →';
+                        alt.classList.remove('hidden');
+                    } else {
+                        result.classList.add('bg-yellow-100');
+                        message.innerHTML = '📈 Your child (' + ageText + ') may be ready for an older age group.';
+                        alt.href = '<?php echo esc_url(earlystart_get_program_archive_url()); ?>';
+                        alt.textContent = 'View all programs →';
+                        alt.classList.remove('hidden');
+                    }
+                });
             });
         </script>
         <?php

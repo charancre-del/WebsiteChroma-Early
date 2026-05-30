@@ -61,19 +61,19 @@ function earlystart_render_booking_modal() {
             const loader = document.getElementById('chroma-booking-loader');
 
             function openBooking(url) {
-                if (!modal) return;
+                if (!modal || !iframe) return;
                 modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
-                loader.classList.remove('hidden');
+                if (loader) loader.classList.remove('hidden');
                 iframe.src = url;
                 if (externalLink) externalLink.href = url;
                 iframe.onload = function () {
-                    loader.classList.add('hidden');
+                    if (loader) loader.classList.add('hidden');
                 };
             }
 
             function closeBooking() {
-                if (!modal) return;
+                if (!modal || !iframe) return;
                 modal.classList.add('hidden');
                 document.body.style.overflow = '';
                 iframe.src = '';

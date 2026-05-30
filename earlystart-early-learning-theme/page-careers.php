@@ -220,14 +220,18 @@ while (have_posts()):
 			const loader = document.getElementById('chroma-job-loader');
 
 			function openModal(url) {
+				if (!modal || !iframe) return;
 				modal.classList.remove('hidden');
 				document.body.style.overflow = 'hidden';
-				loader.classList.remove('hidden');
+				if (loader) loader.classList.remove('hidden');
 				iframe.src = url;
-				iframe.onload = () => loader.classList.add('hidden');
+				iframe.onload = () => {
+					if (loader) loader.classList.add('hidden');
+				};
 			}
 
 			function closeModal() {
+				if (!modal || !iframe) return;
 				modal.classList.add('hidden');
 				document.body.style.overflow = '';
 				iframe.src = '';
