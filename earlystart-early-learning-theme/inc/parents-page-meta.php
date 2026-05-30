@@ -900,17 +900,17 @@ function earlystart_seed_parents_page_defaults($post_id)
         'parents_menu1_icon' => 'fa-solid fa-apple-whole',
         'parents_menu1_title' => 'Breakfast & Snacks',
         'parents_menu1_subtitle' => 'Whole grains & fresh fruit',
-        'parents_menu1_url' => '#',
+        'parents_menu1_url' => '',
 
         'parents_menu2_icon' => 'fa-solid fa-utensils',
         'parents_menu2_title' => 'Hot Lunch',
         'parents_menu2_subtitle' => 'Protein, veggie & starch',
-        'parents_menu2_url' => '#',
+        'parents_menu2_url' => '',
 
         'parents_menu3_icon' => 'fa-solid fa-carrot',
         'parents_menu3_title' => 'Allergen Info',
         'parents_menu3_subtitle' => 'Nut-free facility',
-        'parents_menu3_url' => '#',
+        'parents_menu3_url' => '',
 
         // Safety
         'parents_safety_title' => 'Safety First',
