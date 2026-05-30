@@ -44,15 +44,7 @@ function earlystart_enqueue_assets()
         // Google Fonts: Removed in favor of local fonts in assets/webfonts loaded via main.css
         // checks input.css for @font-face definitions
 
-        // Lucide Icons - Local version to unnecessary external request and optimize chain
-        wp_enqueue_script(
-                'lucide-icons',
-                earlystart_THEME_URI . '/assets/js/lucide.min.js',
-                array(),
-                '0.320.0',
-                true // Load in Footer
-        );
-        wp_script_add_data('lucide-icons', 'defer', true);
+        // Lucide is lazy-loaded by main.js during idle time so it does not block initial interaction.
 
         // Dequeue any other potential lucide handles from plugins
         wp_dequeue_script('lucide');

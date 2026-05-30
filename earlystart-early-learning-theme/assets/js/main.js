@@ -7,17 +7,51 @@
 
 document.addEventListener('DOMContentLoaded', function () {
   /**
-   * Performance-first Lucide initialization (Consolidated)
+   * Performance-first Lucide initialization.
    */
-  const refreshIcons = () => {
-    if (typeof lucide !== 'undefined') {
-      // Use requestIdleCallback if available for non-critical icon refresh
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(() => lucide.createIcons(), { timeout: 2000 });
-      } else {
-        setTimeout(() => lucide.createIcons(), 100);
-      }
+  let lucideLoadPromise = null;
+
+  const onIdle = (callback, timeout = 2000) => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(callback, { timeout });
+    } else {
+      setTimeout(callback, 100);
     }
+  };
+
+  const loadLucide = () => {
+    if (typeof lucide !== 'undefined') {
+      return Promise.resolve(lucide);
+    }
+
+    if (lucideLoadPromise) {
+      return lucideLoadPromise;
+    }
+
+    if (!window.chromaData || !window.chromaData.themeUrl) {
+      return Promise.resolve(null);
+    }
+
+    lucideLoadPromise = new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = `${window.chromaData.themeUrl}/assets/js/lucide.min.js`;
+      script.async = true;
+      script.onload = () => resolve(typeof lucide !== 'undefined' ? lucide : null);
+      script.onerror = () => resolve(null);
+      document.body.appendChild(script);
+    });
+
+    return lucideLoadPromise;
+  };
+
+  const refreshIcons = () => {
+    onIdle(() => {
+      loadLucide().then((icons) => {
+        if (icons && typeof icons.createIcons === 'function') {
+          icons.createIcons();
+        }
+      });
+    });
   };
 
   refreshIcons();
