@@ -433,6 +433,7 @@ while (have_posts()):
 									'name' => get_the_title(),
 									'role' => $role,
 									'bio' => wp_kses_post($bio),
+									'bio_text' => wp_strip_all_tags($bio),
 									'image' => $image,
 								)
 							);

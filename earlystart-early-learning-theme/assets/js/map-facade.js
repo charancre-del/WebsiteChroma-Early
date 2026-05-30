@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const locations = parseLocations(container);
     const first = locations[0];
 
-    container.innerHTML = '';
+    container.textContent = '';
     container.style.background = '#e7e5e4';
 
     if (!first) {

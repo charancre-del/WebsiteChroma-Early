@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (modalName) modalName.textContent = data.name || '';
         if (modalRole) modalRole.textContent = data.role || '';
-        if (modalBio) modalBio.innerHTML = data.bio || '';
+        if (modalBio) modalBio.textContent = data.bio_text || data.bio || '';
         if (modalImage) {
           if (data.image) modalImage.src = data.image;
           modalImage.alt = data.name ? data.name : '';
