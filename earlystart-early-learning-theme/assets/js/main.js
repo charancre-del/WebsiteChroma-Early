@@ -496,22 +496,29 @@ document.addEventListener('DOMContentLoaded', function () {
     if (window.Chart) {
       initChart();
     } else {
-      // Lazy load Chart.js
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            observer.disconnect();
-            if (window.chromaData && window.chromaData.themeUrl) {
-              const script = document.createElement('script');
-              script.src = `${window.chromaData.themeUrl}/assets/js/chart.min.js`;
-              script.async = true;
-              script.onload = initChart;
-              document.body.appendChild(script);
+      const loadChart = () => {
+        if (!window.chromaData || !window.chromaData.themeUrl) return;
+
+        const script = document.createElement('script');
+        script.src = `${window.chromaData.themeUrl}/assets/js/chart.min.js`;
+        script.async = true;
+        script.onload = initChart;
+        document.body.appendChild(script);
+      };
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              observer.disconnect();
+              loadChart();
             }
-          }
-        });
-      }, { rootMargin: '200px' });
-      observer.observe(curriculumChartEl);
+          });
+        }, { rootMargin: '200px' });
+        observer.observe(curriculumChartEl);
+      } else {
+        loadChart();
+      }
     }
 
     curriculumButtons.forEach((btn) => {
@@ -660,7 +667,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Autoplay
     const startAutoplay = () => {
-      if (totalSlides > 1) {
+      if (totalSlides > 1 && !autoplayInterval) {
         autoplayInterval = setInterval(nextSlide, 6000);
       }
     };
@@ -789,7 +796,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Autoplay
     const startAutoplay = () => {
-      if (totalSlides > 1) {
+      if (totalSlides > 1 && !autoplayInterval) {
         autoplayInterval = setInterval(nextSlide, 5000);
       }
     };
@@ -902,27 +909,27 @@ document.addEventListener('DOMContentLoaded', function () {
   // Optimize MutationObserver to be more selective if possible, 
   // or use a debounced approach to reduce main thread load
   let mutationTimeout;
-  const lazyLoadObserver = new MutationObserver((mutations) => {
-    if (mutationTimeout) return;
-
-    mutationTimeout = setTimeout(() => {
-      mutations.forEach(mutation => {
-        mutation.addedNodes.forEach(node => {
-          if (node.nodeType === 1) { // Element node
-            const hasLazy = node.querySelector('img[data-lazy-src]') || node.hasAttribute('data-lazy-src');
-            if (hasLazy) {
-              initEnhancedLazyLoading();
-            }
-          }
-        });
-      });
-      mutationTimeout = null;
-    }, 500);
-  });
-
   // Only observe if we actually have dynamic content areas
   const dynamicContent = document.querySelector('#main-content');
-  if (dynamicContent) {
+  if (dynamicContent && 'MutationObserver' in window) {
+    const lazyLoadObserver = new MutationObserver((mutations) => {
+      if (mutationTimeout) return;
+
+      mutationTimeout = setTimeout(() => {
+        mutations.forEach(mutation => {
+          mutation.addedNodes.forEach(node => {
+            if (node.nodeType === 1) { // Element node
+              const hasLazy = node.querySelector('img[data-lazy-src]') || node.hasAttribute('data-lazy-src');
+              if (hasLazy) {
+                initEnhancedLazyLoading();
+              }
+            }
+          });
+        });
+        mutationTimeout = null;
+      }, 500);
+    });
+
     lazyLoadObserver.observe(dynamicContent, { childList: true, subtree: true });
   }
 
@@ -948,6 +955,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     revealColorImages.forEach(img => revealObserver.observe(img));
+  } else if (revealColorImages.length > 0) {
+    revealColorImages.forEach(img => img.classList.remove('grayscale'));
   }
 
   /**
