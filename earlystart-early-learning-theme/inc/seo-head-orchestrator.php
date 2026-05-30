@@ -18,17 +18,27 @@ function earlystart_get_seo_head_mode()
 {
     $allowed = array('theme_primary', 'plugin_primary', 'hybrid');
 
-    $mode = get_option('earlystart_seo_head_mode', 'theme_primary');
+    $mode = get_option('earlystart_seo_head_mode', earlystart_get_default_seo_head_mode());
     if (!in_array($mode, $allowed, true)) {
-        $mode = 'theme_primary';
+        $mode = earlystart_get_default_seo_head_mode();
     }
 
     $mode = apply_filters('earlystart_seo_head_mode', $mode);
     if (!in_array($mode, $allowed, true)) {
-        $mode = 'theme_primary';
+        $mode = earlystart_get_default_seo_head_mode();
     }
 
     return $mode;
+}
+
+/**
+ * Resolve the safest default SEO ownership mode for this install.
+ *
+ * @return string
+ */
+function earlystart_get_default_seo_head_mode()
+{
+    return earlystart_is_seo_plugin_active() ? 'hybrid' : 'theme_primary';
 }
 
 /**
@@ -154,6 +164,32 @@ function earlystart_apply_seo_head_mode()
     }
 }
 add_action('wp', 'earlystart_apply_seo_head_mode', 5);
+
+/**
+ * Normalize legacy brand typos that can linger in saved SEO title fields.
+ *
+ * @param string $title Current title.
+ * @return string
+ */
+function earlystart_normalize_seo_title_branding($title)
+{
+    if (!is_string($title) || '' === $title) {
+        return $title;
+    }
+
+    return str_replace(
+        array(
+            'earlystart Early Learning',
+            'Early Start Early Learning',
+            'Chrom Early Start',
+            'Chroma Early Learning',
+        ),
+        'Chroma Early Start',
+        $title
+    );
+}
+add_filter('pre_get_document_title', 'earlystart_normalize_seo_title_branding', 99);
+add_filter('wpseo_title', 'earlystart_normalize_seo_title_branding', 99);
 
 /**
  * Debug comment for active SEO mode.

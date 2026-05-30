@@ -137,7 +137,7 @@ function earlystart_sanitize_seo_head_mode($mode)
     $mode = sanitize_key((string) $mode);
 
     if (!in_array($mode, $allowed, true)) {
-        return 'theme_primary';
+        return function_exists('earlystart_get_default_seo_head_mode') ? earlystart_get_default_seo_head_mode() : 'theme_primary';
     }
 
     return $mode;
@@ -158,7 +158,8 @@ function earlystart_render_text_field($args)
  */
 function earlystart_render_seo_head_mode_field()
 {
-    $value = get_option('earlystart_seo_head_mode', 'theme_primary');
+    $default = function_exists('earlystart_get_default_seo_head_mode') ? earlystart_get_default_seo_head_mode() : 'theme_primary';
+    $value = get_option('earlystart_seo_head_mode', $default);
     $value = earlystart_sanitize_seo_head_mode($value);
 
     $choices = array(

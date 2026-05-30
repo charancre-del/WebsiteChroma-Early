@@ -28,16 +28,16 @@ if (!function_exists('earlystart_seo_get_head_mode')) {
     function earlystart_seo_get_head_mode()
     {
         $allowed = array('theme_primary', 'plugin_primary', 'hybrid');
-        $mode = get_option('earlystart_seo_head_mode', 'theme_primary');
+        $mode = get_option('earlystart_seo_head_mode', 'hybrid');
 
         if (!in_array($mode, $allowed, true)) {
-            $mode = 'theme_primary';
+            $mode = 'hybrid';
         }
 
         $mode = apply_filters('earlystart_seo_head_mode', $mode);
 
         if (!in_array($mode, $allowed, true)) {
-            $mode = 'theme_primary';
+            $mode = 'hybrid';
         }
 
         return $mode;
@@ -106,6 +106,10 @@ function earlystart_seo_activate()
 {
     // Load bootstrap to get class definitions
     require_once EARLYSTART_SEO_PATH . 'inc/bootstrap.php';
+
+    if (false === get_option('earlystart_seo_head_mode', false)) {
+        update_option('earlystart_seo_head_mode', 'hybrid');
+    }
 
     // Register multilingual rewrite rules
     if (class_exists('earlystart_Multilingual_Manager')) {
