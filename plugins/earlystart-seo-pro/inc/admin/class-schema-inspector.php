@@ -16,6 +16,8 @@ class earlystart_Schema_Inspector
     public function __construct()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_frontend_scripts']);
+        add_action('admin_bar_menu', [$this, 'add_admin_bar_menu'], 90);
         add_action('wp_ajax_earlystart_validate_page_schema', [$this, 'ajax_validate_schema']);
         add_action('wp_ajax_earlystart_fix_schema_with_ai', [$this, 'ajax_fix_schema']);
     }
@@ -58,6 +60,26 @@ class earlystart_Schema_Inspector
             return;
         }
 
+        $this->enqueue_inspector_assets();
+    }
+
+    /**
+     * Enqueue inspector assets for the front-end admin bar trigger.
+     */
+    public function enqueue_frontend_scripts()
+    {
+        if (is_admin() || !is_admin_bar_showing() || !current_user_can('edit_posts')) {
+            return;
+        }
+
+        $this->enqueue_inspector_assets();
+    }
+
+    /**
+     * Enqueue shared Schema Inspector assets.
+     */
+    private function enqueue_inspector_assets()
+    {
         // 1. Register Dummy Handle for Inline Data
         wp_register_script('chroma-schema-inspector-data', false);
         wp_enqueue_script('chroma-schema-inspector-data');
@@ -82,9 +104,12 @@ class earlystart_Schema_Inspector
                 true
             );
         }
+
+        wp_register_style('chroma-schema-inspector', false, [], '1.0.1');
+        wp_enqueue_style('chroma-schema-inspector');
         
         // Add minimal CSS for the modal
-        wp_add_inline_style('chroma-schema-inspector-core', '
+        wp_add_inline_style('chroma-schema-inspector', '
             #chroma-schema-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px); }
             #chroma-schema-modal .chroma-modal-content { background-color: #fefefe; margin: 5% auto; padding: 0; border: 1px solid #888; width: 80%; max-width: 900px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; }
             #chroma-schema-modal-header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; border-radius: 8px 8px 0 0; }

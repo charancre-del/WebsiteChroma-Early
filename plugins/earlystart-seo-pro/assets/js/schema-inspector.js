@@ -284,7 +284,10 @@ jQuery(document).ready(function ($) {
     });
 
     function escapeHtml(text) {
-        return text
+        let safeText = typeof text === 'string' ? text : JSON.stringify(text ?? '');
+        safeText = typeof safeText === 'string' ? safeText : String(text ?? '');
+
+        return safeText
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
