@@ -107,20 +107,22 @@ class earlystart_LLM_Client
      */
     public function render_settings()
     {
-        $key = $this->api_key;
+        $key_configured = '' !== (string) get_option(self::API_KEY_OPTION, '');
         $model = $this->model;
         $base_url = $this->base_url;
         ?>
         <div class="chroma-seo-card">
             <h2>🤖 AI Integration Settings</h2>
-            <p>Configure your LLM provider (OpenAI, OpenRouter, etc.).</p>
+            <p>Configure your LLM provider. Gemini is the default provider for this plugin.</p>
 
             <table class="form-table">
                 <tr>
                     <th scope="row">API Key</th>
                     <td>
-                        <input type="password" id="earlystart_openai_api_key" value="<?php echo esc_attr($key); ?>"
-                            class="regular-text" placeholder="sk-..." autocomplete="off">
+                        <input type="password" id="earlystart_openai_api_key" value=""
+                            class="regular-text"
+                            placeholder="<?php echo esc_attr($key_configured ? __('Saved - enter a new key to replace', 'earlystart-seo-pro') : 'AIza...'); ?>"
+                            autocomplete="new-password">
                         <p class="description">Your key is stored securely.</p>
                     </td>
                 </tr>
@@ -128,9 +130,8 @@ class earlystart_LLM_Client
                     <th scope="row">Model Name</th>
                     <td>
                         <input type="text" id="earlystart_llm_model" value="<?php echo esc_attr($model); ?>"
-                            class="regular-text" placeholder="gpt-4o-mini">
-                        <p class="description">e.g., <code>gpt-4o</code>, <code>claude-3-sonnet</code> (via OpenRouter),
-                            <code>llama-3</code>
+                            class="regular-text" placeholder="gemini-2.0-flash-exp">
+                        <p class="description">e.g., <code>gemini-2.0-flash-exp</code>, <code>gemini-1.5-pro</code>, or an OpenAI-compatible model when using a non-Gemini base URL.
                         </p>
                     </td>
                 </tr>
@@ -138,8 +139,8 @@ class earlystart_LLM_Client
                     <th scope="row">Base URL</th>
                     <td>
                         <input type="text" id="earlystart_llm_base_url" value="<?php echo esc_attr($base_url); ?>"
-                            class="regular-text" placeholder="https://api.openai.com/v1">
-                        <p class="description">Default: <code>https://api.openai.com/v1</code>. Change for OpenRouter/LocalAI.
+                            class="regular-text" placeholder="https://generativelanguage.googleapis.com/v1beta">
+                        <p class="description">Default: <code>https://generativelanguage.googleapis.com/v1beta</code>. Use an OpenAI-compatible URL only for alternate providers.
                         </p>
                     </td>
                 </tr>
@@ -1594,7 +1595,7 @@ class earlystart_LLM_Client
      *
      * @return string
      */
-    private static function get_api_key()
+    public static function get_api_key()
     {
         $stored = get_option(self::API_KEY_OPTION, '');
         if (!is_string($stored) || $stored === '') {

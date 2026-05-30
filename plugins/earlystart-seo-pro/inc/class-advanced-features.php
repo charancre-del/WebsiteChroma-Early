@@ -267,12 +267,19 @@ class earlystart_Image_Analyzer
      * Analyze image and generate alt text
      */
     public static function analyze_image($image_url) {
-        $api_key = get_option('earlystart_openai_api_key', '');
-        
+        $api_key = class_exists('earlystart_LLM_Client') ? earlystart_LLM_Client::get_api_key() : get_option('earlystart_openai_api_key', '');
+
         if (empty($api_key)) {
             return new WP_Error('no_api_key', 'No API key configured');
         }
-        
+
+        $image_url = function_exists('earlystart_seo_validate_remote_url')
+            ? earlystart_seo_validate_remote_url($image_url, true)
+            : esc_url_raw($image_url);
+        if (!$image_url) {
+            return new WP_Error('invalid_image_url', 'Invalid image URL');
+        }
+
         $prompt = "You are an SEO expert. Analyze this image of a pediatric therapy clinic and generate:
 1. An SEO-optimized alt text (max 125 chars)
 2. A caption for the image
@@ -280,38 +287,92 @@ class earlystart_Image_Analyzer
 
 Return JSON with keys: alt_text, caption, keywords";
 
-        $response = wp_remote_post('https://api.openai.com/v1/chat/completions', [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . $api_key
-            ],
-            'body' => json_encode([
-                'model' => 'gpt-4o',
-                'messages' => [[
-                    'role' => 'user',
-                    'content' => [
-                        ['type' => 'text', 'text' => $prompt],
-                        ['type' => 'image_url', 'image_url' => ['url' => $image_url]]
-                    ]
-                ]],
-                'max_tokens' => 500
-            ]),
-            'timeout' => 30
-        ]);
-        
+        $base_url = get_option('earlystart_llm_base_url', 'https://generativelanguage.googleapis.com/v1beta');
+        $host = strtolower((string) wp_parse_url($base_url, PHP_URL_HOST));
+
+        if ($host === 'generativelanguage.googleapis.com') {
+            $image_response = wp_remote_get($image_url, array('timeout' => 20, 'redirection' => 3));
+            if (is_wp_error($image_response)) {
+                return $image_response;
+            }
+
+            $image_body = wp_remote_retrieve_body($image_response);
+            if (empty($image_body)) {
+                return new WP_Error('empty_image', 'Image could not be downloaded');
+            }
+
+            $content_type = wp_remote_retrieve_header($image_response, 'content-type');
+            if (!$content_type || stripos($content_type, 'image/') !== 0) {
+                $content_type = 'image/jpeg';
+            }
+
+            $model = get_option('earlystart_llm_model', 'gemini-2.0-flash-exp');
+            $response = wp_remote_post(rtrim($base_url, '/') . '/models/' . rawurlencode($model) . ':generateContent', array(
+                'headers' => array(
+                    'Content-Type' => 'application/json',
+                    'x-goog-api-key' => $api_key,
+                ),
+                'body' => wp_json_encode(array(
+                    'contents' => array(
+                        array(
+                            'role' => 'user',
+                            'parts' => array(
+                                array('text' => $prompt),
+                                array(
+                                    'inlineData' => array(
+                                        'mimeType' => $content_type,
+                                        'data' => base64_encode($image_body),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'generationConfig' => array(
+                        'temperature' => 0.3,
+                        'responseMimeType' => 'application/json',
+                    ),
+                )),
+                'timeout' => 60,
+            ));
+        } else {
+            $response = wp_remote_post(rtrim($base_url ?: 'https://api.openai.com/v1', '/') . '/chat/completions', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $api_key
+                ],
+                'body' => wp_json_encode([
+                    'model' => get_option('earlystart_llm_model', 'gpt-4o'),
+                    'messages' => [[
+                        'role' => 'user',
+                        'content' => [
+                            ['type' => 'text', 'text' => $prompt],
+                            ['type' => 'image_url', 'image_url' => ['url' => $image_url]]
+                        ]
+                    ]],
+                    'max_tokens' => 500
+                ]),
+                'timeout' => 30
+            ]);
+        }
+
         if (is_wp_error($response)) {
             return $response;
         }
-        
+
         $body = json_decode(wp_remote_retrieve_body($response), true);
-        $content = $body['choices'][0]['message']['content'] ?? '';
-        
+        $content = '';
+        if ($host === 'generativelanguage.googleapis.com') {
+            $content = $body['candidates'][0]['content']['parts'][0]['text'] ?? '';
+        } else {
+            $content = $body['choices'][0]['message']['content'] ?? '';
+        }
+
         // Parse JSON from response
         preg_match('/\{.*\}/s', $content, $matches);
         if (!empty($matches[0])) {
             return json_decode($matches[0], true);
         }
-        
+
         return ['alt_text' => $content];
     }
     

@@ -33,9 +33,9 @@ function earlystart_acquisition_register_settings()
 {
     register_setting('earlystart_acquisition_options', 'earlystart_acquisition_fields', array('type' => 'string', 'sanitize_callback' => 'earlystart_acquisition_sanitize_json', 'default' => wp_json_encode(earlystart_acquisition_default_fields())));
     register_setting('earlystart_acquisition_options', 'earlystart_acquisition_webhook_url', array('type' => 'string', 'sanitize_callback' => 'esc_url_raw', 'default' => ''));
-    register_setting('earlystart_acquisition_options', 'earlystart_acquisition_email_recipient', array('type' => 'string', 'sanitize_callback' => 'sanitize_email', 'default' => 'acquisitions@earlystarttherapy.com'));
+    register_setting('earlystart_acquisition_options', 'earlystart_acquisition_email_recipient', array('type' => 'string', 'sanitize_callback' => 'sanitize_email', 'default' => 'acquisitions@chromaearlystart.com'));
 }
-add_action('admin_init', earlystart_acquisition_register_settings);
+add_action('admin_init', 'earlystart_acquisition_register_settings');
 
 function earlystart_acquisition_sanitize_json($input)
 {
@@ -68,7 +68,7 @@ function earlystart_acquisition_settings_page_html()
         <form action="options.php" method="post">
             <?php
             settings_fields('earlystart_acquisition_options');
-            $email_recipient = get_option('earlystart_acquisition_email_recipient', 'acquisitions@earlystarttherapy.com');
+            $email_recipient = get_option('earlystart_acquisition_email_recipient', 'acquisitions@chromaearlystart.com');
             ?>
             <table class="form-table">
                 <tr><th scope="row">Email Recipient</th><td><input type="email" name="earlystart_acquisition_email_recipient" value="<?php echo esc_attr($email_recipient); ?>" class="regular-text" /></td></tr>
@@ -157,7 +157,7 @@ function earlystart_handle_acquisition_submission()
     $redirect_target = !empty($_POST['earlystart_acquisition_redirect']) ? esc_url_raw(wp_unslash($_POST['earlystart_acquisition_redirect'])) : (wp_get_referer() ?: home_url('/acquisitions/'));
     if ($has_error || empty($email)) { wp_safe_redirect(add_query_arg('acquisition_sent', '0', $redirect_target)); exit; }
 
-    $to_email = get_option('earlystart_acquisition_email_recipient', 'acquisitions@earlystarttherapy.com');
+    $to_email = get_option('earlystart_acquisition_email_recipient', 'acquisitions@chromaearlystart.com');
     wp_mail($to_email, 'New Acquisition Inquiry: ' . $facility_name, "New inquiry:\n\n" . print_r($submission_data, true));
 
     if (post_type_exists('lead_log')) {

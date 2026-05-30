@@ -31,9 +31,11 @@ function earlystart_career_default_fields()
  */
 function earlystart_career_register_settings()
 {
+    $default_recipient = function_exists('earlystart_global_careers_email') ? earlystart_global_careers_email() : get_option('admin_email');
+
     register_setting('earlystart_career_options', 'earlystart_career_fields', array('type' => 'string', 'sanitize_callback' => 'earlystart_career_sanitize_json', 'default' => wp_json_encode(earlystart_career_default_fields())));
     register_setting('earlystart_career_options', 'earlystart_career_webhook_url', array('type' => 'string', 'sanitize_callback' => 'esc_url_raw', 'default' => ''));
-    register_setting('earlystart_career_options', 'earlystart_career_email_recipient', array('type' => 'string', 'sanitize_callback' => 'sanitize_email', 'default' => 'careers@earlystarttherapy.com'));
+    register_setting('earlystart_career_options', 'earlystart_career_email_recipient', array('type' => 'string', 'sanitize_callback' => 'sanitize_email', 'default' => $default_recipient));
     register_setting('earlystart_career_options', 'earlystart_career_form_id', array('type' => 'string', 'default' => 'WYGFB2WBYuti6S6ys30H', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_career_options', 'earlystart_career_form_height', array('type' => 'integer', 'default' => 522, 'sanitize_callback' => 'absint'));
     register_setting('earlystart_career_options', 'earlystart_career_form_name', array('type' => 'string', 'default' => 'Careers Form - Early Start Early Learning', 'sanitize_callback' => 'sanitize_text_field'));
@@ -74,7 +76,7 @@ function earlystart_career_settings_page_html()
         <form action="options.php" method="post">
             <?php
             settings_fields('earlystart_career_options');
-            $email_recipient = get_option('earlystart_career_email_recipient', 'careers@earlystarttherapy.com');
+            $email_recipient = get_option('earlystart_career_email_recipient', function_exists('earlystart_global_careers_email') ? earlystart_global_careers_email() : get_option('admin_email'));
             ?>
             <table class="form-table">
                 <tr>

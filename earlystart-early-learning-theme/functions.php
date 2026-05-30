@@ -20,12 +20,6 @@ error_reporting(0);
 // ini_set('display_errors', 1);
 // error_reporting(E_ALL);
 
-// PROBE: Verify if PHP changes are live
-add_filter('body_class', function ($classes) {
-    $classes[] = 'earlystart-php-probe-v1';
-    return $classes;
-});
-
 /**
  * Increase Memory Limit for SEO Engine
  */
