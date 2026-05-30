@@ -117,9 +117,9 @@ class earlystart_Multilingual_Manager
         // Home Page: example.com/es/
         add_rewrite_rule('^es/?$', 'index.php?earlystart_lang=es', 'top');
 
-        // Custom Post Type Archives
-        add_rewrite_rule('^es/locations/?$', 'index.php?post_type=location&earlystart_lang=es', 'top');
-        add_rewrite_rule('^es/programs/?$', 'index.php?post_type=program&earlystart_lang=es', 'top');
+        // Public shell pages. CPT singles still live below these bases.
+        add_rewrite_rule('^es/locations/?$', 'index.php?pagename=locations&earlystart_lang=es', 'top');
+        add_rewrite_rule('^es/programs/?$', 'index.php?pagename=programs&earlystart_lang=es', 'top');
 
         // Single Custom Post Types
         add_rewrite_rule('^es/locations/(.+?)/?$', 'index.php?location=$matches[1]&earlystart_lang=es', 'top');

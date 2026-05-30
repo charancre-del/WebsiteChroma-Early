@@ -116,17 +116,15 @@ class earlystart_LLMs_Txt_Generator
     {
         $site_name = get_bloginfo('name');
         $site_desc = get_bloginfo('description');
-        $url = home_url();
-
         $output = "# {$site_name}\n";
         $output .= "> {$site_desc}\n\n"; // Blockquote for description as per spec conventions
         
         $output .= "## Main Sections\n\n";
-        $output .= "- [Home]({$url})\n";
-        $output .= "- [Locations]({$url}/locations)\n";
-        $output .= "- [Programs]({$url}/programs)\n";
-        $output .= "- [Blog]({$url}/stories)\n";
-        $output .= "- [Careers]({$url}/careers)\n\n";
+        $output .= "- [Home](" . trailingslashit(home_url('/')) . ")\n";
+        $output .= "- [Locations](" . trailingslashit(home_url('/locations/')) . ")\n";
+        $output .= "- [Programs](" . trailingslashit(home_url('/programs/')) . ")\n";
+        $output .= "- [Blog](" . trailingslashit(home_url('/stories/')) . ")\n";
+        $output .= "- [Careers](" . trailingslashit(home_url('/careers/')) . ")\n\n";
 
         // Programs
         $output .= "## Programs (Curriculum)\n\n";
@@ -166,10 +164,16 @@ class earlystart_LLMs_Txt_Generator
         if ($locations) {
             foreach ($locations as $location) {
                 // Get City for context
-                $city = get_post_meta($location->ID, 'earlystart_location_city', true);
+                $city = get_post_meta($location->ID, 'location_city', true);
+                if (!$city) {
+                    $city = get_post_meta($location->ID, 'earlystart_location_city', true);
+                }
                 if (!$city) {
                      // Try to get from address
-                     $address = get_post_meta($location->ID, 'earlystart_location_address', true);
+                     $address = get_post_meta($location->ID, 'location_address', true);
+                     if (!$address) {
+                         $address = get_post_meta($location->ID, 'earlystart_location_address', true);
+                     }
                      if ($address && preg_match('/, ([^,]+), [A-Z]{2}/', $address, $matches)) {
                          $city = trim($matches[1]);
                      }

@@ -334,10 +334,10 @@ function earlystart_advanced_seo_init()
 			add_action('wp_head', ['earlystart_Schema_Injector', 'output_modular_schemas'], 20);
 	}
 
-	// Flush Rewrite Rules if KML rule is missing (One-time check)
-	if (get_option('earlystart_seo_flush_rewrite_v6') !== 'done') {
+	// Flush rewrite rules when SEO plugin-owned public routes change.
+	if (get_option('earlystart_seo_flush_rewrite_v7') !== 'done') {
 		flush_rewrite_rules();
-		update_option('earlystart_seo_flush_rewrite_v6', 'done');
+		update_option('earlystart_seo_flush_rewrite_v7', 'done');
 	}
 }
 add_action('init', 'earlystart_advanced_seo_init');
