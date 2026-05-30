@@ -428,6 +428,14 @@ while (have_posts()):
 							$role = get_post_meta(get_the_ID(), 'team_member_title', true);
 							$image = get_the_post_thumbnail_url(get_the_ID(), 'large') ?: '';
 							$bio = get_the_content();
+							$bio_payload = wp_json_encode(
+								array(
+									'name' => get_the_title(),
+									'role' => $role,
+									'bio' => wp_kses_post($bio),
+									'image' => $image,
+								)
+							);
 							?>
 							<div class="group fade-in-up">
 								<div
@@ -445,7 +453,7 @@ while (have_posts()):
 										class="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
 										<button
 											class="bg-white text-stone-900 px-6 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
-											data-team-bio-trigger='<?php echo json_encode(array("name" => get_the_title(), "role" => $role, "bio" => wp_kses_post($bio), "image" => $image)); ?>'>
+											data-team-bio-trigger="<?php echo esc_attr($bio_payload); ?>">
 											<?php _e('View Bio', 'earlystart-early-learning'); ?>
 										</button>
 									</div>
@@ -470,6 +478,7 @@ while (have_posts()):
 			<div class="relative bg-white w-full max-w-4xl rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300"
 				id="team-modal-content">
 				<button id="team-modal-close"
+					aria-label="<?php esc_attr_e('Close biography modal', 'earlystart-early-learning'); ?>"
 					class="absolute top-6 right-6 z-10 w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center hover:bg-stone-200 transition-colors">
 					<i data-lucide="x" class="w-6 h-6 text-stone-900"></i>
 				</button>

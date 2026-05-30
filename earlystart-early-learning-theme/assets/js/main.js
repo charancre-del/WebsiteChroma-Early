@@ -47,12 +47,19 @@ document.addEventListener('DOMContentLoaded', function () {
   const mobileNavToggles = document.querySelectorAll('[data-mobile-nav-toggle]');
   const mobileNav = document.querySelector('[data-mobile-nav]');
 
+  const setMobileNavExpanded = (expanded) => {
+    mobileNavToggles.forEach((toggle) => {
+      toggle.setAttribute('aria-expanded', expanded.toString());
+    });
+  };
+
   const closeMobileNav = () => {
     if (!mobileNav) return;
 
     mobileNav.classList.remove('translate-x-0');
     mobileNav.classList.add('translate-x-full');
     document.body.style.overflow = '';
+    setMobileNavExpanded(false);
 
     setTimeout(() => {
       if (mobileNav.classList.contains('translate-x-full')) {
@@ -76,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
           mobileNav.classList.add('translate-x-0');
         });
         document.body.style.overflow = 'hidden';
+        setMobileNavExpanded(true);
       } else {
         closeMobileNav();
       }
@@ -84,12 +92,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Close menu on link click
   if (mobileNav) {
-    mobileNav.querySelectorAll('a[href^="#"]').forEach((link) => {
+    mobileNav.querySelectorAll('a[href]').forEach((link) => {
       link.addEventListener('click', () => {
         closeMobileNav();
       });
     });
   }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && mobileNav && !mobileNav.classList.contains('hidden')) {
+      closeMobileNav();
+    }
+  });
 
   /**
    * Accordions (Enhanced)
@@ -244,7 +258,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (modalName) modalName.textContent = data.name || '';
         if (modalRole) modalRole.textContent = data.role || '';
         if (modalBio) modalBio.innerHTML = data.bio || '';
-        if (modalImage && data.image) modalImage.src = data.image;
+        if (modalImage) {
+          if (data.image) modalImage.src = data.image;
+          modalImage.alt = data.name ? data.name : '';
+        }
 
         // Show modal
         teamModal.classList.remove('hidden');
@@ -269,6 +286,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (modalClose) modalClose.addEventListener('click', closeModal);
     if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !teamModal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
   }
 
   /**

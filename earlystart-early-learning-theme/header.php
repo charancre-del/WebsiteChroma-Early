@@ -118,7 +118,9 @@
 					<div class="xl:hidden flex items-center">
 						<button data-mobile-nav-toggle
 							class="text-stone-600 hover:text-rose-600 p-3 focus:outline-none bg-stone-50 rounded-lg transition-colors border border-stone-200"
-							aria-label="Toggle menu">
+							aria-label="Toggle menu"
+							aria-controls="mobile-site-nav"
+							aria-expanded="false">
 							<i data-lucide="menu" class="w-6 h-6"></i>
 						</button>
 					</div>
@@ -126,8 +128,8 @@
 			</div>
 
 			<!-- Mobile Menu Dropdown (Relative to Header) -->
-			<div data-mobile-nav
-				class="absolute top-full left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 hidden flex-col space-y-4 xl:hidden max-h-[calc(100dvh-5rem)] overflow-y-auto pb-24">
+			<div id="mobile-site-nav" data-mobile-nav
+				class="absolute top-full left-0 w-full bg-white border-t border-stone-100 shadow-xl p-4 hidden flex-col space-y-4 xl:hidden max-h-[calc(100dvh-5rem)] overflow-y-auto pb-24 translate-x-full transition-transform duration-300">
 				<?php earlystart_mobile_nav(); ?>
 				<a href="<?php echo esc_url($cta_url); ?>"
 					class="block w-full text-center bg-stone-900 text-white px-6 py-4 rounded-xl font-bold mt-4">

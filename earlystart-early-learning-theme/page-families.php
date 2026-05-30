@@ -766,7 +766,7 @@ while (have_posts()):
 endwhile;
 
 // Inject Lucide Script
-echo '<script>lucide.createIcons();</script>';
+echo '<script>if (window.lucide) { window.lucide.createIcons(); }</script>';
 
 get_footer();
 ?>
