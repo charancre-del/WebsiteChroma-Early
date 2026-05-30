@@ -290,33 +290,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (teamModal && teamModalContent) {
     const triggers = document.querySelectorAll('[data-team-bio-trigger]');
+    let lastTeamTrigger = null;
 
     triggers.forEach(trigger => {
       trigger.addEventListener('click', () => {
         const data = safeParseJSON(trigger.getAttribute('data-team-bio-trigger') || '{}', {});
         if (!data.name && !data.bio) return;
+        lastTeamTrigger = trigger;
 
         // Populate modal
         const modalName = document.getElementById('modal-name');
         const modalRole = document.getElementById('modal-role');
         const modalBio = document.getElementById('modal-bio');
         const modalImage = document.getElementById('modal-image');
+        const modalImageWrap = document.querySelector('[data-modal-image-wrap]');
+        const modalCopyWrap = document.querySelector('[data-modal-copy-wrap]');
 
         if (modalName) modalName.textContent = data.name || '';
         if (modalRole) modalRole.textContent = data.role || '';
         if (modalBio) modalBio.textContent = data.bio_text || data.bio || '';
         if (modalImage) {
-          if (data.image) modalImage.src = data.image;
+          if (data.image) {
+            modalImage.src = data.image;
+          } else {
+            modalImage.removeAttribute('src');
+          }
           modalImage.alt = data.name ? data.name : '';
+        }
+        if (modalImageWrap) modalImageWrap.classList.toggle('hidden', !data.image);
+        if (modalCopyWrap) {
+          modalCopyWrap.classList.toggle('md:w-3/5', !!data.image);
+          modalCopyWrap.classList.toggle('w-full', !data.image);
         }
 
         // Show modal
+        teamModal.setAttribute('aria-hidden', 'false');
         teamModal.classList.remove('hidden');
         teamModal.classList.add('flex');
 
         setTimeout(() => {
           teamModalContent.classList.remove('scale-95', 'opacity-0');
           teamModalContent.classList.add('scale-100', 'opacity-100');
+          if (modalClose) modalClose.focus();
         }, 10);
       });
     });
@@ -328,6 +343,10 @@ document.addEventListener('DOMContentLoaded', function () {
       setTimeout(() => {
         teamModal.classList.add('hidden');
         teamModal.classList.remove('flex');
+        teamModal.setAttribute('aria-hidden', 'true');
+        if (lastTeamTrigger && typeof lastTeamTrigger.focus === 'function') {
+          lastTeamTrigger.focus();
+        }
       }, 300);
     };
 

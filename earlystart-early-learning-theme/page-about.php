@@ -451,9 +451,9 @@ while (have_posts()):
 										</div>
 									<?php endif; ?>
 									<div
-										class="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+										class="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 flex items-end p-8">
 										<button
-											class="bg-white text-stone-900 px-6 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+											class="bg-white text-stone-900 px-6 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 focus:translate-y-0 transition-transform duration-500"
 											data-team-bio-trigger="<?php echo esc_attr($bio_payload); ?>">
 											<?php _e('View Bio', 'earlystart-early-learning'); ?>
 										</button>
@@ -474,7 +474,8 @@ while (have_posts()):
 		</section>
 
 		<!-- Team Bio Modal Container -->
-		<div id="team-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+		<div id="team-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4" role="dialog"
+			aria-modal="true" aria-hidden="true" aria-labelledby="modal-name">
 			<div id="team-modal-overlay" class="absolute inset-0 bg-stone-900/80 backdrop-blur-sm"></div>
 			<div class="relative bg-white w-full max-w-4xl rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300"
 				id="team-modal-content">
@@ -483,10 +484,10 @@ while (have_posts()):
 					class="absolute top-6 right-6 z-10 w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center hover:bg-stone-200 transition-colors">
 					<i data-lucide="x" class="w-6 h-6 text-stone-900"></i>
 				</button>
-				<div class="md:w-2/5 h-64 md:h-auto">
+				<div class="md:w-2/5 h-64 md:h-auto" data-modal-image-wrap>
 					<img id="modal-image" src="" alt="" class="w-full h-full object-cover">
 				</div>
-				<div class="md:w-3/5 p-6 md:p-12 overflow-y-auto max-h-[80vh]">
+				<div class="md:w-3/5 p-6 md:p-12 overflow-y-auto max-h-[80vh]" data-modal-copy-wrap>
 					<span id="modal-role"
 						class="text-rose-700 font-bold tracking-widest text-xs uppercase mb-2 block"></span>
 					<h3 id="modal-name" class="text-3xl md:text-4xl font-bold text-stone-900 mb-6"></h3>
