@@ -133,7 +133,10 @@ class earlystart_Schema_Registry
         }
 
         // Check for @id-based deduplication
-        $schema_id = isset($schema['@id']) ? $schema['@id'] : null;
+        $schema_id = isset($schema['@id']) ? self::normalize_schema_id($schema['@id']) : null;
+        if ($schema_id !== null && $schema_id !== '') {
+            $schema['@id'] = $schema_id;
+        }
         if ($schema_id && isset(self::$registered_ids[$schema_id])) {
             self::$blocked[] = [
                 'type' => $type,
@@ -413,7 +416,7 @@ class earlystart_Schema_Registry
             $hash_index[$node_hash] = true;
 
             if (!empty($node['@id']) && is_string($node['@id'])) {
-                $nid = $node['@id'];
+                $nid = self::normalize_schema_id($node['@id']);
                 if (isset($id_index[$nid])) {
                     if ($id_index[$nid] !== $node_hash) {
                         $errors[] = sprintf('Duplicate @id with conflicting nodes: %s', $nid);
@@ -470,7 +473,7 @@ class earlystart_Schema_Registry
                     $errors[] = sprintf('Invalid @type value: %s', $t);
                 }
             }
-            $id = isset($node['@id']) && is_string($node['@id']) ? $node['@id'] : '';
+            $id = isset($node['@id']) && is_string($node['@id']) ? self::normalize_schema_id($node['@id']) : '';
             if ($id !== '') {
                 $known_ids[$id] = true;
             }
@@ -502,25 +505,30 @@ class earlystart_Schema_Registry
         }
 
         foreach (array_unique($ref_ids) as $ref) {
-            if (isset($known_ids[$ref])) {
+            $normalized_ref = self::normalize_schema_id($ref);
+            if ($normalized_ref === '') {
                 continue;
             }
 
-            if (strpos($ref, '#') === 0) {
+            if (isset($known_ids[$normalized_ref])) {
+                continue;
+            }
+
+            if (strpos($normalized_ref, '#') === 0) {
                 $resolved = false;
                 foreach (array_keys($known_ids) as $known_id) {
-                    if (substr($known_id, -strlen($ref)) === $ref) {
+                    if (substr($known_id, -strlen($normalized_ref)) === $normalized_ref) {
                         $resolved = true;
                         break;
                     }
                 }
                 if (!$resolved) {
-                    $errors[] = sprintf('Broken @id reference: %s', $ref);
+                    $errors[] = sprintf('Broken @id reference: %s', $normalized_ref);
                 }
                 continue;
             }
 
-            $errors[] = sprintf('Broken @id reference: %s', $ref);
+            $errors[] = sprintf('Broken @id reference: %s', $normalized_ref);
         }
 
         if (count($nodes) === 0) {
@@ -541,7 +549,12 @@ class earlystart_Schema_Registry
                     continue;
                 }
 
-                if (is_string($key) && in_array($key, ['url', '@id', 'logo', 'image', 'thumbnailUrl', 'contentUrl'], true)) {
+                if ($key === '@id' && is_string($clean)) {
+                    $clean = self::normalize_schema_id($clean);
+                    if ($clean === '') {
+                        continue;
+                    }
+                } elseif (is_string($key) && in_array($key, ['url', 'logo', 'image', 'thumbnailUrl', 'contentUrl'], true)) {
                     if (is_string($clean)) {
                         $clean = esc_url_raw(trim($clean));
                         if ($clean === '') {
@@ -686,9 +699,40 @@ class earlystart_Schema_Registry
     private static function get_node_key($schema, $type)
     {
         if (!empty($schema['@id']) && is_string($schema['@id'])) {
-            return $schema['@id'];
+            return self::normalize_schema_id($schema['@id']);
         }
         return 'type:' . (string) $type;
+    }
+
+    private static function normalize_schema_id($id)
+    {
+        $id = trim((string) $id);
+        if ($id === '') {
+            return '';
+        }
+
+        if ($id[0] === '#') {
+            $fragment = sanitize_text_field(substr($id, 1));
+            return $fragment === '' ? '' : '#' . $fragment;
+        }
+
+        $parts = explode('#', $id, 2);
+        $base = esc_url_raw($parts[0]);
+        if ($base === '') {
+            return '';
+        }
+
+        $home_base = untrailingslashit(home_url('/'));
+        if (untrailingslashit($base) === $home_base) {
+            $base = trailingslashit($home_base);
+        }
+
+        if (!isset($parts[1])) {
+            return $base;
+        }
+
+        $fragment = sanitize_text_field($parts[1]);
+        return $fragment === '' ? $base : $base . '#' . $fragment;
     }
 
     private static function normalize_types($node)

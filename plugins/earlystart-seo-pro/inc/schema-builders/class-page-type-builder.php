@@ -40,7 +40,7 @@ class earlystart_Page_Type_Builder
                 '@type' => 'AboutPage',
                 'mainEntity' => [
                     '@type' => 'MedicalBusiness',
-                    '@id' => home_url() . '#organization',
+                    '@id' => home_url('/') . '#organization',
                     'name' => get_bloginfo('name'),
                     'description' => get_the_excerpt($post_id)
                 ],
@@ -56,7 +56,7 @@ class earlystart_Page_Type_Builder
                 '@type' => 'ContactPage',
                 'mainEntity' => [
                     '@type' => 'MedicalBusiness',
-                    '@id' => home_url() . '#organization'
+                    '@id' => home_url('/') . '#organization'
                 ],
                 'name' => get_the_title($post_id),
                 'url' => get_permalink($post_id)

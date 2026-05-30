@@ -36,7 +36,7 @@ class earlystart_Entity_SEO
         $schema = [
             '@context' => 'https://schema.org',
             '@type' => 'Organization',
-            '@id' => home_url('/#organization'),
+            '@id' => home_url('/') . '#organization',
             'name' => get_bloginfo('name'),
             'url' => home_url('/'),
             'logo' => get_theme_mod('custom_logo') ? wp_get_attachment_url(get_theme_mod('custom_logo')) : '',

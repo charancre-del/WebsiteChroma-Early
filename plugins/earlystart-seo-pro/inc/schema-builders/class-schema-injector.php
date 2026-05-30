@@ -248,7 +248,7 @@ class earlystart_Schema_Injector
         $data = [
             '@context' => 'https://schema.org',
             '@type' => 'Organization',
-            '@id' => home_url() . '#organization',
+            '@id' => home_url('/') . '#organization',
             'name' => get_bloginfo('name'),
             'url' => home_url(),
             'logo' => get_theme_mod('custom_logo') ? wp_get_attachment_image_url(get_theme_mod('custom_logo'), 'full') : '',
