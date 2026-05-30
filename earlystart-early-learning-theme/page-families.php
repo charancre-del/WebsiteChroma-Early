@@ -141,7 +141,18 @@ while (have_posts()):
                         <div class="space-y-3">
                             <?php foreach ($parents_menu_items as $item): ?>
                                 <?php if (!empty($item['title'])): ?>
-                                    <a href="<?php echo esc_url($item['url'] ?: '#'); ?>" class="flex items-center justify-between rounded-2xl bg-white border border-stone-100 p-4 hover:border-rose-200 transition-colors">
+                                    <?php
+                                    $item_url = !empty($item['url']) ? trim((string) $item['url']) : '';
+                                    $item_classes = 'flex items-center justify-between rounded-2xl bg-white border border-stone-100 p-4 transition-colors';
+                                    if ('' !== $item_url) {
+                                        $item_classes .= ' hover:border-rose-200';
+                                    }
+                                    ?>
+                                    <?php if ('' !== $item_url): ?>
+                                        <a href="<?php echo esc_url($item_url); ?>" class="<?php echo esc_attr($item_classes); ?>">
+                                    <?php else: ?>
+                                        <div class="<?php echo esc_attr($item_classes); ?>">
+                                    <?php endif; ?>
                                         <span class="flex items-center gap-3">
                                             <span class="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center text-rose-600">
                                                 <?php if (!empty($item['icon']) && 0 === strpos($item['icon'], 'fa-')): ?>
@@ -155,8 +166,14 @@ while (have_posts()):
                                                 <span class="block text-xs text-stone-600"><?php echo esc_html($item['subtitle']); ?></span>
                                             </span>
                                         </span>
-                                        <i data-lucide="arrow-right" class="w-4 h-4 text-stone-400"></i>
-                                    </a>
+                                        <?php if ('' !== $item_url): ?>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 text-stone-400"></i>
+                                        <?php endif; ?>
+                                    <?php if ('' !== $item_url): ?>
+                                        </a>
+                                    <?php else: ?>
+                                        </div>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         </div>
