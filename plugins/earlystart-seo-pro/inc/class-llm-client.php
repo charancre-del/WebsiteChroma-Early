@@ -52,44 +52,66 @@ class earlystart_LLM_Client
         }
 
         $base_url = get_option('earlystart_llm_base_url', 'https://generativelanguage.googleapis.com/v1beta');
-        $url = rtrim($base_url, '/') . '/models';
+        $base_url = $base_url ? rtrim($base_url, '/') : 'https://generativelanguage.googleapis.com/v1beta';
+        $is_gemini = $this->is_gemini_base_url($base_url);
+        $url = $base_url . '/models';
+        $headers = ['Content-Type' => 'application/json'];
+
+        if ($is_gemini) {
+            $headers['x-goog-api-key'] = $api_key;
+        } else {
+            $headers['Authorization'] = 'Bearer ' . $api_key;
+        }
 
         $response = wp_remote_get($url, [
             'timeout' => 15,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'x-goog-api-key' => $api_key,
-            ]
+            'headers' => $headers,
         ]);
 
         if (is_wp_error($response)) {
             wp_send_json_error(['message' => $response->get_error_message()]);
         }
 
+        $code = wp_remote_retrieve_response_code($response);
         $body = json_decode(wp_remote_retrieve_body($response), true);
 
-        if (empty($body['models'])) {
-            wp_send_json_error(['message' => 'No models returned from API. Check your API key.']);
+        if ($code < 200 || $code >= 300) {
+            $message = $body['error']['message'] ?? ('Model fetch failed with HTTP ' . $code);
+            wp_send_json_error(['message' => $message]);
         }
 
-        // Parse models - filter to only generation models
         $models = [];
-        foreach ($body['models'] as $model) {
-            $name = $model['name'] ?? '';
-            $display_name = $model['displayName'] ?? $name;
 
-            // Extract the model ID (e.g., "models/gemini-2.0-flash-exp" -> "gemini-2.0-flash-exp")
-            $model_id = str_replace('models/', '', $name);
+        if ($is_gemini) {
+            if (empty($body['models']) || !is_array($body['models'])) {
+                wp_send_json_error(['message' => 'No models returned from Gemini API. Check your API key.']);
+            }
 
-            // Only include generative models (skip embedding, etc.)
-            $supported = $model['supportedGenerationMethods'] ?? [];
-            if (in_array('generateContent', $supported)) {
-                $models[$model_id] = $display_name;
+            foreach ($body['models'] as $model) {
+                $name = $model['name'] ?? '';
+                $display_name = $model['displayName'] ?? $name;
+                $model_id = str_replace('models/', '', $name);
+                $supported = $model['supportedGenerationMethods'] ?? [];
+
+                if ($model_id && in_array('generateContent', $supported, true)) {
+                    $models[$model_id] = $display_name ?: $model_id;
+                }
+            }
+        } else {
+            if (empty($body['data']) || !is_array($body['data'])) {
+                wp_send_json_error(['message' => 'No models returned from OpenAI-compatible API. Check your API key and Base URL.']);
+            }
+
+            foreach ($body['data'] as $model) {
+                $model_id = $model['id'] ?? '';
+                if ($model_id) {
+                    $models[$model_id] = $model_id;
+                }
             }
         }
 
         if (empty($models)) {
-            wp_send_json_error(['message' => 'No generative models found']);
+            wp_send_json_error(['message' => $is_gemini ? 'No generative models found' : 'No chat models found']);
         }
 
         // Sort models alphabetically
