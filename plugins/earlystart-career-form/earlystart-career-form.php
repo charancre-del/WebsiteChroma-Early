@@ -107,13 +107,14 @@ function earlystart_career_form_shortcode()
 
     $form_url = 'https://api.leadconnectorhq.com/widget/form/' . esc_attr($form_id);
     $loading_attr = $lazy_load ? 'lazy' : 'eager';
+    $wrapper_id = 'earlystart-career-form-' . sanitize_html_class($form_id);
 
     ob_start();
     ?>
-    <div class="earlystart-career-form-wrapper" data-lazy="<?php echo $lazy_load ? 'true' : 'false'; ?>"
+    <div id="<?php echo esc_attr($wrapper_id); ?>" class="earlystart-career-form-wrapper" data-lazy="<?php echo $lazy_load ? 'true' : 'false'; ?>"
         data-delay="<?php echo esc_attr($lazy_delay); ?>">
         <div class="earlystart-ghl-iframe-container" style="min-height: <?php echo esc_attr($form_height); ?>px;">
-            <iframe src="<?php echo esc_url($form_url); ?>"
+            <iframe <?php echo $lazy_load ? 'data-src="' . esc_url($form_url) . '"' : 'src="' . esc_url($form_url) . '"'; ?>
                 style="width:100%;height:100%;border:none;border-radius:3px;min-height:<?php echo esc_attr($form_height); ?>px;"
                 id="inline-<?php echo esc_attr($form_id); ?>" loading="<?php echo esc_attr($loading_attr); ?>"
                 data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow"
@@ -121,22 +122,37 @@ function earlystart_career_form_shortcode()
                 data-form-id="<?php echo esc_attr($form_id); ?>" title="<?php echo esc_attr($form_name); ?>">
             </iframe>
         </div>
+        <?php if ($lazy_load): ?>
+            <noscript>
+                <iframe src="<?php echo esc_url($form_url); ?>"
+                    style="width:100%;height:100%;border:none;border-radius:3px;min-height:<?php echo esc_attr($form_height); ?>px;"
+                    title="<?php echo esc_attr($form_name); ?>"></iframe>
+            </noscript>
+        <?php endif; ?>
     </div>
     <?php if ($lazy_load): ?>
         <script>
             (function () {
                 var loaded = false;
-                var container = document.querySelector('.earlystart-career-form-wrapper');
+                var container = document.getElementById('<?php echo esc_js($wrapper_id); ?>');
+                var iframe = container ? container.querySelector('iframe[data-src]') : null;
                 var delay = <?php echo intval($lazy_delay); ?>;
                 function loadGHLScript() {
                     if (loaded) return;
                     loaded = true;
+                    if (iframe && !iframe.getAttribute('src')) {
+                        iframe.setAttribute('src', iframe.getAttribute('data-src'));
+                    }
+                    if (document.querySelector('script[data-earlystart-ghl-embed]')) {
+                        return;
+                    }
                     var script = document.createElement('script');
                     script.src = 'https://link.msgsndr.com/js/form_embed.js';
                     script.async = true;
+                    script.setAttribute('data-earlystart-ghl-embed', 'true');
                     document.body.appendChild(script);
                 }
-                var timer = delay > 0 ? setTimeout(loadGHLScript, delay) : null;
+                var timer = setTimeout(loadGHLScript, Math.max(delay, 0));
                 if ('IntersectionObserver' in window && container) {
                     var observer = new IntersectionObserver(function (entries) {
                         if (entries[0].isIntersecting) {
