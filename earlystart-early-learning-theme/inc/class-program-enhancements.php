@@ -374,13 +374,23 @@ class earlystart_Program_Enhancements
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 var cta = document.getElementById('sticky-cta');
+                if (!cta) {
+                    return;
+                }
+
                 var shown = false;
-                window.addEventListener('scroll', function () {
+                var showCta = function () {
                     if (window.scrollY > 500 && !shown) {
                         cta.classList.add('visible');
                         shown = true;
+                        window.removeEventListener('scroll', showCta);
                     }
-                });
+                };
+
+                showCta();
+                if (!shown) {
+                    window.addEventListener('scroll', showCta, { passive: true });
+                }
             });
         </script>
         <?php
@@ -548,6 +558,7 @@ class earlystart_Program_Enhancements
         $post_id = $post_id ?: get_the_ID();
         $age_range = get_post_meta($post_id, 'program_age_range', true);
         $program_title = get_the_title($post_id);
+        $tour_url = earlystart_get_page_link('schedule-a-tour');
 
         // Parse age range (e.g., "3-4 years" or "12-24 months")
         preg_match('/(\d+)\s*-?\s*(\d+)?\s*(months?|years?)/i', $age_range, $matches);
@@ -607,6 +618,10 @@ class earlystart_Program_Enhancements
                     return;
                 }
 
+                function setAgeMessage(text) {
+                    message.textContent = text;
+                }
+
                 checkAgeButton.addEventListener('click', function () {
                     var birthday = birthdayInput.value;
                     if (!birthday) { alert('Please enter a birthday'); return; }
@@ -628,18 +643,18 @@ class earlystart_Program_Enhancements
 
                     if (ageMonths >= minMonths && ageMonths <= maxMonths) {
                         result.classList.add('bg-green-100');
-                        message.innerHTML = '✅ <strong>Perfect!</strong> Your child is ' + ageText + ' old — ideal for our <?php echo esc_js($program_title); ?> program!';
+                        setAgeMessage('Perfect! Your child is ' + ageText + ' old - ideal for our <?php echo esc_js($program_title); ?> program!');
                         cta.classList.remove('hidden');
                     } else if (ageMonths < minMonths) {
                         result.classList.add('bg-yellow-100');
                         var monthsUntil = minMonths - ageMonths;
-                        message.innerHTML = '🕐 Your child (' + ageText + ') will be eligible in ' + monthsUntil + ' month' + (monthsUntil > 1 ? 's' : '') + '.';
+                        setAgeMessage('Your child (' + ageText + ') will be eligible in ' + monthsUntil + ' month' + (monthsUntil > 1 ? 's' : '') + '.');
                         alt.href = '<?php echo esc_url(earlystart_get_program_archive_url()); ?>';
                         alt.textContent = 'View programs for younger children →';
                         alt.classList.remove('hidden');
                     } else {
                         result.classList.add('bg-yellow-100');
-                        message.innerHTML = '📈 Your child (' + ageText + ') may be ready for an older age group.';
+                        setAgeMessage('Your child (' + ageText + ') may be ready for an older age group.');
                         alt.href = '<?php echo esc_url(earlystart_get_program_archive_url()); ?>';
                         alt.textContent = 'View all programs →';
                         alt.classList.remove('hidden');
