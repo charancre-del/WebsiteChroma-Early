@@ -62,7 +62,8 @@ jQuery(document).ready(function ($) {
             if (response.success && response.data.results) {
                 renderResults(response.data.results);
             } else {
-                $results.html('<p style="color:red; padding:20px;">Error analyzing schema: ' + (response.data.message || 'Unknown error') + '</p>');
+                const message = response.data && response.data.message ? response.data.message : 'Unknown error';
+                $results.html('<p style="color:red; padding:20px;">Error analyzing schema: ' + escapeHtml(message) + '</p>');
             }
         }).fail(function () {
             $loading.hide();
@@ -85,11 +86,12 @@ jQuery(document).ready(function ($) {
             const statusText = item.valid ? (item.warnings.length ? 'Valid with Warnings' : 'Valid') : 'Invalid';
 
             if (!item.valid) hasErrors = true;
+            const safeType = escapeHtml(type);
 
             itemsHtml += `
                 <div class="chroma-schema-item">
                     <div class="chroma-schema-header ${statusClass}" data-index="${item.index}">
-                        <span><strong>${statusIcon} ${type}</strong> <span style="color:#666; font-size:12px;">(${statusText})</span></span>
+                        <span><strong>${statusIcon} ${safeType}</strong> <span style="color:#666; font-size:12px;">(${statusText})</span></span>
                         <span style="font-size:12px; color:#555;">Toggle Details ▼</span>
                     </div>
                     <div class="chroma-schema-details" id="detail-${item.index}">
@@ -106,14 +108,14 @@ jQuery(document).ready(function ($) {
                 // Show Errors
                 if (item.errors && item.errors.length) {
                     itemsHtml += '<h4>Errors</h4><ul class="chroma-error-list">';
-                    item.errors.forEach(e => itemsHtml += `<li>${e}</li>`);
+                    item.errors.forEach(e => itemsHtml += `<li>${escapeHtml(e)}</li>`);
                     itemsHtml += '</ul>';
                 }
 
                 // Show Warnings
                 if (item.warnings && item.warnings.length) {
                     itemsHtml += '<h4>Warnings</h4><ul class="chroma-warning-list">';
-                    item.warnings.forEach(w => itemsHtml += `<li>${w}</li>`);
+                    item.warnings.forEach(w => itemsHtml += `<li>${escapeHtml(w)}</li>`);
                     itemsHtml += '</ul>';
                 }
 
@@ -135,7 +137,7 @@ jQuery(document).ready(function ($) {
             itemsHtml += `
                 <h4>JSON-LD Source</h4>
                 <div class="chroma-json-pre">${escapeHtml(item.raw)}</div>
-                <button class="chroma-copy-btn" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(item.raw)}')); alert('Copied!');">Copy JSON</button>
+                <button class="chroma-copy-btn" type="button" data-copy-json="${encodeURIComponent(item.raw)}">Copy JSON</button>
             `;
 
             itemsHtml += `</div></div>`;
@@ -208,7 +210,7 @@ jQuery(document).ready(function ($) {
                             <h4 style="margin-top:0; color:#2e7d32;">✅ AI Fixed Implementation</h4>
                             <p style="font-size:12px;">Replace the existing schema with this code:</p>
                             <div class="chroma-json-pre" style="max-height:300px; overflow-y:auto;">${escapeHtml(fixed)}</div>
-                            <button class="chroma-copy-btn" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(fixed)}')); alert('Copied!');">Copy Fixed JSON</button>
+                            <button class="chroma-copy-btn" type="button" data-copy-json="${encodeURIComponent(fixed)}">Copy Fixed JSON</button>
                         </div>
                     `);
                     // Open details if closed
@@ -254,7 +256,7 @@ jQuery(document).ready(function ($) {
                         <h4 style="margin-top:0; color:#2e7d32;">✅ AI Fixed Implementation</h4>
                         <p style="font-size:12px;">Replace the existing schema with this code:</p>
                         <div class="chroma-json-pre" style="max-height:300px; overflow-y:auto;">${escapeHtml(fixed)}</div>
-                        <button class="chroma-copy-btn" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(fixed)}')); alert('Copied!');">Copy Fixed JSON</button>
+                        <button class="chroma-copy-btn" type="button" data-copy-json="${encodeURIComponent(fixed)}">Copy Fixed JSON</button>
                     </div>
                 `);
             } else {
@@ -264,6 +266,43 @@ jQuery(document).ready(function ($) {
             btn.prop('disabled', false).text('✨ Auto-Fix with AI');
             alert('Request failed. Check console.');
         });
+    });
+
+    // Copy JSON buttons
+    $(document).on('click', '.chroma-copy-btn[data-copy-json]', function () {
+        const btn = this;
+        const text = decodeURIComponent($(btn).attr('data-copy-json') || '');
+
+        const markCopied = () => {
+            const originalText = btn.textContent;
+            btn.textContent = 'Copied';
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 1500);
+        };
+
+        const fallbackCopy = () => {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                document.execCommand('copy');
+                markCopied();
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        };
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(markCopied).catch(fallbackCopy);
+        } else {
+            fallbackCopy();
+        }
     });
 
     // Toggle Details
@@ -284,7 +323,10 @@ jQuery(document).ready(function ($) {
     });
 
     function escapeHtml(text) {
-        return text
+        let safeText = typeof text === 'string' ? text : JSON.stringify(text ?? '');
+        safeText = typeof safeText === 'string' ? safeText : String(text ?? '');
+
+        return safeText
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
