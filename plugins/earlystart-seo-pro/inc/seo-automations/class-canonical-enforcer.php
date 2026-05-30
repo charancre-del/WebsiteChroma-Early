@@ -127,8 +127,13 @@ class earlystart_Canonical_Enforcer
             return;
         }
         
-        // If Yoast SEO is active, let it handle the canonical to avoid duplicates
-        if (defined('WPSEO_VERSION')) {
+        // Let dedicated SEO plugins handle canonical tags when present to avoid duplicates.
+        if (
+            defined('WPSEO_VERSION')
+            || defined('METASYNC_VERSION')
+            || defined('AIOSEO_VERSION')
+            || defined('RANK_MATH_VERSION')
+        ) {
             return;
         }
         

@@ -198,6 +198,19 @@ function earlystart_get_meta_description_value()
 }
 
 /**
+ * Detect SEO plugins that already emit the plain meta description tag.
+ *
+ * @return bool
+ */
+function earlystart_external_meta_description_owner_active()
+{
+    return defined('METASYNC_VERSION')
+        || defined('WPSEO_VERSION')
+        || defined('AIOSEO_VERSION')
+        || defined('RANK_MATH_VERSION');
+}
+
+/**
  * Output one consistent social/meta set.
  */
 function earlystart_render_social_meta_tags()
@@ -238,7 +251,9 @@ function earlystart_render_social_meta_tags()
     }
 
     echo "\n<!-- EarlyStart Theme SEO Head -->\n";
-    echo '<meta name="description" content="' . esc_attr($description) . '" />' . "\n";
+    if (apply_filters('earlystart_emit_theme_meta_description', !earlystart_external_meta_description_owner_active())) {
+        echo '<meta name="description" content="' . esc_attr($description) . '" />' . "\n";
+    }
 
     echo '<meta property="og:type" content="' . esc_attr($og_type) . '" />' . "\n";
     echo '<meta property="og:title" content="' . esc_attr($title) . '" />' . "\n";
