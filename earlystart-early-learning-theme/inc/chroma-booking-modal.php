@@ -8,7 +8,7 @@
 function earlystart_render_booking_modal() {
     ?>
     <!-- Tour Booking Modal -->
-    <div id="chroma-booking-modal" class="fixed inset-0 z-[1000] hidden" role="dialog" aria-modal="true">
+    <div id="chroma-booking-modal" class="fixed inset-0 z-[1000] hidden" role="dialog" aria-modal="true" aria-labelledby="chroma-booking-title">
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-brand-ink/80 backdrop-blur-sm transition-opacity" id="chroma-booking-backdrop"></div>
 
@@ -16,13 +16,13 @@ function earlystart_render_booking_modal() {
         <div class="absolute inset-4 md:inset-10 bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-fade-in-up">
             <!-- Header -->
             <div class="bg-brand-cream border-b border-brand-ink/5 px-6 py-4 flex items-center justify-between flex-shrink-0">
-                <h3 class="font-serif text-xl font-bold text-brand-ink"><?php _e('Schedule Your Visit', 'earlystart-early-learning'); ?></h3>
+                <h3 id="chroma-booking-title" class="font-serif text-xl font-bold text-brand-ink"><?php _e('Schedule Your Visit', 'earlystart-early-learning'); ?></h3>
                 <div class="flex items-center gap-4">
-                    <a href="#" id="chroma-booking-external" target="_blank" rel="noopener noreferrer"
+                    <a id="chroma-booking-external" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1"
                         class="text-xs font-bold uppercase tracking-wider text-brand-ink/70 hover:text-chroma-blue transition-colors hidden md:block">
                         <?php _e('Open in new tab', 'earlystart-early-learning'); ?> <i class="fa-solid fa-external-link-alt ml-1"></i>
                     </a>
-                    <button id="chroma-booking-close"
+                    <button id="chroma-booking-close" type="button" aria-label="<?php esc_attr_e('Close booking modal', 'earlystart-early-learning'); ?>"
                         class="w-10 h-10 rounded-full bg-white border border-brand-ink/10 flex items-center justify-center text-brand-ink hover:bg-chroma-red hover:text-white hover:border-chroma-red transition-all">
                         <i class="fa-solid fa-xmark text-lg"></i>
                     </button>
@@ -34,7 +34,7 @@ function earlystart_render_booking_modal() {
                 <div id="chroma-booking-loader" class="absolute inset-0 flex items-center justify-center bg-white z-10">
                     <div class="w-12 h-12 border-4 border-chroma-blue/20 border-t-chroma-blue rounded-full animate-spin"></div>
                 </div>
-                <iframe id="chroma-booking-frame" src="" class="w-full h-full border-0"
+                <iframe id="chroma-booking-frame" src="" title="<?php esc_attr_e('Schedule your Chroma Early Start visit', 'earlystart-early-learning'); ?>" class="w-full h-full border-0"
                     allow="camera; microphone; autoplay; encrypted-media;"></iframe>
             </div>
         </div>
@@ -60,13 +60,37 @@ function earlystart_render_booking_modal() {
             const externalLink = document.getElementById('chroma-booking-external');
             const loader = document.getElementById('chroma-booking-loader');
 
+            function isEmbeddableUrl(url) {
+                try {
+                    const parsed = new URL(url, window.location.href);
+                    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            function setExternalLink(url) {
+                if (!externalLink) return;
+
+                if (url && isEmbeddableUrl(url)) {
+                    externalLink.href = url;
+                    externalLink.removeAttribute('aria-disabled');
+                    externalLink.removeAttribute('tabindex');
+                } else {
+                    externalLink.removeAttribute('href');
+                    externalLink.setAttribute('aria-disabled', 'true');
+                    externalLink.setAttribute('tabindex', '-1');
+                }
+            }
+
             function openBooking(url) {
                 if (!modal || !iframe) return;
+                if (!isEmbeddableUrl(url)) return;
                 modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
                 if (loader) loader.classList.remove('hidden');
                 iframe.src = url;
-                if (externalLink) externalLink.href = url;
+                setExternalLink(url);
                 iframe.onload = function () {
                     if (loader) loader.classList.add('hidden');
                 };
@@ -77,6 +101,7 @@ function earlystart_render_booking_modal() {
                 modal.classList.add('hidden');
                 document.body.style.overflow = '';
                 iframe.src = '';
+                setExternalLink('');
             }
 
             // Delegation for any .booking-btn
@@ -97,6 +122,13 @@ function earlystart_render_booking_modal() {
 
             if (closeBtn) closeBtn.addEventListener('click', closeBooking);
             if (backdrop) backdrop.addEventListener('click', closeBooking);
+            if (externalLink) {
+                externalLink.addEventListener('click', function (e) {
+                    if (!externalLink.href || externalLink.getAttribute('aria-disabled') === 'true') {
+                        e.preventDefault();
+                    }
+                });
+            }
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
                     closeBooking();

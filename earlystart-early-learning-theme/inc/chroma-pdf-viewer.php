@@ -38,10 +38,10 @@ function earlystart_pdf_shortcode($atts)
     <div
         class="chroma-pdf-card group relative bg-white rounded-2xl shadow-card overflow-hidden border border-brand-ink/5 hover:-translate-y-1 transition-transform duration-300">
         <!-- Trigger Link -->
-        <a href="#" class="chroma-pdf-trigger absolute inset-0 z-20" data-pdf-url="<?php echo esc_url($args['url']); ?>"
+        <button type="button" class="chroma-pdf-trigger absolute inset-0 z-20 appearance-none bg-transparent border-0 p-0 cursor-pointer" data-pdf-url="<?php echo esc_url($args['url']); ?>"
             data-pdf-title="<?php echo esc_attr($args['title']); ?>"
             aria-label="<?php printf(__('View %s', 'earlystart-early-learning'), esc_attr($args['title'])); ?>">
-        </a>
+        </button>
 
         <!-- Cover/Preview -->
         <div class="h-48 relative overflow-hidden">
@@ -168,7 +168,7 @@ function earlystart_render_pdf_modal()
 
                 <!-- Action Buttons -->
                 <div class="flex items-center gap-2 border-l border-white/10 pl-6 ml-2">
-                    <a href="#" id="chroma-pdf-download" download
+                    <a id="chroma-pdf-download" download aria-disabled="true" tabindex="-1"
                         class="w-10 h-10 rounded-full hover:bg-chroma-blue flex items-center justify-center transition-all text-white/80 hover:text-white"
                         title="Download">
                         <i class="fa-solid fa-download"></i>

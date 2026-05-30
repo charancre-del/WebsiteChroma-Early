@@ -237,7 +237,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (titleSpan) titleSpan.textContent = title || 'Document';
-        if (downloadBtn) downloadBtn.href = url;
+        if (downloadBtn) {
+            downloadBtn.href = url;
+            downloadBtn.removeAttribute('aria-disabled');
+            downloadBtn.removeAttribute('tabindex');
+        }
 
         loadPdfLibrary(function () {
             pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
@@ -256,6 +260,11 @@ document.addEventListener('DOMContentLoaded', function () {
     function closeViewer() {
         modal.classList.add('hidden');
         document.body.style.overflow = '';
+        if (downloadBtn) {
+            downloadBtn.removeAttribute('href');
+            downloadBtn.setAttribute('aria-disabled', 'true');
+            downloadBtn.setAttribute('tabindex', '-1');
+        }
     }
 
     // Event Listeners
@@ -263,6 +272,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (nextBtn) nextBtn.addEventListener('click', onNextPage);
     if (closeBtn) closeBtn.addEventListener('click', closeViewer);
     if (backdrop) backdrop.addEventListener('click', closeViewer);
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function (e) {
+            if (!downloadBtn.href || downloadBtn.getAttribute('aria-disabled') === 'true') {
+                e.preventDefault();
+            }
+        });
+    }
 
     // Keyboard support
     document.addEventListener('keydown', function (e) {
