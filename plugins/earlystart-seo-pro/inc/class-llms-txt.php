@@ -27,12 +27,16 @@ class earlystart_LLMs_Txt_Generator
         // Physical File Generation Hooks
         add_action('admin_init', [$this, 'write_physical_file']); // Force check on admin load
         add_action('save_post', [$this, 'write_physical_file']);
-        add_action('wp_ajax_earlystart_save_llm_targeting', [$this, 'write_physical_file'], 20);
     }
 
     /**
      * Write Physical File
      */
+    public static function refresh_file()
+    {
+        (new self())->write_physical_file();
+    }
+
     public function write_physical_file()
     {
         // Only run if we are in admin or it's an AJAX save

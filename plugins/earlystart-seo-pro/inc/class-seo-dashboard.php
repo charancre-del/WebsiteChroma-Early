@@ -2139,6 +2139,10 @@ class earlystart_SEO_Dashboard
         $key_differentiators = isset($_POST['key_differentiators']) ? array_map('sanitize_text_field', $_POST['key_differentiators']) : [];
         update_post_meta($post_id, 'seo_llm_key_differentiators', $key_differentiators);
 
+        if (class_exists('earlystart_LLMs_Txt_Generator')) {
+            earlystart_LLMs_Txt_Generator::refresh_file();
+        }
+
         wp_send_json_success();
     }
 
