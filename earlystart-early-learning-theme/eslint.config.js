@@ -1,4 +1,4 @@
-export default [
+module.exports = [
     {
         languageOptions: {
             ecmaVersion: 2020,
@@ -17,7 +17,19 @@ export default [
                 fetch: 'readonly',
                 FormData: 'readonly',
                 XMLHttpRequest: 'readonly',
-                alert: 'readonly'
+                alert: 'readonly',
+                confirm: 'readonly',
+                location: 'readonly',
+                navigator: 'readonly',
+                URL: 'readonly',
+                requestAnimationFrame: 'readonly',
+                IntersectionObserver: 'readonly',
+                MutationObserver: 'readonly',
+                lucide: 'readonly',
+                Chart: 'readonly',
+                L: 'readonly',
+                chromaLLM: 'readonly',
+                ChromaInspector: 'readonly'
             }
         },
         rules: {

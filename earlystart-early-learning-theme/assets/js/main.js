@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     try {
       return document.getElementById(decodeURIComponent(hash.slice(1)));
-    } catch (e) {
+    } catch {
       return document.getElementById(hash.slice(1));
     }
   };

@@ -20,7 +20,7 @@
     try {
       const url = new URL(raw, window.location.origin);
       return ['http:', 'https:'].includes(url.protocol) ? url.href : '#';
-    } catch (e) {
+    } catch {
       return '#';
     }
   };
