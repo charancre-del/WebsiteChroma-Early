@@ -15,6 +15,50 @@ if (!defined('ABSPATH')) {
         exit;
 }
 
+if (!function_exists('earlystart_output_schema_override')) {
+function earlystart_output_schema_override($post_id, $source = 'theme-override')
+{
+        $override = get_post_meta($post_id, '_earlystart_schema_override', true);
+        if (!is_string($override) || trim($override) === '') {
+                return false;
+        }
+
+        $raw = trim(wp_unslash($override));
+        if (stripos($raw, '<script') !== false) {
+                if (!preg_match('/<script[^>]*application\/ld\+json[^>]*>(.*?)<\/script>/is', $raw, $matches)) {
+                        return false;
+                }
+
+                $raw = trim($matches[1]);
+        }
+
+        $decoded = json_decode($raw, true);
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+                return false;
+        }
+
+        $items = isset($decoded[0]) && is_array($decoded[0]) ? $decoded : array($decoded);
+        foreach ($items as $schema_item) {
+                if (!is_array($schema_item) || empty($schema_item)) {
+                        continue;
+                }
+
+                if (!isset($schema_item['@context'])) {
+                        $schema_item['@context'] = 'https://schema.org';
+                }
+
+                if (class_exists('earlystart_Schema_Registry') && isset($schema_item['@type'])) {
+                        earlystart_Schema_Registry::register($schema_item, array('source' => $source));
+                        continue;
+                }
+
+                echo '<script type="application/ld+json">' . wp_json_encode($schema_item, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
+        }
+
+        return true;
+}
+}
+
 /**
  * Global Schema Override Handler (for standard pages/posts)
  * Hooks early to catch generic pages that have manual fixes
@@ -28,13 +72,8 @@ function earlystart_general_content_schema() {
     $post_id = get_the_ID();
     if (!$post_id) return;
 
-    $override = get_post_meta($post_id, '_earlystart_schema_override', true);
-    if ($override) {
-        if (strpos($override, '<script') !== false) {
-            echo $override;
-        } else {
-            echo '<script type="application/ld+json">' . $override . '</script>' . "\n";
-        }
+    if (earlystart_output_schema_override($post_id, 'theme-general-override')) {
+        return;
     }
 }
 }
@@ -54,13 +93,7 @@ function earlystart_organization_schema()
         $homepage_id = get_option('page_on_front');
 
         // Check for manual override first
-        $override = get_post_meta($homepage_id, '_earlystart_schema_override', true);
-        if ($override) {
-            if (strpos($override, '<script') !== false) {
-                echo $override;
-            } else {
-                echo '<script type="application/ld+json">' . $override . '</script>' . "\n";
-            }
+        if (earlystart_output_schema_override($homepage_id, 'theme-home-override')) {
             return;
         }
 
@@ -183,14 +216,7 @@ function earlystart_location_schema()
         $location_id = get_the_ID();
         
         // Check for manual override first
-        $override = get_post_meta($location_id, '_earlystart_schema_override', true);
-        if ($override) {
-                // Check if it's already formatted with script tags or raw JSON
-                if (strpos($override, '<script') !== false) {
-                        echo $override; // Already contains script tags
-                } else {
-                        echo '<script type="application/ld+json">' . $override . '</script>';
-                }
+        if (earlystart_output_schema_override($location_id, 'theme-location-override')) {
                 return;
         }
 
@@ -557,13 +583,7 @@ function earlystart_city_schema()
         $post_id = get_the_ID();
         
         // Check for manual override
-        $override = get_post_meta($post_id, '_earlystart_schema_override', true);
-        if ($override) {
-            if (strpos($override, '<script') !== false) {
-                echo $override;
-            } else {
-                echo '<script type="application/ld+json">' . $override . '</script>' . "\n";
-            }
+        if (earlystart_output_schema_override($post_id, 'theme-city-override')) {
             return;
         }
 
@@ -630,13 +650,7 @@ function earlystart_program_schema()
         $program_id = get_the_ID();
         
         // Check for manual override first
-        $override = get_post_meta($program_id, '_earlystart_schema_override', true);
-        if ($override) {
-                if (strpos($override, '<script') !== false) {
-                        echo $override;
-                } else {
-                        echo '<script type="application/ld+json">' . $override . '</script>';
-                }
+        if (earlystart_output_schema_override($program_id, 'theme-program-override')) {
                 return;
         }
 
