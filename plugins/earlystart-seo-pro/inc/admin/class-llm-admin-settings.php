@@ -78,14 +78,38 @@ class earlystart_LLM_Admin_Settings
             'sanitize_callback' => [__CLASS__, 'sanitize_google_places_api_key'],
             'default' => '',
         ]);
-        register_setting('earlystart_llm_settings', 'earlystart_llm_model');
-        register_setting('earlystart_llm_settings', 'earlystart_llm_base_url');
-        register_setting('earlystart_llm_settings', 'earlystart_llm_rate_limit');
-        register_setting('earlystart_llm_settings', 'earlystart_llm_cache_duration');
+        register_setting('earlystart_llm_settings', 'earlystart_llm_model', [
+            'type' => 'string',
+            'sanitize_callback' => [__CLASS__, 'sanitize_llm_model'],
+            'default' => 'gemini-2.0-flash-exp',
+        ]);
+        register_setting('earlystart_llm_settings', 'earlystart_llm_base_url', [
+            'type' => 'string',
+            'sanitize_callback' => [__CLASS__, 'sanitize_llm_base_url'],
+            'default' => 'https://generativelanguage.googleapis.com/v1beta',
+        ]);
+        register_setting('earlystart_llm_settings', 'earlystart_llm_rate_limit', [
+            'type' => 'integer',
+            'sanitize_callback' => [__CLASS__, 'sanitize_rate_limit'],
+            'default' => 60,
+        ]);
+        register_setting('earlystart_llm_settings', 'earlystart_llm_cache_duration', [
+            'type' => 'integer',
+            'sanitize_callback' => [__CLASS__, 'sanitize_cache_duration'],
+            'default' => DAY_IN_SECONDS,
+        ]);
         
         // Organization Settings (migrated from Theme Mods)
-        register_setting('earlystart_llm_settings', 'earlystart_seo_phone');
-        register_setting('earlystart_llm_settings', 'earlystart_seo_email');
+        register_setting('earlystart_llm_settings', 'earlystart_seo_phone', [
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => '',
+        ]);
+        register_setting('earlystart_llm_settings', 'earlystart_seo_email', [
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_email',
+            'default' => '',
+        ]);
 
         // Schema Conflict Settings
         register_setting('earlystart_llm_settings', 'earlystart_faq_schema_disabled', [
@@ -117,6 +141,56 @@ class earlystart_LLM_Admin_Settings
         }
 
         return $input;
+    }
+
+    /**
+     * Sanitize the selected LLM model and restore the Gemini default when blank.
+     *
+     * @param string $input Raw model name.
+     * @return string
+     */
+    public static function sanitize_llm_model($input) {
+        $model = trim(sanitize_text_field(wp_unslash($input)));
+        return $model !== '' ? $model : 'gemini-2.0-flash-exp';
+    }
+
+    /**
+     * Sanitize the LLM endpoint and restore the Gemini default when blank.
+     *
+     * @param string $input Raw endpoint URL.
+     * @return string
+     */
+    public static function sanitize_llm_base_url($input) {
+        $url = trim(esc_url_raw(wp_unslash($input)));
+        return $url !== '' ? rtrim($url, '/') : 'https://generativelanguage.googleapis.com/v1beta';
+    }
+
+    /**
+     * Clamp API rate limit to the range exposed by the admin UI.
+     *
+     * @param mixed $input Raw rate limit.
+     * @return int
+     */
+    public static function sanitize_rate_limit($input) {
+        return max(1, min(1000, absint($input)));
+    }
+
+    /**
+     * Allow only cache durations exposed by the admin UI.
+     *
+     * @param mixed $input Raw duration.
+     * @return int
+     */
+    public static function sanitize_cache_duration($input) {
+        $allowed = [
+            HOUR_IN_SECONDS,
+            12 * HOUR_IN_SECONDS,
+            DAY_IN_SECONDS,
+            WEEK_IN_SECONDS,
+        ];
+        $duration = absint($input);
+
+        return in_array($duration, $allowed, true) ? $duration : DAY_IN_SECONDS;
     }
     
     /**

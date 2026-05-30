@@ -236,18 +236,18 @@ class earlystart_LLM_Client
             update_option(self::API_KEY_OPTION, $encrypted_key);
         }
         if (isset($_POST['model'])) {
-            update_option('earlystart_llm_model', sanitize_text_field($_POST['model']));
+            $model = trim(sanitize_text_field(wp_unslash($_POST['model'])));
+            update_option('earlystart_llm_model', $model !== '' ? $model : 'gemini-2.0-flash-exp');
         }
         if (isset($_POST['base_url'])) {
-            $url = esc_url_raw($_POST['base_url']);
-            // Remove trailing slash for consistency
-            $url = rtrim($url, '/');
+            $url = trim(esc_url_raw(wp_unslash($_POST['base_url'])));
+            $url = $url !== '' ? rtrim($url, '/') : 'https://generativelanguage.googleapis.com/v1beta';
             update_option('earlystart_llm_base_url', $url);
         }
 
-        $debug_msg = 'Key saved.';
+        $debug_msg = 'Settings saved.';
         if (isset($key)) {
-            $debug_msg .= ' Length: ' . strlen($key);
+            $debug_msg .= ' API key updated.';
         }
 
         wp_send_json_success(['message' => $debug_msg]);
@@ -294,8 +294,8 @@ class earlystart_LLM_Client
             wp_send_json_error(['message' => 'Permission denied']);
         }
 
-        $post_id = intval($_POST['post_id']);
-        $schema_type = sanitize_text_field($_POST['schema_type']);
+        $post_id = isset($_POST['post_id']) ? absint(wp_unslash($_POST['post_id'])) : 0;
+        $schema_type = isset($_POST['schema_type']) ? sanitize_text_field(wp_unslash($_POST['schema_type'])) : '';
 
         if (!$post_id || !$schema_type) {
             wp_send_json_error(['message' => 'Missing parameters']);
@@ -864,8 +864,8 @@ class earlystart_LLM_Client
         }
 
         $text = isset($_POST['text']) ? wp_unslash($_POST['text']) : '';
-        $target_lang = sanitize_text_field($_POST['target_lang'] ?? 'es');
-        $context = sanitize_textarea_field($_POST['context'] ?? '');
+        $target_lang = isset($_POST['target_lang']) ? sanitize_text_field(wp_unslash($_POST['target_lang'])) : 'es';
+        $context = isset($_POST['context']) ? sanitize_textarea_field(wp_unslash($_POST['context'])) : '';
 
         if (!$text) {
             wp_send_json_error(['message' => 'No text provided']);
