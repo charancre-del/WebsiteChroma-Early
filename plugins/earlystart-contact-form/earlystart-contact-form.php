@@ -20,7 +20,7 @@ function earlystart_contact_default_fields()
         array('id' => 'first_name', 'label' => 'First Name', 'type' => 'text', 'required' => true, 'width' => 'half', 'placeholder' => 'Jane'),
         array('id' => 'last_name', 'label' => 'Last Name', 'type' => 'text', 'required' => true, 'width' => 'half', 'placeholder' => 'Doe'),
         array('id' => 'email', 'label' => 'Email Address', 'type' => 'email', 'required' => true, 'width' => 'half', 'placeholder' => 'you@example.com'),
-        array('id' => 'phone', 'label' => 'Phone Number', 'type' => 'tel', 'required' => true, 'width' => 'half', 'placeholder' => '(555) 123-4567'),
+        array('id' => 'phone', 'label' => 'Phone Number', 'type' => 'tel', 'required' => true, 'width' => 'half', 'placeholder' => '(404) 905-6775'),
         array('id' => 'preferred_campus', 'label' => 'Preferred Clinic', 'type' => 'select_location', 'required' => false, 'width' => 'half', 'placeholder' => 'Select a clinic...'),
         array('id' => 'topic', 'label' => 'Topic', 'type' => 'select', 'required' => false, 'width' => 'full', 'options' => 'Schedule a Tour, Intake Inquiry, Careers / HR, Clinical Referral, Other Inquiry', 'placeholder' => 'Select a topic...'),
         array('id' => 'message', 'label' => 'Message', 'type' => 'textarea', 'required' => false, 'width' => 'full', 'placeholder' => 'Tell us about your needs...')

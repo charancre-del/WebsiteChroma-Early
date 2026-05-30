@@ -34,6 +34,15 @@ function earlystart_contact_page_meta_boxes() {
 	);
 
 	add_meta_box(
+		'chroma-contact-routing',
+		__( 'Routing Cards', 'earlystart-early-learning' ),
+		'earlystart_contact_routing_meta_box_render',
+		'page',
+		'normal',
+		'default'
+	);
+
+	add_meta_box(
 		'chroma-contact-corporate',
 		__( 'Corporate Office Info', 'earlystart-early-learning' ),
 		'earlystart_contact_corporate_meta_box_render',
@@ -119,6 +128,30 @@ function earlystart_contact_form_meta_box_render( $post ) {
 		</tr>
 	</table>
 	<p class="description">Form functionality can be configured with a contact form plugin (Contact Form 7, Gravity Forms, etc.)</p>
+	<?php
+}
+
+/**
+ * Routing Cards Meta Box
+ */
+function earlystart_contact_routing_meta_box_render( $post ) {
+	wp_nonce_field( 'earlystart_contact_routing_meta', 'earlystart_contact_routing_nonce' );
+
+	$routes = get_post_meta( $post->ID, 'contact_routes_json', true );
+	if ( is_array( $routes ) ) {
+		$routes = wp_json_encode( $routes, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+	}
+	?>
+	<table class="form-table">
+		<tr>
+			<th><label for="contact_routes_json">Routing Cards JSON</label></th>
+			<td>
+				<textarea id="contact_routes_json" name="contact_routes_json"
+						  rows="12" class="large-text code"><?php echo esc_textarea( $routes ); ?></textarea>
+				<p class="description">Each item supports icon, title, desc, link, label, and color (rose, orange, or amber).</p>
+			</td>
+		</tr>
+	</table>
 	<?php
 }
 
@@ -283,6 +316,9 @@ function earlystart_save_contact_page_meta( $post_id ) {
 		'earlystart_contact_form_nonce' => array(
 			'contact_form_submit_text' => 'sanitize_text_field',
 		),
+		'earlystart_contact_routing_nonce' => array(
+			'contact_routes_json' => 'earlystart_contact_sanitize_routes_json',
+		),
 		'earlystart_contact_corporate_nonce' => array(
 			'contact_corporate_title'   => 'sanitize_text_field',
 			'contact_corporate_name'    => 'sanitize_text_field',
@@ -326,6 +362,41 @@ function earlystart_save_contact_page_meta( $post_id ) {
 add_action( 'save_post', 'earlystart_save_contact_page_meta' );
 
 /**
+ * Sanitize contact routing card JSON.
+ */
+function earlystart_contact_sanitize_routes_json( $value ) {
+	$decoded = is_array( $value ) ? $value : json_decode( wp_unslash( (string) $value ), true );
+	if ( ! is_array( $decoded ) ) {
+		return '';
+	}
+
+	$allowed_colors = array( 'rose', 'orange', 'amber' );
+	$routes         = array();
+
+	foreach ( $decoded as $route ) {
+		if ( ! is_array( $route ) ) {
+			continue;
+		}
+
+		$color = sanitize_key( $route['color'] ?? 'rose' );
+		if ( ! in_array( $color, $allowed_colors, true ) ) {
+			$color = 'rose';
+		}
+
+		$routes[] = array(
+			'icon'  => sanitize_key( $route['icon'] ?? 'circle' ),
+			'title' => sanitize_text_field( $route['title'] ?? '' ),
+			'desc'  => sanitize_textarea_field( $route['desc'] ?? '' ),
+			'link'  => esc_url_raw( $route['link'] ?? '' ),
+			'label' => sanitize_text_field( $route['label'] ?? '' ),
+			'color' => $color,
+		);
+	}
+
+	return wp_json_encode( $routes, JSON_UNESCAPED_SLASHES );
+}
+
+/**
  * Seed default values for Contact page
  */
 function earlystart_seed_contact_page_defaults( $post_id ) {
@@ -349,6 +420,35 @@ function earlystart_seed_contact_page_defaults( $post_id ) {
 		'contact_hero_description' => 'Ready to experience the Early Start difference? Schedule a tour or ask us a question below to get started.',
 
 		'contact_form_submit_text' => 'Submit Request',
+		'contact_routes_json'      => wp_json_encode(
+			array(
+				array(
+					'icon'  => 'baby',
+					'title' => 'For Families',
+					'desc'  => 'Find a clinic near you and schedule a tour for ABA, Speech, or OT.',
+					'link'  => '/locations',
+					'label' => 'Find a Clinic',
+					'color' => 'rose',
+				),
+				array(
+					'icon'  => 'briefcase',
+					'title' => 'For Clinicians',
+					'desc'  => 'View our open positions and learn about our culture of burnout prevention.',
+					'link'  => '/careers',
+					'label' => 'View Careers',
+					'color' => 'orange',
+				),
+				array(
+					'icon'  => 'heart-pulse',
+					'title' => 'For Providers',
+					'desc'  => 'Easily refer a client to our clinical team for a comprehensive assessment.',
+					'link'  => '/contact#general-form',
+					'label' => 'Refer a Client',
+					'color' => 'amber',
+				),
+			),
+			JSON_UNESCAPED_SLASHES
+		),
 
 		'contact_corporate_title'   => 'Corporate Office',
 		'contact_corporate_name'    => 'Chroma Early Start HQ',

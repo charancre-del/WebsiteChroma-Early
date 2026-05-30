@@ -44,7 +44,7 @@ function earlystart_build_seed_location_meta(array $location)
         'location_city' => $city,
         'location_state' => $state,
         'location_zip' => $zip,
-        'location_phone' => $location['phone'] ?? '(678) 555-0100',
+        'location_phone' => $location['phone'] ?? (function_exists('earlystart_global_phone') ? earlystart_global_phone() : '(404) 905-6775'),
         'location_email' => $location['email'] ?? 'info@chromaearlystart.com',
         'location_latitude' => $location['latitude'] ?? '',
         'location_longitude' => $location['longitude'] ?? '',

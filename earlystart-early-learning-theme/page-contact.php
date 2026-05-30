@@ -35,6 +35,24 @@ while (have_posts()):
 		array('label' => __('Billing:', 'earlystart-early-learning'), 'email' => function_exists('earlystart_global_billing_email') ? earlystart_global_billing_email() : earlystart_global_email()),
 		array('label' => __('Media:', 'earlystart-early-learning'), 'email' => function_exists('earlystart_global_media_email') ? earlystart_global_media_email() : earlystart_global_email()),
 	);
+	$default_routes = array(
+		array('icon' => 'baby', 'title' => 'For Families', 'desc' => 'Find a clinic near you and schedule a tour for ABA, Speech, or OT.', 'link' => earlystart_get_page_link('locations'), 'label' => 'Find a Clinic', 'color' => 'rose'),
+		array('icon' => 'briefcase', 'title' => 'For Clinicians', 'desc' => 'View our open positions and learn about our culture of burnout prevention.', 'link' => earlystart_get_page_link('careers'), 'label' => 'View Careers', 'color' => 'orange'),
+		array('icon' => 'heart-pulse', 'title' => 'For Providers', 'desc' => 'Easily refer a client to our clinical team for a comprehensive assessment.', 'link' => earlystart_get_page_link('contact') . '#general-form', 'label' => 'Refer a Client', 'color' => 'amber'),
+	);
+	$routes = get_post_meta($page_id, 'contact_routes_json', true);
+	if (is_string($routes) && '' !== trim($routes)) {
+		$decoded_routes = json_decode($routes, true);
+		$routes = is_array($decoded_routes) ? $decoded_routes : array();
+	}
+	if (!is_array($routes) || empty($routes)) {
+		$routes = $default_routes;
+	}
+	$route_color_classes = array(
+		'rose' => array('text' => 'text-rose-500', 'hover_border' => 'hover:border-rose-200', 'hover_text' => 'hover:text-rose-600'),
+		'orange' => array('text' => 'text-orange-500', 'hover_border' => 'hover:border-orange-200', 'hover_text' => 'hover:text-orange-600'),
+		'amber' => array('text' => 'text-amber-500', 'hover_border' => 'hover:border-amber-200', 'hover_text' => 'hover:text-amber-600'),
+	);
 	?>
 
 	<main class="pt-20">
@@ -60,22 +78,22 @@ while (have_posts()):
 				<!-- Routing Grid -->
 				<div class="grid md:grid-cols-3 gap-8">
 					<?php
-					$routes = array(
-						array('icon' => 'baby', 'title' => 'For Families', 'desc' => 'Find a clinic near you and schedule a tour for ABA, Speech, or OT.', 'link' => earlystart_get_page_link('locations'), 'label' => 'Find a Clinic', 'color' => 'rose'),
-						array('icon' => 'briefcase', 'title' => 'For Clinicians', 'desc' => 'View our open positions and learn about our culture of burnout prevention.', 'link' => earlystart_get_page_link('careers'), 'label' => 'View Careers', 'color' => 'orange'),
-						array('icon' => 'heart-pulse', 'title' => 'For Providers', 'desc' => 'Easily refer a client to our clinical team for a comprehensive assessment.', 'link' => earlystart_get_page_link('contact') . '#general-form', 'label' => 'Refer a Client', 'color' => 'amber'),
-					);
-					foreach ($routes as $r): ?>
+					foreach ($routes as $index => $r):
+						$fallback = $default_routes[$index] ?? $default_routes[0];
+						$r = is_array($r) ? array_merge($fallback, $r) : $fallback;
+						$color = isset($route_color_classes[$r['color']]) ? $r['color'] : $fallback['color'];
+						$classes = $route_color_classes[$color];
+						?>
 						<div
 							class="bg-stone-50 p-10 rounded-[2.5rem] border border-stone-100 text-center hover:shadow-lg transition-all group fade-in-up">
 							<div
-								class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 text-<?php echo $r['color']; ?>-500 shadow-sm group-hover:scale-110 transition-transform">
-								<i data-lucide="<?php echo $r['icon']; ?>" class="w-8 h-8"></i>
+								class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 <?php echo esc_attr($classes['text']); ?> shadow-sm group-hover:scale-110 transition-transform">
+								<i data-lucide="<?php echo esc_attr($r['icon']); ?>" class="w-8 h-8"></i>
 							</div>
 							<h3 class="text-2xl font-bold text-stone-900 mb-4"><?php echo esc_html($r['title']); ?></h3>
 							<p class="text-stone-700 text-sm leading-relaxed mb-8"><?php echo esc_html($r['desc']); ?></p>
 							<a href="<?php echo esc_url($r['link']); ?>"
-								class="inline-block w-full py-4 bg-white border border-stone-200 text-stone-900 font-bold rounded-xl hover:border-<?php echo $r['color']; ?>-200 hover:text-<?php echo $r['color']; ?>-600 transition-all text-sm">
+								class="inline-block w-full py-4 bg-white border border-stone-200 text-stone-900 font-bold rounded-xl <?php echo esc_attr($classes['hover_border'] . ' ' . $classes['hover_text']); ?> transition-all text-sm">
 								<?php echo esc_html($r['label']); ?>
 							</a>
 						</div>
@@ -187,7 +205,7 @@ while (have_posts()):
 												class="block text-sm font-bold text-stone-700 mb-2"><?php _e('Phone', 'earlystart-early-learning'); ?></label>
 											<input type="tel"
 												class="w-full px-5 py-4 rounded-2xl border border-stone-200 focus:border-rose-500 outline-none bg-stone-50/30 transition-all"
-												placeholder="(555) 555-5555" required>
+												placeholder="(404) 905-6775" required>
 										</div>
 										<div>
 											<label

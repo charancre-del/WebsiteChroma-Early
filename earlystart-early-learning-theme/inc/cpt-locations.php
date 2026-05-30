@@ -651,7 +651,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 			<div class="chroma-meta-field">
 				<label for="location_phone"><?php _e('Phone', 'earlystart-early-learning'); ?></label>
 				<input type="text" id="location_phone" name="location_phone" value="<?php echo esc_attr($phone); ?>"
-					placeholder="(770) 555-1234" />
+					placeholder="(404) 905-6775" />
 			</div>
 
 			<div class="chroma-meta-field">

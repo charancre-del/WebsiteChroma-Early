@@ -114,7 +114,7 @@ function earlystart_schema_organization_meta_box( $post ) {
 			<td>
 				<input type="tel" id="schema_org_telephone" name="schema_org_telephone"
 				       value="<?php echo esc_attr( $telephone ); ?>" class="regular-text" />
-				<p class="description">Format: +1-555-555-5555</p>
+				<p class="description">Format: +1-404-905-6775</p>
 			</td>
 		</tr>
 		<tr>

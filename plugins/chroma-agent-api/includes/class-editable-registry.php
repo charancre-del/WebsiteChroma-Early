@@ -853,6 +853,7 @@ class Editable_Registry
             'consultation_hero_heading',
             'consultation_hero_subheading',
             'consultation_form_intro',
+            'contact_routes_json',
             'faq_hero_eyebrow',
             'faq_hero_heading',
             'faq_hero_highlight',

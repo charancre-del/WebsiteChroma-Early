@@ -526,7 +526,7 @@ class earlystart_LLM_Client
         $prompt .= "=== VALIDATION RULES ===\n";
         $prompt .= "- URLs must start with https://\n";
         $prompt .= "- Dates must be ISO 8601 format (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS)\n";
-        $prompt .= "- Telephone should include area code (e.g., 770-555-0123)\n";
+        $prompt .= "- Telephone should include area code (e.g., 404-905-6775)\n";
         if ($schema_type === 'LocalBusiness' || $schema_type === 'MedicalClinic' || $schema_type === 'MedicalBusiness') {
             $prompt .= "- priceRange should be $, $$, or $$$\n";
             $prompt .= "- geo coordinates must be valid lat/lng decimals\n";

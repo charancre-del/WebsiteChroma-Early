@@ -72,7 +72,7 @@ function earlystart_footer_customizer_settings($wp_customize)
 		'section' => 'earlystart_footer_settings',
 		'type' => 'text',
 		'input_attrs' => array(
-			'placeholder' => '(404) 555-1234',
+			'placeholder' => '(404) 905-6775',
 		),
 	));
 
