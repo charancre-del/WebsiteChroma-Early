@@ -25,7 +25,8 @@ class earlystart_Accessibility_SEO
      * Add skip navigation link
      */
     public function add_skip_nav() {
-        if (!get_option('earlystart_seo_enable_skip_nav', true)) {
+        // The bundled theme already renders a skip link in header.php.
+        if (defined('earlystart_THEME_DIR') || !get_option('earlystart_seo_enable_skip_nav', true)) {
             return;
         }
         
@@ -112,11 +113,7 @@ class earlystart_Accessibility_SEO
         $content = preg_replace_callback(
             '/<a([^>]+)href=["\'](https?:\/\/(?!' . preg_quote(parse_url(home_url(), PHP_URL_HOST), '/') . ')[^"\']+)["\']([^>]*)>/i',
             function($matches) {
-                // Check if already has aria-label
-                if (stripos($matches[0], 'aria-label') !== false) {
-                    return $matches[0];
-                }
-                return '<a' . $matches[1] . 'href="' . $matches[2] . '"' . $matches[3] . ' aria-label="Opens in new window" rel="noopener">';
+                return $this->enhance_external_link($matches);
             },
             $content
         );
@@ -144,6 +141,47 @@ class earlystart_Accessibility_SEO
         );
         
         return $content;
+    }
+
+    /**
+     * Add safe external-link attributes without clobbering existing metadata.
+     */
+    private function enhance_external_link($matches) {
+        $tag = $matches[0];
+        $attributes = $matches[1] . 'href="' . esc_url($matches[2]) . '"' . $matches[3];
+
+        if (stripos($tag, 'aria-label') === false) {
+            $opens_new_window = (bool) preg_match('/\starget=(["\'])_blank\1/i', $tag);
+            $label = $opens_new_window ? 'External link, opens in new window' : 'External link';
+            $attributes .= ' aria-label="' . esc_attr($label) . '"';
+        }
+
+        $attributes = $this->ensure_noopener_rel($attributes);
+
+        return '<a' . $attributes . '>';
+    }
+
+    /**
+     * Merge noopener into rel instead of emitting duplicate rel attributes.
+     */
+    private function ensure_noopener_rel($attributes) {
+        if (!preg_match('/\srel=(["\'])(.*?)\1/i', $attributes, $rel_match)) {
+            return rtrim($attributes) . ' rel="noopener"';
+        }
+
+        $tokens = preg_split('/\s+/', trim($rel_match[2]));
+        $tokens = array_values(array_filter($tokens, static function($token) {
+            return $token !== '';
+        }));
+        $lower_tokens = array_map('strtolower', $tokens);
+
+        if (!in_array('noopener', $lower_tokens, true)) {
+            $tokens[] = 'noopener';
+        }
+
+        $replacement = ' rel=' . $rel_match[1] . esc_attr(implode(' ', $tokens)) . $rel_match[1];
+
+        return preg_replace('/\srel=(["\'])(.*?)\1/i', $replacement, $attributes, 1);
     }
     
     /**
