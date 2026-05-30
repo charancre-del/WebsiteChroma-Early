@@ -3,7 +3,7 @@
  * Plugin Name: Early Start SEO Pro
  * Plugin URI:  https://earlystart.com
  * Description: Advanced AI-powered Schema validation, automated fixes, and SEO enhancements for Early Start.
- * Version:     1.0.1
+ * Version:     1.0.2
  * Author:      Early Start Development Team
  * Text Domain: earlystart-seo-pro
  * License:     GPLv2 or later
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define Constants
-define('EARLYSTART_SEO_VERSION', '1.0.1');
+define('EARLYSTART_SEO_VERSION', '1.0.2');
 define('EARLYSTART_SEO_PATH', plugin_dir_path(__FILE__));
 define('EARLYSTART_SEO_URL', plugin_dir_url(__FILE__));
 

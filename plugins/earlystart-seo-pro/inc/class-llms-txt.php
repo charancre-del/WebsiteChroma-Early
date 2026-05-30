@@ -14,6 +14,8 @@ if (!defined('ABSPATH')) {
 
 class earlystart_LLMs_Txt_Generator
 {
+    const CONTENT_SCHEMA_VERSION = '2';
+
     /**
      * Init hooks
      */
@@ -40,12 +42,12 @@ class earlystart_LLMs_Txt_Generator
     }
 
     /**
-     * Refresh the root llms.txt once per plugin version so deployed generator fixes
+     * Refresh the root llms.txt once per generator signature so deployed fixes
      * are not hidden behind an older physical file until the next admin visit.
      */
     public function maybe_refresh_physical_file()
     {
-        $target_version = defined('EARLYSTART_SEO_VERSION') ? EARLYSTART_SEO_VERSION : 'unknown';
+        $target_version = $this->get_generation_signature();
         $file_path = ABSPATH . 'llms.txt';
 
         if (get_option('earlystart_llms_txt_generated_version') === $target_version && file_exists($file_path)) {
@@ -61,6 +63,18 @@ class earlystart_LLMs_Txt_Generator
         if ($this->write_physical_file(true)) {
             update_option('earlystart_llms_txt_generated_version', $target_version, false);
         }
+    }
+
+    private function get_generation_signature()
+    {
+        $plugin_version = defined('EARLYSTART_SEO_VERSION') ? EARLYSTART_SEO_VERSION : 'unknown';
+        $generator_mtime = @filemtime(__FILE__);
+
+        return implode(':', [
+            $plugin_version,
+            'llms-v' . self::CONTENT_SCHEMA_VERSION,
+            $generator_mtime ? (string) $generator_mtime : 'unknown',
+        ]);
     }
 
     public function write_physical_file($context = false)
