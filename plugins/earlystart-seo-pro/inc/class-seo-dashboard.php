@@ -41,6 +41,7 @@ class earlystart_SEO_Dashboard
         add_action('wp_ajax_earlystart_run_link_analysis', [$this, 'ajax_run_link_analysis']);
         add_action('wp_ajax_earlystart_schema_cleanup_scan', [$this, 'ajax_schema_cleanup_scan']);
         add_action('wp_ajax_earlystart_schema_cleanup_execute', [$this, 'ajax_schema_cleanup_execute']);
+        add_action('wp_ajax_earlystart_check_live_registry', [$this, 'ajax_check_live_registry']);
         add_action('rest_api_init', [$this, 'register_rest_routes']);
         add_action('admin_init', [$this, 'register_settings']);
         add_action('transition_post_status', [$this, 'auto_validate_on_publish'], 10, 3);

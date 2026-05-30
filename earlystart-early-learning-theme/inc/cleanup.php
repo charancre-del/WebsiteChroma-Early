@@ -128,13 +128,17 @@ function chroma_disable_emojis_dns_prefetch($urls, $relation_type)
 function chroma_enforce_canonical()
 {
         if (is_singular()) {
-                $canonical_url = get_permalink();
+                $canonical_url = get_permalink(get_queried_object_id());
         } elseif (is_front_page()) {
                 $canonical_url = home_url('/');
         } elseif (is_category() || is_tag() || is_tax()) {
                 $canonical_url = get_term_link(get_queried_object());
         } elseif (is_post_type_archive()) {
-                $canonical_url = get_post_type_archive_link(get_query_var('post_type'));
+                $post_type = get_query_var('post_type');
+                if (is_array($post_type)) {
+                        $post_type = reset($post_type);
+                }
+                $canonical_url = $post_type ? get_post_type_archive_link($post_type) : false;
         } else {
                 $canonical_url = home_url($_SERVER['REQUEST_URI']);
         }

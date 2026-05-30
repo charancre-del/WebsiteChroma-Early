@@ -54,6 +54,12 @@ function earlystart_normalize_internal_url($url)
     $legacy_map = array(
         '/programs/aba' => '/programs/aba-therapy/',
         '/programs/speech' => '/programs/speech-therapy/',
+        '/about-us' => '/about/',
+        '/approach' => '/our-approach/',
+        '/families' => '/parents/',
+        '/for-families' => '/parents/',
+        '/privacy-policy' => '/privacy/',
+        '/schedule-a-tour' => '/schedule-tour/',
     );
 
     if (isset($legacy_map[$path_no_slash])) {
@@ -222,24 +228,28 @@ function earlystart_get_page_link($name)
 {
     // Define common aliases for pages that may have changed slugs
     $aliases = array(
-        'about' => 'about-us',
-        'about-us' => 'about-us',
+        'about' => 'about',
+        'about-us' => 'about',
+        'approach' => 'our-approach',
+        'our-approach' => 'our-approach',
         'contact' => 'contact',
         'contact-us' => 'contact', // Map legacy to new
-        'consultation' => 'contact',
-        'schedule-a-tour' => 'contact',
+        'consultation' => 'consultation',
+        'schedule-a-tour' => 'schedule-tour',
+        'schedule-tour' => 'schedule-tour',
         'locations' => 'locations',
         'location' => 'locations',
         'services' => 'programs',
         'service' => 'programs',
         'programs' => 'programs',
         'program' => 'programs',
-        'families' => 'for-families',
-        'parents' => 'for-families',
-        'for-families' => 'for-families',
+        'families' => 'parents',
+        'parents' => 'parents',
+        'for-families' => 'parents',
         'careers' => 'careers',
         'faq' => 'faq',
-        'privacy-policy' => 'privacy-policy',
+        'privacy' => 'privacy',
+        'privacy-policy' => 'privacy',
         'terms' => 'terms',
         'terms-of-use' => 'terms',
         'hipaa' => 'hipaa',
@@ -258,6 +268,97 @@ function earlystart_get_page_link($name)
 
     return earlystart_smart_link($slug);
 }
+
+/**
+ * Redirect legacy or expected public slugs to the canonical CMS page slugs.
+ *
+ * These redirects keep public links healthy even when menus, templates, or API
+ * clients use older names such as /families/ or /approach/.
+ */
+function earlystart_redirect_legacy_public_slugs()
+{
+    if (is_admin() || wp_doing_ajax()) {
+        return;
+    }
+
+    $method = isset($_SERVER['REQUEST_METHOD']) ? strtoupper((string) $_SERVER['REQUEST_METHOD']) : 'GET';
+    if (!in_array($method, array('GET', 'HEAD'), true)) {
+        return;
+    }
+
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '';
+    $path = wp_parse_url($request_uri, PHP_URL_PATH);
+    $path = '/' . trim((string) $path, '/');
+
+    $redirects = array(
+        '/about-us' => 'about',
+        '/approach' => 'our-approach',
+        '/families' => 'parents',
+        '/for-families' => 'parents',
+        '/privacy-policy' => 'privacy',
+        '/schedule-a-tour' => 'schedule-tour',
+    );
+
+    if (!isset($redirects[$path])) {
+        return;
+    }
+
+    $target = earlystart_smart_link($redirects[$path]);
+    if (!$target) {
+        return;
+    }
+
+    $current = home_url($path . '/');
+    if (untrailingslashit($current) === untrailingslashit($target)) {
+        return;
+    }
+
+    wp_safe_redirect($target, 301);
+    exit;
+}
+add_action('template_redirect', 'earlystart_redirect_legacy_public_slugs', 1);
+
+/**
+ * Render expected legal pages from theme templates if the CMS page is missing.
+ *
+ * This protects footer/privacy links from becoming hard 404s when seed content
+ * has not been run on an environment yet.
+ *
+ * @param string $template Current template path.
+ * @return string
+ */
+function earlystart_expected_page_template_fallback($template)
+{
+    if (!is_404()) {
+        return $template;
+    }
+
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '';
+    $path = trim((string) wp_parse_url($request_uri, PHP_URL_PATH), '/');
+
+    $fallbacks = array(
+        'hipaa' => 'page-hipaa.php',
+    );
+
+    if (empty($fallbacks[$path])) {
+        return $template;
+    }
+
+    $fallback_template = trailingslashit(get_template_directory()) . $fallbacks[$path];
+    if (!file_exists($fallback_template)) {
+        return $template;
+    }
+
+    global $wp_query;
+    if ($wp_query instanceof WP_Query) {
+        $wp_query->is_404 = false;
+        $wp_query->is_page = true;
+    }
+
+    status_header(200);
+    return $fallback_template;
+}
+add_filter('template_include', 'earlystart_expected_page_template_fallback', 20);
 
 /**
  * Shortcode for dynamic links in content

@@ -120,7 +120,7 @@ function earlystart_seo_headers() {
     
     // Canonical Link Header
     if (is_singular()) {
-        $link = get_permalink();
+        $link = get_permalink(get_queried_object_id());
         if ($link) {
             header("Link: <$link>; rel=\"canonical\"", false);
         }

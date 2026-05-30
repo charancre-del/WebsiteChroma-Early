@@ -50,9 +50,13 @@ class earlystart_Canonical_Enforcer
         } elseif (is_front_page()) {
             $url = home_url('/');
         } elseif (is_singular()) {
-            $url = get_permalink();
+            $url = get_permalink(get_queried_object_id());
         } elseif (is_post_type_archive()) {
-            $url = get_post_type_archive_link(get_post_type());
+            $post_type = get_query_var('post_type');
+            if (is_array($post_type)) {
+                $post_type = reset($post_type);
+            }
+            $url = $post_type ? get_post_type_archive_link($post_type) : $url;
         } elseif (is_category()) {
             $url = get_category_link(get_queried_object_id());
         } elseif (is_tag()) {
