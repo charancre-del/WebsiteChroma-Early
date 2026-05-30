@@ -36,17 +36,17 @@ function earlystart_register_program_cpt()
 		'public' => true,
 		'menu_position' => 20,
 		'menu_icon' => 'dashicons-welcome-learn-more',
-		'has_archive' => $program_slug,
+		'has_archive' => false,
 		'rewrite' => array('slug' => $program_slug, 'with_front' => false),
 		'show_in_rest' => true,
 	);
 
 	register_post_type('program', $args);
 
-	// Self-healing: Flush rewrite rules if slug changed or first run. v2 = forces new flush.
-	if (get_option('earlystart_program_rewrite_flushed') !== 'v2') {
+	// Self-healing: Flush rewrite rules if slug or archive ownership changes.
+	if (get_option('earlystart_program_rewrite_flushed') !== 'v3') {
 		flush_rewrite_rules();
-		update_option('earlystart_program_rewrite_flushed', 'v2');
+		update_option('earlystart_program_rewrite_flushed', 'v3');
 	}
 }
 add_action('init', 'earlystart_register_program_cpt', 0);

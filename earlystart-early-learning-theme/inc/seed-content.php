@@ -419,6 +419,7 @@ function earlystart_seed_core_content()
         ),
         'about' => array('title' => 'About Us', 'template' => 'page-about.php', 'meta' => $about_meta),
         'our-approach' => array('title' => 'Our Approach', 'template' => 'page-approach.php'),
+        'programs' => array('title' => 'Programs', 'template' => 'page-programs.php'),
         'services' => array('title' => 'Services', 'template' => 'page-programs.php'),
         'locations' => array('title' => 'Locations', 'template' => 'page-locations.php'),
         'curriculum' => array('title' => 'Curriculum', 'template' => 'page-curriculum.php', 'meta' => $curriculum_meta),

@@ -33,12 +33,17 @@ function earlystart_register_location_cpt()
 		'public' => true,
 		'menu_position' => 21,
 		'menu_icon' => 'dashicons-location',
-		'has_archive' => 'locations',
+		'has_archive' => false,
 		'rewrite' => array('slug' => 'locations'),
 		'show_in_rest' => true,
 	);
 
 	register_post_type('location', $args);
+
+	if (get_option('earlystart_location_rewrite_flushed') !== 'v2') {
+		flush_rewrite_rules();
+		update_option('earlystart_location_rewrite_flushed', 'v2');
+	}
 }
 add_action('init', 'earlystart_register_location_cpt', 0);
 

@@ -56,6 +56,7 @@ function earlystart_normalize_internal_url($url)
         '/programs/speech' => '/programs/speech-therapy/',
         '/about-us' => '/about/',
         '/approach' => '/our-approach/',
+        '/methodology' => '/our-approach/',
         '/families' => '/parents/',
         '/for-families' => '/parents/',
         '/privacy-policy' => '/privacy/',
@@ -231,6 +232,7 @@ function earlystart_get_page_link($name)
         'about' => 'about',
         'about-us' => 'about',
         'approach' => 'our-approach',
+        'methodology' => 'our-approach',
         'our-approach' => 'our-approach',
         'contact' => 'contact',
         'contact-us' => 'contact', // Map legacy to new
@@ -293,6 +295,7 @@ function earlystart_redirect_legacy_public_slugs()
     $redirects = array(
         '/about-us' => 'about',
         '/approach' => 'our-approach',
+        '/methodology' => 'our-approach',
         '/families' => 'parents',
         '/for-families' => 'parents',
         '/privacy-policy' => 'privacy',
@@ -337,6 +340,11 @@ function earlystart_expected_page_template_fallback($template)
     $path = trim((string) wp_parse_url($request_uri, PHP_URL_PATH), '/');
 
     $fallbacks = array(
+        'programs' => 'page-programs.php',
+        'locations' => 'page-locations.php',
+        'privacy' => 'page-privacy.php',
+        'privacy-policy' => 'page-privacy.php',
+        'terms' => 'page-terms.php',
         'hipaa' => 'page-hipaa.php',
     );
 
@@ -353,6 +361,9 @@ function earlystart_expected_page_template_fallback($template)
     if ($wp_query instanceof WP_Query) {
         $wp_query->is_404 = false;
         $wp_query->is_page = true;
+        $wp_query->is_singular = true;
+        $wp_query->queried_object = null;
+        $wp_query->queried_object_id = 0;
     }
 
     status_header(200);
