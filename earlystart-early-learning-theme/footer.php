@@ -23,15 +23,15 @@
 				$footer_secondary_line = isset($header_lines[1]) ? trim($header_lines[1]) : '';
 				$footer_contact_title = earlystart_get_theme_mod('earlystart_footer_contact_title', __('Contact Admissions', 'earlystart-early-learning'));
 				$footer_contact_phone = trim((string) earlystart_get_theme_mod('earlystart_footer_phone', ''));
-				if ('' === $footer_contact_phone) {
+				if ('' === $footer_contact_phone || earlystart_is_placeholder_global_setting('earlystart_footer_phone', $footer_contact_phone)) {
 					$footer_contact_phone = earlystart_global_phone();
 				}
 				$footer_contact_email = trim((string) earlystart_get_theme_mod('earlystart_footer_email', ''));
-				if ('' === $footer_contact_email) {
+				if ('' === $footer_contact_email || earlystart_is_placeholder_global_setting('earlystart_footer_email', $footer_contact_email)) {
 					$footer_contact_email = earlystart_global_email();
 				}
 				$footer_contact_address = trim((string) earlystart_get_theme_mod('earlystart_footer_address', ''));
-				if ('' === $footer_contact_address) {
+				if ('' === $footer_contact_address || earlystart_is_placeholder_global_setting('earlystart_footer_address', $footer_contact_address)) {
 					$footer_contact_address = earlystart_global_full_address();
 				}
 				$footer_contact_hours = earlystart_get_theme_mod('earlystart_footer_hours', __('Mon - Fri: 8:00 AM - 5:00 PM', 'earlystart-early-learning'));

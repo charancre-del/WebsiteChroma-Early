@@ -12,6 +12,48 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Keep demo contact placeholders from being saved as public footer overrides.
+ */
+function earlystart_sanitize_footer_phone($value)
+{
+	$value = sanitize_text_field($value);
+
+	if (function_exists('earlystart_is_placeholder_global_setting') && earlystart_is_placeholder_global_setting('earlystart_footer_phone', $value)) {
+		return '';
+	}
+
+	return $value;
+}
+
+/**
+ * Keep old intake/demo emails from being saved as public footer overrides.
+ */
+function earlystart_sanitize_footer_email($value)
+{
+	$value = sanitize_email($value);
+
+	if (function_exists('earlystart_is_placeholder_global_setting') && earlystart_is_placeholder_global_setting('earlystart_footer_email', $value)) {
+		return '';
+	}
+
+	return $value;
+}
+
+/**
+ * Keep fake demo addresses from being saved as public footer overrides.
+ */
+function earlystart_sanitize_footer_address($value)
+{
+	$value = sanitize_textarea_field($value);
+
+	if (function_exists('earlystart_is_placeholder_global_setting') && earlystart_is_placeholder_global_setting('earlystart_footer_address', $value)) {
+		return '';
+	}
+
+	return $value;
+}
+
+/**
  * Register Footer Customizer Settings
  */
 function earlystart_footer_customizer_settings($wp_customize)
@@ -62,7 +104,7 @@ function earlystart_footer_customizer_settings($wp_customize)
 	// Phone Number
 	$wp_customize->add_setting('earlystart_footer_phone', array(
 		'default' => '',
-		'sanitize_callback' => 'sanitize_text_field',
+		'sanitize_callback' => 'earlystart_sanitize_footer_phone',
 		'transport' => 'refresh',
 	));
 
@@ -79,7 +121,7 @@ function earlystart_footer_customizer_settings($wp_customize)
 	// Email Address
 	$wp_customize->add_setting('earlystart_footer_email', array(
 		'default' => '',
-		'sanitize_callback' => 'sanitize_email',
+		'sanitize_callback' => 'earlystart_sanitize_footer_email',
 		'transport' => 'refresh',
 	));
 
@@ -110,7 +152,7 @@ function earlystart_footer_customizer_settings($wp_customize)
 	// Address
 	$wp_customize->add_setting('earlystart_footer_address', array(
 		'default' => '',
-		'sanitize_callback' => 'sanitize_textarea_field',
+		'sanitize_callback' => 'earlystart_sanitize_footer_address',
 		'transport' => 'refresh',
 	));
 

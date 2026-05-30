@@ -80,7 +80,13 @@ function earlystart_is_placeholder_global_setting($key, $value)
                         || false !== strpos($email, 'earlystarttherapy.com');
         }
 
-        if (in_array($key, array('global_address', 'global_city', 'global_state', 'global_zip'), true)) {
+        if (
+                in_array($key, array('global_address', 'global_city', 'global_state', 'global_zip'), true)
+                || false !== strpos($key, 'address')
+                || false !== strpos($key, 'city')
+                || false !== strpos($key, 'state')
+                || false !== strpos($key, 'zip')
+        ) {
                 $normalized = strtolower($value);
                 return false !== strpos($normalized, '123 wellness blvd')
                         || false !== strpos($normalized, 'therapy city')
