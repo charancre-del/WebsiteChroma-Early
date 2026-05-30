@@ -31,6 +31,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
+  const getHashTarget = (hash) => {
+    if (!hash || hash === '#') return null;
+
+    try {
+      return document.getElementById(decodeURIComponent(hash.slice(1)));
+    } catch (e) {
+      return document.getElementById(hash.slice(1));
+    }
+  };
+
   /**
    * Mobile Nav Toggle
    */
@@ -523,7 +533,7 @@ document.addEventListener('DOMContentLoaded', function () {
    * Parent Reviews Carousel
    */
   const reviewsCarousel = document.querySelector('[data-reviews-carousel]');
-  if (reviewsCarousel) {
+  if (reviewsCarousel && reviewsCarousel.querySelector('[data-reviews-track]') && reviewsCarousel.querySelectorAll('[data-review-slide]').length) {
     const track = reviewsCarousel.querySelector('[data-reviews-track]');
     const dots = reviewsCarousel.querySelectorAll('[data-review-dot]');
     const prevBtn = reviewsCarousel.querySelector('[data-review-prev]');
@@ -638,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const targetId = this.getAttribute('href');
       if (targetId === '#') return;
 
-      const targetElement = document.querySelector(targetId);
+      const targetElement = getHashTarget(targetId);
       if (targetElement) {
         e.preventDefault();
         targetElement.scrollIntoView({ behavior: 'smooth' });
@@ -649,7 +659,7 @@ document.addEventListener('DOMContentLoaded', function () {
    * Location Hero Carousel
    */
   const locationCarousel = document.querySelector('[data-location-carousel]');
-  if (locationCarousel) {
+  if (locationCarousel && locationCarousel.querySelector('[data-location-carousel-track]') && locationCarousel.querySelectorAll('[data-location-slide]').length) {
     const track = locationCarousel.querySelector('[data-location-carousel-track]');
     const slides = locationCarousel.querySelectorAll('[data-location-slide]');
     const prevBtn = locationCarousel.querySelector('[data-location-prev]');

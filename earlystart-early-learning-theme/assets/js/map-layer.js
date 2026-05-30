@@ -10,6 +10,21 @@
       .replace(/\"/g, '&quot;')
       .replace(/'/g, '&#39;');
 
+  const sanitizeUrl = (value) => {
+    const raw = String(value || '#').trim();
+
+    if (raw.startsWith('/') || raw.startsWith('#')) {
+      return raw;
+    }
+
+    try {
+      const url = new URL(raw, window.location.origin);
+      return ['http:', 'https:'].includes(url.protocol) ? url.href : '#';
+    } catch (e) {
+      return '#';
+    }
+  };
+
   const getPopupLabel = () => {
     if (!window.chromaData) {
       return 'View clinic';
@@ -85,7 +100,7 @@
 
       const name = escapeHtml(location.name);
       const city = escapeHtml(location.city);
-      const url = String(location.url || '#');
+      const url = escapeHtml(sanitizeUrl(location.url));
 
       const popupContent = `
         <div class=\"text-center p-2\">
