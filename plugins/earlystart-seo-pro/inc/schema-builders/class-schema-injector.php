@@ -512,15 +512,20 @@ class earlystart_Schema_Injector
         }
 
         // Aggregate Rating
-        $rating = get_post_meta($location_id, 'location_google_rating', true);
-        $review_count = get_post_meta($location_id, 'seo_llm_rating_count', true);
+        $rating = get_post_meta($location_id, 'seo_llm_aggregate_rating_value', true)
+            ?: get_post_meta($location_id, 'seo_llm_rating_value', true)
+            ?: get_post_meta($location_id, 'location_google_rating', true);
+        $review_count = get_post_meta($location_id, 'seo_llm_aggregate_rating_count', true)
+            ?: get_post_meta($location_id, 'seo_llm_rating_count', true);
+        $best_rating = get_post_meta($location_id, 'seo_llm_aggregate_rating_best', true) ?: '5';
+        $worst_rating = get_post_meta($location_id, 'seo_llm_aggregate_rating_worst', true) ?: '1';
         if ($rating) {
             $schema['aggregateRating'] = [
                 '@type' => 'AggregateRating',
                 'ratingValue' => $rating,
                 'reviewCount' => $review_count ?: '1',
-                'bestRating' => '5',
-                'worstRating' => '1'
+                'bestRating' => $best_rating,
+                'worstRating' => $worst_rating
             ];
         }
 

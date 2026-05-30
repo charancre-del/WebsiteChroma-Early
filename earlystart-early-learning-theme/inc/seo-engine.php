@@ -482,16 +482,21 @@ function earlystart_location_schema()
         }
 
         // Reviews (Aggregate Rating)
-        $rating_value = get_post_meta($location_id, 'seo_llm_rating_value', true) ?: get_post_meta($location_id, 'location_google_rating', true);
-        $rating_count = get_post_meta($location_id, 'seo_llm_rating_count', true);
+        $rating_value = get_post_meta($location_id, 'seo_llm_aggregate_rating_value', true)
+                ?: get_post_meta($location_id, 'seo_llm_rating_value', true)
+                ?: get_post_meta($location_id, 'location_google_rating', true);
+        $rating_count = get_post_meta($location_id, 'seo_llm_aggregate_rating_count', true)
+                ?: get_post_meta($location_id, 'seo_llm_rating_count', true);
+        $rating_best = get_post_meta($location_id, 'seo_llm_aggregate_rating_best', true) ?: '5';
+        $rating_worst = get_post_meta($location_id, 'seo_llm_aggregate_rating_worst', true) ?: '1';
 
         if ($rating_value) {
                 $schema['aggregateRating'] = array(
                         '@type' => 'AggregateRating',
                         'ratingValue' => $rating_value,
                         'reviewCount' => $rating_count ?: '1', // Fallback to 1 if count missing but rating exists
-                        'bestRating' => '5',
-                        'worstRating' => '1'
+                        'bestRating' => $rating_best,
+                        'worstRating' => $rating_worst
                 );
         }
 

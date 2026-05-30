@@ -922,11 +922,11 @@ class Editable_Registry
             return 'integer';
         }
 
-        if (preg_match('/(enabled|disabled|lazy_load|alerts|canonical|slash|markup|publish|show_|enable_|featured|rated)/', $key)) {
+        if (preg_match('/(enabled|disabled|lazy_load|alerts|canonical|slash|markup|publish|show_|enable_|featured|rated|accepted|security_cameras|is_event_venue)/', $key)) {
             return 'boolean';
         }
 
-        if (preg_match('/(_json|_items|_fields|_patterns|_links|_urls|_cities|_locations|_schemas|_data|_facts|_overrides|translations)/', $key)) {
+        if (preg_match('/(_json|_items|_fields|_patterns|_links|_urls|_cities|_locations|_schemas|_data|_facts|_overrides|translations|amenities|learning_resource|special_announcement|_history)/', $key)) {
             return 'array';
         }
 
