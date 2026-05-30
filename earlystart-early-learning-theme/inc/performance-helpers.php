@@ -118,17 +118,31 @@ function earlystart_responsive_unsplash($base_url, $alt = '', $class = '', $size
     $srcset = array();
 
     foreach ($widths as $w) {
-        $srcset[] = earlystart_get_optimized_unsplash_url($base_url, $w) . ' ' . $w . 'w';
+        $candidate_height = null;
+        if ($height) {
+            $candidate_height = max(1, (int) round($w * ($height / $width)));
+        }
+
+        $srcset[] = earlystart_get_optimized_unsplash_url($base_url, $w, $candidate_height) . ' ' . $w . 'w';
     }
 
     $default_src = earlystart_get_optimized_unsplash_url($base_url, $width, $height);
+
+    $classes = preg_split('/\s+/', trim((string) $class));
+    $classes = is_array($classes) ? array_filter($classes) : array();
+
+    if ($lcp) {
+        $classes[] = 'no-lazy';
+    }
+
+    $classes = array_values(array_unique($classes));
 
     $attrs = array(
         'src="' . esc_url($default_src) . '"',
         'srcset="' . esc_attr(implode(', ', $srcset)) . '"',
         'sizes="' . esc_attr($sizes) . '"',
         'alt="' . esc_attr($alt) . '"',
-        'class="' . esc_attr($class) . '"',
+        'class="' . esc_attr(implode(' ', $classes)) . '"',
         'decoding="async"',
         'width="' . esc_attr($width) . '"'
     );
@@ -140,7 +154,7 @@ function earlystart_responsive_unsplash($base_url, $alt = '', $class = '', $size
 
     if ($lcp) {
         $attrs[] = 'fetchpriority="high"';
-        $attrs[] = 'class="' . esc_attr($class . ' no-lazy') . '"';
+        $attrs[] = 'loading="eager"';
         $attrs[] = 'data-no-lazy="1"';
     } else {
         $attrs[] = 'loading="lazy"';
