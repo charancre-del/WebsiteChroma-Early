@@ -593,7 +593,7 @@ class earlystart_Program_Enhancements
                 </button>
             </div>
 
-            <div id="age-result" class="hidden p-4 rounded-lg">
+            <div id="age-result" class="hidden p-4 rounded-lg" role="status" aria-live="polite">
                 <p id="age-message" class="font-medium"></p>
                 <a id="age-cta" href="<?php echo esc_url($tour_url); ?>"
                     class="inline-block mt-3 px-6 py-2 bg-chroma-red text-white rounded-full text-sm font-bold hidden">
@@ -624,18 +624,37 @@ class earlystart_Program_Enhancements
 
                 checkAgeButton.addEventListener('click', function () {
                     var birthday = birthdayInput.value;
-                    if (!birthday) { alert('Please enter a birthday'); return; }
-
-                    var dob = new Date(birthday);
-                    var today = new Date();
-                    var ageMonths = (today.getFullYear() - dob.getFullYear()) * 12 + (today.getMonth() - dob.getMonth());
-
-                    var minMonths = <?php echo $min_months; ?>;
-                    var maxMonths = <?php echo $max_months; ?>;
-
                     result.classList.remove('hidden', 'bg-green-100', 'bg-yellow-100', 'bg-red-100');
                     cta.classList.add('hidden');
                     alt.classList.add('hidden');
+
+                    if (!birthday) {
+                        result.classList.add('bg-yellow-100');
+                        setAgeMessage('Please enter a birthday to check program fit.');
+                        birthdayInput.focus();
+                        return;
+                    }
+
+                    var dateParts = birthday.split('-').map(function (part) {
+                        return parseInt(part, 10);
+                    });
+                    var dob = dateParts.length === 3 ? new Date(dateParts[0], dateParts[1] - 1, dateParts[2]) : null;
+                    var today = new Date();
+
+                    if (!dob || isNaN(dob.getTime()) || dob > today) {
+                        result.classList.add('bg-yellow-100');
+                        setAgeMessage('Please enter a valid birthday in the past.');
+                        birthdayInput.focus();
+                        return;
+                    }
+
+                    var ageMonths = (today.getFullYear() - dob.getFullYear()) * 12 + (today.getMonth() - dob.getMonth());
+                    if (today.getDate() < dob.getDate()) {
+                        ageMonths -= 1;
+                    }
+
+                    var minMonths = <?php echo $min_months; ?>;
+                    var maxMonths = <?php echo $max_months; ?>;
 
                     var years = Math.floor(ageMonths / 12);
                     var months = ageMonths % 12;

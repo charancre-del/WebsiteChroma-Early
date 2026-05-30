@@ -189,55 +189,43 @@ while (have_posts()):
 							if (shortcode_exists('earlystart_contact_form')) {
 								echo do_shortcode('[earlystart_contact_form]');
 							} else {
+								$fallback_phone = function_exists('earlystart_global_phone') ? earlystart_global_phone() : '';
+								$fallback_email = function_exists('earlystart_global_email') ? earlystart_global_email() : get_option('admin_email');
+								$fallback_tel = preg_replace('/[^0-9+]/', '', (string) $fallback_phone);
+								$fallback_subject = rawurlencode(__('Contact request from chromaearlystart.com', 'earlystart-early-learning'));
 								?>
-								<form class="space-y-6"
-									onsubmit="event.preventDefault(); alert('Thank you! We will contact you shortly.');">
-									<div>
-										<label
-											class="block text-sm font-bold text-stone-700 mb-2"><?php _e('Your Name', 'earlystart-early-learning'); ?></label>
-										<input type="text"
-											class="w-full px-5 py-4 rounded-2xl border border-stone-200 focus:border-rose-500 outline-none bg-stone-50/30 transition-all"
-											placeholder="<?php esc_attr_e('Jane Doe', 'earlystart-early-learning'); ?>" required>
+								<div class="space-y-6">
+									<p class="text-stone-700 leading-relaxed">
+										<?php _e('Our admissions team can help with program questions, referrals, tours, and next steps for your family.', 'earlystart-early-learning'); ?>
+									</p>
+									<div class="grid sm:grid-cols-2 gap-4">
+										<?php if ('' !== $fallback_tel && '' !== $fallback_phone): ?>
+											<a href="tel:<?php echo esc_attr($fallback_tel); ?>"
+												class="flex items-center gap-4 rounded-2xl border border-stone-200 bg-stone-50/70 px-5 py-5 text-stone-900 hover:border-rose-200 hover:text-rose-700 transition-all">
+												<i data-lucide="phone" class="w-5 h-5 flex-shrink-0"></i>
+												<span class="min-w-0">
+													<span class="block text-xs uppercase tracking-widest font-bold text-stone-500"><?php esc_html_e('Call', 'earlystart-early-learning'); ?></span>
+													<span class="block font-bold" style="overflow-wrap:anywhere;"><?php echo esc_html($fallback_phone); ?></span>
+												</span>
+											</a>
+										<?php endif; ?>
+										<?php if ('' !== $fallback_email): ?>
+											<a href="mailto:<?php echo esc_attr($fallback_email); ?>?subject=<?php echo esc_attr($fallback_subject); ?>"
+												class="flex items-center gap-4 rounded-2xl border border-stone-200 bg-stone-50/70 px-5 py-5 text-stone-900 hover:border-rose-200 hover:text-rose-700 transition-all">
+												<i data-lucide="mail" class="w-5 h-5 flex-shrink-0"></i>
+												<span class="min-w-0">
+													<span class="block text-xs uppercase tracking-widest font-bold text-stone-500"><?php esc_html_e('Email', 'earlystart-early-learning'); ?></span>
+													<span class="block font-bold" style="overflow-wrap:anywhere;"><?php echo esc_html($fallback_email); ?></span>
+												</span>
+											</a>
+										<?php endif; ?>
 									</div>
-									<div class="grid grid-cols-2 gap-4">
-										<div>
-											<label
-												class="block text-sm font-bold text-stone-700 mb-2"><?php _e('Phone', 'earlystart-early-learning'); ?></label>
-											<input type="tel"
-												class="w-full px-5 py-4 rounded-2xl border border-stone-200 focus:border-rose-500 outline-none bg-stone-50/30 transition-all"
-												placeholder="(404) 905-6775" required>
-										</div>
-										<div>
-											<label
-												class="block text-sm font-bold text-stone-700 mb-2"><?php _e('Email', 'earlystart-early-learning'); ?></label>
-											<input type="email"
-												class="w-full px-5 py-4 rounded-2xl border border-stone-200 focus:border-rose-500 outline-none bg-stone-50/30 transition-all"
-												placeholder="jane@example.com" required>
-										</div>
-									</div>
-									<div>
-										<label
-											class="block text-sm font-bold text-stone-700 mb-2"><?php _e('Interest', 'earlystart-early-learning'); ?></label>
-										<select
-											class="w-full px-5 py-4 rounded-2xl border border-stone-200 focus:border-rose-500 outline-none bg-white transition-all text-stone-700">
-											<option><?php _e('Inquiring for Child', 'earlystart-early-learning'); ?></option>
-											<option><?php _e('Clinical Employment', 'earlystart-early-learning'); ?></option>
-											<option><?php _e('Provider Referral', 'earlystart-early-learning'); ?></option>
-											<option><?php _e('Media/Press', 'earlystart-early-learning'); ?></option>
-										</select>
-									</div>
-									<div>
-										<label
-											class="block text-sm font-bold text-stone-700 mb-2"><?php _e('Message', 'earlystart-early-learning'); ?></label>
-										<textarea rows="4"
-											class="w-full px-5 py-4 rounded-2xl border border-stone-200 focus:border-rose-500 outline-none bg-stone-50/30 transition-all resize-none"
-											placeholder="<?php esc_attr_e('Tell us a little about how we can help...', 'earlystart-early-learning'); ?>"></textarea>
-									</div>
-									<button
-										class="w-full bg-stone-900 text-white font-bold py-5 rounded-2xl hover:bg-rose-600 transition-all shadow-xl active:scale-95">
+									<a href="<?php echo esc_url(earlystart_get_page_link('locations')); ?>"
+										class="inline-flex w-full items-center justify-center gap-3 bg-stone-900 text-white font-bold py-5 rounded-2xl hover:bg-rose-600 transition-all shadow-xl active:scale-95">
 										<?php echo esc_html($form_submit_text); ?>
-									</button>
-								</form>
+										<i data-lucide="arrow-right" class="w-5 h-5"></i>
+									</a>
+								</div>
 							<?php } ?>
 						</div>
 					</div>
