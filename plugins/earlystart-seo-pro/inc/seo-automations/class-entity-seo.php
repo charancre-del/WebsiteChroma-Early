@@ -66,14 +66,31 @@ class earlystart_Entity_SEO
      * Add semantic markup to content
      */
     public function add_semantic_markup($content) {
-        // Wrap numbers that look like phone numbers
-        $content = preg_replace(
-            '/(\(?(\d{3})\)?[\s.-]?(\d{3})[\s.-]?(\d{4}))/',
-            '<span itemscope itemtype="https://schema.org/telephone">$1</span>',
-            $content
-        );
-        
-        return $content;
+        if (!is_string($content) || $content === '' || strpos($content, 'chroma-telephone') !== false) {
+            return $content;
+        }
+
+        $parts = preg_split('/(<[^>]+>)/', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
+        if (!is_array($parts)) {
+            return $content;
+        }
+
+        foreach ($parts as &$part) {
+            if ($part === '' || $part[0] === '<') {
+                continue;
+            }
+
+            $part = preg_replace_callback(
+                '/(\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4})/',
+                function ($matches) {
+                    return '<span class="chroma-telephone" data-entity="telephone">' . esc_html($matches[1]) . '</span>';
+                },
+                $part
+            );
+        }
+        unset($part);
+
+        return implode('', $parts);
     }
     
     /**
