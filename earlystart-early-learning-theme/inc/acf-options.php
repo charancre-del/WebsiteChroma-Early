@@ -22,20 +22,20 @@ if (!defined('ABSPATH')) {
 function earlystart_get_global_setting($key, $default = '')
 {
         $defaults = array(
-                'global_phone' => '',
-                'global_email' => '',
-                'global_tour_email' => '',
-                'global_admissions_email' => '',
-                'global_careers_email' => '',
-                'global_billing_email' => '',
-                'global_media_email' => '',
-                'global_privacy_email' => '',
-                'global_address' => '',
-                'global_city' => '',
+                'global_phone' => '(404) 905-6775',
+                'global_email' => 'info@chromaearlystart.com',
+                'global_tour_email' => 'info@chromaearlystart.com',
+                'global_admissions_email' => 'admissions@chromaearlystart.com',
+                'global_careers_email' => 'careers@chromaearlystart.com',
+                'global_billing_email' => 'billing@chromaearlystart.com',
+                'global_media_email' => 'media@chromaearlystart.com',
+                'global_privacy_email' => 'privacy@chromaearlystart.com',
+                'global_address' => '3554 Old Milton Pkwy',
+                'global_city' => 'Alpharetta',
                 'global_state' => 'GA',
-                'global_zip' => '',
-                'global_facebook_url' => '',
-                'global_instagram_url' => '',
+                'global_zip' => '30005',
+                'global_facebook_url' => 'https://facebook.com/chromaearlystart',
+                'global_instagram_url' => 'https://instagram.com/chromaearlystart',
                 'global_linkedin_url' => '',
                 'global_seo_default_title' => get_bloginfo('name'),
                 'global_seo_default_description' => get_bloginfo('description'),
@@ -49,7 +49,46 @@ function earlystart_get_global_setting($key, $default = '')
                 $value = $defaults[$key];
         }
 
+        if (earlystart_is_placeholder_global_setting($key, $value) && isset($defaults[$key])) {
+                $value = $defaults[$key];
+        }
+
         return apply_filters('earlystart_global_setting', $value, $key, $settings);
+}
+
+/**
+ * Guard public templates from stale demo contact values stored in options.
+ */
+function earlystart_is_placeholder_global_setting($key, $value)
+{
+        $value = trim((string) $value);
+
+        if ('' === $value) {
+                return false;
+        }
+
+        if (false !== strpos($key, 'phone')) {
+                $digits = preg_replace('/\D+/', '', $value);
+                return in_array($digits, array('5551234567', '4045550199', '4708353263', '14708353263'), true)
+                        || 0 === strpos($digits, '555');
+        }
+
+        if (false !== strpos($key, 'email')) {
+                $email = strtolower($value);
+                return 'hello@chromaearlystart.com' === $email
+                        || false !== strpos($email, 'intake@')
+                        || false !== strpos($email, 'earlystarttherapy.com');
+        }
+
+        if (in_array($key, array('global_address', 'global_city', 'global_state', 'global_zip'), true)) {
+                $normalized = strtolower($value);
+                return false !== strpos($normalized, '123 wellness blvd')
+                        || false !== strpos($normalized, 'therapy city')
+                        || 'st' === $normalized
+                        || '12345' === $normalized;
+        }
+
+        return false;
 }
 
 /**

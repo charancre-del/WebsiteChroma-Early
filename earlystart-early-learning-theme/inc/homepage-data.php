@@ -185,7 +185,7 @@ function earlystart_home_default_prismpath()
                         'heading' => __('Grounded in <span class="italic text-rose-400">Expertise</span>, Built on Love.', 'earlystart-early-learning'),
                         'subheading' => __('We combine clinical precision with compassionate care. Our evidence-based approach ensures every child receives the specific support they need to thrive.', 'earlystart-early-learning'),
                         'cta_label' => __('Our Methodology', 'earlystart-early-learning'),
-                        'cta_url' => '/methodology/',
+                        'cta_url' => '/our-approach/',
                 ),
                 'cards' => array(
                         array(
