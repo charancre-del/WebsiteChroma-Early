@@ -287,10 +287,14 @@ class earlystart_Image_Analyzer
 
 Return JSON with keys: alt_text, caption, keywords";
 
-        $base_url = get_option('earlystart_llm_base_url', 'https://generativelanguage.googleapis.com/v1beta');
-        $host = strtolower((string) wp_parse_url($base_url, PHP_URL_HOST));
+        $base_url = class_exists('earlystart_LLM_Client')
+            ? earlystart_LLM_Client::get_configured_base_url()
+            : (trim((string) get_option('earlystart_llm_base_url', '')) ?: 'https://generativelanguage.googleapis.com/v1beta');
+        $is_gemini = class_exists('earlystart_LLM_Client')
+            ? earlystart_LLM_Client::is_gemini_base_url_value($base_url)
+            : strtolower((string) wp_parse_url($base_url, PHP_URL_HOST)) === 'generativelanguage.googleapis.com';
 
-        if ($host === 'generativelanguage.googleapis.com') {
+        if ($is_gemini) {
             $image_response = wp_remote_get($image_url, array('timeout' => 20, 'redirection' => 3));
             if (is_wp_error($image_response)) {
                 return $image_response;
@@ -306,7 +310,9 @@ Return JSON with keys: alt_text, caption, keywords";
                 $content_type = 'image/jpeg';
             }
 
-            $model = get_option('earlystart_llm_model', 'gemini-2.0-flash-exp');
+            $model = class_exists('earlystart_LLM_Client')
+                ? earlystart_LLM_Client::get_configured_model()
+                : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gemini-2.0-flash-exp');
             $response = wp_remote_post(rtrim($base_url, '/') . '/models/' . rawurlencode($model) . ':generateContent', array(
                 'headers' => array(
                     'Content-Type' => 'application/json',
@@ -341,7 +347,9 @@ Return JSON with keys: alt_text, caption, keywords";
                     'Authorization' => 'Bearer ' . $api_key
                 ],
                 'body' => wp_json_encode([
-                    'model' => get_option('earlystart_llm_model', 'gpt-4o'),
+                    'model' => class_exists('earlystart_LLM_Client')
+                        ? earlystart_LLM_Client::get_configured_model('gpt-4o')
+                        : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gpt-4o'),
                     'messages' => [[
                         'role' => 'user',
                         'content' => [
@@ -361,7 +369,7 @@ Return JSON with keys: alt_text, caption, keywords";
 
         $body = json_decode(wp_remote_retrieve_body($response), true);
         $content = '';
-        if ($host === 'generativelanguage.googleapis.com') {
+        if ($is_gemini) {
             $content = $body['candidates'][0]['content']['parts'][0]['text'] ?? '';
         } else {
             $content = $body['choices'][0]['message']['content'] ?? '';

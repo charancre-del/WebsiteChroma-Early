@@ -151,7 +151,11 @@ class earlystart_LLM_Admin_Settings
      */
     public static function sanitize_llm_model($input) {
         $model = trim(sanitize_text_field(wp_unslash($input)));
-        return $model !== '' ? $model : 'gemini-2.0-flash-exp';
+        $default_model = class_exists('earlystart_LLM_Client')
+            ? earlystart_LLM_Client::DEFAULT_GEMINI_MODEL
+            : 'gemini-2.0-flash-exp';
+
+        return $model !== '' ? $model : $default_model;
     }
 
     /**
@@ -162,7 +166,11 @@ class earlystart_LLM_Admin_Settings
      */
     public static function sanitize_llm_base_url($input) {
         $url = trim(esc_url_raw(wp_unslash($input)));
-        return $url !== '' ? rtrim($url, '/') : 'https://generativelanguage.googleapis.com/v1beta';
+        $default_base_url = class_exists('earlystart_LLM_Client')
+            ? earlystart_LLM_Client::DEFAULT_GEMINI_BASE_URL
+            : 'https://generativelanguage.googleapis.com/v1beta';
+
+        return $url !== '' ? rtrim($url, '/') : $default_base_url;
     }
 
     /**
@@ -248,7 +256,9 @@ class earlystart_LLM_Admin_Settings
                         <td>
                             <select name="earlystart_llm_model" id="earlystart_llm_model">
                                 <?php 
-                                $current = get_option('earlystart_llm_model', 'gemini-2.0-flash-exp');
+                                $current = class_exists('earlystart_LLM_Client')
+                                    ? earlystart_LLM_Client::get_configured_model()
+                                    : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gemini-2.0-flash-exp');
                                 $cached_models = get_option('earlystart_llm_available_models', []);
                                 
                                 // Default models if none fetched yet
@@ -276,8 +286,13 @@ class earlystart_LLM_Admin_Settings
                     <tr>
                         <th>Base URL</th>
                         <td>
+                            <?php
+                            $current_base_url = class_exists('earlystart_LLM_Client')
+                                ? earlystart_LLM_Client::get_configured_base_url()
+                                : (trim((string) get_option('earlystart_llm_base_url', '')) ?: 'https://generativelanguage.googleapis.com/v1beta');
+                            ?>
                             <input type="text" name="earlystart_llm_base_url" 
-                                value="<?php echo esc_attr(get_option('earlystart_llm_base_url', 'https://generativelanguage.googleapis.com/v1beta')); ?>" 
+                                value="<?php echo esc_attr($current_base_url); ?>"
                                 class="regular-text">
                             <p class="description">Default: https://generativelanguage.googleapis.com/v1beta</p>
                         </td>
@@ -411,7 +426,9 @@ class earlystart_LLM_Admin_Settings
      */
     public function render_usage_page() {
         $stats = earlystart_LLM_Client::get_usage_stats();
-        $model = get_option('earlystart_llm_model', 'gpt-4o-mini');
+        $model = class_exists('earlystart_LLM_Client')
+            ? earlystart_LLM_Client::get_configured_model()
+            : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gemini-2.0-flash-exp');
         $cost = earlystart_LLM_Client::estimate_cost($stats['total_tokens'], $model);
         ?>
         <div class="wrap">

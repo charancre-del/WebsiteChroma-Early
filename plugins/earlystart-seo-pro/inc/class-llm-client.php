@@ -13,6 +13,8 @@ if (!defined('ABSPATH')) {
 
 class earlystart_LLM_Client
 {
+    public const DEFAULT_GEMINI_MODEL = 'gemini-2.0-flash-exp';
+    public const DEFAULT_GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
     private const API_KEY_OPTION = 'earlystart_openai_api_key';
     private const ENC_PREFIX = 'enc:v1:';
     private $api_key;
@@ -22,8 +24,8 @@ class earlystart_LLM_Client
     public function __construct()
     {
         $this->api_key = self::get_api_key();
-        $this->model = get_option('earlystart_llm_model', 'gemini-2.0-flash-exp');
-        $this->base_url = get_option('earlystart_llm_base_url', 'https://generativelanguage.googleapis.com/v1beta');
+        $this->model = self::get_configured_model();
+        $this->base_url = self::get_configured_base_url();
 
         // Register AJAX actions for saving key and testing connection
         add_action('wp_ajax_earlystart_save_llm_settings', [$this, 'ajax_save_settings']);
@@ -51,8 +53,7 @@ class earlystart_LLM_Client
             wp_send_json_error(['message' => 'API key not configured']);
         }
 
-        $base_url = get_option('earlystart_llm_base_url', 'https://generativelanguage.googleapis.com/v1beta');
-        $base_url = $base_url ? rtrim($base_url, '/') : 'https://generativelanguage.googleapis.com/v1beta';
+        $base_url = self::get_configured_base_url();
         $is_gemini = $this->is_gemini_base_url($base_url);
         $url = $base_url . '/models';
         $headers = ['Content-Type' => 'application/json'];
@@ -123,6 +124,32 @@ class earlystart_LLM_Client
         wp_send_json_success(['models' => $models]);
     }
 
+    /**
+     * Get the saved model, falling back when the option is unset or blank.
+     */
+    public static function get_configured_model($fallback = self::DEFAULT_GEMINI_MODEL)
+    {
+        $model = trim((string) get_option('earlystart_llm_model', ''));
+        return $model !== '' ? $model : $fallback;
+    }
+
+    /**
+     * Get the saved base URL, falling back when the option is unset or blank.
+     */
+    public static function get_configured_base_url()
+    {
+        $base_url = trim((string) get_option('earlystart_llm_base_url', ''));
+        return $base_url !== '' ? rtrim($base_url, '/') : self::DEFAULT_GEMINI_BASE_URL;
+    }
+
+    /**
+     * Determine whether a base URL points at Google's Gemini API.
+     */
+    public static function is_gemini_base_url_value($base_url)
+    {
+        $host = strtolower((string) wp_parse_url($base_url, PHP_URL_HOST));
+        return $host === 'generativelanguage.googleapis.com';
+    }
 
     /**
      * Render Settings Section
@@ -152,8 +179,8 @@ class earlystart_LLM_Client
                     <th scope="row">Model Name</th>
                     <td>
                         <input type="text" id="earlystart_llm_model" value="<?php echo esc_attr($model); ?>"
-                            class="regular-text" placeholder="gemini-2.0-flash-exp">
-                        <p class="description">e.g., <code>gemini-2.0-flash-exp</code>, <code>gemini-1.5-pro</code>, or an OpenAI-compatible model when using a non-Gemini base URL.
+                            class="regular-text" placeholder="<?php echo esc_attr(self::DEFAULT_GEMINI_MODEL); ?>">
+                        <p class="description">e.g., <code><?php echo esc_html(self::DEFAULT_GEMINI_MODEL); ?></code>, <code>gemini-1.5-pro</code>, or an OpenAI-compatible model when using a non-Gemini base URL.
                         </p>
                     </td>
                 </tr>
@@ -161,8 +188,8 @@ class earlystart_LLM_Client
                     <th scope="row">Base URL</th>
                     <td>
                         <input type="text" id="earlystart_llm_base_url" value="<?php echo esc_attr($base_url); ?>"
-                            class="regular-text" placeholder="https://generativelanguage.googleapis.com/v1beta">
-                        <p class="description">Default: <code>https://generativelanguage.googleapis.com/v1beta</code>. Use an OpenAI-compatible URL only for alternate providers.
+                            class="regular-text" placeholder="<?php echo esc_attr(self::DEFAULT_GEMINI_BASE_URL); ?>">
+                        <p class="description">Default: <code><?php echo esc_html(self::DEFAULT_GEMINI_BASE_URL); ?></code>. Use an OpenAI-compatible URL only for alternate providers.
                         </p>
                     </td>
                 </tr>
@@ -259,11 +286,11 @@ class earlystart_LLM_Client
         }
         if (isset($_POST['model'])) {
             $model = trim(sanitize_text_field(wp_unslash($_POST['model'])));
-            update_option('earlystart_llm_model', $model !== '' ? $model : 'gemini-2.0-flash-exp');
+            update_option('earlystart_llm_model', $model !== '' ? $model : self::DEFAULT_GEMINI_MODEL);
         }
         if (isset($_POST['base_url'])) {
             $url = trim(esc_url_raw(wp_unslash($_POST['base_url'])));
-            $url = $url !== '' ? rtrim($url, '/') : 'https://generativelanguage.googleapis.com/v1beta';
+            $url = $url !== '' ? rtrim($url, '/') : self::DEFAULT_GEMINI_BASE_URL;
             update_option('earlystart_llm_base_url', $url);
         }
 
@@ -1299,14 +1326,15 @@ class earlystart_LLM_Client
     private function make_request_internal($data, $timeout = 60)
     {
         $api_key = self::get_api_key();
-        $model = get_option('earlystart_llm_model', 'gemini-2.0-flash-exp');
-        $base_url = get_option('earlystart_llm_base_url', 'https://generativelanguage.googleapis.com/v1beta');
+        $base_url = self::get_configured_base_url();
+        $is_gemini = $this->is_gemini_base_url($base_url);
+        $model = self::get_configured_model($is_gemini ? self::DEFAULT_GEMINI_MODEL : 'gpt-4o-mini');
 
         if (empty($api_key)) {
             return new WP_Error('no_api_key', 'No API Key configured.');
         }
 
-        if ($this->is_gemini_base_url($base_url)) {
+        if ($is_gemini) {
             return $this->make_gemini_request($base_url, $model, $api_key, $data, $timeout);
         }
 
@@ -1355,8 +1383,7 @@ class earlystart_LLM_Client
      */
     private function is_gemini_base_url($base_url)
     {
-        $host = strtolower((string) wp_parse_url($base_url, PHP_URL_HOST));
-        return $host === 'generativelanguage.googleapis.com';
+        return self::is_gemini_base_url_value($base_url);
     }
 
     /**
@@ -1364,8 +1391,8 @@ class earlystart_LLM_Client
      */
     private function make_gemini_request($base_url, $model, $api_key, $data, $timeout)
     {
-        $model = $model ?: 'gemini-2.0-flash-exp';
-        $url = rtrim($base_url ?: 'https://generativelanguage.googleapis.com/v1beta', '/') . '/models/' . rawurlencode($model) . ':generateContent';
+        $model = $model ?: self::DEFAULT_GEMINI_MODEL;
+        $url = rtrim($base_url ?: self::DEFAULT_GEMINI_BASE_URL, '/') . '/models/' . rawurlencode($model) . ':generateContent';
         $temperature = isset($data['temperature']) ? (float) $data['temperature'] : 0.7;
         $prompt = $this->messages_to_prompt((array) ($data['messages'] ?? []));
 
@@ -1512,7 +1539,7 @@ class earlystart_LLM_Client
         $prompt .= $raw_schema;
 
         // Determine efficient max_tokens based on model
-        $model = get_option('earlystart_llm_model', 'gpt-4o-mini');
+        $model = self::get_configured_model();
         $max_tokens = 4096; // Standard limit for GPT-4o / Turbo / Legacy
 
         // High-context models (Gemini, Flash, Mini)
