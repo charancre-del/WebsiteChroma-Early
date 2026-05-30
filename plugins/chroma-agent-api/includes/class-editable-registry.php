@@ -283,8 +283,22 @@ class Editable_Registry
                 return true;
 
             case 'menu_location':
+                $location = (string) $storage['location'];
+                if ($location === '' || !array_key_exists($location, get_registered_nav_menus())) {
+                    return new \WP_Error('caa_menu_location_invalid', 'Menu location is not registered.', ['status' => 400]);
+                }
+
+                $menu_id = (int) $new_value;
+                if ($menu_id > 0 && !wp_get_nav_menu_object($menu_id)) {
+                    return new \WP_Error('caa_menu_not_found', 'Menu not found.', ['status' => 404]);
+                }
+
                 $locations = get_nav_menu_locations();
-                $locations[(string) $storage['location']] = (int) $new_value;
+                if ($menu_id <= 0) {
+                    unset($locations[$location]);
+                } else {
+                    $locations[$location] = $menu_id;
+                }
                 set_theme_mod('nav_menu_locations', $locations);
                 return true;
 
@@ -436,7 +450,7 @@ class Editable_Registry
     public static function read_menu_item(int $item_id): ?array
     {
         $post = get_post($item_id);
-        if (!$post) {
+        if (!$post || $post->post_type !== 'nav_menu_item') {
             return null;
         }
 
@@ -769,7 +783,7 @@ class Editable_Registry
     private static function write_menu_item(int $item_id, array $updates)
     {
         $post = get_post($item_id);
-        if (!$post) {
+        if (!$post || $post->post_type !== 'nav_menu_item') {
             return new \WP_Error('caa_menu_item_not_found', 'Menu item not found.', ['status' => 404]);
         }
 

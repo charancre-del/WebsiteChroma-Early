@@ -345,6 +345,10 @@ class Editables_Routes
     public static function get_term(WP_REST_Request $request)
     {
         $taxonomy = sanitize_key((string) $request->get_param('taxonomy'));
+        if ($taxonomy === '' || !taxonomy_exists($taxonomy)) {
+            return new \WP_Error('caa_invalid_taxonomy', 'Valid taxonomy is required.', ['status' => 400]);
+        }
+
         $term = get_term((int) $request['term_id'], $taxonomy);
         if (!$term || is_wp_error($term)) {
             return new \WP_Error('caa_term_not_found', 'Term not found.', ['status' => 404]);
@@ -418,6 +422,10 @@ class Editables_Routes
         $payload = self::payload($request);
         $term_id = (int) $request['term_id'];
         $taxonomy = sanitize_key((string) ($payload['taxonomy'] ?? $request->get_param('taxonomy')));
+        if ($taxonomy === '' || !taxonomy_exists($taxonomy)) {
+            return new \WP_Error('caa_invalid_taxonomy', 'Valid taxonomy is required.', ['status' => 400]);
+        }
+
         $term = get_term($term_id, $taxonomy);
         if (!$term || is_wp_error($term)) {
             return new \WP_Error('caa_term_not_found', 'Term not found.', ['status' => 404]);
@@ -479,6 +487,10 @@ class Editables_Routes
     public static function delete_term(WP_REST_Request $request)
     {
         $taxonomy = sanitize_key((string) $request->get_param('taxonomy'));
+        if ($taxonomy === '' || !taxonomy_exists($taxonomy)) {
+            return new \WP_Error('caa_invalid_taxonomy', 'Valid taxonomy is required.', ['status' => 400]);
+        }
+
         $term_id = (int) $request['term_id'];
         $term = get_term($term_id, $taxonomy);
         if (!$term || is_wp_error($term)) {
@@ -552,14 +564,22 @@ class Editables_Routes
             return new \WP_Error('caa_missing_menu_name', 'name is required.', ['status' => 400]);
         }
 
+        $location = '';
+        if (!empty($payload['location'])) {
+            $location = sanitize_key((string) $payload['location']);
+            if (!array_key_exists($location, get_registered_nav_menus())) {
+                return new \WP_Error('caa_menu_location_invalid', 'Menu location is not registered.', ['status' => 400]);
+            }
+        }
+
         $menu_id = wp_create_nav_menu($name);
         if (is_wp_error($menu_id)) {
             return $menu_id;
         }
 
-        if (!empty($payload['location'])) {
+        if ($location !== '') {
             $locations = get_nav_menu_locations();
-            $locations[sanitize_key((string) $payload['location'])] = (int) $menu_id;
+            $locations[$location] = (int) $menu_id;
             set_theme_mod('nav_menu_locations', $locations);
         }
 
@@ -588,6 +608,12 @@ class Editables_Routes
         $menu_id = isset($payload['menu_id']) ? (int) $payload['menu_id'] : 0;
         if ($menu_id <= 0) {
             return new \WP_Error('caa_missing_menu_id', 'menu_id is required.', ['status' => 400]);
+        }
+        if (!wp_get_nav_menu_object($menu_id)) {
+            return new \WP_Error('caa_menu_not_found', 'Menu not found.', ['status' => 404]);
+        }
+        if (!empty($payload['menu_item_parent']) && !self::menu_item_belongs_to_menu((int) $payload['menu_item_parent'], $menu_id)) {
+            return new \WP_Error('caa_menu_parent_invalid', 'Parent menu item must belong to the same menu.', ['status' => 400]);
         }
 
         $args = self::menu_item_args($payload);
@@ -623,15 +649,34 @@ class Editables_Routes
 
     public static function delete_menu_item(WP_REST_Request $request)
     {
-        $deleted = wp_delete_post((int) $request['item_id'], true);
+        $item_id = (int) $request['item_id'];
+        if (!Editable_Registry::read_menu_item($item_id)) {
+            return new \WP_Error('caa_menu_item_not_found', 'Menu item not found.', ['status' => 404]);
+        }
+
+        $deleted = wp_delete_post($item_id, true);
         if (!$deleted) {
             return new \WP_Error('caa_menu_item_delete_failed', 'Failed to delete menu item.', ['status' => 500]);
         }
 
         return rest_ensure_response([
             'success' => true,
-            'data' => ['item_id' => (int) $request['item_id'], 'deleted' => true],
+            'data' => ['item_id' => $item_id, 'deleted' => true],
         ]);
+    }
+
+    private static function menu_item_belongs_to_menu(int $item_id, int $menu_id): bool
+    {
+        if (!Editable_Registry::read_menu_item($item_id)) {
+            return false;
+        }
+
+        $terms = wp_get_object_terms($item_id, 'nav_menu', ['fields' => 'ids']);
+        if (is_wp_error($terms)) {
+            return false;
+        }
+
+        return in_array($menu_id, array_map('intval', (array) $terms), true);
     }
 
     private static function ids_from_request(WP_REST_Request $request): array
