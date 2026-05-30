@@ -22,8 +22,8 @@ class earlystart_LLM_Client
     public function __construct()
     {
         $this->api_key = self::get_api_key();
-        $this->model = get_option('earlystart_llm_model', 'gpt-4o-mini');
-        $this->base_url = get_option('earlystart_llm_base_url', 'https://api.openai.com/v1');
+        $this->model = get_option('earlystart_llm_model', 'gemini-2.0-flash-exp');
+        $this->base_url = get_option('earlystart_llm_base_url', 'https://generativelanguage.googleapis.com/v1beta');
 
         // Register AJAX actions for saving key and testing connection
         add_action('wp_ajax_earlystart_save_llm_settings', [$this, 'ajax_save_settings']);
@@ -229,8 +229,8 @@ class earlystart_LLM_Client
             wp_send_json_error(['message' => 'Permission denied']);
         }
 
-        if (isset($_POST['api_key'])) {
-            $key = sanitize_text_field($_POST['api_key']);
+        if (isset($_POST['api_key']) && trim((string) wp_unslash($_POST['api_key'])) !== '') {
+            $key = sanitize_text_field(wp_unslash($_POST['api_key']));
             $encrypted_key = self::encrypt_api_key($key);
             update_option(self::API_KEY_OPTION, $encrypted_key);
         }
@@ -930,52 +930,11 @@ class earlystart_LLM_Client
     }
 
     /**
-     * Make Request to OpenAI
+     * Make Request to the configured LLM provider.
      */
     public function make_request($data)
     {
-        // Lazy-load settings fresh from database to ensure latest values are used
-        $api_key = self::get_api_key();
-        $model = get_option('earlystart_llm_model', 'gpt-4o-mini');
-        $base_url = get_option('earlystart_llm_base_url', 'https://api.openai.com/v1');
-
-        if (empty($api_key)) {
-            return new WP_Error('no_api_key', 'No API Key configured. Please save your key first.');
-        }
-
-        // Use configured base URL or default
-        $url = ($base_url ?: 'https://api.openai.com/v1') . '/chat/completions';
-
-        $body = array_merge([
-            'model' => $model ?: 'gpt-4o-mini',
-            'temperature' => 0.7,
-        ], $data);
-
-        $args = [
-            'body' => json_encode($body),
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . $api_key
-            ],
-            'timeout' => 120
-        ];
-
-        $response = wp_remote_post($url, $args);
-
-        if (is_wp_error($response)) {
-            return $response;
-        }
-
-        $code = wp_remote_retrieve_response_code($response);
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
-
-        if ($code !== 200) {
-            $msg = isset($data['error']['message']) ? $data['error']['message'] : 'Unknown API Error';
-            return new WP_Error('api_error', $msg);
-        }
-
-        return $data;
+        return $this->make_request_internal($data, 120);
     }
 
     /**
@@ -1314,14 +1273,18 @@ class earlystart_LLM_Client
     /**
      * Internal make request (no retry, no logging)
      */
-    private function make_request_internal($data)
+    private function make_request_internal($data, $timeout = 60)
     {
         $api_key = self::get_api_key();
-        $model = get_option('earlystart_llm_model', 'gpt-4o-mini');
-        $base_url = get_option('earlystart_llm_base_url', 'https://api.openai.com/v1');
+        $model = get_option('earlystart_llm_model', 'gemini-2.0-flash-exp');
+        $base_url = get_option('earlystart_llm_base_url', 'https://generativelanguage.googleapis.com/v1beta');
 
         if (empty($api_key)) {
             return new WP_Error('no_api_key', 'No API Key configured.');
+        }
+
+        if ($this->is_gemini_base_url($base_url)) {
+            return $this->make_gemini_request($base_url, $model, $api_key, $data, $timeout);
         }
 
         $url = ($base_url ?: 'https://api.openai.com/v1') . '/chat/completions';
@@ -1337,7 +1300,7 @@ class earlystart_LLM_Client
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $api_key
             ],
-            'timeout' => 60
+            'timeout' => $timeout
         ]);
 
         if (is_wp_error($response)) {
@@ -1362,6 +1325,117 @@ class earlystart_LLM_Client
         }
 
         return $decoded;
+    }
+
+    /**
+     * Determine whether the configured endpoint is Google's Gemini API.
+     */
+    private function is_gemini_base_url($base_url)
+    {
+        $host = strtolower((string) wp_parse_url($base_url, PHP_URL_HOST));
+        return $host === 'generativelanguage.googleapis.com';
+    }
+
+    /**
+     * Send a request to Gemini and normalize the response to OpenAI's chat shape.
+     */
+    private function make_gemini_request($base_url, $model, $api_key, $data, $timeout)
+    {
+        $model = $model ?: 'gemini-2.0-flash-exp';
+        $url = rtrim($base_url ?: 'https://generativelanguage.googleapis.com/v1beta', '/') . '/models/' . rawurlencode($model) . ':generateContent';
+        $temperature = isset($data['temperature']) ? (float) $data['temperature'] : 0.7;
+        $prompt = $this->messages_to_prompt((array) ($data['messages'] ?? []));
+
+        $body = [
+            'contents' => [
+                [
+                    'role' => 'user',
+                    'parts' => [
+                        ['text' => $prompt],
+                    ],
+                ],
+            ],
+            'generationConfig' => [
+                'temperature' => $temperature,
+            ],
+        ];
+
+        if (($data['response_format']['type'] ?? '') === 'json_object') {
+            $body['generationConfig']['responseMimeType'] = 'application/json';
+        }
+
+        $response = wp_remote_post($url, [
+            'body' => wp_json_encode($body),
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'x-goog-api-key' => $api_key,
+            ],
+            'timeout' => $timeout,
+        ]);
+
+        if (is_wp_error($response)) {
+            return $response;
+        }
+
+        $code = wp_remote_retrieve_response_code($response);
+        $raw_body = wp_remote_retrieve_body($response);
+        $decoded = json_decode($raw_body, true);
+
+        if ($code === 429) {
+            return new WP_Error('rate_limited', 'Gemini API rate limited. Try again later.');
+        }
+
+        if ($code >= 500) {
+            return new WP_Error('server_error', 'Gemini API server error. Code: ' . $code);
+        }
+
+        if ($code !== 200) {
+            $msg = $decoded['error']['message'] ?? 'Unknown Gemini API error';
+            return new WP_Error('api_error', $msg);
+        }
+
+        $content = $decoded['candidates'][0]['content']['parts'][0]['text'] ?? '';
+        if ($content === '') {
+            return new WP_Error('api_error', 'Gemini returned an empty response.');
+        }
+
+        $usage = $decoded['usageMetadata'] ?? [];
+
+        return [
+            'choices' => [
+                [
+                    'message' => [
+                        'content' => $content,
+                    ],
+                ],
+            ],
+            'usage' => [
+                'prompt_tokens' => (int) ($usage['promptTokenCount'] ?? 0),
+                'completion_tokens' => (int) ($usage['candidatesTokenCount'] ?? 0),
+                'total_tokens' => (int) ($usage['totalTokenCount'] ?? 0),
+            ],
+            'provider' => 'gemini',
+        ];
+    }
+
+    /**
+     * Flatten chat messages for Gemini's generateContent endpoint.
+     */
+    private function messages_to_prompt(array $messages)
+    {
+        $parts = [];
+        foreach ($messages as $message) {
+            if (!is_array($message)) {
+                continue;
+            }
+            $role = isset($message['role']) ? strtoupper((string) $message['role']) : 'USER';
+            $content = trim((string) ($message['content'] ?? ''));
+            if ($content !== '') {
+                $parts[] = $role . ":\n" . $content;
+            }
+        }
+
+        return implode("\n\n", $parts);
     }
     /**
      * Fix Schema Errors with AI
@@ -1547,6 +1621,26 @@ class earlystart_LLM_Client
         $plain = openssl_decrypt($ciphertext, 'AES-256-CBC', self::get_encryption_key(), OPENSSL_RAW_DATA, $iv);
 
         return is_string($plain) ? $plain : '';
+    }
+
+    /**
+     * Settings API sanitizer that encrypts new keys and preserves saved keys when left blank.
+     *
+     * @param string $input Raw submitted key.
+     * @return string
+     */
+    public static function sanitize_api_key_option($input)
+    {
+        $input = trim(sanitize_text_field(wp_unslash($input)));
+        if ($input === '') {
+            return get_option(self::API_KEY_OPTION, '');
+        }
+
+        if (strpos($input, self::ENC_PREFIX) === 0) {
+            return $input;
+        }
+
+        return self::encrypt_api_key($input);
     }
 
     /**

@@ -37,6 +37,20 @@ document.addEventListener('DOMContentLoaded', function () {
   const mobileNavToggles = document.querySelectorAll('[data-mobile-nav-toggle]');
   const mobileNav = document.querySelector('[data-mobile-nav]');
 
+  const closeMobileNav = () => {
+    if (!mobileNav) return;
+
+    mobileNav.classList.remove('translate-x-0');
+    mobileNav.classList.add('translate-x-full');
+    document.body.style.overflow = '';
+
+    setTimeout(() => {
+      if (mobileNav.classList.contains('translate-x-full')) {
+        mobileNav.classList.add('hidden');
+      }
+    }, 300);
+  };
+
   mobileNavToggles.forEach((toggle) => {
     toggle.addEventListener('click', () => {
       if (!mobileNav) return;
@@ -53,17 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         document.body.style.overflow = 'hidden';
       } else {
-        // Closing
-        mobileNav.classList.remove('translate-x-0');
-        mobileNav.classList.add('translate-x-full');
-        document.body.style.overflow = '';
-
-        // Wait for transition before hiding
-        setTimeout(() => {
-          if (mobileNav.classList.contains('translate-x-full')) {
-            mobileNav.classList.add('hidden');
-          }
-        }, 300);
+        closeMobileNav();
       }
     });
   });
@@ -72,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (mobileNav) {
     mobileNav.querySelectorAll('a[href^="#"]').forEach((link) => {
       link.addEventListener('click', () => {
-        mobileNav.classList.add('translate-x-full');
+        closeMobileNav();
       });
     });
   }
@@ -218,13 +222,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     triggers.forEach(trigger => {
       trigger.addEventListener('click', () => {
-        const data = JSON.parse(trigger.getAttribute('data-team-bio-trigger'));
+        const data = safeParseJSON(trigger.getAttribute('data-team-bio-trigger') || '{}', {});
+        if (!data.name && !data.bio) return;
 
         // Populate modal
-        document.getElementById('modal-name').textContent = data.name;
-        document.getElementById('modal-role').textContent = data.role;
-        document.getElementById('modal-bio').innerHTML = data.bio;
-        document.getElementById('modal-image').src = data.image;
+        const modalName = document.getElementById('modal-name');
+        const modalRole = document.getElementById('modal-role');
+        const modalBio = document.getElementById('modal-bio');
+        const modalImage = document.getElementById('modal-image');
+
+        if (modalName) modalName.textContent = data.name || '';
+        if (modalRole) modalRole.textContent = data.role || '';
+        if (modalBio) modalBio.innerHTML = data.bio || '';
+        if (modalImage && data.image) modalImage.src = data.image;
 
         // Show modal
         teamModal.classList.remove('hidden');

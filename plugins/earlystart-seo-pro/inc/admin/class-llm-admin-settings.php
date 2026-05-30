@@ -68,11 +68,14 @@ class earlystart_LLM_Admin_Settings
      */
     public function register_settings() {
         // API Settings
-        register_setting('earlystart_llm_settings', 'earlystart_openai_api_key');
+        register_setting('earlystart_llm_settings', 'earlystart_openai_api_key', [
+            'type' => 'string',
+            'sanitize_callback' => ['earlystart_LLM_Client', 'sanitize_api_key_option'],
+            'default' => '',
+        ]);
         register_setting('earlystart_llm_settings', 'earlystart_google_places_api_key');
         register_setting('earlystart_llm_settings', 'earlystart_llm_model');
         register_setting('earlystart_llm_settings', 'earlystart_llm_base_url');
-        register_setting('earlystart_llm_settings', 'earlystart_llm_rate_limit');
         register_setting('earlystart_llm_settings', 'earlystart_llm_rate_limit');
         register_setting('earlystart_llm_settings', 'earlystart_llm_cache_duration');
         
@@ -128,9 +131,11 @@ class earlystart_LLM_Admin_Settings
                     <tr>
                         <th>Gemini API Key</th>
                         <td>
+                            <?php $gemini_key_configured = '' !== (string) get_option('earlystart_openai_api_key', ''); ?>
                             <input type="password" name="earlystart_openai_api_key" 
-                                value="<?php echo esc_attr(get_option('earlystart_openai_api_key')); ?>" 
-                                class="regular-text" placeholder="AIza...">
+                                value=""
+                                class="regular-text" autocomplete="new-password"
+                                placeholder="<?php echo esc_attr($gemini_key_configured ? __('Saved - enter a new key to replace', 'earlystart-seo-pro') : 'AIza...'); ?>">
                             <p class="description">Required for AI schema generation (uses Gemini API)</p>
                         </td>
                     </tr>
@@ -223,8 +228,6 @@ class earlystart_LLM_Admin_Settings
                     });
                 });
                 </script>
-
-                </table>
 
                 <h2>Organization Information</h2>
                 <table class="form-table">
