@@ -59,9 +59,11 @@ class Audit_Routes
 
         $key = Auth::current_key();
         $scopes = is_array($key['scopes'] ?? null) ? $key['scopes'] : [];
-        $write_allowed = in_array('write:theme', $scopes, true) || in_array('write:seo', $scopes, true);
+        $write_allowed = in_array('write:theme', $scopes, true)
+            || in_array('write:seo', $scopes, true)
+            || in_array('write:settings', $scopes, true);
         if (!$write_allowed) {
-            return new \WP_Error('caa_scope_denied', 'Rollback requires write:theme or write:seo scope.', ['status' => 403]);
+            return new \WP_Error('caa_scope_denied', 'Rollback requires write:theme, write:seo, or write:settings scope.', ['status' => 403]);
         }
 
         return true;
