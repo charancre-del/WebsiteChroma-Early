@@ -37,11 +37,16 @@ class earlystart_LLMs_Txt_Generator
         (new self())->write_physical_file(true);
     }
 
-    public function write_physical_file($force = false)
+    public function write_physical_file($context = false)
     {
-        $force = ($force === true);
+        $force = ($context === true);
+        $post_id = is_numeric($context) ? (int) $context : 0;
 
         if (!$force) {
+            if ($post_id > 0 && (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id))) {
+                return;
+            }
+
             // Only run if we are in admin or it's an AJAX save.
             if (!is_admin() && !wp_doing_ajax()) {
                 return;
@@ -59,6 +64,10 @@ class earlystart_LLMs_Txt_Generator
 
                 // Keep this callback independently secure, even if another callback validates first.
                 if (!check_ajax_referer('earlystart_seo_dashboard_nonce', 'nonce', false)) {
+                    return;
+                }
+            } elseif ($post_id > 0) {
+                if (!current_user_can('edit_post', $post_id)) {
                     return;
                 }
             } elseif (!current_user_can('manage_options')) {
