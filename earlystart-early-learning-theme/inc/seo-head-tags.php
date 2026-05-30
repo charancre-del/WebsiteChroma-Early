@@ -54,38 +54,144 @@ function earlystart_get_social_share_image_url($post_id = 0)
  *
  * @return string
  */
+function earlystart_normalize_meta_description_value($description)
+{
+    $description = wp_strip_all_tags((string) $description);
+    $description = preg_replace('/\s+/', ' ', $description);
+    $description = trim($description);
+
+    return $description === '' ? '' : wp_trim_words($description, 32, '...');
+}
+
 function earlystart_get_meta_description_value()
 {
     $post_id = is_singular() ? get_queried_object_id() : 0;
+    $is_spanish = class_exists('earlystart_Multilingual_Manager')
+        && method_exists('earlystart_Multilingual_Manager', 'is_spanish')
+        && earlystart_Multilingual_Manager::is_spanish();
 
     if ($post_id) {
-        if (class_exists('earlystart_Multilingual_Manager') && method_exists('earlystart_Multilingual_Manager', 'is_spanish') && earlystart_Multilingual_Manager::is_spanish()) {
+        if ($is_spanish) {
             $es_manual = get_post_meta($post_id, '_earlystart_es_meta_description', true);
             if (!empty($es_manual)) {
-                return wp_trim_words(wp_strip_all_tags($es_manual), 32, '...');
+                return earlystart_normalize_meta_description_value($es_manual);
             }
         }
 
         $manual = get_post_meta($post_id, 'meta_description', true);
         if (!empty($manual)) {
-            return wp_trim_words(wp_strip_all_tags($manual), 32, '...');
+            return earlystart_normalize_meta_description_value($manual);
+        }
+
+        if (is_singular('location')) {
+            $city = get_post_meta($post_id, 'location_city', true);
+            $state = get_post_meta($post_id, 'location_state', true);
+            $tagline = get_post_meta($post_id, 'location_tagline', true);
+            $service_areas = get_post_meta($post_id, 'location_service_areas', true);
+            $phone = get_post_meta($post_id, 'location_phone', true);
+            $parts = array();
+
+            if ($is_spanish) {
+                $parts[] = 'Visite nuestra clínica ' . get_the_title($post_id);
+                if ($city && $state) {
+                    $parts[] = "en $city, $state";
+                }
+                if ($tagline) {
+                    $parts[] = ". $tagline";
+                }
+                if ($service_areas) {
+                    $parts[] = '. Sirviendo a familias en ' . $service_areas;
+                }
+                if ($phone) {
+                    $parts[] = ". Llámenos al $phone";
+                }
+            } else {
+                $parts[] = 'Visit our ' . get_the_title($post_id) . ' clinic';
+                if ($city && $state) {
+                    $parts[] = "in $city, $state";
+                }
+                if ($tagline) {
+                    $parts[] = ". $tagline";
+                }
+                if ($service_areas) {
+                    $parts[] = '. Serving families in ' . $service_areas;
+                }
+                if ($phone) {
+                    $parts[] = ". Call us at $phone";
+                }
+            }
+
+            return earlystart_normalize_meta_description_value(implode('', $parts) . '.');
+        }
+
+        if (is_singular('city')) {
+            $excerpt = has_excerpt($post_id) ? get_the_excerpt($post_id) : (function_exists('earlystart_trimmed_excerpt') ? earlystart_trimmed_excerpt(30, $post_id) : '');
+            if ($is_spanish) {
+                $es_excerpt = get_post_meta($post_id, '_earlystart_es_excerpt', true);
+                if ($es_excerpt) {
+                    $excerpt = $es_excerpt;
+                }
+                return earlystart_normalize_meta_description_value('Terapia pediátrica en ' . get_the_title($post_id) . ', GA. ' . $excerpt);
+            }
+
+            return earlystart_normalize_meta_description_value('Pediatric therapy in ' . get_the_title($post_id) . ', GA. ' . $excerpt);
+        }
+
+        if (is_singular('program')) {
+            $excerpt = has_excerpt($post_id) ? get_the_excerpt($post_id) : (function_exists('earlystart_trimmed_excerpt') ? earlystart_trimmed_excerpt(20, $post_id) : '');
+            if ($is_spanish) {
+                $es_excerpt = get_post_meta($post_id, '_earlystart_es_excerpt', true);
+                $es_title = get_post_meta($post_id, '_earlystart_es_title', true) ?: get_the_title($post_id);
+                if ($es_excerpt) {
+                    $excerpt = $es_excerpt;
+                }
+                return earlystart_normalize_meta_description_value($es_title . ' en Chroma Early Start. ' . $excerpt);
+            }
+
+            return earlystart_normalize_meta_description_value(get_the_title($post_id) . ' at Chroma Early Start. ' . $excerpt);
+        }
+
+        if (is_singular('post')) {
+            $excerpt = has_excerpt($post_id) ? get_the_excerpt($post_id) : (function_exists('earlystart_trimmed_excerpt') ? earlystart_trimmed_excerpt(30, $post_id) : '');
+            return earlystart_normalize_meta_description_value(get_the_title($post_id) . ' - ' . $excerpt);
+        }
+
+        if (function_exists('earlystart_is_about_template') && function_exists('earlystart_get_about_seo_fields') && earlystart_is_about_template($post_id)) {
+            $about_fields = earlystart_get_about_seo_fields($post_id);
+            if (!empty($about_fields['description'])) {
+                return earlystart_normalize_meta_description_value($about_fields['description']);
+            }
         }
 
         if (has_excerpt($post_id)) {
-            return wp_trim_words(wp_strip_all_tags(get_the_excerpt($post_id)), 32, '...');
+            return earlystart_normalize_meta_description_value(get_the_excerpt($post_id));
         }
+    }
+
+    if (is_front_page()) {
+        $description = function_exists('earlystart_global_seo_default_description') ? earlystart_global_seo_default_description() : '';
+        if (empty($description)) {
+            $description = get_bloginfo('description');
+        }
+        if (empty($description)) {
+            $description = $is_spanish
+                ? 'Chroma Early Start ofrece terapia pediátrica, apoyo familiar y servicios de intervención temprana en el área metropolitana de Atlanta.'
+                : get_bloginfo('name') . ' provides pediatric therapy services across Metro Atlanta, including ABA, speech, and occupational therapy.';
+        }
+
+        return earlystart_normalize_meta_description_value($description);
     }
 
     if (is_archive()) {
         $archive_desc = get_the_archive_description();
         if (!empty($archive_desc)) {
-            return wp_trim_words(wp_strip_all_tags($archive_desc), 32, '...');
+            return earlystart_normalize_meta_description_value($archive_desc);
         }
     }
 
     $blog_desc = get_bloginfo('description');
     if (!empty($blog_desc)) {
-        return wp_trim_words(wp_strip_all_tags($blog_desc), 32, '...');
+        return earlystart_normalize_meta_description_value($blog_desc);
     }
 
     return 'Chroma Early Start provides pediatric therapy services across Metro Atlanta, including ABA, speech, and occupational therapy.';
