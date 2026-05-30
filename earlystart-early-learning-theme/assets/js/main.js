@@ -373,7 +373,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const title = wizard.querySelector('[data-program-wizard-title]');
     const desc = wizard.querySelector('[data-program-wizard-description]');
     const image = wizard.querySelector('[data-program-wizard-image]');
+    const imageWrap = wizard.querySelector('[data-program-wizard-image-wrap]');
     const learnLink = wizard.querySelector('[data-program-wizard-link]');
+    const defaultLearnHref = learnLink?.getAttribute('href') || '#';
     const resetBtn = wizard.querySelector('[data-program-wizard-reset]');
 
     const showResult = (selected) => {
@@ -382,11 +384,21 @@ document.addEventListener('DOMContentLoaded', function () {
       // Populate data
       if (title) title.textContent = selected.label;
       if (desc) desc.textContent = selected.description;
-      if (learnLink && selected.link) {
-        learnLink.setAttribute('href', selected.link);
+      if (learnLink) {
+        learnLink.setAttribute('href', selected.link || defaultLearnHref);
         learnLink.setAttribute('aria-label', 'Learn more about ' + selected.label);
       }
-      if (image && selected.image) image.src = selected.image;
+      if (image) {
+        if (selected.image) {
+          image.src = selected.image;
+          image.alt = selected.label || 'Program preview';
+          imageWrap?.classList.remove('hidden');
+        } else {
+          image.removeAttribute('src');
+          image.alt = '';
+          imageWrap?.classList.add('hidden');
+        }
+      }
 
       // Hide options
       wizard.querySelector('[data-program-wizard-options]')?.classList.add('hidden');

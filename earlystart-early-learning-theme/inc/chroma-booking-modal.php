@@ -34,7 +34,7 @@ function earlystart_render_booking_modal() {
                 <div id="chroma-booking-loader" class="absolute inset-0 flex items-center justify-center bg-white z-10">
                     <div class="w-12 h-12 border-4 border-chroma-blue/20 border-t-chroma-blue rounded-full animate-spin"></div>
                 </div>
-                <iframe id="chroma-booking-frame" src="" title="<?php esc_attr_e('Schedule your Chroma Early Start visit', 'earlystart-early-learning'); ?>" class="w-full h-full border-0"
+                <iframe id="chroma-booking-frame" title="<?php esc_attr_e('Schedule your Chroma Early Start visit', 'earlystart-early-learning'); ?>" class="w-full h-full border-0"
                     allow="camera; microphone; autoplay; encrypted-media;"></iframe>
             </div>
         </div>
@@ -100,7 +100,7 @@ function earlystart_render_booking_modal() {
                 if (!modal || !iframe) return;
                 modal.classList.add('hidden');
                 document.body.style.overflow = '';
-                iframe.src = '';
+                iframe.removeAttribute('src');
                 setExternalLink('');
             }
 

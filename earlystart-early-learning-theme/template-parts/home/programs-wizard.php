@@ -93,8 +93,12 @@ function earlystart_get_wizard_color_classes($key)
 
                     <!-- Image (Right) -->
                     <div
-                        class="order-1 md:order-2 relative h-48 md:h-64 rounded-2xl overflow-hidden shadow-card border-4 border-white transform rotate-2 transition-transform duration-700 hover:rotate-0">
-                        <img src="" alt="<?php esc_attr_e('Program Preview', 'earlystart-early-learning'); ?>" class="w-full h-full object-cover"
+                        class="order-1 md:order-2 relative h-48 md:h-64 rounded-2xl overflow-hidden shadow-card border-4 border-white transform rotate-2 transition-transform duration-700 hover:rotate-0 hidden"
+                        data-program-wizard-image-wrap>
+                        <img alt="<?php esc_attr_e('Program Preview', 'earlystart-early-learning'); ?>"
+                            class="w-full h-full object-cover"
+                            loading="lazy"
+                            decoding="async"
                             data-program-wizard-image />
                     </div>
                 </div>
