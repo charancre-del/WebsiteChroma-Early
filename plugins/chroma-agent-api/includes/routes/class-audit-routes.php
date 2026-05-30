@@ -166,6 +166,15 @@ class Audit_Routes
         }
 
         $diff = Diff::compare($before, $after);
+        $audit_before = $before;
+        $audit_after = $after;
+        $audit_diff = $diff;
+
+        if (self::is_sensitive_snapshot_target($target_key)) {
+            $audit_before['current_value'] = '[REDACTED]';
+            $audit_after['restored_value'] = '[REDACTED]';
+            $audit_diff = ['sensitive_value' => '[REDACTED]'];
+        }
 
         Audit_Log::log_write([
             'actor_key_id' => Auth::current_key_id(),
@@ -175,9 +184,9 @@ class Audit_Routes
             'target_type' => 'rollback_snapshot',
             'target_id' => (string) $snapshot_id,
             'dry_run' => $dry_run,
-            'before' => $before,
-            'after' => $after,
-            'diff' => $diff,
+            'before' => $audit_before,
+            'after' => $audit_after,
+            'diff' => $audit_diff,
             'status_code' => 200,
         ]);
 
@@ -191,5 +200,10 @@ class Audit_Routes
                 'target_key' => $target_key,
             ],
         ]);
+    }
+
+    private static function is_sensitive_snapshot_target(string $target_key): bool
+    {
+        return in_array(sanitize_key($target_key), Utils::get_sensitive_option_keys(), true);
     }
 }

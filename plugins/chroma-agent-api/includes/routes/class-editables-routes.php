@@ -680,6 +680,10 @@ class Editables_Routes
 
     private static function supports_snapshot(array $field): bool
     {
+        if (!empty($field['sensitive'])) {
+            return false;
+        }
+
         return in_array((string) ($field['storage']['type'] ?? ''), ['option', 'theme_mod'], true);
     }
 

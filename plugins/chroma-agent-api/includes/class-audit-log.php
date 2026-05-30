@@ -113,6 +113,14 @@ class Audit_Log
     public static function sanitize_for_log($data)
     {
         if (is_array($data)) {
+            if (self::contains_sensitive_target_key($data)) {
+                foreach (['current_value', 'restored_value', 'old_value', 'new_value', 'from', 'to'] as $value_key) {
+                    if (array_key_exists($value_key, $data)) {
+                        $data[$value_key] = '[REDACTED]';
+                    }
+                }
+            }
+
             $out = [];
             foreach ($data as $key => $value) {
                 $normalized_key = is_string($key) ? strtolower($key) : '';
@@ -146,6 +154,21 @@ class Audit_Log
     {
         foreach (self::$sensitive_keys as $sensitive_key) {
             if ($key === $sensitive_key || strpos($key, $sensitive_key) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static function contains_sensitive_target_key(array $data): bool
+    {
+        foreach (['target_key', 'target_id', 'field_id', 'id'] as $key) {
+            if (!isset($data[$key]) || !is_scalar($data[$key])) {
+                continue;
+            }
+
+            if (self::is_sensitive_key(strtolower((string) $data[$key]))) {
                 return true;
             }
         }
