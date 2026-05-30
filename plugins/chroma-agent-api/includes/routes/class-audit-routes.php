@@ -58,7 +58,28 @@ class Audit_Routes
         }
 
         $key = Auth::current_key();
-        $scopes = is_array($key['scopes'] ?? null) ? $key['scopes'] : [];
+        $scopes = Utils::normalize_scopes(is_array($key['scopes'] ?? null) ? $key['scopes'] : []);
+
+        $payload = self::payload($request);
+        $snapshot_id = isset($payload['snapshot_id']) ? (int) $payload['snapshot_id'] : 0;
+        if ($snapshot_id > 0) {
+            $snapshot = Snapshot_Store::get_snapshot($snapshot_id);
+            if (!$snapshot) {
+                return new \WP_Error('caa_snapshot_not_found', 'Snapshot not found.', ['status' => 404]);
+            }
+
+            $required_scope = sanitize_text_field((string) ($snapshot['scope'] ?? ''));
+            if (strpos($required_scope, 'write:') === 0 && !in_array($required_scope, $scopes, true)) {
+                return new \WP_Error(
+                    'caa_scope_denied',
+                    'Rollback requires the original snapshot write scope: ' . $required_scope,
+                    ['status' => 403]
+                );
+            }
+
+            return true;
+        }
+
         $write_allowed = in_array('write:theme', $scopes, true)
             || in_array('write:seo', $scopes, true)
             || in_array('write:settings', $scopes, true);
@@ -122,10 +143,7 @@ class Audit_Routes
 
     public static function rollback_snapshot(WP_REST_Request $request)
     {
-        $payload = $request->get_json_params();
-        if (!is_array($payload)) {
-            $payload = $request->get_params();
-        }
+        $payload = self::payload($request);
 
         $dry_run = Utils::truthy($payload['dry_run'] ?? false);
         $snapshot_id = isset($payload['snapshot_id']) ? (int) $payload['snapshot_id'] : 0;
@@ -207,5 +225,15 @@ class Audit_Routes
     private static function is_sensitive_snapshot_target(string $target_key): bool
     {
         return in_array(sanitize_key($target_key), Utils::get_sensitive_option_keys(), true);
+    }
+
+    private static function payload(WP_REST_Request $request): array
+    {
+        $payload = $request->get_json_params();
+        if (!is_array($payload)) {
+            $payload = $request->get_params();
+        }
+
+        return is_array($payload) ? $payload : [];
     }
 }
