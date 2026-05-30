@@ -339,11 +339,10 @@ while (have_posts()):
 		</section>
 	</main>
 
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
 			const ctx = document.getElementById('programFocusChart');
-			if (ctx) {
+			if (ctx && window.Chart) {
 				new Chart(ctx, {
 					type: 'radar',
 					data: {

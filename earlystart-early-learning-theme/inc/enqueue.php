@@ -106,6 +106,20 @@ function earlystart_enqueue_assets()
                 wp_script_add_data('chroma-map-facade', 'defer', true);
         }
 
+        if (is_singular('program')) {
+                $chart_path = earlystart_THEME_DIR . '/assets/js/chart.min.js';
+                $chart_version = file_exists($chart_path) ? filemtime($chart_path) : '4.4.0';
+
+                wp_enqueue_script(
+                        'chroma-chart',
+                        earlystart_THEME_URI . '/assets/js/chart.min.js',
+                        array(),
+                        $chart_version,
+                        true
+                );
+                wp_script_add_data('chroma-chart', 'defer', true);
+        }
+
         // Localize script for AJAX and dynamic data.
         wp_localize_script(
                 'chroma-main-js',
@@ -130,10 +144,6 @@ function earlystart_resource_hints($urls, $relation_type)
 {
         if ('preconnect' === $relation_type) {
 
-                if (is_singular('program')) {
-                        $urls[] = 'https://cdn.jsdelivr.net';
-                }
-
                 if (earlystart_should_load_maps()) {
                         $urls[] = 'https://unpkg.com';
                 }
@@ -144,10 +154,6 @@ function earlystart_resource_hints($urls, $relation_type)
         }
 
         if ('dns-prefetch' === $relation_type) {
-
-                if (is_singular('program')) {
-                        $urls[] = '//cdn.jsdelivr.net';
-                }
 
                 if (earlystart_should_load_maps()) {
                         $urls[] = '//unpkg.com';
