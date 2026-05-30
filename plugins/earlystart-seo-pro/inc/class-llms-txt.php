@@ -34,32 +34,36 @@ class earlystart_LLMs_Txt_Generator
      */
     public static function refresh_file()
     {
-        (new self())->write_physical_file();
+        (new self())->write_physical_file(true);
     }
 
-    public function write_physical_file()
+    public function write_physical_file($force = false)
     {
-        // Only run if we are in admin or it's an AJAX save
-        if (!is_admin() && !wp_doing_ajax()) {
-            return;
-        }
+        $force = ($force === true);
 
-        if (wp_doing_ajax()) {
-            $action = sanitize_text_field($_POST['action'] ?? '');
-            if ($action !== 'earlystart_save_llm_targeting') {
+        if (!$force) {
+            // Only run if we are in admin or it's an AJAX save.
+            if (!is_admin() && !wp_doing_ajax()) {
                 return;
             }
 
-            if (!current_user_can('edit_posts')) {
-                return;
-            }
+            if (wp_doing_ajax()) {
+                $action = sanitize_text_field($_POST['action'] ?? '');
+                if ($action !== 'earlystart_save_llm_targeting') {
+                    return;
+                }
 
-            // Keep this callback independently secure, even if another callback validates first.
-            if (!check_ajax_referer('earlystart_seo_dashboard_nonce', 'nonce', false)) {
+                if (!current_user_can('edit_posts')) {
+                    return;
+                }
+
+                // Keep this callback independently secure, even if another callback validates first.
+                if (!check_ajax_referer('earlystart_seo_dashboard_nonce', 'nonce', false)) {
+                    return;
+                }
+            } elseif (!current_user_can('manage_options')) {
                 return;
             }
-        } elseif (!current_user_can('manage_options')) {
-            return;
         }
 
         $file_path = ABSPATH . 'llms.txt';

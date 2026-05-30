@@ -444,7 +444,24 @@ class Utils
             earlystart_clear_query_cache($post_id);
         }
 
+        self::refresh_llms_txt_if_available();
+
         do_action('chroma_agent_api_content_updated', $post_id);
+    }
+
+    public static function refresh_llms_txt_if_available(): void
+    {
+        if (!class_exists('\earlystart_LLMs_Txt_Generator') || !method_exists('\earlystart_LLMs_Txt_Generator', 'refresh_file')) {
+            return;
+        }
+
+        try {
+            \earlystart_LLMs_Txt_Generator::refresh_file();
+        } catch (\Throwable $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+                error_log('Chroma Agent API could not refresh llms.txt: ' . $e->getMessage());
+            }
+        }
     }
 
     public static function get_spanish_variant_keys(array $keys): array
