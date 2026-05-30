@@ -92,6 +92,10 @@ class earlystart_Spanish_Sitemap_Provider extends WP_Sitemaps_Provider {
     }
 
     private function has_spanish_content($post_id) {
+        if (class_exists('earlystart_Multilingual_Manager') && method_exists('earlystart_Multilingual_Manager', 'has_spanish_content')) {
+            return earlystart_Multilingual_Manager::has_spanish_content($post_id);
+        }
+
         if (get_post_meta($post_id, 'alternate_url_es', true)) {
             return true;
         }

@@ -95,6 +95,10 @@ class earlystart_Multilingual_Manager
             $post_id = get_option('page_on_front');
         }
 
+        if ($post_id && !self::has_spanish_content($post_id)) {
+            return;
+        }
+
         $alternates = self::get_alternates($post_id);
 
         if (empty($alternates['en']) || empty($alternates['es'])) {
@@ -177,6 +181,59 @@ class earlystart_Multilingual_Manager
     public static function get_current_language()
     {
         return self::is_spanish() ? 'es' : 'en';
+    }
+
+    /**
+     * Determine whether a post has a real Spanish variant.
+     *
+     * @param int $post_id Post ID.
+     * @return bool
+     */
+    public static function has_spanish_content($post_id)
+    {
+        $post_id = absint($post_id);
+        if (!$post_id) {
+            return false;
+        }
+
+        if (get_post_meta($post_id, 'alternate_url_es', true)) {
+            return true;
+        }
+
+        foreach (get_post_meta($post_id) as $key => $values) {
+            if (strpos($key, '_earlystart_es_') !== 0) {
+                continue;
+            }
+
+            foreach ((array) $values as $value) {
+                if (self::value_has_spanish_content($value)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static function value_has_spanish_content($value)
+    {
+        $value = maybe_unserialize($value);
+
+        if (is_array($value)) {
+            foreach ($value as $item) {
+                if (self::value_has_spanish_content($item)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        if (is_object($value)) {
+            return self::value_has_spanish_content((array) $value);
+        }
+
+        return trim(wp_strip_all_tags((string) $value)) !== '';
     }
 
     /**
