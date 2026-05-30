@@ -19,10 +19,10 @@ class earlystart_LLMs_Txt_Generator
      */
     public function init()
     {
-        // Remove virtual rewrite rules
-        // add_action('init', [$this, 'add_rewrite_rule']);
-        // add_filter('query_vars', [$this, 'add_query_var']);
-        // add_action('template_redirect', [$this, 'render_file']);
+        // Keep a WordPress-rendered fallback when the physical root file is missing.
+        $this->add_rewrite_rule();
+        add_filter('query_vars', [$this, 'add_query_var']);
+        add_action('template_redirect', [$this, 'render_file']);
 
         // Physical File Generation Hooks
         add_action('admin_init', [$this, 'write_physical_file']); // Force check on admin load
@@ -77,10 +77,29 @@ class earlystart_LLMs_Txt_Generator
         }
     }
 
-    // Deprecated Rewrite Functions (kept commented out or removed for clarity)
-    // public function add_rewrite_rule() ... 
-    // public function add_query_var($vars) ...
-    // public function render_file() ...
+    public function add_rewrite_rule()
+    {
+        add_rewrite_rule('^llms\.txt$', 'index.php?earlystart_llms_txt=1', 'top');
+    }
+
+    public function add_query_var($vars)
+    {
+        $vars[] = 'earlystart_llms_txt';
+        return $vars;
+    }
+
+    public function render_file()
+    {
+        if (!get_query_var('earlystart_llms_txt')) {
+            return;
+        }
+
+        status_header(200);
+        nocache_headers();
+        header('Content-Type: text/plain; charset=utf-8');
+        echo $this->generate_content();
+        exit;
+    }
 
     /**
      * Helper to get LLM Context

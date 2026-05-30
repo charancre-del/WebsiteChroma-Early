@@ -335,9 +335,9 @@ function earlystart_advanced_seo_init()
 	}
 
 	// Flush rewrite rules when SEO plugin-owned public routes change.
-	if (get_option('earlystart_seo_flush_rewrite_v7') !== 'done') {
+	if (get_option('earlystart_seo_flush_rewrite_v8') !== 'done') {
 		flush_rewrite_rules();
-		update_option('earlystart_seo_flush_rewrite_v7', 'done');
+		update_option('earlystart_seo_flush_rewrite_v8', 'done');
 	}
 }
 add_action('init', 'earlystart_advanced_seo_init');
