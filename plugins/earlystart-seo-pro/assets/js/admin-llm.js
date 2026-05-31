@@ -4,6 +4,27 @@
 jQuery(function ($) {
     'use strict';
 
+    function escapeHtml(value) {
+        var text = value === undefined || value === null ? '' : String(value);
+
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function boundedNumber(value, fallback, min, max) {
+        var number = Number(value);
+
+        if (!Number.isFinite(number)) {
+            number = fallback;
+        }
+
+        return Math.min(max, Math.max(min, number));
+    }
+
     // Schema Preview Generator
     window.ChromaSchemaPreview = {
         generate: function (schema) {
@@ -13,21 +34,24 @@ jQuery(function ($) {
             var html = '<div class="chroma-schema-preview"><div class="serp-result">';
 
             // Title
-            html += '<div class="serp-title">' + (schema.name || 'Untitled') + '</div>';
+            html += '<div class="serp-title">' + escapeHtml(schema.name || 'Untitled') + '</div>';
 
             // URL
-            html += '<div class="serp-url">' + (schema.url || window.location.href) + '</div>';
+            html += '<div class="serp-url">' + escapeHtml(schema.url || window.location.href) + '</div>';
 
             // Description
             if (schema.description) {
-                html += '<div class="serp-description">' + schema.description.substring(0, 160) + '...</div>';
+                html += '<div class="serp-description">' + escapeHtml(String(schema.description).substring(0, 160)) + '...</div>';
             }
 
             // Rating
             if (schema.aggregateRating) {
                 var rating = schema.aggregateRating;
-                var stars = '★'.repeat(Math.round(rating.ratingValue)) + '☆'.repeat(5 - Math.round(rating.ratingValue));
-                html += '<div class="serp-rating">' + stars + ' ' + rating.ratingValue + ' (' + rating.reviewCount + ' reviews)</div>';
+                var ratingValue = boundedNumber(rating.ratingValue, 0, 0, 5);
+                var reviewCount = boundedNumber(rating.reviewCount, 0, 0, 999999);
+                var roundedRating = Math.round(ratingValue);
+                var stars = '★'.repeat(roundedRating) + '☆'.repeat(5 - roundedRating);
+                html += '<div class="serp-rating">' + stars + ' ' + escapeHtml(ratingValue.toFixed(1)) + ' (' + escapeHtml(Math.round(reviewCount)) + ' reviews)</div>';
             }
 
             // Hours
@@ -43,7 +67,7 @@ jQuery(function ($) {
     // Confidence Bar Renderer
     window.ChromaConfidence = {
         render: function (score) {
-            var percent = Math.round(score * 100);
+            var percent = Math.round(boundedNumber(score, 0, 0, 1) * 100);
             var level = percent >= 80 ? 'high' : (percent >= 50 ? 'medium' : 'low');
 
             return '<div class="confidence-bar">' +
