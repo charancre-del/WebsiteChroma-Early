@@ -24,7 +24,7 @@ function earlystart_tour_get_dynamic_options()
     }
 
     $form_id = get_option('earlystart_tour_form_id', '848tl2LjoZVsUIhhNOxd');
-    $url = 'https://api.leadconnectorhq.com/widget/form/' . $form_id;
+    $url = 'https://api.leadconnectorhq.com/widget/form/' . rawurlencode((string) $form_id);
     $response = wp_remote_get($url, array('timeout' => 15));
 
     if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
@@ -79,9 +79,10 @@ function earlystart_tour_form_shortcode()
     $lazy_load = get_option('earlystart_tour_lazy_load', true);
     $lazy_delay = get_option('earlystart_tour_lazy_delay', 2000);
 
-    $form_url = 'https://api.leadconnectorhq.com/widget/form/' . esc_attr($form_id);
+    $form_url = 'https://api.leadconnectorhq.com/widget/form/' . rawurlencode((string) $form_id);
     $loading_attr = $lazy_load ? 'lazy' : 'eager';
     $wrapper_id = 'earlystart-tour-form-' . sanitize_html_class($form_id);
+    $iframe_id = 'inline-' . sanitize_html_class($form_id);
 
     ob_start();
     ?>
@@ -90,12 +91,12 @@ function earlystart_tour_form_shortcode()
         <div class="earlystart-ghl-iframe-container" style="min-height: <?php echo esc_attr($form_height); ?>px;">
             <iframe <?php echo $lazy_load ? 'data-src="' . esc_url($form_url) . '"' : 'src="' . esc_url($form_url) . '"'; ?>
                 style="width:100%;height:100%;border:none;border-radius:3px;min-height:<?php echo esc_attr($form_height); ?>px;"
-                id="inline-<?php echo esc_attr($form_id); ?>" loading="<?php echo esc_attr($loading_attr); ?>"
+                id="<?php echo esc_attr($iframe_id); ?>" loading="<?php echo esc_attr($loading_attr); ?>"
                 data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value=""
                 data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate"
                 data-deactivation-value="" data-form-name="<?php echo esc_attr($form_name); ?>"
                 data-height="<?php echo esc_attr($form_height); ?>"
-                data-layout-iframe-id="inline-<?php echo esc_attr($form_id); ?>"
+                data-layout-iframe-id="<?php echo esc_attr($iframe_id); ?>"
                 data-form-id="<?php echo esc_attr($form_id); ?>" title="<?php echo esc_attr($form_name); ?>">
             </iframe>
         </div>
@@ -161,7 +162,18 @@ function earlystart_tour_form_shortcode()
             })();
         </script>
     <?php else: ?>
-        <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+        <script>
+            (function () {
+                if (document.querySelector('script[data-earlystart-ghl-embed]')) {
+                    return;
+                }
+                var script = document.createElement('script');
+                script.src = 'https://link.msgsndr.com/js/form_embed.js';
+                script.async = true;
+                script.setAttribute('data-earlystart-ghl-embed', 'true');
+                document.body.appendChild(script);
+            })();
+        </script>
     <?php endif; ?>
     <?php
     return ob_get_clean();
@@ -205,7 +217,7 @@ function earlystart_handle_tour_submission()
         'body' => wp_json_encode($payload),
         'headers' => array(
             'Content-Type' => 'application/json',
-            'Referer' => 'https://api.leadconnectorhq.com/widget/form/' . $form_id,
+            'Referer' => 'https://api.leadconnectorhq.com/widget/form/' . rawurlencode((string) $form_id),
             'Origin' => 'https://api.leadconnectorhq.com',
             'User-Agent' => 'Mozilla/5.0'
         ),
