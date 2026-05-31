@@ -69,9 +69,11 @@ function earlystart_acquisition_settings_page_html()
             <?php
             settings_fields('earlystart_acquisition_options');
             $email_recipient = get_option('earlystart_acquisition_email_recipient', 'acquisitions@chromaearlystart.com');
+            $webhook_url = get_option('earlystart_acquisition_webhook_url', '');
             ?>
             <table class="form-table">
                 <tr><th scope="row">Email Recipient</th><td><input type="email" name="earlystart_acquisition_email_recipient" value="<?php echo esc_attr($email_recipient); ?>" class="regular-text" /></td></tr>
+                <tr><th scope="row">Webhook URL</th><td><input type="url" name="earlystart_acquisition_webhook_url" value="<?php echo esc_attr($webhook_url); ?>" class="regular-text" /></td></tr>
             </table>
             <?php submit_button(); ?>
         </form>
@@ -159,6 +161,24 @@ function earlystart_handle_acquisition_submission()
 
     $to_email = get_option('earlystart_acquisition_email_recipient', 'acquisitions@chromaearlystart.com');
     wp_mail($to_email, 'New Acquisition Inquiry: ' . $facility_name, "New inquiry:\n\n" . print_r($submission_data, true));
+
+    $webhook_url = get_option('earlystart_acquisition_webhook_url', '');
+    $webhook_url = esc_url_raw($webhook_url, array('http', 'https'));
+    if (!empty($webhook_url) && wp_http_validate_url($webhook_url)) {
+        wp_remote_post($webhook_url, array(
+            'body' => wp_json_encode(array(
+                'event' => 'acquisition_inquiry',
+                'facility_name' => $facility_name,
+                'lead_email' => $email,
+                'submitted_at' => current_time('mysql'),
+                'data' => $submission_data,
+            )),
+            'headers' => array('Content-Type' => 'application/json'),
+            'timeout' => 15,
+            'blocking' => false,
+            'reject_unsafe_urls' => true,
+        ));
+    }
 
     if (post_type_exists('lead_log')) {
         wp_insert_post(array(
