@@ -34,6 +34,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const downloadBtn = document.getElementById('chroma-pdf-download');
     const titleSpan = document.getElementById('chroma-pdf-title');
     const backdrop = document.getElementById('chroma-pdf-backdrop');
+    const loadingSpinnerMarkup = loadingSpinner ? loadingSpinner.innerHTML : '';
+
+    function resetLoadingState() {
+        if (!loadingSpinner) return;
+
+        loadingSpinner.innerHTML = loadingSpinnerMarkup;
+        loadingSpinner.style.display = 'flex';
+    }
 
     function setLoadingError() {
         if (!loadingSpinner) return;
@@ -220,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function openViewer(url, title) {
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
-        if (loadingSpinner) loadingSpinner.style.display = 'flex';
+        resetLoadingState();
 
         // Reset State
         viewerState.pageNum = 1;
@@ -260,6 +268,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function closeViewer() {
         modal.classList.add('hidden');
         document.body.style.overflow = '';
+        viewerState.pageRendering = false;
+        viewerState.pageNumPending = null;
         if (downloadBtn) {
             downloadBtn.removeAttribute('href');
             downloadBtn.setAttribute('aria-disabled', 'true');

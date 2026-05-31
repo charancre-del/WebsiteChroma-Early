@@ -79,11 +79,6 @@ add_action('wp_footer', 'earlystart_render_pdf_modal');
 // Enqueue Assets
 function earlystart_enqueue_pdf_assets()
 {
-    // Optimization: Do not load on homepage (Critical Path reduction)
-    if (is_front_page()) {
-        return;
-    }
-
     $should_enqueue = false;
     if (is_singular()) {
         global $post;
@@ -100,12 +95,27 @@ function earlystart_enqueue_pdf_assets()
         return;
     }
 
-    wp_register_script('chroma-pdf-viewer', get_template_directory_uri() . '/assets/js/chroma-pdf-viewer.js', array(), '1.0.0', true);
+    $viewer_path = get_template_directory() . '/assets/js/chroma-pdf-viewer.js';
+    $viewer_version = file_exists($viewer_path) ? filemtime($viewer_path) : earlystart_VERSION;
+
+    $pdf_js_path = get_template_directory() . '/assets/js/pdf/pdf.min.js';
+    $pdf_js_version = file_exists($pdf_js_path) ? filemtime($pdf_js_path) : earlystart_VERSION;
+
+    $pdf_worker_path = get_template_directory() . '/assets/js/pdf/pdf.worker.min.js';
+    $pdf_worker_version = file_exists($pdf_worker_path) ? filemtime($pdf_worker_path) : earlystart_VERSION;
+
+    wp_register_script(
+        'chroma-pdf-viewer',
+        get_template_directory_uri() . '/assets/js/chroma-pdf-viewer.js',
+        array(),
+        $viewer_version,
+        true
+    );
 
     // Config for JS
     $config = array(
-        'pdfJsUrl' => get_template_directory_uri() . '/assets/js/pdf/pdf.min.js',
-        'pdfWorkerUrl' => get_template_directory_uri() . '/assets/js/pdf/pdf.worker.min.js',
+        'pdfJsUrl' => add_query_arg('ver', $pdf_js_version, get_template_directory_uri() . '/assets/js/pdf/pdf.min.js'),
+        'pdfWorkerUrl' => add_query_arg('ver', $pdf_worker_version, get_template_directory_uri() . '/assets/js/pdf/pdf.worker.min.js'),
         'debug' => defined('WP_DEBUG') && WP_DEBUG,
     );
     wp_localize_script('chroma-pdf-viewer', 'chromaPdfConfig', $config);
