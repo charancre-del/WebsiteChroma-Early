@@ -496,7 +496,7 @@ class earlystart_Translation_Engine
         }
 
         // Translation Memory: Check cache by content hash
-        $content_hash = md5(json_encode($fields_to_translate) . $target_lang);
+        $content_hash = md5(wp_json_encode($fields_to_translate) . $target_lang);
         $cache_key = 'earlystart_trans_' . $content_hash;
 
         if (!$force) {
@@ -516,7 +516,7 @@ class earlystart_Translation_Engine
             $prompt .= "Context: " . $context . "\n";
         }
 
-        $prompt .= "\nInput JSON:\n" . json_encode($fields_to_translate, JSON_UNESCAPED_UNICODE);
+        $prompt .= "\nInput JSON:\n" . wp_json_encode($fields_to_translate, JSON_UNESCAPED_UNICODE);
 
         $response = $client->make_request([
             'messages' => [

@@ -626,7 +626,7 @@ class earlystart_LLM_Client
                 $acf_context .= "ACF Custom Fields:\n";
                 foreach ($acf_fields as $key => $value) {
                     if (is_array($value)) {
-                        $value = json_encode($value);
+                        $value = wp_json_encode($value, JSON_UNESCAPED_UNICODE);
                     }
                     $acf_context .= "- {$key}: {$value}\n";
                 }
@@ -1201,7 +1201,7 @@ class earlystart_LLM_Client
         error_log(sprintf(
             '[Chroma LLM] %s | Info: %s | Tokens: %d | Duration: %.2fs',
             $status,
-            is_string($info) ? substr($info, 0, 100) : json_encode($info),
+            is_string($info) ? substr($info, 0, 100) : wp_json_encode($info),
             $tokens,
             $duration
         ));
@@ -1346,7 +1346,7 @@ class earlystart_LLM_Client
         ], $data);
 
         $response = wp_remote_post($url, [
-            'body' => json_encode($body),
+            'body' => wp_json_encode($body),
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $api_key
@@ -1593,9 +1593,9 @@ class earlystart_LLM_Client
             if ($check) {
                 // Convert list to @graph format if needed
                 if (count($check) > 1 || !isset($check['@graph'])) {
-                    $content = json_encode(['@context' => 'https://schema.org', '@graph' => $check]);
+                    $content = wp_json_encode(['@context' => 'https://schema.org', '@graph' => $check], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 } else {
-                    $content = json_encode($check[0]);
+                    $content = wp_json_encode($check[0], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 }
             }
         }

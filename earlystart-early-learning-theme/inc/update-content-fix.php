@@ -24,7 +24,7 @@ if (strpos($locations_data['subheading'], 'At School') === false) {
     $locations_data['subheading'] = $base_text . ". " . $new_suffix;
 
     // Save back
-    set_theme_mod($locations_key, json_encode($locations_data));
+    set_theme_mod($locations_key, wp_json_encode($locations_data));
     error_log("EarlyStart Update: Updated Locations Subheading.");
 }
 
@@ -59,6 +59,6 @@ if (!$exists) {
     $faq_data['items'][] = $new_item;
 
     // Save back
-    set_theme_mod($faq_key, json_encode($faq_data));
+    set_theme_mod($faq_key, wp_json_encode($faq_data));
     error_log("EarlyStart Update: Added FAQ item.");
 }

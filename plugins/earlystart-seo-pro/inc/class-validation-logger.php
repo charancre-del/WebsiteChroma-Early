@@ -87,7 +87,7 @@ class earlystart_Validation_Logger
                 'post_id' => $post_id,
                 'event_type' => 'validation',
                 'status' => $status,
-                'details' => json_encode($details)
+                'details' => wp_json_encode($details)
             ]
         );
     }
@@ -107,7 +107,7 @@ class earlystart_Validation_Logger
                 'post_id' => $post_id,
                 'event_type' => 'fix',
                 'status' => $success ? 'success' : 'failed',
-                'details' => json_encode(['error' => $error_msg])
+                'details' => wp_json_encode(['error' => $error_msg])
             ]
         );
     }
@@ -127,7 +127,7 @@ class earlystart_Validation_Logger
                  'post_id' => 0,
                  'event_type' => 'system_error',
                  'status' => 'error',
-                 'details' => json_encode(['message' => $message, 'context' => $context])
+                 'details' => wp_json_encode(['message' => $message, 'context' => $context])
              ]
         );
     }
