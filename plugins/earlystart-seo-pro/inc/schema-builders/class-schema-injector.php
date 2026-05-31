@@ -245,6 +245,16 @@ class earlystart_Schema_Injector
      */
     public static function get_organization_schema_data()
     {
+        $phone = get_option('earlystart_seo_phone');
+        if (empty($phone)) {
+            $phone = get_theme_mod('earlystart_phone_number', '');
+        }
+
+        $email = get_option('earlystart_seo_email');
+        if (empty($email)) {
+            $email = get_theme_mod('earlystart_email', '');
+        }
+
         $data = [
             '@context' => 'https://schema.org',
             '@type' => 'Organization',
@@ -255,10 +265,15 @@ class earlystart_Schema_Injector
             'sameAs' => [],
             'contactPoint' => [
                 '@type' => 'ContactPoint',
-                'telephone' => get_theme_mod('earlystart_phone_number'),
+                'telephone' => $phone,
                 'contactType' => 'customer service'
             ]
         ];
+
+        if (!empty($email)) {
+            $data['email'] = $email;
+            $data['contactPoint']['email'] = $email;
+        }
 
         $phonetic = get_option('earlystart_seo_phonetic_name');
         if ($phonetic) {
