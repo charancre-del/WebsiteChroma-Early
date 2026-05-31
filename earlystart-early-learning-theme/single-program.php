@@ -342,25 +342,46 @@ while (have_posts()):
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
 			const ctx = document.getElementById('programFocusChart');
-			if (ctx && window.Chart) {
-				new Chart(ctx, {
+			if (!ctx) {
+				return;
+			}
+
+			const chartConfig = <?php echo wp_json_encode(array(
+				'labels' => array(
+					__('Physical', 'earlystart-early-learning'),
+					__('Emotional', 'earlystart-early-learning'),
+					__('Social', 'earlystart-early-learning'),
+					__('Academic', 'earlystart-early-learning'),
+					__('Creative', 'earlystart-early-learning'),
+				),
+				'data' => array(
+					absint($prism_physical),
+					absint($prism_emotional),
+					absint($prism_social),
+					absint($prism_academic),
+					absint($prism_creative),
+				),
+				'color' => $chart_color,
+			), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+			let chartInstance = null;
+
+			const renderChart = () => {
+				if (chartInstance || !window.Chart) {
+					return;
+				}
+
+				chartInstance = new Chart(ctx, {
 					type: 'radar',
 					data: {
-						labels: ['Physical', 'Emotional', 'Social', 'Academic', 'Creative'],
+						labels: chartConfig.labels,
 						datasets: [{
 							label: 'Program Balance',
-							data: [
-								<?php echo absint($prism_physical); ?>,
-								<?php echo absint($prism_emotional); ?>,
-								<?php echo absint($prism_social); ?>,
-								<?php echo absint($prism_academic); ?>,
-								<?php echo absint($prism_creative); ?>
-							],
-							backgroundColor: '<?php echo $chart_color; ?>' + '33', // 20% opacity
-							borderColor: '<?php echo $chart_color; ?>',
+							data: chartConfig.data,
+							backgroundColor: chartConfig.color + '33',
+							borderColor: chartConfig.color,
 							borderWidth: 2,
 							pointBackgroundColor: '#fff',
-							pointBorderColor: '<?php echo $chart_color; ?>',
+							pointBorderColor: chartConfig.color,
 						}]
 					},
 					options: {
@@ -375,6 +396,49 @@ while (have_posts()):
 						plugins: { legend: { display: false } }
 					}
 				});
+			};
+
+			const loadChart = () => {
+				if (window.Chart) {
+					renderChart();
+					return;
+				}
+
+				if (!window.chromaProgramChartPromise) {
+					window.chromaProgramChartPromise = new Promise((resolve) => {
+						const script = document.createElement('script');
+						const fallbackUrl = window.chromaData && window.chromaData.themeUrl
+							? `${window.chromaData.themeUrl}/assets/js/chart.min.js`
+							: '';
+
+						script.src = (window.chromaData && window.chromaData.chartUrl) || fallbackUrl;
+						if (!script.src) {
+							resolve(false);
+							return;
+						}
+
+						script.async = true;
+						script.onload = () => resolve(true);
+						script.onerror = () => resolve(false);
+						document.body.appendChild(script);
+					});
+				}
+
+				window.chromaProgramChartPromise.then(renderChart);
+			};
+
+			if ('IntersectionObserver' in window) {
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							observer.disconnect();
+							loadChart();
+						}
+					});
+				}, { rootMargin: '200px' });
+				observer.observe(ctx);
+			} else {
+				loadChart();
 			}
 		});
 	</script>

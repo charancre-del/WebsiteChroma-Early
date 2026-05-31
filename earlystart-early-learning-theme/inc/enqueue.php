@@ -108,17 +108,6 @@ function earlystart_enqueue_assets()
                 wp_script_add_data('chroma-map-facade', 'defer', true);
         }
 
-        if (is_singular('program')) {
-                wp_enqueue_script(
-                        'chroma-chart',
-                        earlystart_THEME_URI . '/assets/js/chart.min.js',
-                        array(),
-                        $chart_version,
-                        true
-                );
-                wp_script_add_data('chroma-chart', 'defer', true);
-        }
-
         // Localize script for AJAX and dynamic data.
         wp_localize_script(
                 'chroma-main-js',
