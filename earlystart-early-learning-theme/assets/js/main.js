@@ -75,6 +75,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
+  const prefersReducedMotion = () => (
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
+  const shouldRunAutoplay = () => !prefersReducedMotion() && document.visibilityState !== 'hidden';
+
   /**
    * Mobile Nav Toggle
    */
@@ -698,7 +705,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Autoplay
     const startAutoplay = () => {
-      if (totalSlides > 1 && !autoplayInterval) {
+      if (totalSlides > 1 && !autoplayInterval && shouldRunAutoplay()) {
         autoplayInterval = setInterval(nextSlide, 6000);
       }
     };
@@ -721,6 +728,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Pause on hover
     reviewsCarousel.addEventListener('mouseenter', stopAutoplay);
     reviewsCarousel.addEventListener('mouseleave', startAutoplay);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden' || prefersReducedMotion()) {
+        stopAutoplay();
+      } else {
+        startAutoplay();
+      }
+    });
 
     // Touch/swipe support
     let touchStartX = 0;
@@ -827,7 +841,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Autoplay
     const startAutoplay = () => {
-      if (totalSlides > 1 && !autoplayInterval) {
+      if (totalSlides > 1 && !autoplayInterval && shouldRunAutoplay()) {
         autoplayInterval = setInterval(nextSlide, 5000);
       }
     };
@@ -850,6 +864,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Pause on hover
     locationCarousel.addEventListener('mouseenter', stopAutoplay);
     locationCarousel.addEventListener('mouseleave', startAutoplay);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden' || prefersReducedMotion()) {
+        stopAutoplay();
+      } else {
+        startAutoplay();
+      }
+    });
   }
 
   /**
