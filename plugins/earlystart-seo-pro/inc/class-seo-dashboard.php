@@ -45,6 +45,7 @@ class earlystart_SEO_Dashboard
         add_action('rest_api_init', [$this, 'register_rest_routes']);
         add_action('admin_init', [$this, 'register_settings']);
         add_action('transition_post_status', [$this, 'auto_validate_on_publish'], 10, 3);
+        add_action('earlystart_validate_published_post', [$this, 'run_scheduled_post_validation'], 10, 1);
         
         // WP-CLI Support (Sprint 6/8)
         if (defined('WP_CLI') && WP_CLI) {
@@ -77,8 +78,36 @@ class earlystart_SEO_Dashboard
      */
     public function auto_validate_on_publish($new_status, $old_status, $post)
     {
-        if ($new_status === 'publish') {
-            $this->perform_url_validation(get_permalink($post->ID), $post->ID);
+        if ($new_status !== 'publish' || !$post instanceof WP_Post) {
+            return;
+        }
+
+        $post_id = (int) $post->ID;
+        if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) {
+            return;
+        }
+
+        $args = [$post_id];
+        if (!wp_next_scheduled('earlystart_validate_published_post', $args)) {
+            wp_schedule_single_event(time() + 30, 'earlystart_validate_published_post', $args);
+        }
+    }
+
+    /**
+     * Run deferred schema validation for a published post.
+     *
+     * @param int $post_id Post ID.
+     */
+    public function run_scheduled_post_validation($post_id)
+    {
+        $post_id = absint($post_id);
+        if (!$post_id || get_post_status($post_id) !== 'publish') {
+            return;
+        }
+
+        $permalink = get_permalink($post_id);
+        if ($permalink) {
+            $this->perform_url_validation($permalink, $post_id);
         }
     }
 
@@ -4324,8 +4353,8 @@ class earlystart_SEO_Dashboard
         
         $response = null;
         $attempt = 0;
-        $max_retries = intval(get_option('earlystart_validator_max_retries', 3));
-        $timeout = intval(get_option('earlystart_validator_timeout', 30));
+        $max_retries = max(1, min(10, absint(get_option('earlystart_validator_max_retries', 3))));
+        $timeout = max(3, min(60, absint(get_option('earlystart_validator_timeout', 30))));
         
         // Feature 10: Connection Retry Loop
         while ($attempt < $max_retries) {
