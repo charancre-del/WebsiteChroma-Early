@@ -70,7 +70,7 @@ $has_map = !empty($locations_data['map_points']);
                 <div class="w-full lg:w-2/3">
                     <div class="chroma-home-map rounded-[2.5rem] overflow-hidden shadow-2xl border border-stone-100 bg-stone-200 relative z-10 fade-in-up"
                         data-chroma-map="true"
-                        data-chroma-locations="<?php echo esc_attr(json_encode($locations_data['map_points'])); ?>">
+                        data-chroma-locations="<?php echo esc_attr(wp_json_encode($locations_data['map_points'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)); ?>">
                     </div>
                 </div>
             <?php endif; ?>

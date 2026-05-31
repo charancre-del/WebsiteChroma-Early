@@ -846,7 +846,7 @@ while (have_posts()):
 							<?php _e('Take a Virtual Tour', 'earlystart-early-learning'); ?></h2>
 						<div class="flex-1 h-px bg-stone-200 ml-4"></div>
 					</div>
-					<div class="rounded-[2.5rem] overflow-hidden border border-stone-100 shadow-sm bg-stone-50" data-chroma-map="true">
+					<div class="rounded-[2.5rem] overflow-hidden border border-stone-100 shadow-sm bg-stone-50">
 						<?php
 						$allowed_embed_tags = array(
 							'iframe' => array(

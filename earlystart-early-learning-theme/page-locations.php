@@ -98,7 +98,7 @@ $partner_query = new WP_Query(array(
 						// Prepare map data for this location
 						$lat = get_post_meta($location_id, 'location_latitude', true) ?: 34.0754; // Default to Alpharettaish
 						$lng = get_post_meta($location_id, 'location_longitude', true) ?: -84.2941;
-						$map_data = json_encode(array(
+						$map_data = wp_json_encode(array(
 							array(
 								'name' => get_the_title(),
 								'lat' => $lat,
@@ -107,7 +107,7 @@ $partner_query = new WP_Query(array(
 								'city' => $city,
 								'kind' => 'clinic'
 							)
-						));
+						), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 						?>
 						<div class="grid lg:grid-cols-2 gap-12 items-center">
 							<div class="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border border-stone-100 fade-in-up">
