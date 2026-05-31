@@ -82,6 +82,7 @@ function earlystart_enqueue_assets()
         );
 
         // Defer right away
+        wp_script_add_data('chroma-main-js', 'strategy', 'defer');
         wp_script_add_data('chroma-main-js', 'defer', true);
 
         // Map Facade (Lazy Load Leaflet).
@@ -105,6 +106,7 @@ function earlystart_enqueue_assets()
                         $map_facade_version,
                         true
                 );
+                wp_script_add_data('chroma-map-facade', 'strategy', 'defer');
                 wp_script_add_data('chroma-map-facade', 'defer', true);
         }
 

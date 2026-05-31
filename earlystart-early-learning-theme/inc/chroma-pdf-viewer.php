@@ -111,6 +111,8 @@ function earlystart_enqueue_pdf_assets()
         $viewer_version,
         true
     );
+    wp_script_add_data('chroma-pdf-viewer', 'strategy', 'defer');
+    wp_script_add_data('chroma-pdf-viewer', 'defer', true);
 
     // Config for JS
     $config = array(

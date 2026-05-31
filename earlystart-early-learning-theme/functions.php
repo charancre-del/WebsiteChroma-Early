@@ -424,6 +424,20 @@ function earlystart_defer_scripts($tag, $handle, $src)
 {
     // List of scripts to defer (Removed jQuery to prevent "jQuery is not defined" errors)
     $defer_scripts = array('gtag', 'did-0014');
+    $has_defer_strategy = false;
+
+    if (function_exists('wp_scripts')) {
+        $scripts = wp_scripts();
+        $has_defer_strategy = $scripts
+            && (
+                'defer' === $scripts->get_data($handle, 'strategy')
+                || $scripts->get_data($handle, 'defer')
+            );
+    }
+
+    if ($src && $has_defer_strategy && stripos($tag, ' defer') === false && stripos($tag, ' async') === false) {
+        return str_replace(' src', ' defer src', $tag);
+    }
 
     foreach ($defer_scripts as $script) {
         if ($src && strpos($src, $script) !== false) {
