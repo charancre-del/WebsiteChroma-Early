@@ -31,35 +31,57 @@ class earlystart_LLM_Bulk_Processor
      * Queue posts for bulk generation
      */
     public function queue_posts($post_ids, $type = 'schema') {
-        $queue = get_option(self::QUEUE_OPTION, []);
-        
+        $post_ids = array_values(array_unique(array_filter(array_map('absint', (array) $post_ids))));
+        $type = in_array($type, ['schema', 'amenities'], true) ? $type : 'schema';
+        $existing_status = self::get_status();
+        $queue = !empty($existing_status['in_progress']) ? get_option(self::QUEUE_OPTION, []) : [];
+        $queued_keys = [];
+
+        foreach ($queue as $item) {
+            $queued_post_id = absint($item['post_id'] ?? 0);
+            $queued_type = sanitize_key($item['type'] ?? 'schema');
+            if ($queued_post_id) {
+                $queued_keys[$queued_post_id . ':' . $queued_type] = true;
+            }
+        }
+
+        $queued_count = 0;
         foreach ($post_ids as $post_id) {
+            $queue_key = $post_id . ':' . $type;
+            if (isset($queued_keys[$queue_key])) {
+                continue;
+            }
+
             $queue[] = [
-                'post_id' => intval($post_id),
+                'post_id' => $post_id,
                 'type' => $type,
                 'status' => 'pending',
                 'queued_at' => current_time('mysql')
             ];
+            $queued_keys[$queue_key] = true;
+            $queued_count++;
         }
-        
+
         update_option(self::QUEUE_OPTION, $queue);
-        
+
         // Update status
         $status = [
             'total' => count($queue),
-            'completed' => 0,
-            'failed' => 0,
+            'completed' => $this->count_queue_status($queue, 'completed'),
+            'failed' => $this->count_queue_status($queue, 'failed'),
             'in_progress' => true,
-            'started_at' => current_time('mysql')
+            'started_at' => !empty($existing_status['in_progress']) && !empty($existing_status['started_at'])
+                ? $existing_status['started_at']
+                : current_time('mysql')
         ];
         update_option(self::STATUS_OPTION, $status);
-        
+
         // Schedule first processing
         if (!wp_next_scheduled(self::CRON_HOOK)) {
             wp_schedule_single_event(time() + 5, self::CRON_HOOK);
         }
-        
-        return count($queue);
+
+        return $queued_count;
     }
     
     /**
@@ -107,10 +129,17 @@ class earlystart_LLM_Bulk_Processor
             $status['failed'] = ($status['failed'] ?? 0) + 1;
         }
         update_option(self::STATUS_OPTION, $status);
-        
+
+        if (!$this->has_pending_items($queue)) {
+            $this->mark_complete();
+            return;
+        }
+
         // Schedule next processing (with rate limiting)
         $delay = 5; // 5 seconds between requests
-        wp_schedule_single_event(time() + $delay, self::CRON_HOOK);
+        if (!wp_next_scheduled(self::CRON_HOOK)) {
+            wp_schedule_single_event(time() + $delay, self::CRON_HOOK);
+        }
     }
     
     /**
@@ -211,20 +240,59 @@ class earlystart_LLM_Bulk_Processor
         $status['in_progress'] = false;
         $status['completed_at'] = current_time('mysql');
         update_option(self::STATUS_OPTION, $status);
+        delete_option(self::QUEUE_OPTION);
         
         // Clear cron
         wp_clear_scheduled_hook(self::CRON_HOOK);
+    }
+
+    /**
+     * Count queue items with a specific status.
+     *
+     * @param array $queue Queue rows.
+     * @param string $status Status to count.
+     * @return int
+     */
+    private function count_queue_status($queue, $status) {
+        $count = 0;
+        foreach ((array) $queue as $item) {
+            if (($item['status'] ?? '') === $status) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * Determine whether any queue items remain pending.
+     *
+     * @param array $queue Queue rows.
+     * @return bool
+     */
+    private function has_pending_items($queue) {
+        foreach ((array) $queue as $item) {
+            if (($item['status'] ?? '') === 'pending') {
+                return true;
+            }
+        }
+
+        return false;
     }
     
     /**
      * Get queue status
      */
     public static function get_status() {
-        return get_option(self::STATUS_OPTION, [
+        return wp_parse_args((array) get_option(self::STATUS_OPTION, []), [
             'total' => 0,
             'completed' => 0,
             'failed' => 0,
-            'in_progress' => false
+            'in_progress' => false,
+            'started_at' => '',
+            'completed_at' => '',
+            'cancelled' => false,
+            'cancelled_at' => ''
         ]);
     }
     
@@ -307,17 +375,25 @@ class earlystart_LLM_Bulk_Processor
             wp_send_json_error(['message' => 'Permission denied']);
         }
         
-        $post_ids = isset($_POST['post_ids']) ? array_map('intval', $_POST['post_ids']) : [];
-        $type = sanitize_text_field($_POST['type'] ?? 'schema');
+        $post_ids = isset($_POST['post_ids']) ? array_map('absint', (array) wp_unslash($_POST['post_ids'])) : [];
+        $type = isset($_POST['type']) ? sanitize_key(wp_unslash($_POST['type'])) : 'schema';
         
         if (empty($post_ids)) {
             wp_send_json_error(['message' => 'No posts selected']);
+        }
+
+        $post_ids = array_values(array_filter($post_ids, function($post_id) {
+            return current_user_can('edit_post', $post_id);
+        }));
+
+        if (empty($post_ids)) {
+            wp_send_json_error(['message' => 'No editable posts selected']);
         }
         
         $count = $this->queue_posts($post_ids, $type);
         
         wp_send_json_success([
-            'message' => "Queued $count posts for processing",
+            'message' => "Queued $count new posts for processing",
             'queued' => $count
         ]);
     }

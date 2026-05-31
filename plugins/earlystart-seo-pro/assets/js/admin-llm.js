@@ -187,10 +187,13 @@ jQuery(function ($) {
             }, function (response) {
                 if (response.success && response.data.status.in_progress) {
                     var s = response.data.status;
-                    var percent = Math.round((s.completed / s.total) * 100);
+                    var total = Math.max(1, Number(s.total) || 0);
+                    var completed = Number(s.completed) || 0;
+                    var percent = Math.round((completed / total) * 100);
 
                     $('.chroma-progress .bar').css('width', percent + '%');
-                    $('.chroma-progress-text').text(s.completed + ' / ' + s.total);
+                    $('.chroma-progress').attr('aria-valuenow', percent);
+                    $('.chroma-progress-text').text(completed + ' / ' + (Number(s.total) || 0));
 
                     setTimeout(function () { self.pollStatus(); }, 3000);
                 } else {

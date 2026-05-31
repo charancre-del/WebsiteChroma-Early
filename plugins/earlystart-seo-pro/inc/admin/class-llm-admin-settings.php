@@ -511,13 +511,17 @@ class earlystart_LLM_Admin_Settings
             <h1>⚡ Bulk Operations</h1>
             
             <?php if ($status['in_progress']): ?>
-            <div class="notice notice-info">
+            <?php $progress_percent = $status['total'] > 0 ? min(100, round(($status['completed'] / $status['total']) * 100)) : 0; ?>
+            <div class="notice notice-info chroma-bulk-status">
                 <p>
                     <strong>Processing:</strong> 
-                    <?php echo $status['completed']; ?> / <?php echo $status['total']; ?> completed
-                    (<?php echo $status['failed']; ?> failed)
+                    <span class="chroma-progress-text"><?php echo esc_html($status['completed']); ?> / <?php echo esc_html($status['total']); ?></span> completed
+                    (<?php echo esc_html($status['failed']); ?> failed)
                     <button class="button" id="chroma-cancel-bulk">Cancel</button>
                 </p>
+                <div class="chroma-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo esc_attr($progress_percent); ?>">
+                    <div class="bar" style="width: <?php echo esc_attr($progress_percent); ?>%;"></div>
+                </div>
             </div>
             <?php endif; ?>
             
