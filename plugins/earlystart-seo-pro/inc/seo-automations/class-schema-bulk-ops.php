@@ -22,14 +22,14 @@ class earlystart_Schema_Bulk_Ops
      * Reset Schema for selected posts
      */
     public function ajax_reset_schema() {
-        check_ajax_referer('earlystart_llm_nonce', 'nonce'); // Assuming nonce name from admin-llm.js
+        check_ajax_referer('earlystart_seo_nonce', 'nonce');
         
         if (!current_user_can('manage_options')) {
             wp_send_json_error(['message' => 'Unauthorized']);
         }
 
-        $post_ids = isset($_POST['post_ids']) && is_array($_POST['post_ids']) ? array_map('absint', $_POST['post_ids']) : [];
-        $reset_all = filter_var($_POST['reset_all'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        $post_ids = isset($_POST['post_ids']) && is_array($_POST['post_ids']) ? array_map('absint', wp_unslash($_POST['post_ids'])) : [];
+        $reset_all = filter_var(wp_unslash($_POST['reset_all'] ?? false), FILTER_VALIDATE_BOOLEAN);
         $count = 0;
 
         if ($reset_all) {
@@ -71,18 +71,18 @@ class earlystart_Schema_Bulk_Ops
      * Safest bet: `_earlystart_faq_schema`.
      */
     public function ajax_reset_faq() {
-        check_ajax_referer('earlystart_llm_nonce', 'nonce');
+        check_ajax_referer('earlystart_seo_nonce', 'nonce');
         
         if (!current_user_can('manage_options')) {
             wp_send_json_error(['message' => 'Unauthorized']);
         }
 
-        $post_ids = isset($_POST['post_ids']) && is_array($_POST['post_ids']) ? array_map('absint', $_POST['post_ids']) : [];
-        $reset_all = filter_var($_POST['reset_all'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        $post_ids = isset($_POST['post_ids']) && is_array($_POST['post_ids']) ? array_map('absint', wp_unslash($_POST['post_ids'])) : [];
+        $reset_all = filter_var(wp_unslash($_POST['reset_all'] ?? false), FILTER_VALIDATE_BOOLEAN);
         $count = 0;
         
         // Potential keys for FAQ
-        $keys = ['_earlystart_faq_schema', 'earlystart_faq_items']; 
+        $keys = ['_earlystart_faq_schema', 'earlystart_faq_items', '_earlystart_es_earlystart_faq_items'];
 
         if ($reset_all) {
              $posts = get_posts([
@@ -91,7 +91,8 @@ class earlystart_Schema_Bulk_Ops
                 'meta_query' => [
                     'relation' => 'OR',
                     ['key' => '_earlystart_faq_schema', 'compare' => 'EXISTS'],
-                    ['key' => 'earlystart_faq_items', 'compare' => 'EXISTS']
+                    ['key' => 'earlystart_faq_items', 'compare' => 'EXISTS'],
+                    ['key' => '_earlystart_es_earlystart_faq_items', 'compare' => 'EXISTS']
                 ],
                 'fields' => 'ids'
             ]);

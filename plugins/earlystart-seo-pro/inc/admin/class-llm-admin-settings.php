@@ -554,35 +554,6 @@ class earlystart_LLM_Admin_Settings
         
         <script>
         jQuery(function($) {
-            $('#select-all-gaps').on('change', function() {
-                $('.gap-checkbox').prop('checked', $(this).is(':checked'));
-            });
-            
-            $('#chroma-generate-selected').on('click', function() {
-                var selected = $('.gap-checkbox:checked').map(function() { 
-                    return $(this).val(); 
-                }).get();
-                
-                if (!selected.length) {
-                    alert('Select at least one post');
-                    return;
-                }
-                
-                $.post(chromaLLM.ajaxUrl, {
-                    action: 'earlystart_bulk_generate_start',
-                    nonce: chromaLLM.nonce,
-                    post_ids: selected,
-                    type: 'schema'
-                }, function(response) {
-                    if (response.success) {
-                        alert(response.data.message);
-                        location.reload();
-                    } else {
-                        alert('Error: ' + response.data.message);
-                    }
-                });
-            });
-            
             // GMB Sync for selected posts
             $('#chroma-sync-gmb-selected').on('click', function() {
                 var selected = $('.gap-checkbox:checked').map(function() { 

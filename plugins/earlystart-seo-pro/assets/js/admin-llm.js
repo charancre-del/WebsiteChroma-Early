@@ -79,12 +79,33 @@ jQuery(function ($) {
     // Bulk Operations Handler
     var BulkOps = {
         init: function () {
-            $('#select-all-gaps').on('change', function () {
+            $('#select-all-gaps').off('change.chromaLLMBulk').on('change.chromaLLMBulk', function () {
                 $('.gap-checkbox').prop('checked', $(this).is(':checked'));
             });
 
-            $('#chroma-generate-selected').on('click', this.startBulk.bind(this));
-            $('#chroma-cancel-bulk').on('click', this.cancelBulk.bind(this));
+            if ($('#chroma-generate-selected').length && !$('#chroma-reset-schema').length) {
+                $('<button id="chroma-reset-schema" class="button button-secondary" style="margin-left: 10px; color: #d63638; border-color: #d63638;">Reset Schema</button>').insertAfter('#chroma-generate-selected');
+                $('<button id="chroma-reset-faq" class="button button-secondary" style="margin-left: 10px; color: #d63638; border-color: #d63638;">Reset FAQs</button>').insertAfter('#chroma-reset-schema');
+            }
+
+            $('#chroma-generate-selected')
+                .off('click.chromaLLMBulk')
+                .on('click.chromaLLMBulk', this.startBulk.bind(this));
+            $('#chroma-cancel-bulk')
+                .off('click.chromaLLMBulk')
+                .on('click.chromaLLMBulk', this.cancelBulk.bind(this));
+            $('#chroma-reset-schema')
+                .off('click.chromaLLMBulk')
+                .on('click.chromaLLMBulk', function (e) {
+                    e.preventDefault();
+                    BulkOps.resetBulk('schema');
+                });
+            $('#chroma-reset-faq')
+                .off('click.chromaLLMBulk')
+                .on('click.chromaLLMBulk', function (e) {
+                    e.preventDefault();
+                    BulkOps.resetBulk('faq');
+                });
 
             // Poll status if in progress
             if ($('.chroma-bulk-status').length) {
@@ -122,6 +143,38 @@ jQuery(function ($) {
                 nonce: chromaLLM.nonce
             }, function () {
                 location.reload();
+            });
+        },
+
+        resetBulk: function (type) {
+            var selected = $('.gap-checkbox:checked').map(function () {
+                return $(this).val();
+            }).get();
+            var resetAll = false;
+
+            if (!selected.length) {
+                if (!confirm('No posts selected. Reset all ' + type + ' data across the entire site? This cannot be undone.')) {
+                    return;
+                }
+                resetAll = true;
+            } else if (!confirm('Reset ' + type + ' for ' + selected.length + ' selected item(s)?')) {
+                return;
+            }
+
+            $.post(chromaLLM.ajaxUrl, {
+                action: type === 'faq' ? 'earlystart_bulk_reset_faq' : 'earlystart_bulk_reset_schema',
+                nonce: chromaLLM.nonce,
+                post_ids: selected,
+                reset_all: resetAll
+            }, function (response) {
+                if (response.success) {
+                    alert(response.data.message);
+                    location.reload();
+                } else {
+                    alert('Error: ' + (response.data.message || 'Unknown error'));
+                }
+            }).fail(function () {
+                alert('Request failed. Please try again.');
             });
         },
 
