@@ -30,6 +30,7 @@ class earlystart_Competitor_Analyzer
 
         $response = wp_remote_get($safe_url, [
             'timeout' => 15,
+            'reject_unsafe_urls' => true,
             'user-agent' => 'Mozilla/5.0 (compatible; ChromaBot/1.0)'
         ]);
         
@@ -295,7 +296,11 @@ Return JSON with keys: alt_text, caption, keywords";
             : strtolower((string) wp_parse_url($base_url, PHP_URL_HOST)) === 'generativelanguage.googleapis.com';
 
         if ($is_gemini) {
-            $image_response = wp_remote_get($image_url, array('timeout' => 20, 'redirection' => 3));
+            $image_response = wp_remote_get($image_url, array(
+                'timeout' => 20,
+                'redirection' => 3,
+                'reject_unsafe_urls' => true,
+            ));
             if (is_wp_error($image_response)) {
                 return $image_response;
             }

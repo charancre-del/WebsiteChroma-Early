@@ -3864,6 +3864,7 @@ class earlystart_SEO_Dashboard
         $response = wp_remote_get($url, [
             'timeout' => 60,
             'sslverify' => true,
+            'reject_unsafe_urls' => true,
             'user-agent' => 'Mozilla/5.0 (compatible; ChromaSEO/1.0)'
         ]);
         
@@ -4185,6 +4186,7 @@ class earlystart_SEO_Dashboard
         $response = wp_remote_get($safe_sitemap_url, [
             'timeout' => 30,
             'sslverify' => true,
+            'reject_unsafe_urls' => true,
             'user-agent' => 'Mozilla/5.0 (compatible; ChromaSEO/1.0)'
         ]);
         
@@ -4301,7 +4303,8 @@ class earlystart_SEO_Dashboard
         while ($attempt < $max_retries) {
             $response = wp_remote_get($url, [
                 'timeout' => $timeout,
-                'sslverify' => false,
+                'sslverify' => true,
+                'reject_unsafe_urls' => true,
                 'user-agent' => 'Mozilla/5.0 (compatible; ChromaSEO/1.0)'
             ]);
             
@@ -5141,7 +5144,8 @@ class earlystart_SEO_Dashboard
         // Fetch the page
         $response = wp_remote_get($url, [
             'timeout' => 15,
-            'sslverify' => true
+            'sslverify' => true,
+            'reject_unsafe_urls' => true
         ]);
         
         if (is_wp_error($response)) {

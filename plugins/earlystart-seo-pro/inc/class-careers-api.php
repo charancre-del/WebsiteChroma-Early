@@ -29,10 +29,19 @@ class earlystart_Careers_API
 
         // Use option for feed URL to avoid hardcoding in plugin
         $url = get_option('earlystart_careers_feed_url', 'https://app.acquire4hire.com/careers/list.json?id=4668');
+        $safe_url = function_exists('earlystart_seo_validate_remote_url')
+            ? earlystart_seo_validate_remote_url($url, true)
+            : esc_url_raw($url, array('http', 'https'));
+
+        if (!$safe_url) {
+            earlystart_debug_log(' Careers API Error: blocked or invalid feed URL');
+            return array();
+        }
 
         // Fetch data with timeout
-        $response = wp_remote_get($url, array(
+        $response = wp_remote_get($safe_url, array(
             'timeout' => 15,
+            'reject_unsafe_urls' => true,
             'headers' => array(
                 'Accept' => 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             ),
@@ -48,9 +57,9 @@ class earlystart_Careers_API
             return array();
         }
 
-        $jobs = self::parse_json_feed($body, $url);
+        $jobs = self::parse_json_feed($body, $safe_url);
         if (empty($jobs)) {
-            $jobs = self::parse_html_feed($body, $url);
+            $jobs = self::parse_html_feed($body, $safe_url);
         }
 
         // Cache for 1 hour
