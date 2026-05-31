@@ -132,25 +132,30 @@ class earlystart_Schema_Validator
     {
         self::$errors = [];
         self::$warnings = [];
+        $graph_errors = [];
+        $graph_warnings = [];
 
         if (!isset($graph_data['@context'])) {
-            self::$errors[] = 'Missing @context in schema graph';
+            $graph_errors[] = 'Missing @context in schema graph';
         }
 
         if (!isset($graph_data['@graph']) || !is_array($graph_data['@graph'])) {
-            self::$errors[] = 'Missing or invalid @graph array';
+            $graph_errors[] = 'Missing or invalid @graph array';
+            self::$errors = $graph_errors;
             return false;
         }
 
-        $valid = true;
         foreach ($graph_data['@graph'] as $index => $schema) {
             $context = "Graph item #{$index}";
-            if (!self::validate($schema, $context)) {
-                $valid = false;
-            }
+            self::validate($schema, $context);
+            $graph_errors = array_merge($graph_errors, self::$errors);
+            $graph_warnings = array_merge($graph_warnings, self::$warnings);
         }
 
-        return $valid;
+        self::$errors = array_values(array_unique($graph_errors));
+        self::$warnings = array_values(array_unique($graph_warnings));
+
+        return empty(self::$errors);
     }
 
     /**
@@ -179,17 +184,24 @@ class earlystart_Schema_Validator
         if (isset($parsed['@graph']) && is_array($parsed['@graph'])) {
             $graph = $parsed['@graph'];
             $context = 'Graph';
+            $graph_errors = [];
+            $graph_warnings = [];
 
             // 2. Validate @context for the graph
             if (!isset($parsed['@context'])) {
-                self::$errors[] = 'Missing @context in schema graph';
+                $graph_errors[] = 'Missing @context in schema graph';
             }
 
             // 3. Validate each node in the graph
             foreach ($graph as $i => $node) {
                 $nodeContext = count($graph) > 1 ? "$context > Node $i" : $context;
                 self::validate($node, $nodeContext); // Use the main validate function for each node
+                $graph_errors = array_merge($graph_errors, self::$errors);
+                $graph_warnings = array_merge($graph_warnings, self::$warnings);
             }
+
+            self::$errors = array_values(array_unique($graph_errors));
+            self::$warnings = array_values(array_unique($graph_warnings));
 
             // 4. Validate Graph Integrity (Linkages)
             self::validate_graph_integrity($graph);
