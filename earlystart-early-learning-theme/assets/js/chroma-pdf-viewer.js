@@ -199,15 +199,15 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (!window.chromaPdfConfig || !chromaPdfConfig.pdfJsUrl || !chromaPdfConfig.pdfWorkerUrl) {
+        if (!window.chromaPdfConfig || !window.chromaPdfConfig.pdfJsUrl || !window.chromaPdfConfig.pdfWorkerUrl) {
             setLoadingError();
             return;
         }
 
         const script = document.createElement('script');
-        script.src = chromaPdfConfig.pdfJsUrl;
+        script.src = window.chromaPdfConfig.pdfJsUrl;
         script.onload = function () {
-            window.pdfjsLib.GlobalWorkerOptions.workerSrc = chromaPdfConfig.pdfWorkerUrl;
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = window.chromaPdfConfig.pdfWorkerUrl;
             callback();
         };
         script.onerror = setLoadingError;
@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         loadPdfLibrary(function () {
-            pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
+            window.pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
                 viewerState.pdfDoc = pdfDoc_;
                 if (pageCountSpan) pageCountSpan.textContent = pdfDoc_.numPages;
 
