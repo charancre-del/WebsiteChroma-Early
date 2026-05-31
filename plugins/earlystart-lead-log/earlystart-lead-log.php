@@ -114,6 +114,11 @@ function earlystart_lead_log_trigger_webhook($post_id, $post)
     if (empty($webhook_url) || get_post_meta($post_id, '_earlystart_webhook_sent', true))
         return;
 
+    $webhook_url = esc_url_raw($webhook_url, array('http', 'https'));
+    if (empty($webhook_url) || !wp_http_validate_url($webhook_url)) {
+        return;
+    }
+
     $body = array(
         'event' => 'new_lead',
         'lead_id' => $post_id,
@@ -125,7 +130,17 @@ function earlystart_lead_log_trigger_webhook($post_id, $post)
         'data' => json_decode(get_post_meta($post_id, 'lead_payload', true), true) ?: array()
     );
 
-    wp_remote_post($webhook_url, array('body' => wp_json_encode($body), 'headers' => array('Content-Type' => 'application/json'), 'timeout' => 15, 'blocking' => false));
+    $response = wp_remote_post($webhook_url, array(
+        'body' => wp_json_encode($body),
+        'headers' => array('Content-Type' => 'application/json'),
+        'timeout' => 15,
+        'blocking' => false,
+        'reject_unsafe_urls' => true,
+    ));
+    if (is_wp_error($response)) {
+        return;
+    }
+
     update_post_meta($post_id, '_earlystart_webhook_sent', time());
 }
 add_action('save_post', 'earlystart_lead_log_trigger_webhook', 10, 2);
