@@ -17,6 +17,23 @@ if (!defined('ABSPATH')) {
 class earlystart_Competitor_Analyzer
 {
     /**
+     * Extract JSON-LD script contents from HTML with normal script attributes.
+     *
+     * @param string $html HTML document.
+     * @return array<int, string>
+     */
+    private static function extract_json_ld_blocks($html)
+    {
+        preg_match_all(
+            '/<script\b[^>]*\btype\s*=\s*([\'"])application\/ld\+json(?:\s*;\s*charset=[^\'"]+)?\1[^>]*>(.*?)<\/script>/is',
+            (string) $html,
+            $matches
+        );
+
+        return $matches[2] ?? [];
+    }
+
+    /**
      * Fetch schema from competitor URL
      */
     public static function fetch_competitor_schema($url) {
@@ -42,9 +59,7 @@ class earlystart_Competitor_Analyzer
         $schemas = [];
         
         // Extract JSON-LD
-        preg_match_all('/<script type="application\/ld\+json">(.*?)<\/script>/s', $html, $matches);
-        
-        foreach ($matches[1] ?? [] as $json) {
+        foreach (self::extract_json_ld_blocks($html) as $json) {
             $decoded = json_decode(trim($json), true);
             if ($decoded) {
                 $schemas[] = $decoded;

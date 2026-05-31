@@ -135,6 +135,37 @@ class earlystart_SEO_Dashboard
     }
 
     /**
+     * Extract JSON-LD script contents from HTML with normal script attributes.
+     *
+     * @param string $html HTML document.
+     * @return array<int, string>
+     */
+    private function extract_json_ld_blocks($html)
+    {
+        preg_match_all(
+            '/<script\b[^>]*\btype\s*=\s*([\'"])application\/ld\+json(?:\s*;\s*charset=[^\'"]+)?\1[^>]*>(.*?)<\/script>/is',
+            (string) $html,
+            $matches
+        );
+
+        return $matches[2] ?? [];
+    }
+
+    /**
+     * Determine if a DOM script type is JSON-LD.
+     *
+     * @param DOMElement $script Script node.
+     * @return bool
+     */
+    private function is_json_ld_script($script)
+    {
+        $type = strtolower(trim((string) $script->getAttribute('type')));
+        $type = preg_replace('/\s*;.*$/', '', $type);
+
+        return $type === 'application/ld+json';
+    }
+
+    /**
      * Register settings
      */
     public function register_settings()
@@ -3874,11 +3905,8 @@ class earlystart_SEO_Dashboard
         
         $html = wp_remote_retrieve_body($response);
         
-        // Extract JSON-LD scripts
-        preg_match_all('/<script\s+type=["\']application\/ld\+json["\']>(.*?)<\/script>/si', $html, $matches);
-        
         $schemas = [];
-        foreach ($matches[1] as $json) {
+        foreach ($this->extract_json_ld_blocks($html) as $json) {
             $parsed = json_decode(trim($json), true);
             if ($parsed) {
                 // Handle @graph
@@ -4323,14 +4351,11 @@ class earlystart_SEO_Dashboard
         
         $html = wp_remote_retrieve_body($response);
         
-        // Extract JSON-LD scripts
-        preg_match_all('/<script\s+type=["\']application\/ld\+json["\']>(.*?)<\/script>/si', $html, $matches);
-        
         $errors = [];
         $warnings = [];
         $has_valid_schema = false;
         $type_counts = [];
-        $schemas = $matches[1] ?? [];
+        $schemas = $this->extract_json_ld_blocks($html);
         
         if (empty($schemas)) {
             $errors[] = 'No schema found on page';
@@ -5168,7 +5193,7 @@ class earlystart_SEO_Dashboard
         $block_count = 0;
         
         foreach ($scripts as $script) {
-            if ($script->getAttribute('type') === 'application/ld+json') {
+            if ($this->is_json_ld_script($script)) {
                 $content = $script->nodeValue;
                 $json = json_decode($content, true);
                 
