@@ -126,8 +126,9 @@ class earlystart_Combo_Page_Data
 
             $data = wp_parse_args(get_option($key, []), self::get_defaults());
             $state = strtoupper($parsed['state']);
+            $path_state = strtolower($state);
             $url = function_exists('home_url')
-                ? home_url('/' . $parsed['program_slug'] . '-in-' . $parsed['city_slug'] . '-' . $state . '/')
+                ? home_url('/' . $parsed['program_slug'] . '-in-' . $parsed['city_slug'] . '-' . $path_state . '/')
                 : '';
 
             $combos[] = [
