@@ -485,7 +485,7 @@ while (have_posts()):
 					<i data-lucide="x" class="w-6 h-6 text-stone-900"></i>
 				</button>
 				<div class="md:w-2/5 h-64 md:h-auto" data-modal-image-wrap>
-					<img id="modal-image" src="" alt="" class="w-full h-full object-cover">
+					<img id="modal-image" alt="" class="w-full h-full object-cover">
 				</div>
 				<div class="md:w-3/5 p-6 md:p-12 overflow-y-auto max-h-[80vh]" data-modal-copy-wrap>
 					<span id="modal-role"

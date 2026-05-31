@@ -552,8 +552,10 @@ class earlystart_Breadcrumbs
             if ($index > 0) echo '<span class="mx-2 text-gray-300">/</span>';
             if ($is_last) {
                 echo '<span class="text-gray-900 font-medium">' . esc_html($item['label']) . '</span>';
+            } elseif (!empty($item['url'])) {
+                echo '<a href="' . esc_url($item['url']) . '" class="text-blue-600 hover:underline">' . esc_html($item['label']) . '</a>';
             } else {
-                echo '<a href="#" class="text-blue-600 hover:underline">' . esc_html($item['label']) . '</a>';
+                echo '<span class="text-blue-600">' . esc_html($item['label']) . '</span>';
             }
             echo '</li>';
         }

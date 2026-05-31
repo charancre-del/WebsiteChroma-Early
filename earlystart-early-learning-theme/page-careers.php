@@ -206,7 +206,7 @@ while (have_posts()):
 				<div id="chroma-job-loader" class="absolute inset-0 flex items-center justify-center bg-white z-10">
 					<div class="w-12 h-12 border-4 border-rose-100 border-t-rose-600 rounded-full animate-spin"></div>
 				</div>
-				<iframe id="chroma-job-frame" src="" class="w-full h-full border-0" title="Job Application"></iframe>
+				<iframe id="chroma-job-frame" class="w-full h-full border-0" title="Job Application"></iframe>
 			</div>
 		</div>
 	</div>
@@ -234,7 +234,7 @@ while (have_posts()):
 				if (!modal || !iframe) return;
 				modal.classList.add('hidden');
 				document.body.style.overflow = '';
-				iframe.src = '';
+				iframe.removeAttribute('src');
 			}
 
 			document.querySelectorAll('.job-modal-trigger').forEach(trigger => {

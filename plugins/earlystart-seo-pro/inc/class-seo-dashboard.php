@@ -2494,7 +2494,7 @@ class earlystart_SEO_Dashboard
                             $.each(actionQueue, function (i, item) {
                                 var html = '<div style="background: #fff; border: 1px solid #ddd; padding: 5px 10px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center;">';
                                 html += '<span>' + (i + 1) + '. ' + item.label + '</span>';
-                                html += '<a href="#" class="remove-queue-item" data-id="' + item.id + '" style="color: #d63638; text-decoration: none;">&times;</a>';
+                                html += '<button type="button" class="remove-queue-item" data-id="' + item.id + '" aria-label="Remove queued action" style="color: #d63638; background: transparent; border: 0; cursor: pointer; font-size: 18px; line-height: 1;">&times;</button>';
                                 html += '</div>';
                                 container.append(html);
                             });
@@ -4811,18 +4811,28 @@ class earlystart_SEO_Dashboard
                 </thead>
                 <tbody>
                     <?php
-                    if (class_exists('earlystart_Combo_Page_Data')) {
+                    if (class_exists('earlystart_Combo_Page_Data') && method_exists('earlystart_Combo_Page_Data', 'get_all_combos')) {
                         $combos = earlystart_Combo_Page_Data::get_all_combos();
+                        $combo_admin_url = admin_url('admin.php?page=chroma-auto-pages');
                         if (empty($combos)) {
                             echo '<tr><td colspan="4">No combo page overrides found. Using default AI generational logic for all intersections.</td></tr>';
                         } else {
                             foreach ($combos as $combo) {
+                                $data = $combo['data'] ?? [];
+                                $status = $combo['status'] ?? ($data['status'] ?? 'auto');
+                                $status_label = earlystart_Combo_Page_Data::get_status_label($status);
+                                $health_label = !empty($data['ai_generated']) ? 'AI Enhanced' : 'Manual Override';
                                 ?>
                                 <tr>
-                                    <td><strong><?php echo esc_html($combo['program']); ?> in <?php echo esc_html($combo['city']); ?></strong></td>
-                                    <td><span class="chroma-badge chroma-badge-manual">Active</span></td>
-                                    <td><span class="chroma-health-dot chroma-health-good"></span> Optimized</td>
-                                    <td><a href="#" class="button button-small">Edit Overrides</a></td>
+                                    <td><strong><?php echo esc_html($combo['program']); ?> in <?php echo esc_html($combo['city'] . ', ' . $combo['state']); ?></strong></td>
+                                    <td><span class="chroma-badge chroma-badge-manual"><?php echo esc_html($status_label); ?></span></td>
+                                    <td><span class="chroma-health-dot chroma-health-good"></span> <?php echo esc_html($health_label); ?></td>
+                                    <td>
+                                        <?php if (!empty($combo['url'])): ?>
+                                            <a href="<?php echo esc_url($combo['url']); ?>" target="_blank" rel="noopener" class="button button-small">Preview</a>
+                                        <?php endif; ?>
+                                        <a href="<?php echo esc_url($combo_admin_url); ?>" class="button button-small">Manage Overrides</a>
+                                    </td>
                                 </tr>
                                 <?php
                             }
