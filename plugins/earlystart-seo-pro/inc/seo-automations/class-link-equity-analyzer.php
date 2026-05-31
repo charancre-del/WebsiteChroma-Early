@@ -492,13 +492,21 @@ add_action('wp_ajax_earlystart_link_equity_ai_preview', function() {
         wp_send_json_error('LLM client not available');
     }
     
-    $source_id = intval($_POST['source_id']);
-    $target_title = sanitize_text_field($_POST['target_title']);
-    $target_url = esc_url($_POST['target_url']);
+    $source_id = isset($_POST['source_id']) ? absint(wp_unslash($_POST['source_id'])) : 0;
+    $target_title = isset($_POST['target_title']) ? sanitize_text_field(wp_unslash($_POST['target_title'])) : '';
+    $target_url = isset($_POST['target_url']) ? esc_url_raw(wp_unslash($_POST['target_url'])) : '';
     
     $source = get_post($source_id);
     if (!$source) {
         wp_send_json_error('Source post not found');
+    }
+
+    if (!current_user_can('edit_post', $source_id)) {
+        wp_send_json_error('Unauthorized for this source post');
+    }
+
+    if (!$target_title || !$target_url) {
+        wp_send_json_error('Missing target link details');
     }
     
     // Use LLM to find best insertion point
@@ -537,13 +545,21 @@ add_action('wp_ajax_earlystart_link_equity_ai_apply', function() {
         wp_send_json_error('Unauthorized');
     }
     
-    $source_id = intval($_POST['source_id']);
-    $target_title = sanitize_text_field($_POST['target_title']);
-    $target_url = esc_url($_POST['target_url']);
+    $source_id = isset($_POST['source_id']) ? absint(wp_unslash($_POST['source_id'])) : 0;
+    $target_title = isset($_POST['target_title']) ? sanitize_text_field(wp_unslash($_POST['target_title'])) : '';
+    $target_url = isset($_POST['target_url']) ? esc_url_raw(wp_unslash($_POST['target_url'])) : '';
     
     $source = get_post($source_id);
     if (!$source) {
         wp_send_json_error('Source post not found');
+    }
+
+    if (!current_user_can('edit_post', $source_id)) {
+        wp_send_json_error('Unauthorized for this source post');
+    }
+
+    if (!$target_title || !$target_url) {
+        wp_send_json_error('Missing target link details');
     }
     
     // Simple append approach (safer than AI replacement)
