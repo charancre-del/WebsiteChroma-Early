@@ -321,7 +321,7 @@ class earlystart_Combo_AI_Generator
             return new WP_Error('no_llm', 'LLM client not available');
         }
         
-        $source_json = json_encode([
+        $source_json = wp_json_encode([
             'neighborhoods' => $data['neighborhoods'],
             'major_road' => $data['major_road'],
             'local_employers' => $data['local_employers'],

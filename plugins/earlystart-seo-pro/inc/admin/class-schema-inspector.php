@@ -87,10 +87,10 @@ class earlystart_Schema_Inspector
         // 2. Add Inline Data
         wp_add_inline_script('chroma-schema-inspector-data', sprintf(
             'const ChromaInspector = %s;',
-            json_encode([
+            wp_json_encode([
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce'   => wp_create_nonce('earlystart_schema_inspector_nonce')
-            ])
+            ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)
         ));
 
         // 3. Enqueue Core JS (Dependent on jquery AND our data handle)

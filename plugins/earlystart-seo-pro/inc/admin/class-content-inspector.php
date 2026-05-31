@@ -115,7 +115,7 @@ class earlystart_Content_Inspector
                 </div>
                 <?php endif; ?>
                 <?php if (!empty($untranslated_ids)): ?>
-                    <script>window.chromaUntranslated = <?php echo json_encode($untranslated_ids); ?>;</script>
+                    <script>window.chromaUntranslated = <?php echo wp_json_encode($untranslated_ids, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;</script>
                 <?php endif; ?>
             </div>
             </div>

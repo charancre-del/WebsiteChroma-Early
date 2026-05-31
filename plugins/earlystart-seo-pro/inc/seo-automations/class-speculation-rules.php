@@ -47,7 +47,7 @@ class earlystart_Speculation_Rules
         ];
 
         echo "\n<!-- Tier 3: Instant Navigation (Speculation Rules API) -->\n";
-        echo '<script type="speculationrules">' . wp_json_encode($rules, JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
+        echo '<script type="speculationrules">' . wp_json_encode($rules, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . '</script>' . "\n";
     }
 }
 

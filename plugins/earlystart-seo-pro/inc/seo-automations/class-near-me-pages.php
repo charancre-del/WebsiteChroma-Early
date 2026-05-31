@@ -274,7 +274,7 @@ class earlystart_Near_Me_Pages
 
         <!-- Location data for JS -->
         <script type="application/json" id="locations-data">
-                    <?php echo json_encode($locations); ?>
+                    <?php echo wp_json_encode($locations, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>
                 </script>
 
         <?php

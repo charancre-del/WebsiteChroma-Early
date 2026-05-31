@@ -300,13 +300,13 @@ class earlystart_Link_Equity_Analyzer
                             <?php endif; ?>
                         </td>
                         <td>
-                            <a href="<?php echo get_edit_post_link($rec['post_id']); ?>" class="button button-small">Edit</a>
+                            <a href="<?php echo esc_url(get_edit_post_link($rec['post_id'])); ?>" class="button button-small">Edit</a>
                             <?php if ($rec['ai_can_fix'] ?? false): ?>
                                 <button type="button" class="button button-small ai-fix-btn" 
                                         data-target-id="<?php echo $rec['post_id']; ?>"
                                         data-target-title="<?php echo esc_attr($rec['title']); ?>"
                                         data-target-url="<?php echo esc_attr($rec['url'] ?? ''); ?>"
-                                        data-sources='<?php echo esc_attr(json_encode($rec['suggested_sources'] ?? [])); ?>'>
+                                        data-sources='<?php echo esc_attr(wp_json_encode($rec['suggested_sources'] ?? [], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)); ?>'>
                                     🤖 AI Fix
                                 </button>
                             <?php endif; ?>

@@ -211,13 +211,13 @@ class earlystart_Credential_Badges
         }
         
         echo '<script type="application/ld+json">';
-        echo json_encode([
+        echo wp_json_encode([
             '@context' => 'https://schema.org',
             '@type' => 'Organization',
             '@id' => get_permalink() . '#organization',
             'name' => get_the_title(get_the_ID()),
             'hasCredential' => $schema_credentials
-        ], JSON_UNESCAPED_SLASHES);
+        ], JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
         echo '</script>' . "\n";
     }
 }

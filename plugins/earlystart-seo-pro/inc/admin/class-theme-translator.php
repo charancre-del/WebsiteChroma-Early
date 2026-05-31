@@ -87,7 +87,7 @@ class earlystart_Theme_Translator
             
             <!-- Hidden Store for existing translations -->
             <script>
-                window.chromaExistingTranslations = <?php echo json_encode($existing_translations); ?>;
+                window.chromaExistingTranslations = <?php echo wp_json_encode($existing_translations, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
             </script>
             
             <style>
