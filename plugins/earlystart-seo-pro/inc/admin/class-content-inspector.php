@@ -184,10 +184,10 @@ class earlystart_Content_Inspector
                                 ?>
                                 </a>
                             </td>
-                            <td><a href="<?php echo esc_url($en_url); ?>" target="_blank">View EN</a></td>
+                            <td><a href="<?php echo esc_url($en_url); ?>" target="_blank" rel="noopener noreferrer">View EN</a></td>
                             <td>
                                 <?php if ($es_url !== 'N/A'): ?>
-                                    <a href="<?php echo esc_url($es_url); ?>" target="_blank">View ES</a>
+                                    <a href="<?php echo esc_url($es_url); ?>" target="_blank" rel="noopener noreferrer">View ES</a>
                                     <?php if($manual_url) echo ' (Manual)'; ?>
                                 <?php else: ?>
                                     <span style="color:red;">Error</span>
@@ -227,7 +227,6 @@ class earlystart_Content_Inspector
                                 <th style="width: 40%;">Combo Title</th>
                                 <th>English URL</th>
                                 <th>Spanish URL</th>
-                                <th>Spanish URL</th>
                                 <th style="text-align: center;">Actions</th>
                             </tr>
                         </thead>
@@ -238,8 +237,8 @@ class earlystart_Content_Inspector
                             ?>
                                 <tr>
                                     <td><strong><?php echo esc_html($combo['program']->post_title . ' in ' . $combo['city']); ?></strong></td>
-                                    <td><a href="<?php echo esc_url($en_url); ?>" target="_blank">View EN</a></td>
-                                    <td><a href="<?php echo esc_url($es_url); ?>" target="_blank">View ES</a></td>
+                                    <td><a href="<?php echo esc_url($en_url); ?>" target="_blank" rel="noopener noreferrer">View EN</a></td>
+                                    <td><a href="<?php echo esc_url($es_url); ?>" target="_blank" rel="noopener noreferrer">View ES</a></td>
                                     <td style="text-align: center;">
                                         <button type="button" class="button chroma-combo-translate" 
                                             data-program="<?php echo esc_attr($combo['program']->post_name); ?>"

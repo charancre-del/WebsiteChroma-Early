@@ -156,7 +156,7 @@ class earlystart_Facts_Generator
         </style>
 
         <div class="chroma-facts-container">
-            <a href="/facts.json" class="chroma-download-link" target="_blank">Download JSON</a>
+            <a href="<?php echo esc_url(home_url('/facts.json')); ?>" class="chroma-download-link" target="_blank" rel="noopener noreferrer">Download JSON</a>
             
             <div class="chroma-meta-header">
                 <h1>Official Location Facts</h1>

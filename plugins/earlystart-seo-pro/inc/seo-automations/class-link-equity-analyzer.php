@@ -268,7 +268,7 @@ class earlystart_Link_Equity_Analyzer
                         data-title="<?php echo esc_attr($rec['title']); ?>"
                         data-url="<?php echo esc_attr($rec['url'] ?? ''); ?>">
                         <td>
-                            <a href="<?php echo $rec['url'] ?? get_permalink($rec['post_id']); ?>" target="_blank">
+                            <a href="<?php echo esc_url($rec['url'] ?? get_permalink($rec['post_id'])); ?>" target="_blank" rel="noopener noreferrer">
                                 <strong><?php echo esc_html($rec['title']); ?></strong>
                             </a>
                             <br><small style="color: #666;"><?php echo esc_html($rec['post_type'] ?? ''); ?></small>
@@ -286,7 +286,7 @@ class earlystart_Link_Equity_Analyzer
                                         <div class="source-item" 
                                              data-source-id="<?php echo $src['id']; ?>"
                                              data-source-title="<?php echo esc_attr($src['title']); ?>">
-                                            <a href="<?php echo esc_url($src['edit_url']); ?>" target="_blank" title="Edit this page">
+                                            <a href="<?php echo esc_url($src['edit_url']); ?>" target="_blank" rel="noopener noreferrer" title="Edit this page">
                                                 <?php echo esc_html(wp_trim_words($src['title'], 5)); ?>
                                             </a>
                                             <span class="relevance" style="color: #00a32a; font-size: 10px;">
@@ -332,7 +332,7 @@ class earlystart_Link_Equity_Analyzer
                     <?php foreach (array_slice($analysis, 0, 50) as $page): ?>
                     <tr class="<?php echo $page['incoming'] === 0 ? 'orphan-row' : ''; ?>">
                         <td>
-                            <a href="<?php echo esc_url($page['url']); ?>" target="_blank">
+                            <a href="<?php echo esc_url($page['url']); ?>" target="_blank" rel="noopener noreferrer">
                                 <?php echo esc_html($page['title']); ?>
                             </a>
                         </td>

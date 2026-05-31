@@ -213,7 +213,7 @@ class earlystart_Keyword_Linker
                         <?php foreach (array_slice($auto_keywords, 0, 20) as $kw): ?>
                         <tr>
                             <td><?php echo esc_html($kw['keyword']); ?></td>
-                            <td><a href="<?php echo esc_url($kw['url']); ?>" target="_blank"><?php echo esc_url($kw['url']); ?></a></td>
+                            <td><a href="<?php echo esc_url($kw['url']); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_url($kw['url']); ?></a></td>
                         </tr>
                         <?php endforeach; ?>
                         <?php if (count($auto_keywords) > 20): ?>

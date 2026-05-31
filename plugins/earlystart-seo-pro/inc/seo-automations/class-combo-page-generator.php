@@ -1105,7 +1105,7 @@ class earlystart_Combo_Page_Generator
                             <?php echo $combo['data']['last_updated'] ? date('M j, Y', $combo['data']['last_updated']) : '—'; ?>
                         </td>
                         <td>
-                            <a href="<?php echo esc_url($combo['url']); ?>" target="_blank" class="button button-small">Preview</a>
+                            <a href="<?php echo esc_url($combo['url']); ?>" target="_blank" rel="noopener noreferrer" class="button button-small">Preview</a>
                             <button type="button" class="button button-small edit-combo-btn" title="Edit">✏️ Edit</button>
                             <button type="button" class="button button-small ai-generate-btn" title="AI Generate">🤖</button>
                             <button type="button" class="button button-small ai-translate-btn" title="Translate to Spanish">🌐</button>
@@ -1166,7 +1166,7 @@ class earlystart_Combo_Page_Generator
                                 <td><span class="badge" style="background: <?php echo $np['type'] === 'Generic' ? '#e5e5e5' : '#e7f3ff; color: #0073aa'; ?>; padding: 2px 6px; border-radius: 3px; font-size: 11px;"><?php echo esc_html($np['type']); ?></span></td>
                                 <td><?php echo esc_html($np['city'] !== '—' ? $np['city'] . ', ' . $np['state'] : 'Global'); ?></td>
                                 <td>
-                                    <a href="<?php echo esc_url($np['url']); ?>" target="_blank" class="button button-small">Preview</a>
+                                    <a href="<?php echo esc_url($np['url']); ?>" target="_blank" rel="noopener noreferrer" class="button button-small">Preview</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

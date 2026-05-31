@@ -589,7 +589,7 @@ class earlystart_SEO_Dashboard
             <div class="chroma-doc-section" style="margin-top: 20px;">
                 <h3>KML File</h3>
                 <p>Your KML file is automatically generated and available at:</p>
-                <code><a href="<?php echo home_url('/locations.kml'); ?>" target="_blank"><?php echo home_url('/locations.kml'); ?></a></code>
+                <code><a href="<?php echo esc_url(home_url('/locations.kml')); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_url(home_url('/locations.kml')); ?></a></code>
                 <p class="description">Submit this URL to Google Earth and other geo-directories.</p>
             </div>
 
@@ -630,7 +630,7 @@ class earlystart_SEO_Dashboard
         <div class="chroma-seo-card" style="margin-bottom: 20px;">
             <h2>🤖 LLM Optimization Files</h2>
             <p>Your <strong>llms.txt</strong> file is automatically generated and optimized for AI crawlers (ChatGPT, Perplexity, Claude).</p>
-            <code><a href="<?php echo home_url('/llms.txt'); ?>" target="_blank"><?php echo home_url('/llms.txt'); ?></a></code>
+            <code><a href="<?php echo esc_url(home_url('/llms.txt')); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_url(home_url('/llms.txt')); ?></a></code>
             <p class="description">This file aggregates the targeting data below into a format AI can easily read.</p>
         </div>
 
@@ -2229,7 +2229,7 @@ class earlystart_SEO_Dashboard
         ?>
                 <div class="chroma-seo-card">
                     <h2>🗺️ Sitemap Manager</h2>
-                    <p>Manage your XML Sitemap configuration. <a href="<?php echo esc_url($sitemap_url); ?>" target="_blank"
+                    <p>Manage your XML Sitemap configuration. <a href="<?php echo esc_url($sitemap_url); ?>" target="_blank" rel="noopener noreferrer"
                             class="button">View Sitemap</a></p>
 
                     <form method="post" enctype="multipart/form-data">
@@ -2363,9 +2363,9 @@ class earlystart_SEO_Dashboard
                                                             <td>
                                                                 <strong><?php the_title(); ?></strong>
                                                                 <br>
-                                                                <a href="<?php echo get_edit_post_link(); ?>" target="_blank"
+                                                                <a href="<?php echo esc_url(get_edit_post_link()); ?>" target="_blank" rel="noopener noreferrer"
                                                                     style="font-size: 11px;">Edit</a>
-                                                                | <a href="<?php the_permalink(); ?>" target="_blank" style="font-size: 11px;">View</a>
+                                                                | <a href="<?php echo esc_url(get_permalink()); ?>" target="_blank" rel="noopener noreferrer" style="font-size: 11px;">View</a>
                                                             </td>
                                                             <td id="status-<?php the_ID(); ?>">
                                                                 <span class="dashicons dashicons-minus" style="color:#ccc;"></span>
@@ -3291,15 +3291,15 @@ class earlystart_SEO_Dashboard
 
                     var hasWarnings = item.warnings && item.warnings.length > 0;
                     var actionBtn = (item.valid && !hasWarnings) ? 
-                        `<a href="${item.permalink}" target="_blank" class="button button-small">View Page</a>` :
+                        `<a href="${item.permalink}" target="_blank" rel="noopener noreferrer" class="button button-small">View Page</a>` :
                         `<button class="button button-secondary chroma-open-bulk-fix" data-id="${item.id}">🔍 View & Fix</button>`;
 
                     var html = `
                         <tr class="${statusClass}" data-id="${item.id}" data-status="${item.valid ? 'valid' : 'invalid'}">
                             <td><input type="checkbox" class="row-select" value="${item.id}"></td>
                             <td>
-                                <strong><a href="${item.edit_url}" target="_blank">${item.title}</a></strong>
-                                <br><small><a href="${item.permalink}" target="_blank">${item.permalink}</a></small>
+                                <strong><a href="${item.edit_url}" target="_blank" rel="noopener noreferrer">${item.title}</a></strong>
+                                <br><small><a href="${item.permalink}" target="_blank" rel="noopener noreferrer">${item.permalink}</a></small>
                             </td>
                             <td>${item.type}</td>
                             <td>${statusIcon} ${statusText}</td>
@@ -4880,7 +4880,7 @@ class earlystart_SEO_Dashboard
                                     <td><strong><?php echo esc_html(str_replace(home_url(), '', $data['url'])); ?></strong></td>
                                     <td><span class="chroma-badge <?php echo $data['type'] === 'Generic' ? 'chroma-badge-manual' : 'chroma-badge-auto'; ?>"><?php echo esc_html($data['type']); ?></span></td>
                                     <td><span class="chroma-check">✓</span> Indexed</td>
-                                    <td><a href="<?php echo esc_url($data['url']); ?>" target="_blank" class="button button-small">View Live</a></td>
+                                    <td><a href="<?php echo esc_url($data['url']); ?>" target="_blank" rel="noopener noreferrer" class="button button-small">View Live</a></td>
                                 </tr>
                                 <?php
                             }
@@ -5221,7 +5221,7 @@ class earlystart_SEO_Dashboard
                     <li><strong>Invalid Type Blocking:</strong> Blocks VacationRental, MobileApplication, etc.</li>
                     <li><strong>Debug Panel:</strong> Add <code>?schema_debug=1</code> to any page URL to see what's registered/blocked</li>
                 </ul>
-                <p><a href="<?php echo home_url('/?schema_debug=1'); ?>" target="_blank" class="button">View Registry Debug on Homepage</a></p>
+                <p><a href="<?php echo esc_url(home_url('/?schema_debug=1')); ?>" target="_blank" rel="noopener noreferrer" class="button">View Registry Debug on Homepage</a></p>
             <?php else: ?>
                 <p style="color: #ff9800;"><strong>⚠️ Registry is NOT ACTIVE</strong></p>
                 <p>The Schema Registry class is not loaded. Check that <code>class-schema-registry.php</code> exists.</p>
@@ -5389,7 +5389,7 @@ class earlystart_SEO_Dashboard
                         if (scannedData.length > 0) {
                             scannedData.forEach(function(post) {
                                 listHtml += '<div style="padding: 8px; border-bottom: 1px solid #eee;">';
-                                listHtml += '<strong><a href="' + post.edit_url + '" target="_blank">' + post.title + '</a></strong>';
+                                listHtml += '<strong><a href="' + post.edit_url + '" target="_blank" rel="noopener noreferrer">' + post.title + '</a></strong>';
                                 listHtml += ' <span style="color: #666;">(' + post.post_type + ')</span><br>';
                                 listHtml += '<span style="color: #d63638;">Invalid: ' + post.invalid_types.join(', ') + '</span>';
                                 listHtml += '</div>';
@@ -5460,7 +5460,7 @@ class earlystart_SEO_Dashboard
                             html += '<thead><tr><th>Post</th><th>Type</th><th>FAQ Items</th><th>Actions</th></tr></thead><tbody>';
                             response.data.faq_posts.forEach(function(post) {
                                 html += '<tr>';
-                                html += '<td><a href="' + post.edit_url + '" target="_blank">' + post.title + '</a></td>';
+                                html += '<td><a href="' + post.edit_url + '" target="_blank" rel="noopener noreferrer">' + post.title + '</a></td>';
                                 html += '<td>' + post.post_type + '</td>';
                                 html += '<td>' + post.faq_count + '</td>';
                                 html += '<td><a href="' + post.edit_url + '" class="button button-small">Edit</a></td>';

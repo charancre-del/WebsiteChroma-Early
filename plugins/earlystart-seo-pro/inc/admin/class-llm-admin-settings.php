@@ -531,7 +531,7 @@ class earlystart_LLM_Admin_Settings
                     <tr>
                         <td><input type="checkbox" class="gap-checkbox" value="<?php echo $post_id; ?>"></td>
                         <td>
-                            <a href="<?php echo get_edit_post_link($post_id); ?>" target="_blank">
+                            <a href="<?php echo esc_url(get_edit_post_link($post_id)); ?>" target="_blank" rel="noopener noreferrer">
                                 <?php echo esc_html($gap['title']); ?>
                             </a>
                         </td>
@@ -665,7 +665,7 @@ class earlystart_LLM_Admin_Settings
                     <?php foreach ($pending as $item): ?>
                     <tr>
                         <td>
-                            <a href="<?php echo get_edit_post_link($item['post_id']); ?>" target="_blank">
+                            <a href="<?php echo esc_url(get_edit_post_link($item['post_id'])); ?>" target="_blank" rel="noopener noreferrer">
                                 <?php echo esc_html($item['title']); ?>
                             </a>
                         </td>
