@@ -206,9 +206,14 @@ class earlystart_LLM_Admin_Settings
      */
     public function enqueue_assets($hook) {
         if (strpos($hook, 'chroma-llm') === false) return;
-        
-        wp_enqueue_style('chroma-llm-admin', EARLYSTART_SEO_URL . 'assets/css/admin-llm.css', [], '1.0.0');
-        wp_enqueue_script('chroma-llm-admin', EARLYSTART_SEO_URL . 'assets/js/admin-llm.js', ['jquery'], '1.0.0', true);
+
+        $css_path = EARLYSTART_SEO_PATH . 'assets/css/admin-llm.css';
+        $js_path = EARLYSTART_SEO_PATH . 'assets/js/admin-llm.js';
+        $css_version = file_exists($css_path) ? filemtime($css_path) : '1.0.0';
+        $js_version = file_exists($js_path) ? filemtime($js_path) : '1.0.0';
+
+        wp_enqueue_style('chroma-llm-admin', EARLYSTART_SEO_URL . 'assets/css/admin-llm.css', [], $css_version);
+        wp_enqueue_script('chroma-llm-admin', EARLYSTART_SEO_URL . 'assets/js/admin-llm.js', ['jquery'], $js_version, true);
         
         wp_localize_script('chroma-llm-admin', 'chromaLLM', [
             'ajaxUrl' => admin_url('admin-ajax.php'),

@@ -95,12 +95,13 @@ class earlystart_Schema_Inspector
 
         // 3. Enqueue Core JS (Dependent on jquery AND our data handle)
         $js_path = EARLYSTART_SEO_PATH . 'assets/js/schema-inspector.js';
+        $js_version = file_exists($js_path) ? filemtime($js_path) : '1.0.1';
         if (file_exists($js_path)) {
             wp_enqueue_script(
-                'chroma-schema-inspector-core', 
-                EARLYSTART_SEO_URL . 'assets/js/schema-inspector.js', 
-                ['jquery', 'chroma-schema-inspector-data'], 
-                '1.0.1', 
+                'chroma-schema-inspector-core',
+                EARLYSTART_SEO_URL . 'assets/js/schema-inspector.js',
+                ['jquery', 'chroma-schema-inspector-data'],
+                $js_version,
                 true
             );
         }
