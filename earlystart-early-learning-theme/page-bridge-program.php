@@ -193,7 +193,7 @@ while (have_posts()):
                                 <div class="flex items-start">
                                     <div
                                         class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mr-6 text-blue-600 shrink-0 border border-blue-100 shadow-sm">
-                                        <i data-lucide="<?php echo $area['icon']; ?>" class="w-6 h-6"></i>
+                                        <i data-lucide="<?php echo esc_attr(earlystart_safe_lucide_icon($area['icon'])); ?>" class="w-6 h-6"></i>
                                     </div>
                                     <div>
                                         <h4 class="text-xl font-bold text-stone-900 mb-2">

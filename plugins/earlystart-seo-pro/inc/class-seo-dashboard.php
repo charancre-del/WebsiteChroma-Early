@@ -1646,7 +1646,7 @@ class earlystart_SEO_Dashboard
                             if (isset($clean_data['custom_fields'])) {
                                 // Maybe clean up custom fields for display?
                             }
-                            echo esc_textarea(json_encode($clean_data, JSON_PRETTY_PRINT)); 
+                            echo esc_textarea(wp_json_encode($clean_data, JSON_PRETTY_PRINT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT));
                         ?></textarea>
                         <p class="description">Edit raw JSON data here. Switch back to Form view to apply changes.</p>
                     </div>
@@ -1700,7 +1700,7 @@ class earlystart_SEO_Dashboard
                                                         ?>
                                                     </div>
                                                     <button class="button button-small chroma-add-repeater-row"
-                                                        data-fields="<?php echo esc_attr(json_encode($field['subfields'])); ?>">Add Row</button>
+                                                        data-fields="<?php echo esc_attr(wp_json_encode($field['subfields'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)); ?>">Add Row</button>
                                                 </div>
                                         <?php elseif ($field['type'] === 'textarea'): ?>
                                                 <textarea class="chroma-schema-input large-text" data-name="<?php echo esc_attr($key); ?>"
@@ -2826,7 +2826,7 @@ class earlystart_SEO_Dashboard
         <script>
             jQuery(document).ready(function($) {
                 var isScanning = false;
-                var postTypes = <?php echo json_encode($post_types); ?>;
+                var postTypes = <?php echo wp_json_encode($post_types, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
                 var processedPosts = 0;
                 var errorCount = 0;
                 var validCount = 0;
@@ -4010,7 +4010,7 @@ class earlystart_SEO_Dashboard
                                 if (isset($val['name'])) $val = $val['name'];
                                 elseif (isset($val['url'])) $val = $val['url'];
                                 elseif (isset($val['@id'])) $val = $val['@id'];
-                                else $val = json_encode($val); // Fallback
+                                else $val = wp_json_encode($val); // Fallback
                             }
                             // Check if it's a list of objects
                             else {
@@ -4025,7 +4025,7 @@ class earlystart_SEO_Dashboard
                                         $mapped[] = $v;
                                     }
                                 }
-                                $val = !empty($mapped) ? implode(', ', $mapped) : json_encode($val);
+                                $val = !empty($mapped) ? implode(', ', $mapped) : wp_json_encode($val);
                             }
                         }
                     }

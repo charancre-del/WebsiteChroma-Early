@@ -40,7 +40,7 @@ function earlystart_pdf_shortcode($atts)
         <!-- Trigger Link -->
         <button type="button" class="chroma-pdf-trigger absolute inset-0 z-20 appearance-none bg-transparent border-0 p-0 cursor-pointer" data-pdf-url="<?php echo esc_url($args['url']); ?>"
             data-pdf-title="<?php echo esc_attr($args['title']); ?>"
-            aria-label="<?php printf(__('View %s', 'earlystart-early-learning'), esc_attr($args['title'])); ?>">
+            aria-label="<?php echo esc_attr(sprintf(__('View %s', 'earlystart-early-learning'), $args['title'])); ?>">
         </button>
 
         <!-- Cover/Preview -->

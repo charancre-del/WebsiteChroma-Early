@@ -88,7 +88,7 @@ while (have_posts()):
 							class="bg-stone-50 p-10 rounded-[2.5rem] border border-stone-100 text-center hover:shadow-lg transition-all group fade-in-up">
 							<div
 								class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 <?php echo esc_attr($classes['text']); ?> shadow-sm group-hover:scale-110 transition-transform">
-								<i data-lucide="<?php echo esc_attr($r['icon']); ?>" class="w-8 h-8"></i>
+								<i data-lucide="<?php echo esc_attr(earlystart_safe_lucide_icon($r['icon'])); ?>" class="w-8 h-8"></i>
 							</div>
 							<h3 class="text-2xl font-bold text-stone-900 mb-4"><?php echo esc_html($r['title']); ?></h3>
 							<p class="text-stone-700 text-sm leading-relaxed mb-8"><?php echo esc_html($r['desc']); ?></p>
@@ -125,7 +125,7 @@ while (have_posts()):
 								<div class="flex items-center">
 									<div
 										class="w-12 h-12 bg-stone-50 rounded-full flex items-center justify-center mr-6 text-stone-900 shadow-sm">
-										<i data-lucide="<?php echo $c['icon']; ?>" class="w-5 h-5"></i>
+										<i data-lucide="<?php echo esc_attr(earlystart_safe_lucide_icon($c['icon'])); ?>" class="w-5 h-5"></i>
 									</div>
 									<div>
 										<h4 class="font-bold text-stone-900"><?php echo esc_html($c['title']); ?></h4>

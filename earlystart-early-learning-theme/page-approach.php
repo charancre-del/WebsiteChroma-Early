@@ -185,7 +185,7 @@ while (have_posts()):
                     );
                     foreach ($pillars as $p): ?>
                         <div class="bg-white/10 backdrop-blur-sm p-8 rounded-[2rem] border border-rose-400/30 fade-in-up">
-                            <i data-lucide="<?php echo $p['icon']; ?>" class="w-10 h-10 text-white mb-6"></i>
+                            <i data-lucide="<?php echo esc_attr(earlystart_safe_lucide_icon($p['icon'])); ?>" class="w-10 h-10 text-white mb-6"></i>
                             <h3 class="text-xl font-bold mb-3">
                                 <?php echo esc_html($p['title']); ?>
                             </h3>
