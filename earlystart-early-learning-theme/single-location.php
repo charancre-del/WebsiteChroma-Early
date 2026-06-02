@@ -891,9 +891,7 @@ while (have_posts()):
 					?>
 				</div>
 			<?php else: ?>
-				<div
-					class="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-cover bg-center opacity-40">
-				</div>
+				<div class="absolute inset-0 bg-gradient-to-br from-stone-100 via-white to-stone-300"></div>
 			<?php endif; ?>
 
 			<div
