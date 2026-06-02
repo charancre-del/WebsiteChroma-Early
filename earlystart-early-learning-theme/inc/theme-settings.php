@@ -37,7 +37,15 @@ function earlystart_register_theme_settings()
     $option_group = 'earlystart_theme_settings_group';
     $option_name = 'earlystart_global_settings';
 
-    register_setting($option_group, $option_name);
+    register_setting(
+        $option_group,
+        $option_name,
+        array(
+            'type' => 'array',
+            'sanitize_callback' => 'earlystart_sanitize_global_settings',
+            'default' => array(),
+        )
+    );
     register_setting(
         $option_group,
         'earlystart_seo_head_mode',
@@ -144,11 +152,80 @@ function earlystart_sanitize_seo_head_mode($mode)
 }
 
 /**
+ * Sanitize global theme settings saved from the native settings page.
+ *
+ * @param mixed $settings Raw submitted settings.
+ * @return array
+ */
+function earlystart_sanitize_global_settings($settings)
+{
+    if (!is_array($settings)) {
+        return array();
+    }
+
+    $email_keys = array(
+        'global_email',
+        'global_tour_email',
+        'global_admissions_email',
+        'global_careers_email',
+        'global_billing_email',
+        'global_media_email',
+        'global_privacy_email',
+    );
+    $url_keys = array(
+        'global_facebook_url',
+        'global_instagram_url',
+        'global_linkedin_url',
+    );
+    $text_keys = array(
+        'global_phone',
+        'global_address',
+        'global_city',
+        'global_state',
+        'global_zip',
+        'global_seo_default_title',
+        'global_seo_default_description',
+        'global_logo',
+    );
+
+    $allowed_keys = array_merge($email_keys, $url_keys, $text_keys);
+    $clean = array();
+
+    foreach ($allowed_keys as $key) {
+        if (!array_key_exists($key, $settings)) {
+            continue;
+        }
+
+        $value = wp_unslash($settings[$key]);
+        if (is_array($value)) {
+            $value = '';
+        }
+
+        if (in_array($key, $email_keys, true)) {
+            $value = sanitize_email($value);
+        } elseif (in_array($key, $url_keys, true)) {
+            $value = esc_url_raw($value);
+        } else {
+            $value = sanitize_text_field($value);
+        }
+
+        if (function_exists('earlystart_is_placeholder_global_setting') && earlystart_is_placeholder_global_setting($key, $value)) {
+            $value = '';
+        }
+
+        $clean[$key] = $value;
+    }
+
+    return $clean;
+}
+
+/**
  * Render Text Field Callback
  */
 function earlystart_render_text_field($args)
 {
     $options = get_option($args['option_name']);
+    $options = is_array($options) ? $options : array();
     $value = isset($options[$args['id']]) ? $options[$args['id']] : '';
     echo '<input type="text" name="' . esc_attr($args['option_name']) . '[' . esc_attr($args['id']) . ']" value="' . esc_attr($value) . '" class="regular-text" />';
 }
