@@ -405,11 +405,40 @@ class earlystart_Schema_Registry
             if (!isset($node['@context'])) {
                 $node['@context'] = 'https://schema.org';
             }
+            $type_label = self::schema_type_label($node);
             if (!self::is_valid_type_shape($node)) {
-                $errors[] = 'Invalid @type shape detected in strict pipeline';
+                self::$blocked[] = [
+                    'type' => $type_label,
+                    'reason' => 'Invalid @type shape detected in strict pipeline',
+                    'source' => $source
+                ];
                 continue;
             }
-            $node_hash = md5(wp_json_encode($node));
+
+            if (class_exists('earlystart_Schema_Validator')) {
+                $valid_node = earlystart_Schema_Validator::validate($node, 'Schema node: ' . $type_label);
+                if (!$valid_node) {
+                    $node_errors = earlystart_Schema_Validator::get_errors();
+                    self::$blocked[] = [
+                        'type' => $type_label,
+                        'reason' => 'Node skipped: ' . implode('; ', array_slice($node_errors, 0, 3)),
+                        'source' => $source
+                    ];
+                    continue;
+                }
+            }
+
+            $node_json = wp_json_encode($node);
+            if (!is_string($node_json) || $node_json === '') {
+                self::$blocked[] = [
+                    'type' => $type_label,
+                    'reason' => 'Node skipped: could not JSON encode schema',
+                    'source' => $source
+                ];
+                continue;
+            }
+
+            $node_hash = md5($node_json);
             if (isset($hash_index[$node_hash])) {
                 continue;
             }
@@ -761,6 +790,21 @@ class earlystart_Schema_Registry
             return true;
         }
         return false;
+    }
+
+    private static function schema_type_label($node)
+    {
+        if (!is_array($node) || !isset($node['@type'])) {
+            return 'unknown';
+        }
+
+        if (is_array($node['@type'])) {
+            $types = array_values(array_filter(array_map('strval', $node['@type'])));
+            return !empty($types) ? implode(',', $types) : 'unknown';
+        }
+
+        $type = trim((string) $node['@type']);
+        return $type !== '' ? $type : 'unknown';
     }
 
     private static function collect_ref_ids($value, &$refs)
