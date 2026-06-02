@@ -5711,15 +5711,21 @@ class earlystart_SEO_Dashboard
             wp_send_json_error('Permission denied');
         }
 
-        $post_ids = isset($_POST['post_ids']) ? array_map('intval', $_POST['post_ids']) : [];
+        $post_ids = isset($_POST['post_ids']) && is_array($_POST['post_ids']) ? array_map('absint', $_POST['post_ids']) : [];
+        $post_ids = array_values(array_unique(array_filter($post_ids)));
         
         if (empty($post_ids)) {
             wp_send_json_error('No posts specified');
         }
         
         $cleaned = 0;
+        $changed_post_ids = [];
         
         foreach ($post_ids as $post_id) {
+            if (!$post_id || !get_post($post_id)) {
+                continue;
+            }
+
             $changed = false;
 
             // 1. Clean Builder Schemas
@@ -5761,6 +5767,21 @@ class earlystart_SEO_Dashboard
             
             if ($changed) {
                 $cleaned++;
+                $changed_post_ids[] = $post_id;
+            }
+        }
+
+        if (!empty($changed_post_ids)) {
+            foreach ($changed_post_ids as $post_id) {
+                clean_post_cache($post_id);
+
+                if (function_exists('earlystart_clear_query_cache')) {
+                    earlystart_clear_query_cache($post_id);
+                }
+            }
+
+            if (class_exists('earlystart_LLMs_Txt_Generator') && method_exists('earlystart_LLMs_Txt_Generator', 'refresh_file')) {
+                earlystart_LLMs_Txt_Generator::refresh_file();
             }
         }
         
