@@ -20,6 +20,7 @@ class earlystart_KML_Endpoint
     public static function init()
     {
         add_action('init', [__CLASS__, 'add_rewrite_rule']);
+        add_filter('query_vars', [__CLASS__, 'add_query_vars']);
         add_action('template_redirect', [__CLASS__, 'render_kml']);
     }
 
@@ -33,13 +34,42 @@ class earlystart_KML_Endpoint
     }
 
     /**
+     * Register query vars for hosts where rewrite tags are not persisted yet.
+     */
+    public static function add_query_vars($vars)
+    {
+        $vars[] = 'earlystart_kml';
+        return $vars;
+    }
+
+    /**
+     * Determine whether the current request is for the KML feed.
+     */
+    private static function is_kml_request()
+    {
+        if (get_query_var('earlystart_kml')) {
+            return true;
+        }
+
+        $path = isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '';
+        $path = parse_url($path, PHP_URL_PATH);
+
+        return is_string($path) && trim($path, '/') === 'locations.kml';
+    }
+
+    /**
      * Render KML
      */
     public static function render_kml()
     {
-        if (get_query_var('earlystart_kml')) {
-            ob_clean(); // Clean output buffer to prevent whitespace errors
-            header('Content-Type: application/vnd.google-earth.kml+xml');
+        if (self::is_kml_request()) {
+            while (ob_get_level() > 0) {
+                ob_end_clean();
+            }
+
+            status_header(200);
+            nocache_headers();
+            header('Content-Type: application/vnd.google-earth.kml+xml; charset=UTF-8');
             header('Content-Disposition: attachment; filename="locations.kml"');
             echo '<?xml version="1.0" encoding="UTF-8"?>';
             ?>
@@ -64,6 +94,8 @@ class earlystart_KML_Endpoint
                         $phone = get_post_meta($location->ID, 'location_phone', true);
 
                         if ($lat && $lng) {
+                            $lat = (float) $lat;
+                            $lng = (float) $lng;
                             ?>
                             <Placemark>
                                 <name><?php echo esc_html($location->post_title); ?></name>
@@ -71,11 +103,11 @@ class earlystart_KML_Endpoint
                                     <![CDATA[
                                     <p><strong>Address:</strong> <?php echo esc_html("$address, $city, $state $zip"); ?></p>
                                     <p><strong>Phone:</strong> <?php echo esc_html($phone); ?></p>
-                                    <p><a href="<?php echo get_permalink($location->ID); ?>">View Details</a></p>
+                                    <p><a href="<?php echo esc_url(get_permalink($location->ID)); ?>">View Details</a></p>
                                     ]]>
                                 </description>
                                 <Point>
-                                    <coordinates><?php echo "$lng,$lat,0"; ?></coordinates>
+                                    <coordinates><?php echo esc_html($lng . ',' . $lat . ',0'); ?></coordinates>
                                 </Point>
                             </Placemark>
                             <?php
@@ -88,7 +120,7 @@ class earlystart_KML_Endpoint
                                     <![CDATA[
                                     <p><strong>Address:</strong> <?php echo esc_html("$address, $city, $state $zip"); ?></p>
                                     <p><strong>Phone:</strong> <?php echo esc_html($phone); ?></p>
-                                    <p><a href="<?php echo get_permalink($location->ID); ?>">View Details</a></p>
+                                    <p><a href="<?php echo esc_url(get_permalink($location->ID)); ?>">View Details</a></p>
                                     <p><em>(Coordinates missing, using address)</em></p>
                                     ]]>
                                 </description>
