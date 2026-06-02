@@ -100,7 +100,7 @@ class Theme_Routes
             }
 
             $old = get_option($option_name, null);
-            $new = Utils::sanitize_mixed_for_storage($value);
+            $new = Utils::sanitize_option_for_storage_by_key($option_name, $value);
 
             $before[$option_name] = $old;
             $after[$option_name] = $new;

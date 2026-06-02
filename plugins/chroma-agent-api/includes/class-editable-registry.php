@@ -202,10 +202,11 @@ class Editable_Registry
         switch ($type) {
             case 'option':
                 $key = (string) $storage['key'];
+                $stored_value = $new_value === null ? null : Utils::sanitize_option_for_storage_by_key($key, $new_value);
                 if ($new_value === null) {
                     delete_option($key);
                 } else {
-                    update_option($key, $new_value, false);
+                    update_option($key, $stored_value, false);
                 }
                 Utils::invalidate_global_caches('option');
                 return true;

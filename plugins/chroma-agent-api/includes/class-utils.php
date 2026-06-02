@@ -587,6 +587,17 @@ class Utils
         return self::sanitize_mixed_for_storage($value);
     }
 
+    public static function sanitize_option_for_storage_by_key(string $key, $value)
+    {
+        $key = sanitize_key($key);
+
+        if ($key === 'earlystart_openai_api_key' && class_exists('\earlystart_LLM_Client')) {
+            return \earlystart_LLM_Client::sanitize_api_key_option($value);
+        }
+
+        return self::sanitize_mixed_for_storage($value);
+    }
+
     public static function invalidate_content_caches_for_post(int $post_id): void
     {
         if ($post_id <= 0) {

@@ -261,10 +261,10 @@ class Editables_Routes
             $live_value = Editable_Registry::read_value($field, $target, false);
             $live[$id] = !empty($field['sensitive']) ? '[REDACTED]' : Editable_Registry::read_value($field, $target, true);
 
-            if ($strict_write && !self::values_equivalent($sanitized, $live_value)) {
+            if ($strict_write && empty($field['sensitive']) && !self::values_equivalent($sanitized, $live_value)) {
                 $write_mismatches[$id] = [
-                    'expected' => !empty($field['sensitive']) ? '[REDACTED]' : $sanitized,
-                    'actual' => !empty($field['sensitive']) ? '[REDACTED]' : $live_value,
+                    'expected' => $sanitized,
+                    'actual' => $live_value,
                 ];
             }
         }
