@@ -69,6 +69,7 @@ class Editable_Registry
         self::add_plugin_setting_fields($map);
         self::add_taxonomy_fields($map);
         self::add_menu_fields($map);
+        self::add_runtime_discovered_fields($map);
         self::add_generic_escape_hatch_fields($map);
 
         ksort($map);
@@ -111,7 +112,39 @@ class Editable_Registry
         $current_key = Auth::current_key();
         $scopes = is_array($current_key['scopes'] ?? null) ? $current_key['scopes'] : [];
 
-        return Utils::scope_is_granted($scope, $scopes);
+        if (Utils::scope_is_granted($scope, $scopes)) {
+            return true;
+        }
+
+        $parts = explode(':', $scope, 2);
+        $verb = $parts[0] ?? '';
+        $resource = $parts[1] ?? '';
+        $aliases = [];
+
+        if ($verb !== '' && $resource !== '') {
+            $aliases[] = $resource . ':' . $verb;
+            $aliases[] = $verb . ':*';
+            $aliases[] = $verb . ':all';
+            $aliases[] = 'all:' . $verb;
+
+            if ($verb === 'read') {
+                $aliases[] = 'read:editables';
+                $aliases[] = 'editables:read';
+            }
+
+            if ($verb === 'write') {
+                $aliases[] = 'write:editables';
+                $aliases[] = 'editables:write';
+            }
+        }
+
+        foreach ($aliases as $alias) {
+            if (Utils::scope_is_granted($alias, $scopes)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static function target_errors(array $field, array $target): array
@@ -162,11 +195,12 @@ class Editable_Registry
         }
 
         $storage = (string) ($field['storage']['type'] ?? '');
-        if ($storage !== 'option_any') {
-            return false;
+        if (in_array($storage, ['option_any', 'theme_mod_any', 'post_meta_any', 'term_meta_any'], true)) {
+            return Utils::is_sensitive_option_key((string) ($target['option_key'] ?? $target['theme_mod_key'] ?? $target['meta_key'] ?? ''));
         }
 
-        return Utils::is_sensitive_option_key((string) ($target['option_key'] ?? ''));
+        $key = (string) ($field['storage']['key'] ?? '');
+        return $key !== '' && Utils::is_sensitive_option_key($key);
     }
 
     public static function read_value(array $field, array $target, bool $redact = true)
@@ -1066,6 +1100,368 @@ class Editable_Registry
             'write_scope' => $write_scope,
             'multilingual_variant' => strpos($pattern, '_earlystart_es_') === 0,
         ]);
+    }
+
+    private static function add_runtime_discovered_fields(array &$fields): void
+    {
+        self::add_existing_theme_mod_fields($fields);
+        self::add_registered_meta_fields($fields);
+        self::add_existing_post_meta_fields($fields);
+        self::add_existing_term_meta_fields($fields);
+        self::add_registered_option_fields($fields);
+        self::add_existing_prefixed_option_fields($fields);
+    }
+
+    private static function add_existing_theme_mod_fields(array &$fields): void
+    {
+        $theme_mods = function_exists('get_theme_mods') ? get_theme_mods() : [];
+        if (!is_array($theme_mods)) {
+            return;
+        }
+
+        foreach (array_keys($theme_mods) as $key) {
+            $key = (string) $key;
+            if ($key === '' || $key === 'nav_menu_locations') {
+                continue;
+            }
+
+            [$type, $sanitize] = self::option_type_and_sanitizer($key);
+            self::add_field($fields, [
+                'id' => 'customizer.theme_mod.' . self::field_id_fragment($key),
+                'label' => self::label_from_key($key),
+                'description' => 'Runtime-discovered Customizer theme mod.',
+                'group' => 'customizer',
+                'type' => $type,
+                'sanitize' => $sanitize,
+                'storage' => [
+                    'type' => 'theme_mod',
+                    'key' => $key,
+                ],
+                'target' => ['requires' => []],
+                'read_scope' => 'read:theme',
+                'write_scope' => 'write:theme',
+                'sensitive' => Utils::is_sensitive_option_key($key),
+                'multilingual_variant' => substr($key, -3) === '_es' || strpos($key, '_earlystart_es_') === 0,
+            ]);
+        }
+    }
+
+    private static function add_registered_meta_fields(array &$fields): void
+    {
+        global $wp_meta_keys;
+
+        if (empty($wp_meta_keys) || !is_array($wp_meta_keys)) {
+            return;
+        }
+
+        foreach ((array) ($wp_meta_keys['post'] ?? []) as $post_type => $keys) {
+            foreach ((array) $keys as $key => $args) {
+                self::add_post_meta_field_from_key($fields, (string) $key, (string) $post_type, is_array($args) ? $args : []);
+            }
+        }
+
+        foreach ((array) ($wp_meta_keys['term'] ?? []) as $taxonomy => $keys) {
+            foreach ((array) $keys as $key => $args) {
+                self::add_term_meta_field_from_key($fields, (string) $key, (string) $taxonomy, is_array($args) ? $args : []);
+            }
+        }
+    }
+
+    private static function add_existing_post_meta_fields(array &$fields): void
+    {
+        global $wpdb;
+
+        if (empty($wpdb) || empty($wpdb->postmeta)) {
+            return;
+        }
+
+        $keys = $wpdb->get_col("SELECT DISTINCT meta_key FROM {$wpdb->postmeta} WHERE meta_key <> '' ORDER BY meta_key LIMIT 1500");
+        foreach ((array) $keys as $key) {
+            $key = (string) $key;
+            if (!self::meta_key_is_agent_editable($key)) {
+                continue;
+            }
+
+            self::add_post_meta_field_from_key($fields, $key, 'any', []);
+        }
+    }
+
+    private static function add_existing_term_meta_fields(array &$fields): void
+    {
+        global $wpdb;
+
+        if (empty($wpdb) || empty($wpdb->termmeta)) {
+            return;
+        }
+
+        $keys = $wpdb->get_col("SELECT DISTINCT meta_key FROM {$wpdb->termmeta} WHERE meta_key <> '' ORDER BY meta_key LIMIT 1000");
+        foreach ((array) $keys as $key) {
+            $key = (string) $key;
+            if (!self::meta_key_is_agent_editable($key)) {
+                continue;
+            }
+
+            self::add_term_meta_field_from_key($fields, $key, 'any', []);
+        }
+    }
+
+    private static function add_registered_option_fields(array &$fields): void
+    {
+        if (!function_exists('get_registered_settings')) {
+            return;
+        }
+
+        foreach ((array) get_registered_settings() as $key => $details) {
+            $key = (string) $key;
+            if ($key === '' || !is_array($details)) {
+                continue;
+            }
+
+            self::add_option_field_from_key($fields, $key, $details);
+        }
+    }
+
+    private static function add_existing_prefixed_option_fields(array &$fields): void
+    {
+        global $wpdb;
+
+        if (empty($wpdb) || empty($wpdb->options)) {
+            return;
+        }
+
+        $patterns = [
+            'earlystart_%',
+            'chroma_%',
+            'ghl_%',
+            '%_settings',
+            '%_options',
+        ];
+        $clauses = [];
+        foreach ($patterns as $pattern) {
+            $clauses[] = $wpdb->prepare('option_name LIKE %s', $pattern);
+        }
+
+        $keys = $wpdb->get_col(
+            "SELECT option_name FROM {$wpdb->options} WHERE (" . implode(' OR ', $clauses) . ") ORDER BY option_name LIMIT 1000"
+        );
+
+        foreach ((array) $keys as $key) {
+            $key = (string) $key;
+            if ($key === '' || strpos($key, 'theme_mods_') === 0) {
+                continue;
+            }
+
+            self::add_option_field_from_key($fields, $key, []);
+        }
+    }
+
+    private static function add_post_meta_field_from_key(array &$fields, string $key, string $post_type = 'any', array $args = []): void
+    {
+        if ($key === '' || !self::meta_key_is_agent_editable($key)) {
+            return;
+        }
+
+        [$type, $sanitize] = self::registered_meta_type_and_sanitizer($key, $args);
+        $group = self::meta_group_for_key($key);
+        self::add_field($fields, [
+            'id' => 'metabox.post.' . self::field_id_fragment($post_type) . '.' . self::field_id_fragment($key),
+            'label' => self::label_from_key($key),
+            'description' => 'Runtime-discovered post metabox field.',
+            'group' => $group,
+            'type' => $type,
+            'sanitize' => $sanitize,
+            'storage' => [
+                'type' => 'post_meta',
+                'key' => $key,
+            ],
+            'target' => [
+                'requires' => ['post_id'],
+                'post_types' => $post_type === 'any' ? ['any'] : [$post_type],
+            ],
+            'read_scope' => $group === 'seo_content' ? 'read:seo' : 'read:content',
+            'write_scope' => $group === 'seo_content' ? 'write:seo' : 'write:content',
+            'sensitive' => Utils::is_sensitive_option_key($key),
+            'multilingual_variant' => strpos($key, '_earlystart_es_') === 0 || substr($key, -3) === '_es',
+        ]);
+    }
+
+    private static function add_term_meta_field_from_key(array &$fields, string $key, string $taxonomy = 'any', array $args = []): void
+    {
+        if ($key === '' || !self::meta_key_is_agent_editable($key)) {
+            return;
+        }
+
+        [$type, $sanitize] = self::registered_meta_type_and_sanitizer($key, $args);
+        self::add_field($fields, [
+            'id' => 'metabox.term.' . self::field_id_fragment($taxonomy) . '.' . self::field_id_fragment($key),
+            'label' => self::label_from_key($key),
+            'description' => 'Runtime-discovered term metabox field.',
+            'group' => 'taxonomy',
+            'type' => $type,
+            'sanitize' => $sanitize,
+            'storage' => [
+                'type' => 'term_meta',
+                'key' => $key,
+                'taxonomy' => $taxonomy === 'any' ? '' : $taxonomy,
+            ],
+            'target' => [
+                'requires' => ['term_id', 'taxonomy'],
+                'taxonomies' => $taxonomy === 'any' ? ['any'] : [$taxonomy],
+            ],
+            'read_scope' => 'read:taxonomy',
+            'write_scope' => 'write:taxonomy',
+            'sensitive' => Utils::is_sensitive_option_key($key),
+            'multilingual_variant' => strpos($key, '_earlystart_es_') === 0 || substr($key, -3) === '_es',
+        ]);
+    }
+
+    private static function add_option_field_from_key(array &$fields, string $key, array $details = []): void
+    {
+        if ($key === '' || self::option_key_is_internal($key)) {
+            return;
+        }
+
+        [$type, $sanitize] = self::option_type_and_sanitizer($key);
+        $group = self::option_group_for_key($key);
+        $scope = $group === 'seo_settings' ? 'seo' : ($group === 'plugin_settings' ? 'settings' : 'theme');
+
+        self::add_field($fields, [
+            'id' => 'option.' . self::field_id_fragment($key),
+            'label' => self::label_from_key($key),
+            'description' => empty($details) ? 'Runtime-discovered option.' : 'Registered WordPress setting.',
+            'group' => $group,
+            'type' => $type,
+            'sanitize' => $sanitize,
+            'storage' => [
+                'type' => 'option',
+                'key' => $key,
+            ],
+            'target' => ['requires' => []],
+            'read_scope' => 'read:' . $scope,
+            'write_scope' => 'write:' . $scope,
+            'sensitive' => Utils::is_sensitive_option_key($key),
+            'multilingual_variant' => strpos($key, '_earlystart_es_') === 0 || substr($key, -3) === '_es',
+        ]);
+    }
+
+    private static function registered_meta_type_and_sanitizer(string $key, array $args): array
+    {
+        $callback = $args['sanitize_callback'] ?? null;
+        if ($callback) {
+            $mapped = self::sanitizer_from_registered_callback($callback);
+            if ($mapped !== null) {
+                return $mapped;
+            }
+        }
+
+        $type = isset($args['type']) ? strtolower((string) $args['type']) : '';
+        if ($type !== '') {
+            switch ($type) {
+                case 'boolean':
+                    return ['boolean', 'bool'];
+
+                case 'integer':
+                    return ['integer', 'int'];
+
+                case 'number':
+                    return ['number', 'number'];
+
+                case 'array':
+                    return ['array', 'array'];
+
+                case 'object':
+                    return ['object', 'object'];
+            }
+        }
+
+        return [self::guess_type($key), self::guess_sanitizer($key)];
+    }
+
+    private static function meta_key_is_agent_editable(string $key): bool
+    {
+        if ($key === '') {
+            return false;
+        }
+
+        $blocked_prefixes = [
+            '_edit_',
+            '_wp_',
+            '_oembed_',
+            '_pingme',
+            '_encloseme',
+        ];
+
+        foreach ($blocked_prefixes as $prefix) {
+            if (strpos($key, $prefix) === 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static function option_key_is_internal(string $key): bool
+    {
+        if ($key === '') {
+            return true;
+        }
+
+        $blocked = [
+            'active_plugins',
+            'admin_email',
+            'cron',
+            'current_theme',
+            'rewrite_rules',
+            'sidebars_widgets',
+            'stylesheet',
+            'template',
+            'uninstall_plugins',
+        ];
+
+        if (in_array($key, $blocked, true)) {
+            return true;
+        }
+
+        return strpos($key, '_transient_') === 0
+            || strpos($key, '_site_transient_') === 0
+            || strpos($key, 'theme_mods_') === 0;
+    }
+
+    private static function meta_group_for_key(string $key): string
+    {
+        if (preg_match('/(seo|schema|llm|hreflang|canonical|keyword|citation|indexnow|breadcrumb|entity|open_graph|twitter_card)/i', $key)) {
+            return 'seo_content';
+        }
+
+        return 'content_meta';
+    }
+
+    private static function option_group_for_key(string $key): string
+    {
+        if (preg_match('/(seo|schema|llm|hreflang|canonical|keyword|citation|indexnow|breadcrumb|entity|sitemap)/i', $key)) {
+            return 'seo_settings';
+        }
+
+        if (preg_match('/(contact|career|tour|acquisition|lead|ghl|webhook|api_key|secret|token)/i', $key)) {
+            return 'plugin_settings';
+        }
+
+        return 'theme';
+    }
+
+    private static function field_id_fragment(string $key): string
+    {
+        $fragment = strtolower((string) preg_replace('/[^a-zA-Z0-9_]+/', '_', $key));
+        $fragment = trim($fragment, '_');
+        if ($fragment === '') {
+            $fragment = substr(md5($key), 0, 12);
+        }
+
+        if (strlen($fragment) > 72) {
+            $fragment = substr($fragment, 0, 52) . '_' . substr(md5($key), 0, 12);
+        }
+
+        return $fragment;
     }
 
     private static function add_field(array &$fields, array $field): void
