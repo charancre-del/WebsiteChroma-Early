@@ -68,11 +68,13 @@ class Snapshot_Store
 
         if ($target_type === 'option') {
             update_option($target_key, $old_value, false);
+            Utils::invalidate_global_caches('snapshot_option');
             return true;
         }
 
         if ($target_type === 'theme_mod') {
             set_theme_mod($target_key, $old_value);
+            Utils::invalidate_global_caches('snapshot_theme_mod');
             return true;
         }
 
