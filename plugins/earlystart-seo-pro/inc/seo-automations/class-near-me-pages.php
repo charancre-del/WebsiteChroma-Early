@@ -293,7 +293,11 @@ class earlystart_Near_Me_Pages
             return;
         }
 
-        wp_add_inline_script('jquery', $this->get_personalization_script());
+        $version = defined('EARLYSTART_SEO_VERSION') ? EARLYSTART_SEO_VERSION : '1.0.0';
+
+        wp_register_script('earlystart-seo-near-me', false, [], $version, true);
+        wp_enqueue_script('earlystart-seo-near-me');
+        wp_add_inline_script('earlystart-seo-near-me', $this->get_personalization_script());
     }
 
     /**
@@ -301,13 +305,11 @@ class earlystart_Near_Me_Pages
      */
     private function get_personalization_script()
     {
-        $miles_away_text = __('miles away', 'chroma-excellence');
-        $mi_text = __('mi', 'chroma-excellence');
+        $miles_away_text = wp_json_encode(__('miles away', 'chroma-excellence'));
+        $mi_text = wp_json_encode(__('mi', 'chroma-excellence'));
 
         return "
         document.addEventListener('DOMContentLoaded', function() {
-            var locationsData = JSON.parse(document.getElementById('locations-data').textContent);
-            
             // Calculate distance (Haversine)
             function calcDistance(lat1, lon1, lat2, lon2) {
                 var R = 3959; // miles
@@ -334,7 +336,7 @@ class earlystart_Near_Me_Pages
                     // Show distance
                     var distEl = card.querySelector('.distance-display');
                     if (distEl) {
-                        distEl.textContent = dist.toFixed(1) + ' ' + '$miles_away_text';
+                        distEl.textContent = dist.toFixed(1) + ' ' + $miles_away_text;
                         distEl.style.display = 'block';
                     }
                 });
@@ -353,7 +355,7 @@ class earlystart_Near_Me_Pages
                     distances[0].card.classList.add('nearest');
                     document.getElementById('nearest-highlight').style.display = 'inline-block';
                     document.getElementById('nearest-name').textContent = distances[0].card.querySelector('h2').textContent;
-                    document.getElementById('nearest-distance').textContent = ' (' + distances[0].distance.toFixed(1) + ' $mi_text)';
+                    document.getElementById('nearest-distance').textContent = ' (' + distances[0].distance.toFixed(1) + ' ' + $mi_text + ')';
                 }
             }
             
