@@ -178,7 +178,16 @@ class earlystart_LLM_Admin_Settings
             ? earlystart_LLM_Client::DEFAULT_GEMINI_BASE_URL
             : 'https://generativelanguage.googleapis.com/v1beta';
 
-        return $url !== '' ? rtrim($url, '/') : $default_base_url;
+        $url = $url !== '' ? rtrim($url, '/') : $default_base_url;
+        if (
+            $url === ''
+            || strtolower((string) wp_parse_url($url, PHP_URL_SCHEME)) !== 'https'
+            || !wp_http_validate_url($url)
+        ) {
+            return $default_base_url;
+        }
+
+        return $url;
     }
 
     /**
