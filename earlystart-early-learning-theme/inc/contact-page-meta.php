@@ -116,14 +116,120 @@ function earlystart_contact_form_meta_box_render( $post ) {
 	wp_nonce_field( 'earlystart_contact_form_meta', 'earlystart_contact_form_nonce' );
 
 	$form_submit_text = get_post_meta( $post->ID, 'contact_form_submit_text', true );
+	$form_heading     = get_post_meta( $post->ID, 'contact_form_heading', true );
+	$form_intro       = get_post_meta( $post->ID, 'contact_form_intro', true );
+	$form_card_title  = get_post_meta( $post->ID, 'contact_form_card_title', true );
+	$fallback_intro   = get_post_meta( $post->ID, 'contact_form_fallback_intro', true );
+	$fallback_call_label = get_post_meta( $post->ID, 'contact_form_fallback_call_label', true );
+	$fallback_email_label = get_post_meta( $post->ID, 'contact_form_fallback_email_label', true );
+	$department_heading = get_post_meta( $post->ID, 'contact_department_heading', true );
+	$locations_heading_plural = get_post_meta( $post->ID, 'contact_locations_heading_plural', true );
+	$locations_heading_singular = get_post_meta( $post->ID, 'contact_locations_heading_singular', true );
+	$locations_heading_empty = get_post_meta( $post->ID, 'contact_locations_heading_empty', true );
+	$locations_description = get_post_meta( $post->ID, 'contact_locations_description', true );
+	$locations_link_text = get_post_meta( $post->ID, 'contact_locations_link_text', true );
 	?>
 	<table class="form-table">
+		<tr>
+			<th><label for="contact_form_heading">Form Section Heading</label></th>
+			<td>
+				<input type="text" id="contact_form_heading" name="contact_form_heading"
+					   value="<?php echo esc_attr( $form_heading ); ?>"
+					   class="large-text" placeholder="e.g., Get Started Today" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_intro">Form Section Intro</label></th>
+			<td>
+				<textarea id="contact_form_intro" name="contact_form_intro"
+						  rows="3" class="large-text"><?php echo esc_textarea( $form_intro ); ?></textarea>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_card_title">Form Card Title</label></th>
+			<td>
+				<input type="text" id="contact_form_card_title" name="contact_form_card_title"
+					   value="<?php echo esc_attr( $form_card_title ); ?>"
+					   class="large-text" placeholder="e.g., Send a Message" />
+			</td>
+		</tr>
 		<tr>
 			<th><label for="contact_form_submit_text">Submit Button Text</label></th>
 			<td>
 				<input type="text" id="contact_form_submit_text" name="contact_form_submit_text"
 					   value="<?php echo esc_attr( $form_submit_text ); ?>"
 					   class="large-text" placeholder="e.g., Submit Request" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_fallback_intro">Fallback Form Intro</label></th>
+			<td>
+				<textarea id="contact_form_fallback_intro" name="contact_form_fallback_intro"
+						  rows="3" class="large-text"><?php echo esc_textarea( $fallback_intro ); ?></textarea>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_fallback_call_label">Fallback Call Label</label></th>
+			<td>
+				<input type="text" id="contact_form_fallback_call_label" name="contact_form_fallback_call_label"
+					   value="<?php echo esc_attr( $fallback_call_label ); ?>"
+					   class="large-text" placeholder="e.g., Call" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_fallback_email_label">Fallback Email Label</label></th>
+			<td>
+				<input type="text" id="contact_form_fallback_email_label" name="contact_form_fallback_email_label"
+					   value="<?php echo esc_attr( $fallback_email_label ); ?>"
+					   class="large-text" placeholder="e.g., Email" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_department_heading">Department Heading</label></th>
+			<td>
+				<input type="text" id="contact_department_heading" name="contact_department_heading"
+					   value="<?php echo esc_attr( $department_heading ); ?>"
+					   class="large-text" placeholder="e.g., Departmental Emails" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_locations_heading_plural">Locations Heading (Plural)</label></th>
+			<td>
+				<input type="text" id="contact_locations_heading_plural" name="contact_locations_heading_plural"
+					   value="<?php echo esc_attr( $locations_heading_plural ); ?>"
+					   class="large-text" placeholder="e.g., Visit one of our %s clinics." />
+				<p class="description">Use %s where the clinic count should appear.</p>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_locations_heading_singular">Locations Heading (Singular)</label></th>
+			<td>
+				<input type="text" id="contact_locations_heading_singular" name="contact_locations_heading_singular"
+					   value="<?php echo esc_attr( $locations_heading_singular ); ?>"
+					   class="large-text" placeholder="e.g., Visit our clinic." />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_locations_heading_empty">Locations Heading (No Count)</label></th>
+			<td>
+				<input type="text" id="contact_locations_heading_empty" name="contact_locations_heading_empty"
+					   value="<?php echo esc_attr( $locations_heading_empty ); ?>"
+					   class="large-text" placeholder="e.g., Visit one of our clinics." />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_locations_description">Locations Description</label></th>
+			<td>
+				<textarea id="contact_locations_description" name="contact_locations_description"
+						  rows="3" class="large-text"><?php echo esc_textarea( $locations_description ); ?></textarea>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_locations_link_text">Locations Link Text</label></th>
+			<td>
+				<input type="text" id="contact_locations_link_text" name="contact_locations_link_text"
+					   value="<?php echo esc_attr( $locations_link_text ); ?>"
+					   class="large-text" placeholder="e.g., View Location Directory" />
 			</td>
 		</tr>
 	</table>
@@ -314,7 +420,19 @@ function earlystart_save_contact_page_meta( $post_id ) {
 			'contact_hero_description' => 'sanitize_textarea_field',
 		),
 		'earlystart_contact_form_nonce' => array(
-			'contact_form_submit_text' => 'sanitize_text_field',
+			'contact_form_heading'             => 'sanitize_text_field',
+			'contact_form_intro'               => 'sanitize_textarea_field',
+			'contact_form_card_title'          => 'sanitize_text_field',
+			'contact_form_submit_text'         => 'sanitize_text_field',
+			'contact_form_fallback_intro'      => 'sanitize_textarea_field',
+			'contact_form_fallback_call_label' => 'sanitize_text_field',
+			'contact_form_fallback_email_label' => 'sanitize_text_field',
+			'contact_department_heading'       => 'sanitize_text_field',
+			'contact_locations_heading_plural' => 'sanitize_text_field',
+			'contact_locations_heading_singular' => 'sanitize_text_field',
+			'contact_locations_heading_empty'  => 'sanitize_text_field',
+			'contact_locations_description'    => 'sanitize_textarea_field',
+			'contact_locations_link_text'      => 'sanitize_text_field',
 		),
 		'earlystart_contact_routing_nonce' => array(
 			'contact_routes_json' => 'earlystart_contact_sanitize_routes_json',
@@ -419,7 +537,19 @@ function earlystart_seed_contact_page_defaults( $post_id ) {
 		'contact_hero_title'       => 'We\'d love to meet you.',
 		'contact_hero_description' => 'Ready to experience the Early Start difference? Schedule a tour or ask us a question below to get started.',
 
-		'contact_form_submit_text' => 'Submit Request',
+		'contact_form_heading'        => 'Get Started Today',
+		'contact_form_intro'          => 'Ready to learn more? Fill out the form, and our admissions team will reach out within 24 hours to guide you through the process.',
+		'contact_form_card_title'     => 'Send a Message',
+		'contact_form_submit_text'    => 'Submit Request',
+		'contact_form_fallback_intro' => 'Our admissions team can help with program questions, referrals, tours, and next steps for your family.',
+		'contact_form_fallback_call_label' => 'Call',
+		'contact_form_fallback_email_label' => 'Email',
+		'contact_department_heading'  => 'Departmental Emails',
+		'contact_locations_heading_plural' => 'Visit one of our %s clinics.',
+		'contact_locations_heading_singular' => 'Visit our clinic.',
+		'contact_locations_heading_empty' => 'Visit one of our clinics.',
+		'contact_locations_description' => 'With specialized therapy centers across the region, there is likely a Chroma Early Start clinic in your community.',
+		'contact_locations_link_text' => 'View Location Directory',
 		'contact_routes_json'      => wp_json_encode(
 			array(
 				array(

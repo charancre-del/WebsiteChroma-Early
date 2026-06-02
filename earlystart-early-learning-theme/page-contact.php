@@ -16,7 +16,30 @@ while (have_posts()):
 	$hero_badge = get_post_meta($page_id, 'contact_hero_badge', true) ?: __('Connect with Us', 'earlystart-early-learning');
 	$hero_title = get_post_meta($page_id, 'contact_hero_title', true) ?: __('How can we<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Support you?</span>', 'earlystart-early-learning');
 	$hero_description = get_post_meta($page_id, 'contact_hero_description', true) ?: __('Whether you are a family looking for care, a clinician seeking a career, or a provider wanting to refer, we are here to help.', 'earlystart-early-learning');
+	$contact_meta = static function ($key, $default = '') use ($page_id) {
+		$value = function_exists('earlystart_get_translated_meta')
+			? earlystart_get_translated_meta($page_id, $key, true)
+			: get_post_meta($page_id, $key, true);
+
+		if (is_string($value)) {
+			$value = trim($value);
+		}
+
+		return '' === $value || array() === $value ? $default : $value;
+	};
+	$form_heading = $contact_meta('contact_form_heading', __('Get Started Today', 'earlystart-early-learning'));
+	$form_intro = $contact_meta('contact_form_intro', __('Ready to learn more? Fill out the form, and our admissions team will reach out within 24 hours to guide you through the process.', 'earlystart-early-learning'));
 	$form_submit_text = get_post_meta($page_id, 'contact_form_submit_text', true) ?: __('Request Consultation', 'earlystart-early-learning');
+	$form_card_title = $contact_meta('contact_form_card_title', __('Send a Message', 'earlystart-early-learning'));
+	$form_fallback_intro = $contact_meta('contact_form_fallback_intro', __('Our admissions team can help with program questions, referrals, tours, and next steps for your family.', 'earlystart-early-learning'));
+	$form_fallback_call_label = $contact_meta('contact_form_fallback_call_label', __('Call', 'earlystart-early-learning'));
+	$form_fallback_email_label = $contact_meta('contact_form_fallback_email_label', __('Email', 'earlystart-early-learning'));
+	$department_heading = $contact_meta('contact_department_heading', __('Departmental Emails', 'earlystart-early-learning'));
+	$locations_heading_plural = $contact_meta('contact_locations_heading_plural', __('Visit one of our %s clinics.', 'earlystart-early-learning'));
+	$locations_heading_singular = $contact_meta('contact_locations_heading_singular', __('Visit our clinic.', 'earlystart-early-learning'));
+	$locations_heading_empty = $contact_meta('contact_locations_heading_empty', __('Visit one of our clinics.', 'earlystart-early-learning'));
+	$locations_description = $contact_meta('contact_locations_description', __('With specialized therapy centers across the region, there is likely a Chroma Early Start clinic in your community.', 'earlystart-early-learning'));
+	$locations_link_text = $contact_meta('contact_locations_link_text', __('View Location Directory', 'earlystart-early-learning'));
 	$corporate_title = get_post_meta($page_id, 'contact_corporate_title', true) ?: __('Corporate Office', 'earlystart-early-learning');
 	$corporate_name = get_post_meta($page_id, 'contact_corporate_name', true) ?: __('Chroma Early Start HQ', 'earlystart-early-learning');
 	$corporate_address = get_post_meta($page_id, 'contact_corporate_address', true) ?: '';
@@ -114,10 +137,10 @@ while (have_posts()):
 				<div class="grid lg:grid-cols-2 gap-20">
 					<div class="fade-in-up">
 						<h2 class="text-4xl font-bold text-stone-900 mb-8">
-							<?php _e('Get Started Today', 'earlystart-early-learning'); ?>
+							<?php echo esc_html($form_heading); ?>
 						</h2>
 						<p class="text-xl text-stone-700 mb-12 leading-relaxed">
-							<?php _e('Ready to learn more? Fill out the form, and our admissions team will reach out within 24 hours to guide you through the process.', 'earlystart-early-learning'); ?>
+							<?php echo esc_html($form_intro); ?>
 						</p>
 
 						<div class="space-y-8">
@@ -169,7 +192,7 @@ while (have_posts()):
 
 						<div class="mt-16 pt-12 border-t border-stone-100">
 							<h4 class="text-stone-900 font-bold mb-6">
-								<?php _e('Departmental Emails', 'earlystart-early-learning'); ?>
+								<?php echo esc_html($department_heading); ?>
 							</h4>
 							<div class="grid sm:grid-cols-2 gap-4 text-sm">
 								<?php foreach ($department_contacts as $department_contact): ?>
@@ -188,7 +211,7 @@ while (have_posts()):
 							<div class="absolute -top-6 -right-6 w-24 h-24 bg-rose-50 rounded-full blur-2xl opacity-60">
 							</div>
 							<h3 class="text-2xl font-bold text-stone-900 mb-8">
-								<?php _e('Send a Message', 'earlystart-early-learning'); ?>
+								<?php echo esc_html($form_card_title); ?>
 							</h3>
 							<?php
 							// If the contact form shortcode exists, use it. Otherwise, fallback to a placeholder style.
@@ -202,7 +225,7 @@ while (have_posts()):
 								?>
 								<div class="space-y-6">
 									<p class="text-stone-700 leading-relaxed">
-										<?php _e('Our admissions team can help with program questions, referrals, tours, and next steps for your family.', 'earlystart-early-learning'); ?>
+										<?php echo esc_html($form_fallback_intro); ?>
 									</p>
 									<div class="grid sm:grid-cols-2 gap-4">
 										<?php if ('' !== $fallback_tel && '' !== $fallback_phone): ?>
@@ -210,7 +233,7 @@ while (have_posts()):
 												class="flex items-center gap-4 rounded-2xl border border-stone-200 bg-stone-50/70 px-5 py-5 text-stone-900 hover:border-rose-200 hover:text-rose-700 transition-all">
 												<i data-lucide="phone" class="w-5 h-5 flex-shrink-0"></i>
 												<span class="min-w-0">
-													<span class="block text-xs uppercase tracking-widest font-bold text-stone-500"><?php esc_html_e('Call', 'earlystart-early-learning'); ?></span>
+													<span class="block text-xs uppercase tracking-widest font-bold text-stone-500"><?php echo esc_html($form_fallback_call_label); ?></span>
 													<span class="block font-bold" style="overflow-wrap:anywhere;"><?php echo esc_html($fallback_phone); ?></span>
 												</span>
 											</a>
@@ -220,7 +243,7 @@ while (have_posts()):
 												class="flex items-center gap-4 rounded-2xl border border-stone-200 bg-stone-50/70 px-5 py-5 text-stone-900 hover:border-rose-200 hover:text-rose-700 transition-all">
 												<i data-lucide="mail" class="w-5 h-5 flex-shrink-0"></i>
 												<span class="min-w-0">
-													<span class="block text-xs uppercase tracking-widest font-bold text-stone-500"><?php esc_html_e('Email', 'earlystart-early-learning'); ?></span>
+													<span class="block text-xs uppercase tracking-widest font-bold text-stone-500"><?php echo esc_html($form_fallback_email_label); ?></span>
 													<span class="block font-bold" style="overflow-wrap:anywhere;"><?php echo esc_html($fallback_email); ?></span>
 												</span>
 											</a>
@@ -245,23 +268,20 @@ while (have_posts()):
 				<h2 class="text-3xl font-bold text-stone-900 mb-6">
 					<?php
 					if ($published_locations > 1) {
-						printf(
-							esc_html__('Visit one of our %s clinics.', 'earlystart-early-learning'),
-							esc_html(number_format_i18n($published_locations))
-						);
+						echo esc_html(str_replace('%s', number_format_i18n($published_locations), $locations_heading_plural));
 					} elseif (1 === $published_locations) {
-						_e('Visit our clinic.', 'earlystart-early-learning');
+						echo esc_html($locations_heading_singular);
 					} else {
-						_e('Visit one of our clinics.', 'earlystart-early-learning');
+						echo esc_html($locations_heading_empty);
 					}
 					?>
 				</h2>
 				<p class="text-stone-700 mb-10 max-w-2xl mx-auto">
-					<?php _e('With specialized therapy centers across the region, there is likely a Chroma Early Start clinic in your community.', 'earlystart-early-learning'); ?>
+					<?php echo esc_html($locations_description); ?>
 				</p>
 				<a href="<?php echo esc_url(earlystart_get_page_link('locations')); ?>"
 					class="inline-flex items-center text-rose-700 font-bold hover:underline gap-2">
-					<?php _e('View Location Directory', 'earlystart-early-learning'); ?>
+					<?php echo esc_html($locations_link_text); ?>
 					<i data-lucide="arrow-right" class="w-5 h-5"></i>
 				</a>
 			</div>
