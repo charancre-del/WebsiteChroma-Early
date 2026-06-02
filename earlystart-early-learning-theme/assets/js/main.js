@@ -851,6 +851,14 @@ document.addEventListener('DOMContentLoaded', function () {
     let autoplayInterval = null;
     let isCarouselVisible = !('IntersectionObserver' in window);
 
+    if (prevBtn && !prevBtn.hasAttribute('aria-label')) {
+      prevBtn.setAttribute('aria-label', 'Show previous review');
+    }
+
+    if (nextBtn && !nextBtn.hasAttribute('aria-label')) {
+      nextBtn.setAttribute('aria-label', 'Show next review');
+    }
+
     const goToSlide = (index) => {
       if (index < 0) index = totalSlides - 1;
       if (index >= totalSlides) index = 0;
@@ -858,9 +866,18 @@ document.addEventListener('DOMContentLoaded', function () {
       currentIndex = index;
       track.style.transform = `translateX(-${currentIndex * 100}%)`;
 
+      slides.forEach((slide, i) => {
+        slide.setAttribute('aria-hidden', (i !== currentIndex).toString());
+      });
+
       // Update dots
       dots.forEach((dot, i) => {
-        if (i === currentIndex) {
+        const isActive = i === currentIndex;
+        dot.setAttribute('aria-label', `Show review ${i + 1} of ${totalSlides}`);
+        dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+        dot.setAttribute('aria-pressed', isActive.toString());
+
+        if (isActive) {
           dot.classList.remove('bg-chroma-blue/30', 'hover:bg-chroma-blue/50', 'w-3');
           dot.classList.add('bg-chroma-red', 'w-8');
         } else {
@@ -880,6 +897,8 @@ document.addEventListener('DOMContentLoaded', function () {
         resetAutoplay();
       });
     });
+
+    goToSlide(0);
 
     // Arrow navigation
     if (prevBtn) {
@@ -1005,6 +1024,14 @@ document.addEventListener('DOMContentLoaded', function () {
     let autoplayInterval = null;
     let isCarouselVisible = !('IntersectionObserver' in window);
 
+    if (prevBtn && !prevBtn.hasAttribute('aria-label')) {
+      prevBtn.setAttribute('aria-label', 'Show previous location');
+    }
+
+    if (nextBtn && !nextBtn.hasAttribute('aria-label')) {
+      nextBtn.setAttribute('aria-label', 'Show next location');
+    }
+
     const updateCarousel = (index) => {
       if (index < 0) index = totalSlides - 1;
       if (index >= totalSlides) index = 0;
@@ -1012,10 +1039,19 @@ document.addEventListener('DOMContentLoaded', function () {
       currentIndex = index;
       track.style.transform = `translateX(-${currentIndex * 100}%)`;
 
+      slides.forEach((slide, i) => {
+        slide.setAttribute('aria-hidden', (i !== currentIndex).toString());
+      });
+
       // Update dots
       if (dots.length) {
         dots.forEach((dot, i) => {
-          if (i === currentIndex) {
+          const isActive = i === currentIndex;
+          dot.setAttribute('aria-label', `Show location ${i + 1} of ${totalSlides}`);
+          dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+          dot.setAttribute('aria-pressed', isActive.toString());
+
+          if (isActive) {
             dot.classList.remove('bg-white/50');
             dot.classList.add('bg-white', 'w-6');
           } else {
@@ -1025,6 +1061,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       }
     };
+
+    updateCarousel(0);
 
     const nextSlide = () => updateCarousel(currentIndex + 1);
     const prevSlide = () => updateCarousel(currentIndex - 1);
