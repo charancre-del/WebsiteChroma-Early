@@ -73,9 +73,8 @@ class earlystart_Breadcrumbs
             return;
         }
 
-        // Check if disabled globally (User Preference for Theme/Yoast conflict)
-        // Default to 'yes' to ensure it is disabled by default as requested
-        if (get_option('earlystart_breadcrumbs_schema_disabled', 'yes') === 'yes') {
+        // Check if disabled globally (User Preference for Theme/Yoast conflict).
+        if (get_option('earlystart_breadcrumbs_schema_disabled', 'no') === 'yes') {
             return;
         }
 
