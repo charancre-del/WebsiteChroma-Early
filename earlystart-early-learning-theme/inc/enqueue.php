@@ -304,17 +304,19 @@ add_action('wp_head', 'earlystart_preload_main_css', 1);
  */
 function earlystart_preload_fonts()
 {
-        // Outfit Regular (Body)
-        $font_url = earlystart_THEME_URI . '/assets/webfonts/Outfit-Regular.woff2';
-        echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+        $font_files = array(
+                'Outfit-Regular.woff2',
+                'Outfit-Bold.woff2',
+        );
 
-        // Outfit Medium (Desktop nav labels)
-        $font_url = earlystart_THEME_URI . '/assets/webfonts/Outfit-Medium.woff2';
-        echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+        if (is_front_page()) {
+                $font_files[] = 'Outfit-Medium.woff2';
+        }
 
-        // Outfit Bold (Hero CTA and synthesized extra-bold fallback)
-        $font_url = earlystart_THEME_URI . '/assets/webfonts/Outfit-Bold.woff2';
-        echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+        foreach ($font_files as $font_file) {
+                $font_url = earlystart_THEME_URI . '/assets/webfonts/' . $font_file;
+                echo '<link rel="preload" href="' . esc_url($font_url) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+        }
 }
 add_action('wp_head', 'earlystart_preload_fonts', 1);
 
