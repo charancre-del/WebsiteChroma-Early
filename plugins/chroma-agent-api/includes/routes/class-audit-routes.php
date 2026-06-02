@@ -224,7 +224,7 @@ class Audit_Routes
 
     private static function is_sensitive_snapshot_target(string $target_key): bool
     {
-        return in_array(sanitize_key($target_key), Utils::get_sensitive_option_keys(), true);
+        return Utils::is_sensitive_option_key($target_key);
     }
 
     private static function payload(WP_REST_Request $request): array

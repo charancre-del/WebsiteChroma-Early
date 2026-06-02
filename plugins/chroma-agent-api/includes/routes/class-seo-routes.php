@@ -175,14 +175,16 @@ class SEO_Routes
             $after[$option_name] = $new;
 
             if (!$dry_run && $old !== $new) {
-                $snapshot_ids[] = Snapshot_Store::create_snapshot(
-                    Auth::current_key_id(),
-                    'write:seo',
-                    'option',
-                    $option_name,
-                    $old,
-                    $new
-                );
+                if (!Utils::is_sensitive_option_key($option_name)) {
+                    $snapshot_ids[] = Snapshot_Store::create_snapshot(
+                        Auth::current_key_id(),
+                        'write:seo',
+                        'option',
+                        $option_name,
+                        $old,
+                        $new
+                    );
+                }
                 update_option($option_name, $new, false);
                 $changed = true;
             }

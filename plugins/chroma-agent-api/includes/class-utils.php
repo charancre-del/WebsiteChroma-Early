@@ -539,6 +539,11 @@ class Utils
         ]);
     }
 
+    public static function is_sensitive_option_key(string $key): bool
+    {
+        return in_array(sanitize_key($key), self::get_sensitive_option_keys(), true);
+    }
+
     public static function get_embed_meta_keys(): array
     {
         return self::normalize_allowlist([
