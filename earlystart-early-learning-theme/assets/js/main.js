@@ -992,7 +992,10 @@ document.addEventListener('DOMContentLoaded', function () {
         mutations.forEach(mutation => {
           mutation.addedNodes.forEach(node => {
             if (node.nodeType === 1) { // Element node
-              const hasLazy = node.querySelector('img[data-lazy-src]') || node.hasAttribute('data-lazy-src');
+              const hasLazy = (
+                node.matches?.('img[data-lazy-src]:not([data-lazy-bound]), img[loading="lazy"]:not(.no-lazy):not([data-lazy-bound])') ||
+                node.querySelector('img[data-lazy-src]:not([data-lazy-bound]), img[loading="lazy"]:not(.no-lazy):not([data-lazy-bound])')
+              );
               if (hasLazy) {
                 initEnhancedLazyLoading();
               }
