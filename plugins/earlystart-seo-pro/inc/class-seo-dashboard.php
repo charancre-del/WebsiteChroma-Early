@@ -534,6 +534,12 @@ class earlystart_SEO_Dashboard
         
         <!-- Validation Button JavaScript -->
         <script>
+        function earlystartSeoDebugError() {
+            if (window.earlystartSeoDebug && window.console && typeof window.console.error === 'function') {
+                window.console.error.apply(window.console, arguments);
+            }
+        }
+
         // Helper: Show Toast Notification
         function showToast(message, type) {
             type = type || 'success';
@@ -3312,7 +3318,7 @@ class earlystart_SEO_Dashboard
                             
                         } else {
                             // PHP Error (e.g. timeout) - Retry logic could go here (Feature 10)
-                            console.error('Batch Error: ' + (response.data.message || 'Unknown'));
+                            earlystartSeoDebugError('Batch Error: ' + (response.data.message || 'Unknown'));
                             showToast('Batch Error: ' + (response.data.message || 'Unknown'), 'error');
                             // Skip this batch and try next offset? Or abort?
                             // Simple retry: just move forward by 1 to skip stuck item
@@ -3321,7 +3327,8 @@ class earlystart_SEO_Dashboard
                             }, requestDelay + 1000);
                         }
                     }).fail(function(xhr, status, error) {
-                        console.error('Network Error: ' + error);
+                        earlystartSeoDebugError('Network Error: ' + error, xhr, status);
+                        showToast('Network Error: ' + (error || status || 'Retrying batch'), 'error');
                         // Retry logic (Feature 10)
                         setTimeout(function() {
                             processBatch(typeIndex, offset + 1);
@@ -3568,13 +3575,13 @@ class earlystart_SEO_Dashboard
                                         processNextFix(index + 1);
                                     } else {
                                         $rowBtn.text('❌ Save Failed').prop('disabled', false);
-                                        console.error('Save failed for ' + item.id, res2);
+                                        earlystartSeoDebugError('Save failed for ' + item.id, res2);
                                         processNextFix(index + 1); // Continue anyway
                                     }
                                 });
                             } else {
                                 $rowBtn.text('❌ AI Failed').prop('disabled', false);
-                                console.error('AI Fix failed for ' + item.id, res1);
+                                earlystartSeoDebugError('AI Fix failed for ' + item.id, res1);
                                 processNextFix(index + 1); // Continue anyway
                             }
                         }).fail(function() {

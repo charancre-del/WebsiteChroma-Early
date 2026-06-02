@@ -263,6 +263,12 @@ class earlystart_Content_Inspector
         </div>
         <script>
         jQuery(document).ready(function($) {
+            function debugError() {
+                if (window.earlystartSeoDebug && window.console && typeof window.console.error === 'function') {
+                    window.console.error.apply(window.console, arguments);
+                }
+            }
+
             // BULK ALL
             $('#chroma-bulk-translate-all').click(function() {
                 var untranslated = window.chromaUntranslated || [];
@@ -321,13 +327,13 @@ class earlystart_Content_Inspector
                     nonce: '<?php echo wp_create_nonce('earlystart_seo_nonce'); ?>'
                 }, function(response) {
                     if (typeof response === 'string' && response.trim() === '-1') {
-                         console.error('AJAX Nonce Failure');
+                         debugError('AJAX Nonce Failure');
                          if (callback) callback(false, 'Session Expired (Nonce)');
                          return;
                     }
                     if (callback) callback(response.success, (response.data && response.data.message) ? response.data.message : 'Invalid Resp: ' + JSON.stringify(response));
                 }).fail(function(xhr, status, error) {
-                    console.error('AJAX Fail', xhr, status, error);
+                    debugError('AJAX Fail', xhr, status, error);
                     if (callback) callback(false, 'Net Err: ' + status + ' ' + error);
                 });
             }
@@ -408,7 +414,7 @@ class earlystart_Content_Inspector
                         $btn.closest('tr').css('background-color', '#e6fffa');
                     } else {
                         $btn.html('<span class="dashicons dashicons-warning" style="color:red"></span>');
-                        console.error('Translation failed for ' + program + '/' + city, response);
+                        debugError('Translation failed for ' + program + '/' + city, response);
                     }
                     // Next
                     current++;
