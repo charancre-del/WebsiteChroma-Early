@@ -54,7 +54,7 @@ The following references remain on purpose for backward compatibility or histori
 - `inc/seo-engine.php`
   - The legacy keyword filter still contains terms like `daycare`, `child care`, and `childcare` because it needs those exact strings to strip them from output.
 
-- `assets/js/admin-llm.js`
+- `plugins/earlystart-seo-pro/assets/js/admin-llm.js`
   - `ChildCare` is still accepted as a recognized schema type for backward compatibility when previewing older saved schema JSON in admin.
 
 - `inc/seed-content.php`
