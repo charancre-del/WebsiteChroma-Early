@@ -619,6 +619,10 @@ class Editable_Registry
             return Utils::sanitize_option_for_storage_by_key((string) ($target['option_key'] ?? ''), $value);
         }
 
+        if ($storage === 'theme_mod_any') {
+            return Utils::sanitize_mixed_for_storage_by_key((string) ($target['theme_mod_key'] ?? ''), $value);
+        }
+
         if (in_array($storage, ['post_meta_any', 'term_meta_any'], true)) {
             return Utils::sanitize_mixed_for_storage_by_key((string) ($target['meta_key'] ?? ''), $value);
         }
@@ -1033,6 +1037,22 @@ class Editable_Registry
                 'key_pattern' => '*',
             ],
             'target' => ['requires' => ['theme_mod_key']],
+            'read_scope' => 'read:theme',
+            'write_scope' => 'write:theme',
+        ]);
+
+        self::add_field($fields, [
+            'id' => 'customizer.option.__any',
+            'label' => 'Any Customizer option setting',
+            'description' => 'Reads or writes an option-backed Customizer setting supplied as target.option_key.',
+            'group' => 'customizer',
+            'type' => 'mixed',
+            'sanitize' => 'mixed',
+            'storage' => [
+                'type' => 'option_any',
+                'key_pattern' => '*',
+            ],
+            'target' => ['requires' => ['option_key']],
             'read_scope' => 'read:theme',
             'write_scope' => 'write:theme',
         ]);
