@@ -687,13 +687,23 @@ while (have_posts()):
 								</div>
 								<div class="space-y-4">
 									<?php foreach ($location_faqs as $index => $item): ?>
-										<div class="bg-white border border-stone-200 rounded-2xl p-6 cursor-pointer transition-colors <?php echo esc_attr($faq_hover_border_class); ?>"
+										<?php
+										$faq_trigger_id = 'location-faq-trigger-' . absint($location_id) . '-' . absint($index);
+										$faq_answer_id = 'location-faq-answer-' . absint($location_id) . '-' . absint($index);
+										?>
+										<div class="bg-white border border-stone-200 rounded-2xl p-6 transition-colors <?php echo esc_attr($faq_hover_border_class); ?>"
 											data-faq-item>
-											<div class="flex justify-between items-center">
-												<h4 class="font-bold text-stone-800"><?php echo esc_html($item['question']); ?></h4>
-												<i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-stone-400"></i>
-											</div>
-											<div class="faq-answer text-stone-600 mt-0">
+											<h4 class="m-0">
+												<button id="<?php echo esc_attr($faq_trigger_id); ?>" type="button"
+													class="w-full flex justify-between items-center gap-4 text-left"
+													aria-expanded="false" aria-controls="<?php echo esc_attr($faq_answer_id); ?>"
+													data-faq-trigger>
+													<span class="font-bold text-stone-800"><?php echo esc_html($item['question']); ?></span>
+													<i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-stone-400 shrink-0" aria-hidden="true"></i>
+												</button>
+											</h4>
+											<div id="<?php echo esc_attr($faq_answer_id); ?>" class="faq-answer text-stone-600 mt-0"
+												role="region" aria-labelledby="<?php echo esc_attr($faq_trigger_id); ?>" aria-hidden="true">
 												<p class="pt-4"><?php echo wp_kses_post($item['answer']); ?></p>
 											</div>
 										</div>
@@ -920,11 +930,21 @@ while (have_posts()):
 	document.addEventListener('DOMContentLoaded', function () {
 		var faqItems = document.querySelectorAll('[data-faq-item]');
 		faqItems.forEach(function (item) {
-			item.addEventListener('click', function () {
-				var answer = item.querySelector('.faq-answer');
+			var trigger = item.querySelector('[data-faq-trigger]');
+			if (!trigger) return;
+
+			trigger.addEventListener('click', function () {
+				var answer = document.getElementById(trigger.getAttribute('aria-controls'));
 				var icon = item.querySelector('.faq-icon');
-				if (answer) answer.classList.toggle('open');
-				if (icon) icon.classList.toggle('rotate');
+				var isOpen = trigger.getAttribute('aria-expanded') === 'true';
+				var nextOpen = !isOpen;
+
+				trigger.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
+				if (answer) {
+					answer.classList.toggle('open', nextOpen);
+					answer.setAttribute('aria-hidden', nextOpen ? 'false' : 'true');
+				}
+				if (icon) icon.classList.toggle('rotate', nextOpen);
 			});
 		});
 	});
