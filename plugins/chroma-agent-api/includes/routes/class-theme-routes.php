@@ -127,6 +127,8 @@ class Theme_Routes
 
         $diff = Diff::compare($before, $after);
 
+        $status_code = empty($blocked) ? 200 : 207;
+
         Audit_Log::log_write([
             'actor_key_id' => Auth::current_key_id(),
             'scope' => 'write:theme',
@@ -138,11 +140,11 @@ class Theme_Routes
             'before' => $before,
             'after' => $after,
             'diff' => $diff,
-            'status_code' => 200,
+            'status_code' => $status_code,
         ]);
 
         return rest_ensure_response([
-            'success' => true,
+            'success' => empty($blocked),
             'dry_run' => $dry_run,
             'blocked_keys' => $blocked,
             'snapshot_ids' => $snapshot_ids,
@@ -220,6 +222,8 @@ class Theme_Routes
 
         $diff = Diff::compare($before, $after);
 
+        $status_code = empty($blocked) ? 200 : 207;
+
         Audit_Log::log_write([
             'actor_key_id' => Auth::current_key_id(),
             'scope' => 'write:theme',
@@ -231,7 +235,7 @@ class Theme_Routes
             'before' => $before,
             'after' => $after,
             'diff' => $diff,
-            'status_code' => 200,
+            'status_code' => $status_code,
         ]);
 
         $live = [];
@@ -240,7 +244,7 @@ class Theme_Routes
         }
 
         return rest_ensure_response([
-            'success' => true,
+            'success' => empty($blocked),
             'dry_run' => $dry_run,
             'blocked_keys' => $blocked,
             'snapshot_ids' => $snapshot_ids,

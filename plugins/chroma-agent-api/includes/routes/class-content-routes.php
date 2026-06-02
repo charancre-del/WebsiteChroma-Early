@@ -310,6 +310,8 @@ class Content_Routes
                 $after['featured_media'] = (int) $params['featured_media'];
             }
 
+            $status_code = empty($write_policy_blocks) ? 200 : 207;
+
             Audit_Log::log_write([
                 'actor_key_id' => Auth::current_key_id(),
                 'scope' => 'write:content',
@@ -321,11 +323,11 @@ class Content_Routes
                 'before' => null,
                 'after' => $after,
                 'diff' => ['create' => true],
-                'status_code' => 200,
+                'status_code' => $status_code,
             ]);
 
             return rest_ensure_response([
-                'success' => true,
+                'success' => empty($write_policy_blocks),
                 'dry_run' => true,
                 'write_policy_blocks' => $write_policy_blocks,
                 'data' => $after,
@@ -468,6 +470,8 @@ class Content_Routes
             }
 
             $diff = Diff::compare($before, $after);
+            $status_code = empty($write_policy_blocks) ? 200 : 207;
+
             Audit_Log::log_write([
                 'actor_key_id' => Auth::current_key_id(),
                 'scope' => 'write:content',
@@ -479,11 +483,11 @@ class Content_Routes
                 'before' => $before,
                 'after' => $after,
                 'diff' => $diff,
-                'status_code' => 200,
+                'status_code' => $status_code,
             ]);
 
             return rest_ensure_response([
-                'success' => true,
+                'success' => empty($write_policy_blocks),
                 'dry_run' => true,
                 'write_policy_blocks' => $write_policy_blocks,
                 'diff' => $diff,

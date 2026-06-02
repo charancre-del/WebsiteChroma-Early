@@ -197,6 +197,8 @@ class SEO_Routes
         $diff = Diff::compare($before, $after);
         $public_diff = self::redact_sensitive_map($diff);
 
+        $status_code = empty($blocked) ? 200 : 207;
+
         Audit_Log::log_write([
             'actor_key_id' => Auth::current_key_id(),
             'scope' => 'write:seo',
@@ -208,11 +210,11 @@ class SEO_Routes
             'before' => $before,
             'after' => $after,
             'diff' => $diff,
-            'status_code' => 200,
+            'status_code' => $status_code,
         ]);
 
         return rest_ensure_response([
-            'success' => true,
+            'success' => empty($blocked),
             'dry_run' => $dry_run,
             'blocked_keys' => $blocked,
             'snapshot_ids' => $snapshot_ids,
@@ -304,6 +306,8 @@ class SEO_Routes
 
         $diff = Diff::compare($before, $after);
 
+        $status_code = empty($blocked) ? 200 : 207;
+
         Audit_Log::log_write([
             'actor_key_id' => Auth::current_key_id(),
             'scope' => 'write:seo',
@@ -315,7 +319,7 @@ class SEO_Routes
             'before' => $before,
             'after' => $after,
             'diff' => $diff,
-            'status_code' => 200,
+            'status_code' => $status_code,
         ]);
 
         $live = [];
@@ -337,7 +341,7 @@ class SEO_Routes
         }
 
         return rest_ensure_response([
-            'success' => true,
+            'success' => empty($blocked),
             'dry_run' => $dry_run,
             'post_id' => $post_id,
             'blocked_keys' => $blocked,
@@ -532,6 +536,8 @@ class SEO_Routes
 
         $diff = Diff::compare($before, $after);
 
+        $status_code = empty($blocked) ? 200 : 207;
+
         Audit_Log::log_write([
             'actor_key_id' => Auth::current_key_id(),
             'scope' => 'write:seo',
@@ -543,7 +549,7 @@ class SEO_Routes
             'before' => $before,
             'after' => $after,
             'diff' => $diff,
-            'status_code' => 200,
+            'status_code' => $status_code,
         ]);
 
         $live = [];
@@ -565,7 +571,7 @@ class SEO_Routes
         }
 
         return rest_ensure_response([
-            'success' => true,
+            'success' => empty($blocked),
             'dry_run' => $dry_run,
             'post_id' => $post_id,
             'blocked_keys' => $blocked,
