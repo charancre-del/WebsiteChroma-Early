@@ -186,7 +186,7 @@ class earlystart_Schema_Inspector
         // Support both single schema and multiple schemas
         $schemas_array = $_POST['schemas'] ?? null;
         $single_schema = $_POST['schema'] ?? null;
-        $errors = $_POST['errors'] ?? [];
+        $errors = $this->sanitize_issue_list($_POST['errors'] ?? []);
 
         if (empty($schemas_array) && empty($single_schema)) {
             wp_send_json_error(['message' => 'No schema provided']);
@@ -225,6 +225,40 @@ class earlystart_Schema_Inspector
 
             wp_send_json_success(['fixed_schema' => $fixed_schema]);
         }
+    }
+
+    /**
+     * Normalize and sanitize issue text sent by the inspector UI.
+     *
+     * @param mixed $errors Raw POST value.
+     * @return array<int, string>
+     */
+    private function sanitize_issue_list($errors): array
+    {
+        $errors = wp_unslash($errors);
+
+        if (is_string($errors)) {
+            $decoded = json_decode($errors, true);
+            $errors = json_last_error() === JSON_ERROR_NONE ? $decoded : [$errors];
+        }
+
+        if (!is_array($errors)) {
+            return [];
+        }
+
+        $out = [];
+        foreach ($errors as $error) {
+            if (is_array($error) || is_object($error)) {
+                $error = wp_json_encode($error);
+            }
+
+            $message = sanitize_text_field((string) $error);
+            if ($message !== '') {
+                $out[] = $message;
+            }
+        }
+
+        return $out;
     }
 }
 

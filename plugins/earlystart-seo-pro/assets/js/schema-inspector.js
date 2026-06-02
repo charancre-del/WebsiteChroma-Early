@@ -288,7 +288,7 @@ jQuery(document).ready(function ($) {
             }
         }).fail(function () {
             btn.prop('disabled', false).text('✨ Auto-Fix with AI');
-            alert('Request failed. Check console.');
+            alert('AI fix request failed. Please verify your LLM settings and try again.');
         });
     });
 
