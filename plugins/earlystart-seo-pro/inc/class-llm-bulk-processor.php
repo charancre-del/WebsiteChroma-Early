@@ -161,13 +161,9 @@ class earlystart_LLM_Bulk_Processor
                 $result = $earlystart_llm_client->generate_schema_data($post_id, $schema_type, []);
                 
                 if (!is_wp_error($result)) {
-                    // Save to post meta
-                    $existing = get_post_meta($post_id, '_earlystart_schema_data', true) ?: [];
-                    $existing[] = [
-                        'type' => $schema_type,
-                        'data' => $result
-                    ];
-                    update_post_meta($post_id, '_earlystart_schema_data', $existing);
+                    $this->upsert_schema_row($post_id, '_earlystart_schema_data', $schema_type, $result);
+                    $this->upsert_schema_row($post_id, '_earlystart_post_schemas', $schema_type, $result);
+                    clean_post_cache($post_id);
                     return true;
                 }
             }
@@ -190,6 +186,44 @@ class earlystart_LLM_Bulk_Processor
         }
         
         return false;
+    }
+
+    /**
+     * Insert or update a generated schema row in a post meta collection.
+     *
+     * @param int    $post_id Post ID.
+     * @param string $meta_key Post meta key.
+     * @param string $schema_type Schema.org type.
+     * @param array  $schema_data Generated schema fields.
+     */
+    private function upsert_schema_row($post_id, $meta_key, $schema_type, $schema_data) {
+        $schemas = get_post_meta($post_id, $meta_key, true);
+        if (!is_array($schemas)) {
+            $schemas = [];
+        }
+
+        $updated = false;
+        foreach ($schemas as &$schema) {
+            $row_type = $schema['type'] ?? ($schema['@type'] ?? '');
+            if ($row_type === $schema_type) {
+                $schema = [
+                    'type' => $schema_type,
+                    'data' => $schema_data,
+                ];
+                $updated = true;
+                break;
+            }
+        }
+        unset($schema);
+
+        if (!$updated) {
+            $schemas[] = [
+                'type' => $schema_type,
+                'data' => $schema_data,
+            ];
+        }
+
+        update_post_meta($post_id, $meta_key, $schemas);
     }
     
     /**
@@ -331,6 +365,9 @@ class earlystart_LLM_Bulk_Processor
         
         foreach ($posts as $post) {
             $schema = get_post_meta($post->ID, '_earlystart_schema_data', true);
+            if (empty($schema) || !is_array($schema)) {
+                $schema = get_post_meta($post->ID, '_earlystart_post_schemas', true);
+            }
             $missing = [];
             
             // Check for critical missing fields
