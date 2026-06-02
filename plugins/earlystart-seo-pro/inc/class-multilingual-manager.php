@@ -36,7 +36,9 @@ class earlystart_Multilingual_Manager
     public function init()
     {
         add_action('init', [$this, 'setup_rewrites']);
+        add_action('wp_loaded', [$this, 'maybe_flush_rewrite_rules']);
         add_filter('query_vars', [$this, 'add_query_vars']);
+        add_filter('request', [$this, 'resolve_spanish_request']);
 
         // URL Filters
         add_filter('home_url', [$this, 'filter_home_url'], 10, 2);
@@ -85,7 +87,16 @@ class earlystart_Multilingual_Manager
      */
     public function output_hreflang_tags()
     {
-        if (!is_singular() && !is_home() && !is_front_page() && !get_query_var('earlystart_combo')) {
+        if (
+            !is_singular()
+            && !is_home()
+            && !is_front_page()
+            && !is_post_type_archive()
+            && !is_category()
+            && !is_tag()
+            && !is_tax()
+            && !get_query_var('earlystart_combo')
+        ) {
             return;
         }
 
@@ -128,11 +139,30 @@ class earlystart_Multilingual_Manager
         // Single Custom Post Types
         add_rewrite_rule('^es/locations/(.+?)/?$', 'index.php?location=$matches[1]&earlystart_lang=es', 'top');
         add_rewrite_rule('^es/programs/(.+?)/?$', 'index.php?program=$matches[1]&earlystart_lang=es', 'top');
+        add_rewrite_rule('^es/pediatric-therapy/(.+?)/?$', 'index.php?city=$matches[1]&earlystart_lang=es', 'top');
+        add_rewrite_rule('^es/career/(.+?)/?$', 'index.php?career=$matches[1]&earlystart_lang=es', 'top');
 
-        // Standard Pages (catch-all for hierarchical pages)
-        // Note: This must come AFTER specific CPT rules to avoid conflict if slug collision, 
-        // but typically 'pagename' regex handles paths.
-        add_rewrite_rule('^es/(.+?)/?$', 'index.php?pagename=$matches[1]&earlystart_lang=es', 'top');
+        // Archives and taxonomies that get_alternates() can advertise.
+        add_rewrite_rule('^es/communities/?$', 'index.php?post_type=city&earlystart_lang=es', 'top');
+        add_rewrite_rule('^es/career/?$', 'index.php?post_type=career&earlystart_lang=es', 'top');
+        add_rewrite_rule('^es/category/(.+?)/?$', 'index.php?category_name=$matches[1]&earlystart_lang=es', 'top');
+        add_rewrite_rule('^es/tag/(.+?)/?$', 'index.php?tag=$matches[1]&earlystart_lang=es', 'top');
+
+        // Catch-all Spanish paths are resolved against the canonical English route later.
+        add_rewrite_rule('^es/(.+?)/?$', 'index.php?earlystart_path=$matches[1]&earlystart_lang=es', 'top');
+    }
+
+    /**
+     * Flush permalink rules once after Spanish route coverage changes.
+     */
+    public function maybe_flush_rewrite_rules()
+    {
+        if (get_option('earlystart_multilingual_rewrite_version') === 'v2') {
+            return;
+        }
+
+        flush_rewrite_rules(false);
+        update_option('earlystart_multilingual_rewrite_version', 'v2');
     }
 
     /**
@@ -141,7 +171,49 @@ class earlystart_Multilingual_Manager
     public function add_query_vars($vars)
     {
         $vars[] = 'earlystart_lang';
+        $vars[] = 'earlystart_path';
         return $vars;
+    }
+
+    /**
+     * Resolve broad /es/... requests against the matching English permalink.
+     */
+    public function resolve_spanish_request($query_vars)
+    {
+        if (empty($query_vars['earlystart_path'])) {
+            return $query_vars;
+        }
+
+        $path = trim((string) $query_vars['earlystart_path'], '/');
+        unset($query_vars['earlystart_path']);
+
+        if ($path === '') {
+            return $query_vars;
+        }
+
+        $post_id = url_to_postid(rtrim(get_option('home'), '/') . '/' . $path . '/');
+        if ($post_id) {
+            $post = get_post($post_id);
+            if ($post instanceof WP_Post) {
+                $query_vars['earlystart_lang'] = 'es';
+
+                if ($post->post_type === 'page') {
+                    $query_vars['page_id'] = $post_id;
+                } elseif ($post->post_type === 'post') {
+                    $query_vars['p'] = $post_id;
+                } else {
+                    $query_vars['post_type'] = $post->post_type;
+                    $query_vars[$post->post_type] = $post->post_name;
+                }
+
+                return $query_vars;
+            }
+        }
+
+        $query_vars['pagename'] = $path;
+        $query_vars['earlystart_lang'] = 'es';
+
+        return $query_vars;
     }
 
     /**
