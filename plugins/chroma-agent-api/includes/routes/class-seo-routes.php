@@ -159,6 +159,7 @@ class SEO_Routes
         $before = [];
         $after = [];
         $snapshot_ids = [];
+        $changed = false;
 
         foreach ((array) $updates as $key => $value) {
             $option_name = (string) $key;
@@ -183,7 +184,12 @@ class SEO_Routes
                     $new
                 );
                 update_option($option_name, $new, false);
+                $changed = true;
             }
+        }
+
+        if (!$dry_run && $changed) {
+            Utils::invalidate_global_caches('seo_options');
         }
 
         $diff = Diff::compare($before, $after);

@@ -599,6 +599,34 @@ class Utils
         do_action('chroma_agent_api_content_updated', $post_id);
     }
 
+    public static function invalidate_global_caches(string $reason = 'global'): void
+    {
+        global $wpdb;
+
+        if (isset($wpdb) && $wpdb instanceof \wpdb) {
+            $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+                    '_transient_earlystart_%',
+                    '_transient_timeout_earlystart_%'
+                )
+            );
+        }
+
+        self::refresh_llms_txt_if_available();
+
+        do_action('chroma_agent_api_global_updated', $reason);
+    }
+
+    public static function invalidate_term_caches(int $term_id, string $taxonomy = ''): void
+    {
+        if ($term_id > 0) {
+            clean_term_cache([$term_id], $taxonomy);
+        }
+
+        self::invalidate_global_caches('term');
+    }
+
     public static function refresh_llms_txt_if_available(): void
     {
         if (!class_exists('\earlystart_LLMs_Txt_Generator') || !method_exists('\earlystart_LLMs_Txt_Generator', 'refresh_file')) {

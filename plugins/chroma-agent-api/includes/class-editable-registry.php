@@ -207,10 +207,15 @@ class Editable_Registry
                 } else {
                     update_option($key, $new_value, false);
                 }
+                Utils::invalidate_global_caches('option');
                 return true;
 
             case 'option_path':
-                return self::write_option_path((string) $storage['key'], (array) ($storage['path'] ?? []), $new_value);
+                $result = self::write_option_path((string) $storage['key'], (array) ($storage['path'] ?? []), $new_value);
+                if (!is_wp_error($result)) {
+                    Utils::invalidate_global_caches('option_path');
+                }
+                return $result;
 
             case 'theme_mod':
                 $key = (string) $storage['key'];
@@ -219,6 +224,7 @@ class Editable_Registry
                 } else {
                     set_theme_mod($key, $new_value);
                 }
+                Utils::invalidate_global_caches('theme_mod');
                 return true;
 
             case 'post_field':
@@ -270,7 +276,11 @@ class Editable_Registry
                 $result = wp_update_term((int) $target['term_id'], $taxonomy, [
                     (string) $storage['field'] => $new_value,
                 ]);
-                return is_wp_error($result) ? $result : true;
+                if (is_wp_error($result)) {
+                    return $result;
+                }
+                Utils::invalidate_term_caches((int) $target['term_id'], $taxonomy);
+                return true;
 
             case 'term_meta':
                 $term_id = (int) $target['term_id'];
@@ -280,6 +290,7 @@ class Editable_Registry
                 } else {
                     update_term_meta($term_id, $key, $new_value);
                 }
+                Utils::invalidate_term_caches($term_id, (string) ($target['taxonomy'] ?? ($storage['taxonomy'] ?? '')));
                 return true;
 
             case 'menu_location':
@@ -300,10 +311,16 @@ class Editable_Registry
                     $locations[$location] = $menu_id;
                 }
                 set_theme_mod('nav_menu_locations', $locations);
+                Utils::invalidate_global_caches('menu_location');
                 return true;
 
             case 'menu_item':
-                return self::write_menu_item((int) $target['menu_item_id'], is_array($new_value) ? $new_value : []);
+                $result = self::write_menu_item((int) $target['menu_item_id'], is_array($new_value) ? $new_value : []);
+                if (!is_wp_error($result)) {
+                    clean_post_cache((int) $target['menu_item_id']);
+                    Utils::invalidate_global_caches('menu_item');
+                }
+                return $result;
         }
 
         return new \WP_Error('caa_editable_storage_unsupported', 'Unsupported editable storage type.', ['status' => 400]);
