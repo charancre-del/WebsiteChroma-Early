@@ -47,25 +47,33 @@ class earlystart_Spanish_Sitemap_Provider extends WP_Sitemaps_Provider {
 
     private $per_page = 2000;
     private $post_types = ['page', 'location', 'program', 'city', 'post', 'team_member'];
+    private $translated_post_ids = null;
 
     public function get_url_list($page_num, $object_subtype = '') {
         $urls = [];
-        $base = rtrim(get_option('home'), '/');
+        $base = untrailingslashit(home_url());
 
         foreach ($this->get_translated_post_ids() as $post_id) {
-            // Direct URL construction (avoids context issues with get_alternates)
-            $en_permalink = get_permalink($post_id);
-            if ($en_permalink) {
+            $explicit_url = get_post_meta($post_id, 'alternate_url_es', true);
+            $es_url = $explicit_url ? esc_url_raw($explicit_url) : '';
+
+            if (!$es_url) {
+                // Direct URL construction (avoids context issues with get_alternates)
+                $en_permalink = get_permalink($post_id);
+                if (!$en_permalink) {
+                    continue;
+                }
+
                 // Remove base and prepend /es/
-                $path = str_replace($base, '', $en_permalink);
+                $path = preg_replace('#^' . preg_quote($base, '#') . '#', '', $en_permalink);
                 $path = ltrim($path, '/');
                 $es_url = user_trailingslashit($base . '/es/' . $path);
-
-                $urls[] = [
-                    'loc' => $es_url,
-                    'lastmod' => get_the_modified_date('c', $post_id),
-                ];
             }
+
+            $urls[] = [
+                'loc' => $es_url,
+                'lastmod' => get_the_modified_date('c', $post_id),
+            ];
         }
 
         // Pagination
@@ -80,6 +88,10 @@ class earlystart_Spanish_Sitemap_Provider extends WP_Sitemaps_Provider {
     }
 
     private function get_translated_post_ids() {
+        if ($this->translated_post_ids !== null) {
+            return $this->translated_post_ids;
+        }
+
         $post_ids = get_posts([
             'post_type' => $this->post_types,
             'posts_per_page' => -1,
@@ -88,7 +100,9 @@ class earlystart_Spanish_Sitemap_Provider extends WP_Sitemaps_Provider {
             'no_found_rows' => true,
         ]);
 
-        return array_values(array_filter(array_map('absint', $post_ids), [$this, 'has_spanish_content']));
+        $this->translated_post_ids = array_values(array_filter(array_map('absint', $post_ids), [$this, 'has_spanish_content']));
+
+        return $this->translated_post_ids;
     }
 
     private function has_spanish_content($post_id) {
