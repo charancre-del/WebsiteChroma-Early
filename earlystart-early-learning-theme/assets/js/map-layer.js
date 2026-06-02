@@ -154,14 +154,20 @@
 
       container.dataset.chromaMapReady = '1';
 
-      requestAnimationFrame(() => map.invalidateSize());
-      window.addEventListener(
-        'resize',
-        () => {
+      let resizeFrame = null;
+      const invalidateMapSize = () => {
+        if (resizeFrame) {
+          return;
+        }
+
+        resizeFrame = requestAnimationFrame(() => {
+          resizeFrame = null;
           map.invalidateSize();
-        },
-        { passive: true }
-      );
+        });
+      };
+
+      invalidateMapSize();
+      window.addEventListener('resize', invalidateMapSize, { passive: true });
     } catch (error) {
       debugError('Unable to initialize map', error);
       renderUnavailable(container);
