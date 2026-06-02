@@ -155,16 +155,16 @@ function earlystart_contact_form_shortcode()
                     script.setAttribute('data-earlystart-ghl-embed', 'true');
                     document.body.appendChild(script);
                 }
-                var timer = setTimeout(loadGHLScript, Math.max(delay, 0));
                 if ('IntersectionObserver' in window && container) {
                     var observer = new IntersectionObserver(function (entries) {
                         if (entries[0].isIntersecting) {
-                            if (timer) clearTimeout(timer);
                             loadGHLScript();
                             observer.disconnect();
                         }
-                    }, { rootMargin: '200px' });
+                    }, { rootMargin: '300px 0px' });
                     observer.observe(container);
+                } else {
+                    setTimeout(loadGHLScript, Math.max(delay, 0));
                 }
             })();
         </script>
