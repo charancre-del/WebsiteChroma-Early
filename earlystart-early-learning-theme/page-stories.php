@@ -13,6 +13,35 @@ if (!defined('ABSPATH')) {
 
 $page_id = get_the_ID();
 
+$stories_shell_defaults = array(
+  'hero_eyebrow' => __('The Blog', 'earlystart-early-learning'),
+  'hero_heading' => __('Chroma Early Start Stories', 'earlystart-early-learning'),
+  'hero_subheading' => __('Parenting tips, classroom spotlights, and insights from our educators.', 'earlystart-early-learning'),
+  'all_label' => __('All', 'earlystart-early-learning'),
+  'featured_label' => __('Featured', 'earlystart-early-learning'),
+  'read_label' => __('Read Story', 'earlystart-early-learning'),
+  'previous_label' => __('&larr; Previous', 'earlystart-early-learning'),
+  'next_label' => __('Next &rarr;', 'earlystart-early-learning'),
+  'empty_text' => __('No stories found. Check back soon!', 'earlystart-early-learning'),
+);
+$stories_shell_raw = function_exists('earlystart_get_translated_meta')
+  ? earlystart_get_translated_meta($page_id, 'stories_shell_json', true)
+  : get_post_meta($page_id, 'stories_shell_json', true);
+$stories_shell = $stories_shell_defaults;
+if (is_string($stories_shell_raw) && '' !== trim($stories_shell_raw)) {
+  $decoded_shell = json_decode($stories_shell_raw, true);
+  if (is_array($decoded_shell)) {
+    $stories_shell = array_replace($stories_shell_defaults, $decoded_shell);
+  }
+} elseif (is_array($stories_shell_raw)) {
+  $stories_shell = array_replace($stories_shell_defaults, $stories_shell_raw);
+}
+foreach ($stories_shell_defaults as $shell_key => $default_value) {
+  $stories_shell[$shell_key] = isset($stories_shell[$shell_key]) && is_scalar($stories_shell[$shell_key])
+    ? (string) $stories_shell[$shell_key]
+    : $default_value;
+}
+
 // Get featured post ID
 $featured_post_id = get_post_meta($page_id, 'stories_featured_post', true);
 
@@ -72,15 +101,15 @@ get_header();
   <!-- Hero -->
   <section class="py-20 bg-white text-center">
     <div class="max-w-4xl mx-auto px-4">
-      <span class="text-chroma-red font-bold tracking-[0.2em] text-xs uppercase mb-3 block"><?php _e('The Blog', 'earlystart-early-learning'); ?></span>
-      <h1 class="font-serif text-5xl md:text-6xl text-brand-ink mb-6"><?php _e('Chroma Early Start Stories', 'earlystart-early-learning'); ?></h1>
-      <p class="text-lg text-brand-ink/90"><?php _e('Parenting tips, classroom spotlights, and insights from our educators.', 'earlystart-early-learning'); ?></p>
+      <span class="text-chroma-red font-bold tracking-[0.2em] text-xs uppercase mb-3 block"><?php echo esc_html($stories_shell['hero_eyebrow']); ?></span>
+      <h1 class="font-serif text-5xl md:text-6xl text-brand-ink mb-6"><?php echo esc_html($stories_shell['hero_heading']); ?></h1>
+      <p class="text-lg text-brand-ink/90"><?php echo esc_html($stories_shell['hero_subheading']); ?></p>
 
       <!-- Categories -->
       <div class="flex flex-wrap justify-center gap-2 mt-8">
         <a href="<?php echo esc_url(get_permalink()); ?>"
           class="px-4 py-2 rounded-full border border-brand-ink/10 <?php echo empty($selected_category) ? 'bg-brand-ink text-white' : 'bg-white hover:bg-brand-cream text-brand-ink/80'; ?> text-xs font-bold uppercase">
-          <?php _e('All', 'earlystart-early-learning'); ?>
+          <?php echo esc_html($stories_shell['all_label']); ?>
         </a>
         <?php foreach ($categories as $category): ?>
           <a href="<?php echo esc_url(add_query_arg('category', $category->slug, get_permalink())); ?>"
@@ -132,14 +161,14 @@ get_header();
             <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-brand-ink/20 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6 md:p-12">
               <span
-                class="bg-chroma-yellow text-brand-ink text-[10px] font-bold uppercase px-3 py-1 rounded-full mb-4 inline-block"><?php _e('Featured', 'earlystart-early-learning'); ?></span>
+                class="bg-chroma-yellow text-brand-ink text-[10px] font-bold uppercase px-3 py-1 rounded-full mb-4 inline-block"><?php echo esc_html($stories_shell['featured_label']); ?></span>
               <h2 class="font-serif text-2xl md:text-4xl text-white font-bold mb-4">
                 <?php echo esc_html(get_the_title($featured_post_id)); ?>
               </h2>
               <p class="text-white/80 mb-6 max-w-2xl">
                 <?php echo esc_html(wp_trim_words(get_the_excerpt($featured_post_id), 25)); ?>
               </p>
-              <span class="text-white text-xs font-bold uppercase tracking-widest border-b border-white/40 pb-1"><?php _e('Read Story', 'earlystart-early-learning'); ?></span>
+              <span class="text-white text-xs font-bold uppercase tracking-widest border-b border-white/40 pb-1"><?php echo esc_html($stories_shell['read_label']); ?></span>
             </div>
           </div>
         </a>
@@ -209,7 +238,7 @@ get_header();
           <?php if ($paged > 1): ?>
             <a href="<?php echo esc_url(add_query_arg('paged', $paged - 1)); ?>"
               class="px-6 py-3 bg-white border border-brand-ink/10 rounded-full text-sm font-bold text-brand-ink hover:bg-brand-ink hover:text-white transition-colors">
-              <?php _e('&larr; Previous', 'earlystart-early-learning'); ?>
+              <?php echo wp_kses_post($stories_shell['previous_label']); ?>
             </a>
           <?php endif; ?>
 
@@ -221,7 +250,7 @@ get_header();
           <?php if ($paged < $posts_query->max_num_pages): ?>
             <a href="<?php echo esc_url(add_query_arg('paged', $paged + 1)); ?>"
               class="px-6 py-3 bg-brand-ink text-white rounded-full text-sm font-bold hover:bg-chroma-blue transition-colors">
-              <?php _e('Next &rarr;', 'earlystart-early-learning'); ?>
+              <?php echo wp_kses_post($stories_shell['next_label']); ?>
             </a>
           <?php endif; ?>
         </div>
@@ -229,7 +258,7 @@ get_header();
 
     <?php else: ?>
       <div class="text-center py-16">
-        <p class="text-brand-ink/90 text-lg"><?php _e('No stories found. Check back soon!', 'earlystart-early-learning'); ?></p>
+        <p class="text-brand-ink/90 text-lg"><?php echo esc_html($stories_shell['empty_text']); ?></p>
       </div>
     <?php endif; ?>
 
