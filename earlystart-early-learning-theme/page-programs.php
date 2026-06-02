@@ -8,6 +8,59 @@
 
 get_header();
 
+$page_id = get_queried_object_id();
+$programs_shell_defaults = array(
+    'hero_eyebrow' => __('What We Do', 'earlystart-early-learning'),
+    'hero_heading' => __('Holistic Therapy,<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Integrated Care.</span>', 'earlystart-early-learning'),
+    'hero_subheading' => __('We offer a full spectrum of pediatric services. Whether you need focused behavioral support or a comprehensive school-readiness plan, we have a pathway for you.', 'earlystart-early-learning'),
+    'settings_heading' => __('Flexible Service Settings', 'earlystart-early-learning'),
+    'settings_text' => __('We offer therapy in three distinct environments to best suit your family\'s needs and your child\'s goals.', 'earlystart-early-learning'),
+    'settings_cards' => array(
+        array(
+            'icon' => 'building',
+            'title' => __('Clinic Based', 'earlystart-early-learning'),
+            'text' => __('Structured environments with sensory gyms and mock classrooms designed for focused skill acquisition.', 'earlystart-early-learning'),
+        ),
+        array(
+            'icon' => 'home',
+            'title' => __('Home Based', 'earlystart-early-learning'),
+            'text' => __('Therapy in your natural environment. Perfect for working on daily routines, sleep, and family dynamics.', 'earlystart-early-learning'),
+        ),
+        array(
+            'icon' => 'school',
+            'title' => __('School Integrated', 'earlystart-early-learning'),
+            'text' => __('Push-in support at partner schools. We generalize skills to the classroom in real-time.', 'earlystart-early-learning'),
+        ),
+    ),
+    'cta_heading' => __('Unsure where to start?', 'earlystart-early-learning'),
+    'cta_text' => __('Our clinical team offers free 15-minute consultations to help you understand which service is right for your child.', 'earlystart-early-learning'),
+    'cta_label' => __('Speak With A Director', 'earlystart-early-learning'),
+    'cta_url' => earlystart_get_page_link('contact'),
+);
+$programs_shell_raw = function_exists('earlystart_get_translated_meta')
+    ? earlystart_get_translated_meta($page_id, 'programs_shell_json', true)
+    : get_post_meta($page_id, 'programs_shell_json', true);
+$programs_shell = $programs_shell_defaults;
+if (is_string($programs_shell_raw) && '' !== trim($programs_shell_raw)) {
+    $decoded_shell = json_decode($programs_shell_raw, true);
+    if (is_array($decoded_shell)) {
+        $programs_shell = array_replace_recursive($programs_shell_defaults, $decoded_shell);
+    }
+} elseif (is_array($programs_shell_raw)) {
+    $programs_shell = array_replace_recursive($programs_shell_defaults, $programs_shell_raw);
+}
+foreach ($programs_shell_defaults as $shell_key => $default_value) {
+    if ('settings_cards' === $shell_key) {
+        continue;
+    }
+    $programs_shell[$shell_key] = isset($programs_shell[$shell_key]) && is_scalar($programs_shell[$shell_key])
+        ? (string) $programs_shell[$shell_key]
+        : $default_value;
+}
+if (empty($programs_shell['settings_cards']) || !is_array($programs_shell['settings_cards'])) {
+    $programs_shell['settings_cards'] = $programs_shell_defaults['settings_cards'];
+}
+
 // Get all programs
 $programs_query = new WP_Query(array(
     'post_type' => 'program',
@@ -23,16 +76,13 @@ $programs_query = new WP_Query(array(
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span
                 class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
-                <?php _e('What We Do', 'earlystart-early-learning'); ?>
+                <?php echo esc_html($programs_shell['hero_eyebrow']); ?>
             </span>
             <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
-                <?php _e('Holistic Therapy,', 'earlystart-early-learning'); ?><br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">
-                    <?php _e('Integrated Care.', 'earlystart-early-learning'); ?>
-                </span>
+                <?php echo wp_kses_post($programs_shell['hero_heading']); ?>
             </h1>
             <p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
-                <?php _e('We offer a full spectrum of pediatric services. Whether you need focused behavioral support or a comprehensive school-readiness plan, we have a pathway for you.', 'earlystart-early-learning'); ?>
+                <?php echo esc_html($programs_shell['hero_subheading']); ?>
             </p>
         </div>
     </section>
@@ -123,46 +173,32 @@ $programs_query = new WP_Query(array(
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in-up">
                 <h2 class="text-4xl font-bold text-stone-900 mb-4">
-                    <?php _e('Flexible Service Settings', 'earlystart-early-learning'); ?></h2>
+                    <?php echo esc_html($programs_shell['settings_heading']); ?></h2>
                 <p class="text-stone-700 max-w-2xl mx-auto text-lg">
-                    <?php _e('We offer therapy in three distinct environments to best suit your family\'s needs and your child\'s goals.', 'earlystart-early-learning'); ?>
+                    <?php echo esc_html($programs_shell['settings_text']); ?>
                 </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <div
-                    class="bg-stone-50 p-10 rounded-[2.5rem] text-center border border-stone-100 hover:shadow-lg transition-all fade-in-up">
-                    <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-sm">
-                        <i data-lucide="building" class="w-10 h-10 text-stone-700"></i>
+                <?php foreach (array_slice($programs_shell['settings_cards'], 0, 3) as $card): ?>
+                    <?php
+                    $card = is_array($card) ? $card : array();
+                    $icon = earlystart_safe_lucide_icon($card['icon'] ?? 'building');
+                    $title = sanitize_text_field($card['title'] ?? '');
+                    $text = sanitize_text_field($card['text'] ?? '');
+                    ?>
+                    <div
+                        class="bg-stone-50 p-10 rounded-[2.5rem] text-center border border-stone-100 hover:shadow-lg transition-all fade-in-up">
+                        <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-sm">
+                            <i data-lucide="<?php echo esc_attr($icon); ?>" class="w-10 h-10 text-stone-700"></i>
+                        </div>
+                        <h3 class="font-bold text-2xl mb-4 text-stone-900">
+                            <?php echo esc_html($title); ?></h3>
+                        <p class="text-stone-700 leading-relaxed">
+                            <?php echo esc_html($text); ?>
+                        </p>
                     </div>
-                    <h3 class="font-bold text-2xl mb-4 text-stone-900">
-                        <?php _e('Clinic Based', 'earlystart-early-learning'); ?></h3>
-                    <p class="text-stone-700 leading-relaxed">
-                        <?php _e('Structured environments with sensory gyms and mock classrooms designed for focused skill acquisition.', 'earlystart-early-learning'); ?>
-                    </p>
-                </div>
-                <div
-                    class="bg-stone-50 p-10 rounded-[2.5rem] text-center border border-stone-100 hover:shadow-lg transition-all fade-in-up">
-                    <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-sm">
-                        <i data-lucide="home" class="w-10 h-10 text-stone-700"></i>
-                    </div>
-                    <h3 class="font-bold text-2xl mb-4 text-stone-900"><?php _e('Home Based', 'earlystart-early-learning'); ?>
-                    </h3>
-                    <p class="text-stone-700 leading-relaxed">
-                        <?php _e('Therapy in your natural environment. Perfect for working on daily routines, sleep, and family dynamics.', 'earlystart-early-learning'); ?>
-                    </p>
-                </div>
-                <div
-                    class="bg-stone-50 p-10 rounded-[2.5rem] text-center border border-stone-100 hover:shadow-lg transition-all fade-in-up">
-                    <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-sm">
-                        <i data-lucide="school" class="w-10 h-10 text-stone-700"></i>
-                    </div>
-                    <h3 class="font-bold text-2xl mb-4 text-stone-900">
-                        <?php _e('School Integrated', 'earlystart-early-learning'); ?></h3>
-                    <p class="text-stone-700 leading-relaxed">
-                        <?php _e('Push-in support at partner schools. We generalize skills to the classroom in real-time.', 'earlystart-early-learning'); ?>
-                    </p>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
@@ -173,14 +209,14 @@ $programs_query = new WP_Query(array(
             class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-rose-500 via-transparent to-transparent">
         </div>
         <div class="max-w-4xl mx-auto px-4 relative z-10 fade-in-up">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6"><?php _e('Unsure where to start?', 'earlystart-early-learning'); ?>
+            <h2 class="text-4xl md:text-5xl font-bold mb-6"><?php echo esc_html($programs_shell['cta_heading']); ?>
             </h2>
             <p class="text-stone-300 text-xl mb-10 leading-relaxed">
-                <?php _e('Our clinical team offers free 15-minute consultations to help you understand which service is right for your child.', 'earlystart-early-learning'); ?>
+                <?php echo esc_html($programs_shell['cta_text']); ?>
             </p>
-            <a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
+            <a href="<?php echo esc_url($programs_shell['cta_url']); ?>"
                 class="bg-rose-600 text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-500 transition-all shadow-xl hover:shadow-rose-900/20 active:scale-95 inline-block">
-                <?php _e('Speak With A Director', 'earlystart-early-learning'); ?>
+                <?php echo esc_html($programs_shell['cta_label']); ?>
             </a>
         </div>
     </section>
