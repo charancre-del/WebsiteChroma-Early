@@ -521,7 +521,6 @@ LINK TO INSERT:
 Find a natural context to introduce this link. Write a short 1-2 sentence \"Related Reading\" paragraph that could be appended to the end of the article. Return ONLY the HTML paragraph (e.g. <p>Related Reading: ...</p>), no explanation.";
 
     $response = $earlystart_llm_client->make_request([
-        'model' => get_option('earlystart_llm_model', 'gpt-4o-mini'),
         'messages' => [
             ['role' => 'system', 'content' => 'You are a content editor. Insert links naturally into existing content.'],
             ['role' => 'user', 'content' => $prompt]

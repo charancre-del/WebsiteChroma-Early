@@ -233,7 +233,6 @@ class earlystart_Combo_AI_Generator
         $prompt = $this->build_prompt($program_name, $city_name, $state);
         
         $response = $earlystart_llm_client->make_request([
-            'model' => get_option('earlystart_llm_model', 'gpt-4o-mini'),
             'messages' => [
                 [
                     'role' => 'system',
@@ -350,7 +349,6 @@ Output Format:
 PROMPT;
 
         $response = $earlystart_llm_client->make_request([
-            'model' => get_option('earlystart_llm_model', 'gpt-4o-mini'),
             'messages' => [
                 [
                     'role' => 'system',
