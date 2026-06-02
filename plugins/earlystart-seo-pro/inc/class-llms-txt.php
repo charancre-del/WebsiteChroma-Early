@@ -30,6 +30,9 @@ class earlystart_LLMs_Txt_Generator
         // Physical File Generation Hooks
         add_action('admin_init', [$this, 'write_physical_file']); // Force check on admin load
         add_action('save_post', [$this, 'write_physical_file']);
+        add_action('added_post_meta', [$this, 'maybe_refresh_for_meta_change'], 10, 4);
+        add_action('updated_post_meta', [$this, 'maybe_refresh_for_meta_change'], 10, 4);
+        add_action('deleted_post_meta', [$this, 'maybe_refresh_for_meta_change'], 10, 4);
         $this->maybe_refresh_physical_file();
     }
 
@@ -127,6 +130,32 @@ class earlystart_LLMs_Txt_Generator
         }
 
         return false;
+    }
+
+    /**
+     * Refresh llms.txt when Agent API/meta-only writes touch fields used in the guide.
+     */
+    public function maybe_refresh_for_meta_change($meta_id, $post_id, $meta_key, $meta_value)
+    {
+        if ($post_id <= 0 || wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+            return false;
+        }
+
+        $watched_keys = [
+            'seo_llm_primary_intent',
+            'seo_llm_target_queries',
+            'seo_llm_key_differentiators',
+            'location_city',
+            'earlystart_location_city',
+            'location_address',
+            'earlystart_location_address',
+        ];
+
+        if (!in_array((string) $meta_key, $watched_keys, true)) {
+            return false;
+        }
+
+        return $this->write_physical_file(true);
     }
 
     public function add_rewrite_rule()

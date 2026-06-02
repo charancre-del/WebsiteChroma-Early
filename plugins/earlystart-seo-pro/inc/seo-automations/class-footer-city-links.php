@@ -17,6 +17,11 @@ class earlystart_Footer_City_Links
         add_action('wp_footer', [$this, 'render_footer_links'], 5);
         add_action('widgets_init', [$this, 'register_widget']);
         add_action('save_post_location', [$this, 'clear_cache']);
+        add_action('added_post_meta', [$this, 'maybe_clear_cache_for_location_meta'], 10, 4);
+        add_action('updated_post_meta', [$this, 'maybe_clear_cache_for_location_meta'], 10, 4);
+        add_action('deleted_post_meta', [$this, 'maybe_clear_cache_for_location_meta'], 10, 4);
+        add_action('transition_post_status', [$this, 'maybe_clear_cache_for_status_change'], 10, 3);
+        add_action('delete_post', [$this, 'maybe_clear_cache_for_deleted_post'], 10, 2);
     }
 
     /**
@@ -24,6 +29,36 @@ class earlystart_Footer_City_Links
      */
     public function clear_cache() {
         delete_transient('earlystart_footer_cities');
+    }
+
+    /**
+     * Clear city links cache when API/meta-only writes change location city data.
+     */
+    public function maybe_clear_cache_for_location_meta($meta_id, $post_id, $meta_key, $meta_value) {
+        $watched_keys = ['location_city', 'location_state'];
+
+        if (!in_array((string) $meta_key, $watched_keys, true) || get_post_type($post_id) !== 'location') {
+            return;
+        }
+
+        $this->clear_cache();
+    }
+
+    /**
+     * Clear city links cache when locations are published, unpublished, or deleted.
+     */
+    public function maybe_clear_cache_for_status_change($new_status, $old_status, $post) {
+        if (!$post instanceof WP_Post || $post->post_type !== 'location' || $new_status === $old_status) {
+            return;
+        }
+
+        $this->clear_cache();
+    }
+
+    public function maybe_clear_cache_for_deleted_post($post_id, $post) {
+        if ($post instanceof WP_Post && $post->post_type === 'location') {
+            $this->clear_cache();
+        }
     }
     
     /**
