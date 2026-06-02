@@ -150,9 +150,24 @@ add_action('save_post', 'earlystart_lead_log_trigger_webhook', 10, 2);
  */
 function earlystart_lead_log_register_settings()
 {
-    register_setting('earlystart_lead_log_options', 'earlystart_lead_log_webhook_url', array('type' => 'string', 'sanitize_callback' => 'esc_url_raw'));
+    register_setting('earlystart_lead_log_options', 'earlystart_lead_log_webhook_url', array('type' => 'string', 'sanitize_callback' => 'earlystart_lead_log_sanitize_webhook_url'));
 }
 add_action('admin_init', 'earlystart_lead_log_register_settings');
+
+function earlystart_lead_log_sanitize_webhook_url($input)
+{
+    $input = wp_unslash($input);
+    if (is_array($input)) {
+        return '';
+    }
+
+    $url = trim(esc_url_raw((string) $input, array('http', 'https')));
+    if ($url === '' || !wp_http_validate_url($url)) {
+        return '';
+    }
+
+    return $url;
+}
 
 function earlystart_lead_log_admin_menu()
 {

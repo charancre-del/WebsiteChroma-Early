@@ -34,7 +34,7 @@ function earlystart_career_register_settings()
     $default_recipient = function_exists('earlystart_global_careers_email') ? earlystart_global_careers_email() : get_option('admin_email');
 
     register_setting('earlystart_career_options', 'earlystart_career_fields', array('type' => 'string', 'sanitize_callback' => 'earlystart_career_sanitize_json', 'default' => wp_json_encode(earlystart_career_default_fields())));
-    register_setting('earlystart_career_options', 'earlystart_career_webhook_url', array('type' => 'string', 'sanitize_callback' => 'esc_url_raw', 'default' => ''));
+    register_setting('earlystart_career_options', 'earlystart_career_webhook_url', array('type' => 'string', 'sanitize_callback' => 'earlystart_career_sanitize_webhook_url', 'default' => ''));
     register_setting('earlystart_career_options', 'earlystart_career_email_recipient', array('type' => 'string', 'sanitize_callback' => 'sanitize_email', 'default' => $default_recipient));
     register_setting('earlystart_career_options', 'earlystart_career_form_id', array('type' => 'string', 'default' => 'WYGFB2WBYuti6S6ys30H', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_career_options', 'earlystart_career_form_height', array('type' => 'integer', 'default' => 522, 'sanitize_callback' => 'absint'));
@@ -43,6 +43,21 @@ function earlystart_career_register_settings()
     register_setting('earlystart_career_options', 'earlystart_career_lazy_delay', array('type' => 'integer', 'default' => 2000, 'sanitize_callback' => 'absint'));
 }
 add_action('admin_init', 'earlystart_career_register_settings');
+
+function earlystart_career_sanitize_webhook_url($input)
+{
+    $input = wp_unslash($input);
+    if (is_array($input)) {
+        return '';
+    }
+
+    $url = trim(esc_url_raw((string) $input, array('http', 'https')));
+    if ($url === '' || !wp_http_validate_url($url)) {
+        return '';
+    }
+
+    return $url;
+}
 
 function earlystart_career_sanitize_json($input)
 {
