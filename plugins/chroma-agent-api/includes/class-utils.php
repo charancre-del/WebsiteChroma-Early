@@ -155,6 +155,28 @@ class Utils
         return $out;
     }
 
+    public static function default_key_scopes(): array
+    {
+        return [
+            'read:content',
+            'write:content',
+            'read:theme',
+            'write:theme',
+            'read:seo',
+            'write:seo',
+            'read:media',
+            'write:media',
+            'read:settings',
+            'write:settings',
+            'read:taxonomy',
+            'write:taxonomy',
+            'read:menus',
+            'write:menus',
+            'admin:keys',
+            'admin:audit',
+        ];
+    }
+
     public static function get_theme_option_allowlist(): array
     {
         $saved = get_option(self::OPTION_THEME_OPTION_ALLOWLIST, []);
@@ -497,7 +519,14 @@ class Utils
 
     public static function get_plugin_setting_allowlist(): array
     {
-        return self::normalize_allowlist([
+        $discovered_settings = array_filter(
+            self::discover_theme_option_keys(),
+            static function ($key) {
+                return is_string($key) && preg_match('/^(earlystart_|chroma_)/', $key);
+            }
+        );
+
+        return self::normalize_allowlist(array_merge([
             'earlystart_contact_fields',
             'earlystart_contact_webhook_url',
             'earlystart_contact_email_recipient',
@@ -523,7 +552,7 @@ class Utils
             'earlystart_acquisition_webhook_url',
             'earlystart_acquisition_email_recipient',
             'earlystart_lead_log_webhook_url',
-        ]);
+        ], $discovered_settings));
     }
 
     public static function get_sensitive_option_keys(): array
@@ -676,7 +705,10 @@ class Utils
         $surfaces = self::discover_theme_surfaces();
 
         return [
-            'exact' => $surfaces['meta'],
+            'exact' => self::normalize_allowlist(array_merge(
+                $surfaces['meta'],
+                self::discover_registered_post_meta_keys()
+            )),
             'patterns' => $surfaces['meta_patterns'],
         ];
     }
@@ -712,63 +744,69 @@ class Utils
             return $cached;
         }
 
-        $theme_dir = get_stylesheet_directory();
-        if (!is_string($theme_dir) || $theme_dir === '' || !is_dir($theme_dir)) {
-            return $cached;
-        }
-
         $meta = [];
         $meta_patterns = [];
         $theme_mods = [];
         $options = [];
 
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($theme_dir, \FilesystemIterator::SKIP_DOTS)
-        );
+        foreach (self::discover_surface_scan_roots() as $root) {
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS)
+            );
 
-        foreach ($iterator as $file) {
-            if (!$file instanceof \SplFileInfo || !$file->isFile()) {
-                continue;
+            foreach ($iterator as $file) {
+                if (!$file instanceof \SplFileInfo || !$file->isFile()) {
+                    continue;
+                }
+
+                $path = $file->getPathname();
+                if (!self::should_scan_surface_file($path)) {
+                    continue;
+                }
+
+                $contents = file_get_contents($path);
+                if (!is_string($contents) || $contents === '') {
+                    continue;
+                }
+
+                self::collect_regex_keys(
+                    $contents,
+                    '/(?:get_post_meta|update_post_meta|delete_post_meta|metadata_exists|register_post_meta|add_post_meta)\s*\([^,]+,\s*([\'"])(.*?)\1/s',
+                    $meta,
+                    $meta_patterns
+                );
+                self::collect_regex_keys(
+                    $contents,
+                    '/name\s*=\s*([\'"])(.*?)\1/s',
+                    $meta,
+                    $meta_patterns,
+                    '/^(about_|careers_|contact_|curriculum_|employers_|home_|parents_|privacy_|stories_|program_|location_|city_|schema_|meta_|alternate_|_earlystart_|seo_llm_|earlystart_|_gmb_|_career_|_author_|_yoast_)/'
+                );
+                $ignored_patterns = [];
+                self::collect_regex_keys(
+                    $contents,
+                    '/(?:add_setting|get_theme_mod|set_theme_mod|earlystart_get_theme_mod)\s*\(\s*([\'"])(.*?)\1/s',
+                    $theme_mods,
+                    $ignored_patterns
+                );
+                $ignored_patterns = [];
+                self::collect_regex_keys(
+                    $contents,
+                    '/(?:get_option|update_option|delete_option)\s*\(\s*([\'"])(.*?)\1/s',
+                    $options,
+                    $ignored_patterns,
+                    '/^(blogname|blogdescription|show_on_front|page_on_front|page_for_posts|earlystart_|chroma_)/'
+                );
+                $ignored_patterns = [];
+                self::collect_regex_keys(
+                    $contents,
+                    '/register_setting\s*\(\s*([\'"])(.*?)\1\s*,\s*([\'"])(.*?)\3/s',
+                    $options,
+                    $ignored_patterns,
+                    '/^(earlystart_|chroma_)/',
+                    4
+                );
             }
-
-            $path = $file->getPathname();
-            if (substr($path, -4) !== '.php' || strpos($path, DIRECTORY_SEPARATOR . 'node_modules' . DIRECTORY_SEPARATOR) !== false) {
-                continue;
-            }
-
-            $contents = file_get_contents($path);
-            if (!is_string($contents) || $contents === '') {
-                continue;
-            }
-
-            self::collect_regex_keys(
-                $contents,
-                '/(?:get_post_meta|update_post_meta|delete_post_meta|metadata_exists|register_post_meta)\s*\([^,]+,\s*([\'"])(.*?)\1/s',
-                $meta,
-                $meta_patterns
-            );
-            self::collect_regex_keys(
-                $contents,
-                '/name\s*=\s*([\'"])(.*?)\1/s',
-                $meta,
-                $meta_patterns,
-                '/^(about_|careers_|contact_|curriculum_|employers_|home_|parents_|privacy_|stories_|program_|location_|city_|schema_|meta_|alternate_|_earlystart_)/'
-            );
-            $ignored_patterns = [];
-            self::collect_regex_keys(
-                $contents,
-                '/(?:add_setting|get_theme_mod|set_theme_mod|earlystart_get_theme_mod)\s*\(\s*([\'"])(.*?)\1/s',
-                $theme_mods,
-                $ignored_patterns
-            );
-            $ignored_patterns = [];
-            self::collect_regex_keys(
-                $contents,
-                '/(?:get_option|update_option|delete_option)\s*\(\s*([\'"])(.*?)\1/s',
-                $options,
-                $ignored_patterns,
-                '/^(blogname|blogdescription|show_on_front|page_on_front|page_for_posts|earlystart_global_settings|earlystart_gtm_id|earlystart_program_base_slug|earlystart_seo_head_mode|earlystart_sitemap_options|earlystart_twitter_handle)$/'
-            );
         }
 
         $cached = [
@@ -781,18 +819,72 @@ class Utils
         return $cached;
     }
 
+    private static function discover_surface_scan_roots(): array
+    {
+        $roots = [];
+
+        foreach ([get_stylesheet_directory(), get_template_directory()] as $dir) {
+            if (is_string($dir) && $dir !== '' && is_dir($dir)) {
+                $roots[] = $dir;
+            }
+        }
+
+        if (defined('WP_PLUGIN_DIR') && is_string(WP_PLUGIN_DIR) && is_dir(WP_PLUGIN_DIR)) {
+            $roots[] = WP_PLUGIN_DIR;
+        }
+
+        return array_values(array_unique($roots));
+    }
+
+    private static function should_scan_surface_file(string $path): bool
+    {
+        if (substr($path, -4) !== '.php') {
+            return false;
+        }
+
+        foreach (['node_modules', 'vendor', 'cache', 'logs'] as $segment) {
+            if (strpos($path, DIRECTORY_SEPARATOR . $segment . DIRECTORY_SEPARATOR) !== false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static function discover_registered_post_meta_keys(): array
+    {
+        if (!function_exists('get_registered_meta_keys') || !function_exists('get_post_types')) {
+            return [];
+        }
+
+        $keys = [];
+        foreach (get_post_types([], 'names') as $post_type) {
+            $registered = get_registered_meta_keys('post', (string) $post_type);
+            if (!is_array($registered)) {
+                continue;
+            }
+
+            foreach (array_keys($registered) as $key) {
+                $keys[] = (string) $key;
+            }
+        }
+
+        return self::normalize_allowlist($keys);
+    }
+
     private static function collect_regex_keys(
         string $contents,
         string $pattern,
         array &$exact,
         ?array &$patterns = null,
-        ?string $allow_pattern = null
+        ?string $allow_pattern = null,
+        int $match_index = 2
     ): void {
         if (!preg_match_all($pattern, $contents, $matches)) {
             return;
         }
 
-        foreach ((array) ($matches[2] ?? []) as $raw_key) {
+        foreach ((array) ($matches[$match_index] ?? []) as $raw_key) {
             $key = trim((string) $raw_key);
             if ($key === '' || strpos($key, '<?php') !== false || strpos($key, '?>') !== false) {
                 continue;

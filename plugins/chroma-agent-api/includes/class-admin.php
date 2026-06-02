@@ -50,24 +50,7 @@ class Admin
         $enabled = Utils::truthy(get_option(Utils::OPTION_ENABLED, 1));
         $keys = Key_Store::list_keys(200, 0);
 
-        $default_scopes = [
-            'read:content',
-            'write:content',
-            'read:theme',
-            'write:theme',
-            'read:seo',
-            'write:seo',
-            'read:media',
-            'write:media',
-            'read:settings',
-            'write:settings',
-            'read:taxonomy',
-            'write:taxonomy',
-            'read:menus',
-            'write:menus',
-            'admin:keys',
-            'admin:audit',
-        ];
+        $default_scopes = Utils::default_key_scopes();
 
         ?>
         <div class="wrap">

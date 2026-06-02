@@ -23,7 +23,7 @@ class CLI
     public static function create_key(array $args, array $assoc_args): void
     {
         $label = isset($assoc_args['label']) ? (string) $assoc_args['label'] : 'Agent Key';
-        $scope_arg = isset($assoc_args['scopes']) ? (string) $assoc_args['scopes'] : 'read:content';
+        $scope_arg = isset($assoc_args['scopes']) ? (string) $assoc_args['scopes'] : implode(',', Utils::default_key_scopes());
         $scopes = array_filter(array_map('trim', explode(',', $scope_arg)));
 
         $expires = isset($assoc_args['expires']) ? (string) $assoc_args['expires'] : null;

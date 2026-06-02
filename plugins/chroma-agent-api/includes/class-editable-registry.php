@@ -787,6 +787,11 @@ class Editable_Registry
             'sensitive' => false,
             'multilingual_variant' => false,
             'canonical_route' => self::VALUE_ROUTE,
+            'canonical_read_path' => self::VALUE_ROUTE,
+            'canonical_write_path' => self::VALUE_ROUTE,
+            'read_method' => 'GET',
+            'write_method' => 'PATCH',
+            'writable' => true,
         ], $field);
 
         $id = trim((string) $field['id']);
