@@ -37,6 +37,11 @@ class earlystart_Accessibility_SEO
      * Add accessibility styles
      */
     public function add_accessibility_styles() {
+        // The bundled theme already ships skip-link, sr-only, and focus-visible styles.
+        if (defined('earlystart_THEME_DIR')) {
+            return;
+        }
+
         ?>
         <style>
             /* Skip navigation */
