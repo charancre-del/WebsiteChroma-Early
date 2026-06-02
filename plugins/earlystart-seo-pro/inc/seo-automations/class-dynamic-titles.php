@@ -63,7 +63,9 @@ class earlystart_Dynamic_Titles
         $patterns = $this->get_patterns();
         $new_title = '';
         
-        if (is_singular('location')) {
+        if (is_front_page()) {
+            $new_title = $patterns['home'] ?? '';
+        } elseif (is_singular('location')) {
             $new_title = $this->apply_pattern($patterns['location'] ?? '', get_the_ID());
         } elseif (is_singular('program')) {
             $new_title = $this->apply_pattern($patterns['program'] ?? '', get_the_ID());
@@ -77,8 +79,6 @@ class earlystart_Dynamic_Titles
             $new_title = $patterns['archive_location'] ?? '';
         } elseif (is_post_type_archive('program')) {
             $new_title = $patterns['archive_program'] ?? '';
-        } elseif (is_front_page()) {
-            $new_title = $patterns['home'] ?? '';
         } elseif (is_search()) {
             $new_title = str_replace('{query}', get_search_query(), $patterns['search'] ?? '');
         }
