@@ -57,8 +57,26 @@ class earlystart_Schema_Review_Queue
         
         delete_post_meta($post_id, '_earlystart_needs_review');
         delete_post_meta($post_id, '_earlystart_review_reason');
+        self::invalidate_schema_output_caches($post_id);
         
         return true;
+    }
+
+    private static function invalidate_schema_output_caches($post_id) {
+        $post_id = absint($post_id);
+        if ($post_id <= 0) {
+            return;
+        }
+
+        clean_post_cache($post_id);
+
+        if (function_exists('earlystart_clear_query_cache')) {
+            earlystart_clear_query_cache($post_id);
+        }
+
+        if (class_exists('earlystart_LLMs_Txt_Generator') && method_exists('earlystart_LLMs_Txt_Generator', 'refresh_file')) {
+            earlystart_LLMs_Txt_Generator::refresh_file();
+        }
     }
     
     /**
@@ -172,8 +190,26 @@ class earlystart_Schema_History
         
         // Restore
         update_post_meta($post_id, '_earlystart_schema_data', $version['data']);
+        self::invalidate_schema_output_caches($post_id);
         
         return true;
+    }
+
+    private static function invalidate_schema_output_caches($post_id) {
+        $post_id = absint($post_id);
+        if ($post_id <= 0) {
+            return;
+        }
+
+        clean_post_cache($post_id);
+
+        if (function_exists('earlystart_clear_query_cache')) {
+            earlystart_clear_query_cache($post_id);
+        }
+
+        if (class_exists('earlystart_LLMs_Txt_Generator') && method_exists('earlystart_LLMs_Txt_Generator', 'refresh_file')) {
+            earlystart_LLMs_Txt_Generator::refresh_file();
+        }
     }
     
     /**

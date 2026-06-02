@@ -2243,6 +2243,14 @@ class earlystart_SEO_Dashboard
         delete_post_meta($post_id, '_earlystart_schema_override');
         clean_post_cache($post_id);
 
+        if (function_exists('earlystart_clear_query_cache')) {
+            earlystart_clear_query_cache($post_id);
+        }
+
+        if (class_exists('earlystart_LLMs_Txt_Generator') && method_exists('earlystart_LLMs_Txt_Generator', 'refresh_file')) {
+            earlystart_LLMs_Txt_Generator::refresh_file();
+        }
+
         wp_send_json_success(['message' => 'Schemas reset successfully']);
     }
 
