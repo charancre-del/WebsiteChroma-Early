@@ -191,13 +191,13 @@ while (have_posts()):
 	</main>
 
 	<!-- Job Application Modal (Ported from existing) -->
-	<div id="chroma-job-modal" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true">
+	<div id="chroma-job-modal" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true" aria-hidden="true">
 		<div class="absolute inset-0 bg-stone-900/80 backdrop-blur-sm transition-opacity" id="chroma-job-backdrop"></div>
 		<div
 			class="absolute inset-4 md:inset-10 bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-fade-in-up">
 			<div class="bg-stone-50 border-b border-stone-200 px-8 py-4 flex items-center justify-between flex-shrink-0">
 				<h3 class="text-xl font-bold text-stone-900"><?php _e('Apply for Position', 'earlystart-early-learning'); ?></h3>
-				<button id="chroma-job-close"
+				<button id="chroma-job-close" type="button" aria-label="<?php esc_attr_e('Close job application modal', 'earlystart-early-learning'); ?>"
 					class="w-10 h-10 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-stone-300 hover:text-rose-700 hover:border-rose-100 transition-all shadow-sm">
 					<i data-lucide="x" class="w-6 h-6"></i>
 				</button>
@@ -218,23 +218,31 @@ while (have_posts()):
 			const closeBtn = document.getElementById('chroma-job-close');
 			const iframe = document.getElementById('chroma-job-frame');
 			const loader = document.getElementById('chroma-job-loader');
+			let lastTrigger = null;
 
-			function openModal(url) {
+			function openModal(url, trigger) {
 				if (!modal || !iframe) return;
+				lastTrigger = trigger || document.activeElement;
 				modal.classList.remove('hidden');
+				modal.setAttribute('aria-hidden', 'false');
 				document.body.style.overflow = 'hidden';
 				if (loader) loader.classList.remove('hidden');
 				iframe.src = url;
 				iframe.onload = () => {
 					if (loader) loader.classList.add('hidden');
 				};
+				if (closeBtn) closeBtn.focus();
 			}
 
 			function closeModal() {
 				if (!modal || !iframe) return;
 				modal.classList.add('hidden');
+				modal.setAttribute('aria-hidden', 'true');
 				document.body.style.overflow = '';
 				iframe.removeAttribute('src');
+				if (lastTrigger && typeof lastTrigger.focus === 'function') {
+					lastTrigger.focus();
+				}
 			}
 
 			document.querySelectorAll('.job-modal-trigger').forEach(trigger => {
@@ -242,13 +250,18 @@ while (have_posts()):
 					const url = this.getAttribute('href');
 					if (url && url.startsWith('http')) {
 						e.preventDefault();
-						openModal(url);
+						openModal(url, this);
 					}
 				});
 			});
 
 			if (closeBtn) closeBtn.addEventListener('click', closeModal);
 			if (backdrop) backdrop.addEventListener('click', closeModal);
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+					closeModal();
+				}
+			});
 		});
 	</script>
 

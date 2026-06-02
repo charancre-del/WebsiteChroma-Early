@@ -336,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
         teamModal.setAttribute('aria-hidden', 'false');
         teamModal.classList.remove('hidden');
         teamModal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
 
         setTimeout(() => {
           teamModalContent.classList.remove('scale-95', 'opacity-0');
@@ -353,6 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
         teamModal.classList.add('hidden');
         teamModal.classList.remove('flex');
         teamModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
         if (lastTeamTrigger && typeof lastTeamTrigger.focus === 'function') {
           lastTeamTrigger.focus();
         }

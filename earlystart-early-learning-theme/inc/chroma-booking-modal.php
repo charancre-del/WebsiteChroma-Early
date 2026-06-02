@@ -8,7 +8,7 @@
 function earlystart_render_booking_modal() {
     ?>
     <!-- Tour Booking Modal -->
-    <div id="chroma-booking-modal" class="fixed inset-0 z-[1000] hidden" role="dialog" aria-modal="true" aria-labelledby="chroma-booking-title">
+    <div id="chroma-booking-modal" class="fixed inset-0 z-[1000] hidden" role="dialog" aria-modal="true" aria-labelledby="chroma-booking-title" aria-hidden="true">
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-brand-ink/80 backdrop-blur-sm transition-opacity" id="chroma-booking-backdrop"></div>
 
@@ -59,6 +59,7 @@ function earlystart_render_booking_modal() {
             const iframe = document.getElementById('chroma-booking-frame');
             const externalLink = document.getElementById('chroma-booking-external');
             const loader = document.getElementById('chroma-booking-loader');
+            let lastTrigger = null;
 
             function isEmbeddableUrl(url) {
                 try {
@@ -83,10 +84,12 @@ function earlystart_render_booking_modal() {
                 }
             }
 
-            function openBooking(url) {
+            function openBooking(url, trigger) {
                 if (!modal || !iframe) return;
                 if (!isEmbeddableUrl(url)) return;
+                lastTrigger = trigger || document.activeElement;
                 modal.classList.remove('hidden');
+                modal.setAttribute('aria-hidden', 'false');
                 document.body.style.overflow = 'hidden';
                 if (loader) loader.classList.remove('hidden');
                 iframe.src = url;
@@ -94,14 +97,19 @@ function earlystart_render_booking_modal() {
                 iframe.onload = function () {
                     if (loader) loader.classList.add('hidden');
                 };
+                if (closeBtn) closeBtn.focus();
             }
 
             function closeBooking() {
                 if (!modal || !iframe) return;
                 modal.classList.add('hidden');
+                modal.setAttribute('aria-hidden', 'true');
                 document.body.style.overflow = '';
                 iframe.removeAttribute('src');
                 setExternalLink('');
+                if (lastTrigger && typeof lastTrigger.focus === 'function') {
+                    lastTrigger.focus();
+                }
             }
 
             // Delegation for any .booking-btn
@@ -114,7 +122,7 @@ function earlystart_render_booking_modal() {
                         // But if it's a booking link, intercept.
                         if (url.includes('procare') || url.includes('calendly') || btn.classList.contains('force-iframe')) {
                              e.preventDefault();
-                             openBooking(url);
+                             openBooking(url, btn);
                         }
                     }
                 }
