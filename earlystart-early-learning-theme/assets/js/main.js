@@ -216,8 +216,10 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     const checkZip = () => {
-      const zip = zipInput.value.trim();
-      if (!zip) {
+      const zip = zipInput.value.replace(/\D/g, '').slice(0, 5);
+      zipInput.value = zip;
+
+      if (zip.length !== 5) {
         zipMsg.textContent = 'Please enter a valid 5-digit zip code.';
         zipMsg.className = 'mt-6 text-stone-500 text-sm font-bold min-h-[20px]';
         return;
@@ -248,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     zipBtn.addEventListener('click', checkZip);
-    zipInput.addEventListener('keypress', (e) => {
+    zipInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') checkZip();
     });
   }
