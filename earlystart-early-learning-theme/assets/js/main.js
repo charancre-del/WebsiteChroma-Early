@@ -365,7 +365,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (teamModal && teamModalContent) {
     const triggers = document.querySelectorAll('[data-team-bio-trigger]');
+    const focusableSelector = [
+      'a[href]',
+      'button:not([disabled])',
+      'textarea:not([disabled])',
+      'input:not([disabled])',
+      'select:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])'
+    ].join(',');
     let lastTeamTrigger = null;
+
+    if (!teamModalContent.hasAttribute('tabindex')) {
+      teamModalContent.setAttribute('tabindex', '-1');
+    }
+
+    const isTeamModalOpen = () => !teamModal.classList.contains('hidden');
+
+    const getModalFocusableElements = () => {
+      return Array.from(teamModal.querySelectorAll(focusableSelector)).filter((element) => {
+        return element.offsetParent !== null || element === document.activeElement;
+      });
+    };
+
+    const trapModalFocus = (event) => {
+      if (event.key !== 'Tab' || !isTeamModalOpen()) {
+        return;
+      }
+
+      const focusableElements = getModalFocusableElements();
+      if (!focusableElements.length) {
+        event.preventDefault();
+        teamModalContent.focus();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
 
     triggers.forEach(trigger => {
       trigger.addEventListener('click', () => {
@@ -430,8 +474,14 @@ document.addEventListener('DOMContentLoaded', function () {
     if (modalClose) modalClose.addEventListener('click', closeModal);
     if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !teamModal.classList.contains('hidden')) {
+      if (!isTeamModalOpen()) {
+        return;
+      }
+
+      if (event.key === 'Escape') {
         closeModal();
+      } else {
+        trapModalFocus(event);
       }
     });
   }
