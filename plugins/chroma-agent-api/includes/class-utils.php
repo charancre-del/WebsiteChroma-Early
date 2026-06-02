@@ -528,7 +528,7 @@ class Utils
     public static function get_plugin_setting_allowlist(): array
     {
         $discovered_settings = array_filter(
-            self::discover_theme_option_keys(),
+            array_merge(self::discover_theme_option_keys(), self::discover_registered_option_keys()),
             static function ($key) {
                 return is_string($key) && preg_match('/^(earlystart_|chroma_)/', $key);
             }
@@ -561,6 +561,18 @@ class Utils
             'earlystart_acquisition_email_recipient',
             'earlystart_lead_log_webhook_url',
         ], $discovered_settings));
+    }
+
+    public static function get_registered_setting_details(string $key): array
+    {
+        global $wp_registered_settings;
+
+        $key = trim($key);
+        if ($key === '' || !is_array($wp_registered_settings) || !isset($wp_registered_settings[$key]) || !is_array($wp_registered_settings[$key])) {
+            return [];
+        }
+
+        return $wp_registered_settings[$key];
     }
 
     public static function get_sensitive_option_keys(): array
@@ -632,7 +644,51 @@ class Utils
             return \earlystart_LLM_Client::sanitize_api_key_option($value);
         }
 
+        $details = self::get_registered_setting_details($key);
+        $callback = $details['sanitize_callback'] ?? null;
+        if ($callback && is_callable($callback)) {
+            if (self::is_json_setting_callback($callback) && (is_array($value) || is_object($value))) {
+                $value = wp_json_encode(self::sanitize_mixed_for_storage_preserve_keys($value));
+            }
+
+            return call_user_func($callback, $value);
+        }
+
+        $type = isset($details['type']) ? strtolower((string) $details['type']) : '';
+        if ($type === 'boolean') {
+            return self::truthy($value);
+        }
+        if ($type === 'integer') {
+            return (int) $value;
+        }
+        if ($type === 'number') {
+            return is_numeric($value) ? (float) $value : 0.0;
+        }
+        if (in_array($type, ['array', 'object'], true)) {
+            if (is_string($value)) {
+                $decoded = json_decode($value, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    return self::sanitize_mixed_for_storage_preserve_keys($decoded);
+                }
+            }
+
+            return self::sanitize_mixed_for_storage_preserve_keys($value);
+        }
+
         return self::sanitize_mixed_for_storage($value);
+    }
+
+    private static function is_json_setting_callback($callback): bool
+    {
+        if (is_array($callback)) {
+            $callback = end($callback);
+        }
+
+        return is_string($callback) && in_array(strtolower($callback), [
+            'earlystart_contact_sanitize_json',
+            'earlystart_career_sanitize_json',
+            'earlystart_acquisition_sanitize_json',
+        ], true);
     }
 
     public static function invalidate_content_caches_for_post(int $post_id): void
@@ -771,7 +827,7 @@ class Utils
     private static function discover_seo_option_keys(): array
     {
         return self::normalize_allowlist(array_filter(
-            self::discover_theme_option_keys(),
+            array_merge(self::discover_theme_option_keys(), self::discover_registered_option_keys()),
             static function (string $key): bool {
                 return (bool) preg_match('/^(earlystart_(seo|llm|breadcrumbs|citation|combo|enable|indexnow|faq|validator|careers|sitemap|multilingual|google_places|openai)|chroma_seo_)/', $key);
             }

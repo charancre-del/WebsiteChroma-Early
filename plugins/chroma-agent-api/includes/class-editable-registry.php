@@ -672,12 +672,13 @@ class Editable_Registry
     private static function add_theme_fields(array &$fields): void
     {
         foreach (Utils::get_theme_option_allowlist() as $key) {
+            [$type, $sanitize] = self::option_type_and_sanitizer($key);
             self::add_field($fields, [
                 'id' => 'theme.option.' . $key,
                 'label' => self::label_from_key($key),
                 'group' => 'theme',
-                'type' => self::guess_type($key),
-                'sanitize' => self::guess_sanitizer($key),
+                'type' => $type,
+                'sanitize' => $sanitize,
                 'storage' => ['type' => 'option', 'key' => $key],
                 'read_scope' => 'read:theme',
                 'write_scope' => 'write:theme',
@@ -687,12 +688,13 @@ class Editable_Registry
         self::add_global_setting_fields($fields);
 
         foreach (Utils::get_customizer_option_allowlist() as $key) {
+            [$type, $sanitize] = self::option_type_and_sanitizer($key);
             self::add_field($fields, [
                 'id' => 'customizer.option.' . $key,
                 'label' => self::label_from_key($key),
                 'group' => 'customizer',
-                'type' => self::guess_type($key),
-                'sanitize' => self::guess_sanitizer($key),
+                'type' => $type,
+                'sanitize' => $sanitize,
                 'storage' => ['type' => 'option', 'key' => $key],
                 'read_scope' => 'read:theme',
                 'write_scope' => 'write:theme',
@@ -801,12 +803,13 @@ class Editable_Registry
     {
         $sensitive = Utils::get_sensitive_option_keys();
         foreach (Utils::get_seo_option_allowlist() as $key) {
+            [$type, $sanitize] = self::option_type_and_sanitizer($key);
             self::add_field($fields, [
                 'id' => 'seo.option.' . $key,
                 'label' => self::label_from_key($key),
                 'group' => 'seo_settings',
-                'type' => self::guess_type($key),
-                'sanitize' => self::guess_sanitizer($key),
+                'type' => $type,
+                'sanitize' => $sanitize,
                 'storage' => ['type' => 'option', 'key' => $key],
                 'read_scope' => 'read:seo',
                 'write_scope' => 'write:seo',
@@ -840,12 +843,13 @@ class Editable_Registry
     {
         $sensitive = Utils::get_sensitive_option_keys();
         foreach (Utils::get_plugin_setting_allowlist() as $key) {
+            [$type, $sanitize] = self::option_type_and_sanitizer($key);
             self::add_field($fields, [
                 'id' => 'plugin.setting.' . $key,
                 'label' => self::label_from_key($key),
                 'group' => 'plugin_settings',
-                'type' => self::guess_type($key),
-                'sanitize' => self::guess_sanitizer($key),
+                'type' => $type,
+                'sanitize' => $sanitize,
                 'storage' => ['type' => 'option', 'key' => $key],
                 'read_scope' => 'read:settings',
                 'write_scope' => 'write:settings',
@@ -1262,6 +1266,73 @@ class Editable_Registry
         }
 
         return $variants;
+    }
+
+    private static function option_type_and_sanitizer(string $key): array
+    {
+        $details = Utils::get_registered_setting_details($key);
+        $registered_type = isset($details['type']) ? strtolower((string) $details['type']) : '';
+        $callback = $details['sanitize_callback'] ?? null;
+
+        if ($callback) {
+            $mapped = self::sanitizer_from_registered_callback($callback);
+            if ($mapped !== null) {
+                return $mapped;
+            }
+        }
+
+        if ($registered_type !== '') {
+            switch ($registered_type) {
+                case 'boolean':
+                    return ['boolean', 'bool'];
+
+                case 'integer':
+                    return ['integer', 'int'];
+
+                case 'number':
+                    return ['number', 'number'];
+
+                case 'array':
+                    return ['array', 'array'];
+
+                case 'object':
+                    return ['object', 'object'];
+
+                case 'string':
+                    break;
+            }
+        }
+
+        return [self::guess_type($key), self::guess_sanitizer($key)];
+    }
+
+    private static function sanitizer_from_registered_callback($callback): ?array
+    {
+        if (is_array($callback)) {
+            $callback = end($callback);
+        }
+
+        if (!is_string($callback) || $callback === '') {
+            return null;
+        }
+
+        $callback = strtolower($callback);
+        $map = [
+            'absint' => ['integer', 'int'],
+            'esc_url_raw' => ['url', 'url'],
+            'rest_sanitize_boolean' => ['boolean', 'bool'],
+            'sanitize_email' => ['email', 'email'],
+            'sanitize_text_field' => ['string', 'text'],
+            'sanitize_textarea_field' => ['string', 'textarea'],
+            'sanitize_title' => ['slug', 'slug'],
+            'wp_kses_post' => ['html', 'html'],
+            'earlystart_sanitize_checkbox' => ['boolean', 'bool'],
+            'earlystart_contact_sanitize_json' => ['array', 'array'],
+            'earlystart_career_sanitize_json' => ['array', 'array'],
+            'earlystart_acquisition_sanitize_json' => ['array', 'array'],
+        ];
+
+        return $map[$callback] ?? null;
     }
 
     private static function guess_type(string $key): string
