@@ -8,6 +8,57 @@
 
 get_header();
 
+$page_id = get_queried_object_id();
+$locations_meta = static function ($key, $default = '') use ($page_id) {
+	$value = function_exists('earlystart_get_translated_meta')
+		? earlystart_get_translated_meta($page_id, $key, true)
+		: get_post_meta($page_id, $key, true);
+
+	if (is_string($value)) {
+		$value = trim($value);
+	}
+
+	return '' === $value || array() === $value ? $default : $value;
+};
+
+$locations_hero_eyebrow = $locations_meta('locations_hero_eyebrow', __('Serving Metro Atlanta', 'earlystart-early-learning'));
+$locations_hero_heading = $locations_meta(
+	'locations_hero_heading',
+	__('Therapy Where You<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Need It Most.</span>', 'earlystart-early-learning')
+);
+$locations_hero_subheading = $locations_meta(
+	'locations_hero_subheading',
+	__('From our specialized clinics to your living room, and integrated into partner schools. We have a setting that fits your family\'s life.', 'earlystart-early-learning')
+);
+$locations_clinic_heading = $locations_meta('locations_clinic_heading', __('Clinic Locations', 'earlystart-early-learning'));
+$locations_clinic_text = $locations_meta('locations_clinic_text', __('Our flagship centers for intensive therapy and early intervention.', 'earlystart-early-learning'));
+$locations_partner_eyebrow = $locations_meta('locations_partner_eyebrow', __('Integrated Therapy', 'earlystart-early-learning'));
+$locations_partner_heading = $locations_meta('locations_partner_zone_heading', __('Partner Locations', 'earlystart-early-learning'));
+$locations_partner_text = $locations_meta('locations_partner_zone_text', __('We partner with elite schools to provide on-site therapy. No more driving between school and clinic—we come to the classroom.', 'earlystart-early-learning'));
+$locations_inhome_heading = $locations_meta('locations_inhome_heading', __('In-Home Therapy Zones', 'earlystart-early-learning'));
+$locations_inhome_text = $locations_meta('locations_inhome_text', __('For families who prefer therapy in their natural environment, we deploy clinical teams to homes across Metro Atlanta.', 'earlystart-early-learning'));
+$locations_zip_heading = $locations_meta('locations_zip_heading', __('Check Your Address', 'earlystart-early-learning'));
+$locations_zip_text = $locations_meta('locations_zip_text', __('Enter your zip code to see if you are in our home-based service area.', 'earlystart-early-learning'));
+$locations_zip_availability = $locations_meta('locations_zip_availability_text', __('Immediate availability in most areas.', 'earlystart-early-learning'));
+$locations_final_heading = $locations_meta('locations_final_heading', __('Find the perfect fit for your family.', 'earlystart-early-learning'));
+$locations_final_text = $locations_meta('locations_final_text', __('Whether it\'s in our specialized clinic, your family home, or one of our partner schools, we have a spot for you.', 'earlystart-early-learning'));
+$locations_final_cta_label = $locations_meta('locations_final_cta_label', __('Contact Admissions', 'earlystart-early-learning'));
+$locations_final_cta_url = $locations_meta('locations_final_cta_url', earlystart_get_page_link('contact'));
+
+$default_zones = array('Cobb County', 'Cherokee County', 'North Fulton', 'Gwinnett County', 'Dekalb County', 'Forsyth County');
+$zones_raw = $locations_meta('locations_zones_json', '');
+$zones = array();
+if (is_string($zones_raw) && '' !== $zones_raw) {
+	$decoded_zones = json_decode($zones_raw, true);
+	$zones = is_array($decoded_zones) ? $decoded_zones : array();
+} elseif (is_array($zones_raw)) {
+	$zones = $zones_raw;
+}
+$zones = array_values(array_filter(array_map('sanitize_text_field', $zones)));
+if (empty($zones)) {
+	$zones = $default_zones;
+}
+
 // Get regions
 $all_regions = get_terms(array(
 	'taxonomy' => 'location_region',
@@ -56,16 +107,13 @@ $partner_query = new WP_Query(array(
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 			<span
 				class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6 fade-in-up">
-				<?php _e('Serving Metro Atlanta', 'earlystart-early-learning'); ?>
+				<?php echo esc_html($locations_hero_eyebrow); ?>
 			</span>
 			<h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight fade-in-up">
-				<?php _e('Therapy Where You', 'earlystart-early-learning'); ?><br>
-				<span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">
-					<?php _e('Need It Most.', 'earlystart-early-learning'); ?>
-				</span>
+				<?php echo wp_kses_post($locations_hero_heading); ?>
 			</h1>
 			<p class="text-xl text-stone-700 max-w-3xl mx-auto leading-relaxed fade-in-up">
-				<?php _e('From our specialized clinics to your living room, and integrated into partner schools. We have a setting that fits your family\'s life.', 'earlystart-early-learning'); ?>
+				<?php echo esc_html($locations_hero_subheading); ?>
 			</p>
 		</div>
 	</section>
@@ -75,10 +123,10 @@ $partner_query = new WP_Query(array(
 		<section class="py-20 bg-stone-50 overflow-hidden">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="mb-12">
-					<h2 class="text-3xl font-bold text-stone-900 mb-2"><?php _e('Clinic Locations', 'earlystart-early-learning'); ?>
+					<h2 class="text-3xl font-bold text-stone-900 mb-2"><?php echo esc_html($locations_clinic_heading); ?>
 					</h2>
 					<p class="text-stone-700">
-						<?php _e('Our flagship centers for intensive therapy and early intervention.', 'earlystart-early-learning'); ?>
+						<?php echo esc_html($locations_clinic_text); ?>
 					</p>
 				</div>
 
@@ -168,12 +216,12 @@ $partner_query = new WP_Query(array(
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<div class="text-center mb-16 fade-in-up">
 				<span
-					class="text-rose-700 font-bold tracking-widest text-sm uppercase mb-3 block"><?php _e('Integrated Therapy', 'earlystart-early-learning'); ?></span>
+					class="text-rose-700 font-bold tracking-widest text-sm uppercase mb-3 block"><?php echo esc_html($locations_partner_eyebrow); ?></span>
 				<h2 class="text-4xl font-bold text-stone-900 mb-6">
-					<?php _e('Partner Locations', 'earlystart-early-learning'); ?>
+					<?php echo esc_html($locations_partner_heading); ?>
 				</h2>
 				<p class="text-stone-700 max-w-2xl mx-auto text-lg leading-relaxed">
-					<?php _e('We partner with elite schools to provide on-site therapy. No more driving between school and clinic—we come to the classroom.', 'earlystart-early-learning'); ?>
+					<?php echo esc_html($locations_partner_text); ?>
 				</p>
 			</div>
 
@@ -238,13 +286,12 @@ $partner_query = new WP_Query(array(
 					<div class="w-16 h-16 bg-rose-900/50 rounded-2xl flex items-center justify-center mb-8">
 						<i data-lucide="home" class="w-8 h-8 text-rose-400"></i>
 					</div>
-					<h2 class="text-4xl font-bold mb-6"><?php _e('In-Home Therapy Zones', 'earlystart-early-learning'); ?></h2>
+					<h2 class="text-4xl font-bold mb-6"><?php echo esc_html($locations_inhome_heading); ?></h2>
 					<p class="text-stone-300 text-lg leading-relaxed mb-8">
-						<?php _e('For families who prefer therapy in their natural environment, we deploy clinical teams to homes across Metro Atlanta.', 'earlystart-early-learning'); ?>
+						<?php echo esc_html($locations_inhome_text); ?>
 					</p>
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 						<?php
-						$zones = array('Cobb County', 'Cherokee County', 'North Fulton', 'Gwinnett County', 'Dekalb County', 'Forsyth County');
 						foreach ($zones as $zone):
 							?>
 							<div class="flex items-center p-4 bg-white/5 rounded-xl border border-white/10">
@@ -258,9 +305,9 @@ $partner_query = new WP_Query(array(
 
 				<div
 					class="bg-white/10 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/20 text-center fade-in-up">
-					<h3 class="text-2xl font-bold mb-4"><?php _e('Check Your Address', 'earlystart-early-learning'); ?></h3>
+					<h3 class="text-2xl font-bold mb-4"><?php echo esc_html($locations_zip_heading); ?></h3>
 					<p class="text-stone-300 mb-8">
-						<?php _e('Enter your zip code to see if you are in our home-based service area.', 'earlystart-early-learning'); ?>
+						<?php echo esc_html($locations_zip_text); ?>
 					</p>
 					<div class="flex flex-col sm:flex-row gap-4">
 						<input type="text" id="chroma-zip-input"
@@ -273,7 +320,7 @@ $partner_query = new WP_Query(array(
 					</div>
 					<div id="chroma-zip-message" class="mt-6 text-stone-700 text-sm font-bold min-h-[20px]"></div>
 					<div class="mt-2 text-stone-700 text-sm">
-						<p><?php _e('Immediate availability in most areas.', 'earlystart-early-learning'); ?></p>
+						<p><?php echo esc_html($locations_zip_availability); ?></p>
 					</div>
 				</div>
 			</div>
@@ -284,14 +331,14 @@ $partner_query = new WP_Query(array(
 	<section class="py-24 bg-white text-center">
 		<div class="max-w-4xl mx-auto px-4">
 			<h2 class="text-4xl font-bold text-stone-900 mb-6">
-				<?php _e('Find the perfect fit for your family.', 'earlystart-early-learning'); ?>
+				<?php echo esc_html($locations_final_heading); ?>
 			</h2>
 			<p class="text-xl text-stone-700 mb-10 leading-relaxed">
-				<?php _e('Whether it\'s in our specialized clinical clinic, your family home, or one of our partner schools, we have a spot for you.', 'earlystart-early-learning'); ?>
+				<?php echo esc_html($locations_final_text); ?>
 			</p>
-			<a href="<?php echo esc_url(earlystart_get_page_link('contact')); ?>"
+			<a href="<?php echo esc_url($locations_final_cta_url); ?>"
 				class="bg-stone-900 text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-600 transition-all shadow-xl hover:shadow-rose-900/10 transform hover:-translate-y-1 inline-block">
-				<?php _e('Contact Admissions', 'earlystart-early-learning'); ?>
+				<?php echo esc_html($locations_final_cta_label); ?>
 			</a>
 		</div>
 	</section>
