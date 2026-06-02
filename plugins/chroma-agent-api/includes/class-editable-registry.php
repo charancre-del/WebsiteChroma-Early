@@ -529,6 +529,7 @@ class Editable_Registry
             $cursor =& $cursor[$segment];
         }
 
+        $option = Utils::sanitize_option_for_storage_by_key($option_key, $option);
         update_option($option_key, $option, false);
         return true;
     }
