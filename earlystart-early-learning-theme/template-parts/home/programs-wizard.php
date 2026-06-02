@@ -83,7 +83,7 @@ function earlystart_get_wizard_color_classes($key)
                                 aria-label="<?php esc_attr_e('View all programs', 'earlystart-early-learning'); ?>">
                                 <?php _e('View All Programs', 'earlystart-early-learning'); ?>
                             </a>
-                            <a href="#tour"
+                            <a href="#contact"
                                 class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-chroma-red text-white font-semibold hover:bg-chroma-red/90 transition shadow-soft">
                                 <?php _e('Speak to an enrollment specialist', 'earlystart-early-learning'); ?>
                             </a>
