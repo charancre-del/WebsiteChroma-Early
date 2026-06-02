@@ -1394,6 +1394,7 @@ class earlystart_LLM_Client
         $model = $model ?: self::DEFAULT_GEMINI_MODEL;
         $url = rtrim($base_url ?: self::DEFAULT_GEMINI_BASE_URL, '/') . '/models/' . rawurlencode($model) . ':generateContent';
         $temperature = isset($data['temperature']) ? (float) $data['temperature'] : 0.7;
+        $max_output_tokens = $this->gemini_max_output_tokens($data);
         $prompt = $this->messages_to_prompt((array) ($data['messages'] ?? []));
 
         $body = [
@@ -1409,6 +1410,10 @@ class earlystart_LLM_Client
                 'temperature' => $temperature,
             ],
         ];
+
+        if ($max_output_tokens > 0) {
+            $body['generationConfig']['maxOutputTokens'] = $max_output_tokens;
+        }
 
         if (($data['response_format']['type'] ?? '') === 'json_object') {
             $body['generationConfig']['responseMimeType'] = 'application/json';
@@ -1466,6 +1471,24 @@ class earlystart_LLM_Client
             ],
             'provider' => 'gemini',
         ];
+    }
+
+    /**
+     * Translate OpenAI-style token limits into Gemini's maxOutputTokens field.
+     *
+     * @param array $data Request payload.
+     * @return int
+     */
+    private function gemini_max_output_tokens(array $data)
+    {
+        $value = $data['maxOutputTokens'] ?? ($data['max_output_tokens'] ?? ($data['max_completion_tokens'] ?? ($data['max_tokens'] ?? 0)));
+        $tokens = absint($value);
+
+        if ($tokens <= 0) {
+            return 0;
+        }
+
+        return min($tokens, 32768);
     }
 
     /**
