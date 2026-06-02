@@ -883,12 +883,16 @@ document.addEventListener('DOMContentLoaded', function () {
    * - Adds smooth fade-in animation
    * - Falls back to native loading="lazy" for unsupported browsers
    */
+  const lazyImageSelector = 'img[data-lazy-src]:not([data-lazy-bound])';
+  const nativeLazyImageSelector = 'img[loading="lazy"]:not(.no-lazy):not([data-lazy-bound])';
+  const anyLazyImageSelector = `${lazyImageSelector}, ${nativeLazyImageSelector}`;
+
   const initEnhancedLazyLoading = () => {
     // All images with data-lazy-src attribute
-    const lazyImages = document.querySelectorAll('img[data-lazy-src]:not([data-lazy-bound])');
+    const lazyImages = document.querySelectorAll(lazyImageSelector);
 
     // Also handle images with loading="lazy" that aren't above-the-fold
-    const nativeLazyImages = document.querySelectorAll('img[loading="lazy"]:not(.no-lazy):not([data-lazy-bound])');
+    const nativeLazyImages = document.querySelectorAll(nativeLazyImageSelector);
 
     if (!lazyImages.length && !nativeLazyImages.length) {
       return;
@@ -986,22 +990,19 @@ document.addEventListener('DOMContentLoaded', function () {
   const dynamicContent = document.querySelector('#main-content');
   if (dynamicContent && 'MutationObserver' in window) {
     const lazyLoadObserver = new MutationObserver((mutations) => {
-      if (mutationTimeout) return;
+      const shouldRefreshLazyImages = mutations.some(mutation => (
+        Array.from(mutation.addedNodes).some(node => (
+          node.nodeType === 1 && (
+            node.matches?.(anyLazyImageSelector) ||
+            node.querySelector(anyLazyImageSelector)
+          )
+        ))
+      ));
+
+      if (!shouldRefreshLazyImages || mutationTimeout) return;
 
       mutationTimeout = setTimeout(() => {
-        mutations.forEach(mutation => {
-          mutation.addedNodes.forEach(node => {
-            if (node.nodeType === 1) { // Element node
-              const hasLazy = (
-                node.matches?.('img[data-lazy-src]:not([data-lazy-bound]), img[loading="lazy"]:not(.no-lazy):not([data-lazy-bound])') ||
-                node.querySelector('img[data-lazy-src]:not([data-lazy-bound]), img[loading="lazy"]:not(.no-lazy):not([data-lazy-bound])')
-              );
-              if (hasLazy) {
-                initEnhancedLazyLoading();
-              }
-            }
-          });
-        });
+        initEnhancedLazyLoading();
         mutationTimeout = null;
       }, 500);
     });
