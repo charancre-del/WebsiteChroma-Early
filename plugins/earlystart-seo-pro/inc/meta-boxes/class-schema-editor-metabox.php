@@ -348,7 +348,7 @@ class earlystart_Schema_Editor_Metabox
 
                     $.post(ajaxurl, {
                         action: 'earlystart_generate_schema',
-                        nonce: '<?php echo wp_create_nonce('earlystart_seo_nonce'); ?>',
+                        nonce: '<?php echo wp_create_nonce('earlystart_seo_dashboard_nonce'); ?>',
                         post_id: $btn.data('post'),
                         schema_type: $btn.data('schema-type')
                     }, function (response) {

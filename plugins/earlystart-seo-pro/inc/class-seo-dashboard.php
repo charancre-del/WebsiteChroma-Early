@@ -770,6 +770,28 @@ class earlystart_SEO_Dashboard
                     });
                 }
 
+                function appendLLMRow(containerSelector, inputClass, value, placeholder) {
+                    var row = $('<div>', {
+                        class: 'chroma-repeater-row'
+                    }).css('margin-bottom', '8px');
+
+                    $('<input>', {
+                        type: 'text',
+                        class: inputClass + ' regular-text',
+                        value: value || '',
+                        placeholder: placeholder || ''
+                    }).css('width', '80%').appendTo(row);
+
+                    row.append(' ');
+                    $('<button>', {
+                        type: 'button',
+                        class: 'button remove-llm-row',
+                        text: '×'
+                    }).appendTo(row);
+
+                    $(containerSelector).append(row);
+                }
+
                 // Save Handler
                 $(document).on('click', '#chroma-llm-save', function (e) {
                     e.preventDefault();
@@ -831,8 +853,7 @@ class earlystart_SEO_Dashboard
                             $('#llm-queries-container').empty();
                             if (data.target_queries && Array.isArray(data.target_queries)) {
                                 data.target_queries.forEach(function (q) {
-                                    var html = '<div class="chroma-repeater-row" style="margin-bottom: 8px;"><input type="text" class="chroma-llm-query-input regular-text" value="' + q + '" style="width: 80%;"> <button class="button remove-llm-row">×</button></div>';
-                                    $('#llm-queries-container').append(html);
+                                    appendLLMRow('#llm-queries-container', 'chroma-llm-query-input', q, '');
                                 });
                             }
 
@@ -840,8 +861,7 @@ class earlystart_SEO_Dashboard
                             $('#llm-diffs-container').empty();
                             if (data.key_differentiators && Array.isArray(data.key_differentiators)) {
                                 data.key_differentiators.forEach(function (d) {
-                                    var html = '<div class="chroma-repeater-row" style="margin-bottom: 8px;"><input type="text" class="chroma-llm-diff-input regular-text" value="' + d + '" style="width: 80%;"> <button class="button remove-llm-row">×</button></div>';
-                                    $('#llm-diffs-container').append(html);
+                                    appendLLMRow('#llm-diffs-container', 'chroma-llm-diff-input', d, '');
                                 });
                             }
 
@@ -855,15 +875,13 @@ class earlystart_SEO_Dashboard
                 // Add query row
                 $(document).on('click', '#add-llm-query', function (e) {
                     e.preventDefault();
-                    var html = '<div class="chroma-repeater-row" style="margin-bottom: 8px;"><input type="text" class="chroma-llm-query-input regular-text" placeholder="e.g., ABA therapy near me" style="width: 80%;"> <button class="button remove-llm-row">×</button></div>';
-                    $('#llm-queries-container').append(html);
+                    appendLLMRow('#llm-queries-container', 'chroma-llm-query-input', '', 'e.g., ABA therapy near me');
                 });
 
                 // Add differentiator row
                 $(document).on('click', '#add-llm-diff', function (e) {
                     e.preventDefault();
-                    var html = '<div class="chroma-repeater-row" style="margin-bottom: 8px;"><input type="text" class="chroma-llm-diff-input regular-text" placeholder="e.g., coordinated ABA, speech, and OT care" style="width: 80%;"> <button class="button remove-llm-row">×</button></div>';
-                    $('#llm-diffs-container').append(html);
+                    appendLLMRow('#llm-diffs-container', 'chroma-llm-diff-input', '', 'e.g., coordinated ABA, speech, and OT care');
                 });
 
                 // Remove row
@@ -1338,6 +1356,7 @@ class earlystart_SEO_Dashboard
 
                     $.post(ajaxurl, {
                         action: 'earlystart_generate_schema',
+                        nonce: earlystart_nonce,
                         post_id: postId,
                         schema_type: type,
                         auto_save: 'true'
