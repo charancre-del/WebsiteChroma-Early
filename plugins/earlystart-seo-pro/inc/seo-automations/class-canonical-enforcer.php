@@ -29,17 +29,13 @@ class earlystart_Canonical_Enforcer
      */
     public function get_canonical_url() {
         global $wp;
+
+        if (is_404()) {
+            return '';
+        }
         
         // Start with current URL
-        $url = home_url($wp->request);
-        
-        // Force trailing slash preference
-        $trailing_slash = get_option('earlystart_seo_trailing_slash', true);
-        if ($trailing_slash && !preg_match('/\.(html?|xml|json|php)$/', $url)) {
-            $url = trailingslashit($url);
-        } elseif (!$trailing_slash) {
-            $url = untrailingslashit($url);
-        }
+        $url = home_url(isset($wp->request) ? $wp->request : '');
         
         // Handle special cases
         if (get_query_var('earlystart_combo')) {
@@ -49,6 +45,8 @@ class earlystart_Canonical_Enforcer
             $url = home_url("/{$program_slug}-in-{$city_slug}-{$state}/");
         } elseif (is_front_page()) {
             $url = home_url('/');
+        } elseif (is_search()) {
+            $url = get_search_link(get_search_query(false));
         } elseif (is_singular()) {
             $url = get_permalink(get_queried_object_id());
         } elseif (is_post_type_archive()) {
@@ -62,6 +60,13 @@ class earlystart_Canonical_Enforcer
         } elseif (is_tag()) {
             $url = get_tag_link(get_queried_object_id());
         }
+
+        if (is_paged() && !is_singular()) {
+            $paged_url = get_pagenum_link(max(1, (int) get_query_var('paged')), false);
+            if ($paged_url) {
+                $url = $paged_url;
+            }
+        }
         
         // Ensure HTTPS
         if (is_ssl()) {
@@ -70,8 +75,22 @@ class earlystart_Canonical_Enforcer
         
         // Remove tracking parameters
         $url = $this->strip_tracking_params($url);
+
+        // Force trailing slash preference after route-specific URLs are resolved.
+        $url = $this->apply_trailing_slash_preference($url);
         
         return $url;
+    }
+
+    /**
+     * Apply trailing slash preference without corrupting query-string URLs.
+     */
+    private function apply_trailing_slash_preference($url) {
+        if ($url === '' || strpos($url, '?') !== false || preg_match('/\.(html?|xml|json|php|txt)$/', $url)) {
+            return $url;
+        }
+
+        return get_option('earlystart_seo_trailing_slash', true) ? trailingslashit($url) : untrailingslashit($url);
     }
     
     /**
