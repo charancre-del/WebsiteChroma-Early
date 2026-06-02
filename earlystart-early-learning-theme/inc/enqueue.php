@@ -122,6 +122,7 @@ function earlystart_enqueue_assets()
                         'viewCampus' => __('View clinic', 'earlystart-early-learning'),
                         'mapLayerUrl' => $map_layer_url,
                         'chartUrl' => $chart_url,
+                        'debug' => defined('WP_DEBUG') && WP_DEBUG,
                 )
         );
 }

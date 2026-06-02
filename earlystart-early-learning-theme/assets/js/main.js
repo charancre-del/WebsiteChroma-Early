@@ -60,7 +60,9 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       return JSON.parse(value);
     } catch (e) {
-      console.warn('Failed to parse JSON payload', e);
+      if (window.chromaData && window.chromaData.debug && window.console && typeof window.console.warn === 'function') {
+        window.console.warn('Failed to parse JSON payload', e);
+      }
       return fallback;
     }
   };
