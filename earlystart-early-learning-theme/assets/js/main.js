@@ -1168,6 +1168,33 @@ document.addEventListener('DOMContentLoaded', function () {
       img.dataset.lazyBound = 'true';
     };
 
+    const completeLazyImage = (img) => {
+      img.style.opacity = '1';
+      img.classList.add('lazy-loaded');
+    };
+
+    const prepareLazyFade = (img) => {
+      if (prefersReducedMotion()) {
+        completeLazyImage(img);
+        return;
+      }
+
+      img.style.opacity = '0';
+      img.style.transition = 'opacity 0.3s ease-in-out';
+    };
+
+    const bindLazyImageState = (img) => {
+      if (img.complete) {
+        completeLazyImage(img);
+        return;
+      }
+
+      img.addEventListener('load', () => completeLazyImage(img), { once: true });
+      img.addEventListener('error', () => {
+        img.style.opacity = '1';
+      }, { once: true });
+    };
+
     if ('IntersectionObserver' in window) {
       const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -1186,19 +1213,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Add fade-in effect
-            img.style.opacity = '0';
-            img.style.transition = 'opacity 0.3s ease-in-out';
-
-            img.onload = () => {
-              img.style.opacity = '1';
-              img.classList.add('lazy-loaded');
-            };
-
-            // If image is already cached, trigger load immediately
-            if (img.complete) {
-              img.style.opacity = '1';
-              img.classList.add('lazy-loaded');
-            }
+            prepareLazyFade(img);
+            bindLazyImageState(img);
 
             observer.unobserve(img);
           }
@@ -1217,16 +1233,8 @@ document.addEventListener('DOMContentLoaded', function () {
       // Observe native lazy images for fade-in effect
       nativeLazyImages.forEach(img => {
         markLazyBound(img);
-
-        // Add fade-in for when they load
-        if (!img.complete) {
-          img.style.opacity = '0';
-          img.style.transition = 'opacity 0.3s ease-in-out';
-          img.onload = () => {
-            img.style.opacity = '1';
-            img.classList.add('lazy-loaded');
-          };
-        }
+        prepareLazyFade(img);
+        bindLazyImageState(img);
       });
 
     } else {
@@ -1240,8 +1248,13 @@ document.addEventListener('DOMContentLoaded', function () {
             img.srcset = img.dataset.lazySrcset;
           }
         }
+
+        completeLazyImage(img);
       });
-      nativeLazyImages.forEach(markLazyBound);
+      nativeLazyImages.forEach((img) => {
+        markLazyBound(img);
+        completeLazyImage(img);
+      });
     }
   };
 
