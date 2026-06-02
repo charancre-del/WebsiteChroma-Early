@@ -739,7 +739,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle internal step clicks (Time buttons)
     const stepTriggers = schedule.querySelectorAll('[data-schedule-step-trigger]');
+    const setStepTriggerState = (trigger, isActive) => {
+      trigger.classList.toggle('bg-brand-ink', isActive);
+      trigger.classList.toggle('text-white', isActive);
+      trigger.classList.toggle('shadow-md', isActive);
+      trigger.classList.toggle('scale-105', isActive);
+      trigger.classList.toggle('bg-white', !isActive);
+      trigger.classList.toggle('text-brand-ink/70', !isActive);
+      trigger.classList.toggle('hover:text-brand-ink', !isActive);
+      trigger.classList.toggle('hover:bg-white/80', !isActive);
+      trigger.setAttribute('aria-pressed', isActive.toString());
+    };
+
+    schedule.querySelectorAll('[data-schedule-content]').forEach((content) => {
+      content.setAttribute('aria-live', 'polite');
+      content.setAttribute('aria-atomic', 'true');
+    });
+
     stepTriggers.forEach((trigger) => {
+      setStepTriggerState(trigger, trigger.classList.contains('bg-brand-ink'));
+
       trigger.addEventListener('click', function () {
         // Find parent panel
         const panel = this.closest('[data-schedule-panel]');
@@ -747,14 +766,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Reset all triggers in this panel
         const panelTriggers = panel.querySelectorAll('[data-schedule-step-trigger]');
-        panelTriggers.forEach(t => {
-          t.classList.remove('bg-brand-ink', 'text-white', 'shadow-md', 'scale-105');
-          t.classList.add('bg-white', 'text-brand-ink/70', 'hover:text-brand-ink', 'hover:bg-white/80');
-        });
+        panelTriggers.forEach((t) => setStepTriggerState(t, false));
 
         // Activate clicked trigger
-        this.classList.remove('bg-white', 'text-brand-ink/70', 'hover:text-brand-ink', 'hover:bg-white/80');
-        this.classList.add('bg-brand-ink', 'text-white', 'shadow-md', 'scale-105');
+        setStepTriggerState(this, true);
 
         // Update content
         const title = this.getAttribute('data-title');

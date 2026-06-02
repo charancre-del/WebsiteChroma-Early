@@ -107,10 +107,12 @@ if (empty($tracks)) {
 									: 'bg-white text-brand-ink hover:text-brand-ink hover:bg-white/80';
 								?>
 								<button
+									type="button"
 									class="min-w-[3.5rem] h-14 md:h-16 px-4 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-all duration-300 <?php echo esc_attr($btn_classes); ?>"
 									data-schedule-step-trigger data-title="<?php echo esc_attr($step['title']); ?>"
 									data-copy="<?php echo esc_attr($step['copy']); ?>"
-									aria-label="<?php echo esc_attr($step['time']); ?>">
+									aria-label="<?php echo esc_attr($step['time'] . ': ' . $step['title']); ?>"
+									aria-pressed="<?php echo esc_attr($is_first ? 'true' : 'false'); ?>">
 									<?php echo esc_html($step['time']); ?>
 								</button>
 							<?php endforeach; ?>
@@ -124,10 +126,12 @@ if (empty($tracks)) {
 								$btn_classes = 'bg-white text-brand-ink hover:text-brand-ink hover:bg-white/80';
 								?>
 								<button
+									type="button"
 									class="min-w-[3.5rem] h-14 md:h-16 px-4 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-all duration-300 <?php echo esc_attr($btn_classes); ?>"
 									data-schedule-step-trigger data-title="<?php echo esc_attr($step['title']); ?>"
 									data-copy="<?php echo esc_attr($step['copy']); ?>"
-									aria-label="<?php echo esc_attr($step['time']); ?>">
+									aria-label="<?php echo esc_attr($step['time'] . ': ' . $step['title']); ?>"
+									aria-pressed="false">
 									<?php echo esc_html($step['time']); ?>
 								</button>
 							<?php endforeach; ?>
@@ -135,7 +139,7 @@ if (empty($tracks)) {
 					</div>
 
 					<!-- Dynamic Content -->
-					<div class="max-w-2xl mx-auto min-h-[120px]" data-schedule-content>
+					<div class="max-w-2xl mx-auto min-h-[120px]" data-schedule-content aria-live="polite" aria-atomic="true">
 						<?php if (!empty($track['steps'][0])): ?>
 							<h4 class="text-xl font-bold text-brand-ink mb-3 transition-colors duration-300" data-content-title>
 								<?php echo esc_html($track['steps'][0]['title']); ?>
