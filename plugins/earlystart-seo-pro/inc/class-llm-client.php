@@ -749,10 +749,10 @@ class earlystart_LLM_Client
         }
 
         $content = $response['choices'][0]['message']['content'];
-        $json = json_decode($content, true);
+        $json = $this->decode_llm_json_response($content, 'schema data');
 
-        if (!$json) {
-            return new WP_Error('json_error', 'Failed to parse AI response');
+        if (is_wp_error($json)) {
+            return $json;
         }
 
         // Sanitize data against schema definition
@@ -791,7 +791,11 @@ class earlystart_LLM_Client
             wp_send_json_error(['message' => 'Permission denied']);
         }
 
-        $post_id = intval($_POST['post_id']);
+        $post_id = isset($_POST['post_id']) ? absint(wp_unslash($_POST['post_id'])) : 0;
+        if (!$post_id) {
+            wp_send_json_error(['message' => 'Missing Post ID']);
+        }
+
         $post = get_post($post_id);
 
         if (!$post) {
@@ -830,16 +834,13 @@ class earlystart_LLM_Client
 
         $content = $response['choices'][0]['message']['content'] ?? '';
 
-        // Extract JSON
-        if (preg_match('/\{.*\}/s', $content, $matches)) {
-            $json = json_decode($matches[0], true);
-            if ($json) {
-                wp_send_json_success($json);
-            }
+        $json = $this->decode_llm_json_response($content, 'SEO metadata');
+        if (!is_wp_error($json)) {
+            wp_send_json_success($json);
         }
 
         // Fallback if JSON parsing fails
-        wp_send_json_error(['message' => 'Failed to parse AI response. Raw: ' . substr($content, 0, 100)]);
+        wp_send_json_error(['message' => $json->get_error_message()]);
     }
 
     /**
@@ -853,7 +854,7 @@ class earlystart_LLM_Client
             wp_send_json_error(['message' => 'Permission denied']);
         }
 
-        $post_id = intval($_POST['post_id']);
+        $post_id = isset($_POST['post_id']) ? absint(wp_unslash($_POST['post_id'])) : 0;
         if (!$post_id) {
             wp_send_json_error(['message' => 'Missing Post ID']);
         }
@@ -947,11 +948,11 @@ class earlystart_LLM_Client
             return $response;
         }
 
-        $content = $response['choices'][0]['message']['content'];
-        $json = json_decode($content, true);
+        $content = $response['choices'][0]['message']['content'] ?? '';
+        $json = $this->decode_llm_json_response($content, 'LLM targeting data');
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            return new WP_Error('json_error', 'Invalid JSON response from AI');
+        if (is_wp_error($json)) {
+            return $json;
         }
 
         return $json;
@@ -1041,6 +1042,55 @@ class earlystart_LLM_Client
     public function make_request($data)
     {
         return $this->make_request_internal($data, 120);
+    }
+
+    /**
+     * Decode JSON from LLM responses while tolerating common wrappers.
+     *
+     * @param string $content Response text from the model.
+     * @param string $label Human-readable payload label for error messages.
+     * @return array|WP_Error
+     */
+    private function decode_llm_json_response($content, $label = 'AI response')
+    {
+        $content = trim((string) $content);
+        if ($content === '') {
+            return new WP_Error('json_error', 'Empty ' . $label . ' response from AI.');
+        }
+
+        $candidates = [$content];
+
+        if (preg_match('/```(?:json)?\s*([\s\S]*?)\s*```/i', $content, $matches)) {
+            $candidates[] = trim((string) $matches[1]);
+        }
+
+        if (preg_match('/<script\b[^>]*>([\s\S]*?)<\/script>/i', $content, $matches)) {
+            $candidates[] = trim((string) $matches[1]);
+        }
+
+        $first_object = strpos($content, '{');
+        $last_object = strrpos($content, '}');
+        if ($first_object !== false && $last_object !== false && $last_object > $first_object) {
+            $candidates[] = substr($content, $first_object, $last_object - $first_object + 1);
+        }
+
+        $first_array = strpos($content, '[');
+        $last_array = strrpos($content, ']');
+        if ($first_array !== false && $last_array !== false && $last_array > $first_array) {
+            $candidates[] = substr($content, $first_array, $last_array - $first_array + 1);
+        }
+
+        foreach (array_unique($candidates) as $candidate) {
+            $decoded = json_decode($candidate, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        return new WP_Error(
+            'json_error',
+            'Failed to parse ' . $label . ' JSON from AI response: ' . json_last_error_msg() . '. Preview: ' . substr($content, 0, 160)
+        );
     }
 
     /**
