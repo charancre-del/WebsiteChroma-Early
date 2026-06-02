@@ -658,7 +658,12 @@ class Utils
 
     public static function is_sensitive_option_key(string $key): bool
     {
-        return in_array(sanitize_key($key), self::get_sensitive_option_keys(), true);
+        $key = sanitize_key($key);
+        if (in_array($key, self::get_sensitive_option_keys(), true)) {
+            return true;
+        }
+
+        return (bool) preg_match('/(^|_)(api_?key|secret|token|password|private_?key|webhook(_url)?|bearer|client_secret)(_|$)/', $key);
     }
 
     public static function get_embed_meta_keys(): array

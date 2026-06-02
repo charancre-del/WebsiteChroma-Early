@@ -223,11 +223,13 @@ class Editable_Registry
                 return ($redact && Utils::is_sensitive_option_key($key)) ? self::redacted_value($value) : $value;
 
             case 'theme_mod':
-                return get_theme_mod((string) $storage['key'], null);
+                $value = get_theme_mod((string) $storage['key'], null);
+                return ($redact && self::field_is_sensitive($field, $target)) ? self::redacted_value($value) : $value;
 
             case 'theme_mod_any':
                 $key = (string) ($target['theme_mod_key'] ?? '');
-                return $key !== '' ? get_theme_mod($key, null) : null;
+                $value = $key !== '' ? get_theme_mod($key, null) : null;
+                return ($redact && self::field_is_sensitive($field, $target)) ? self::redacted_value($value) : $value;
 
             case 'post_field':
                 $post = get_post((int) $target['post_id']);
@@ -238,10 +240,12 @@ class Editable_Registry
                 return property_exists($post, $field_name) ? $post->{$field_name} : null;
 
             case 'post_meta':
-                return get_post_meta((int) $target['post_id'], (string) $storage['key'], true);
+                $value = get_post_meta((int) $target['post_id'], (string) $storage['key'], true);
+                return ($redact && self::field_is_sensitive($field, $target)) ? self::redacted_value($value) : $value;
 
             case 'post_meta_any':
-                return get_post_meta((int) $target['post_id'], (string) ($target['meta_key'] ?? ''), true);
+                $value = get_post_meta((int) $target['post_id'], (string) ($target['meta_key'] ?? ''), true);
+                return ($redact && self::field_is_sensitive($field, $target)) ? self::redacted_value($value) : $value;
 
             case 'featured_image':
                 return (int) get_post_thumbnail_id((int) $target['post_id']);
@@ -262,10 +266,12 @@ class Editable_Registry
                 return property_exists($term, $field_name) ? $term->{$field_name} : null;
 
             case 'term_meta':
-                return get_term_meta((int) $target['term_id'], (string) $storage['key'], true);
+                $value = get_term_meta((int) $target['term_id'], (string) $storage['key'], true);
+                return ($redact && self::field_is_sensitive($field, $target)) ? self::redacted_value($value) : $value;
 
             case 'term_meta_any':
-                return get_term_meta((int) $target['term_id'], (string) ($target['meta_key'] ?? ''), true);
+                $value = get_term_meta((int) $target['term_id'], (string) ($target['meta_key'] ?? ''), true);
+                return ($redact && self::field_is_sensitive($field, $target)) ? self::redacted_value($value) : $value;
 
             case 'menu_location':
                 $locations = get_nav_menu_locations();
