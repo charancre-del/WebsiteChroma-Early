@@ -3413,6 +3413,30 @@ class earlystart_SEO_Dashboard
                     }
                 }
 
+                function normalizeFixedSchemaPayload(payload) {
+                    if (!payload) {
+                        return '';
+                    }
+
+                    if (typeof payload === 'string') {
+                        return payload;
+                    }
+
+                    if (Array.isArray(payload)) {
+                        return payload.map(normalizeFixedSchemaPayload).filter(Boolean).join('\n\n');
+                    }
+
+                    if (payload.schema) {
+                        return String(payload.schema);
+                    }
+
+                    if (payload.fixed_schema) {
+                        return normalizeFixedSchemaPayload(payload.fixed_schema);
+                    }
+
+                    return JSON.stringify(payload);
+                }
+
                 // Feature 20: Bulk AI Fix (Selected)
                 $('#bulk-ai-fix').on('click', function() {
                     var selectedIds = $('.row-select:checked').map(function() { return $(this).val(); }).get();
@@ -3456,7 +3480,7 @@ class earlystart_SEO_Dashboard
                                     action: 'earlystart_apply_schema_fix',
                                     nonce: '<?php echo wp_create_nonce('earlystart_seo_dashboard_nonce'); ?>',
                                     post_id: item.id.replace('url-',''), // Handle both PID and temp IDs
-                                    schema: res1.data.fixed_schema
+                                    schema: normalizeFixedSchemaPayload(res1.data.fixed_schema)
                                 }, function(res2) {
                                     $rowBtn.replaceWith('<span class="chroma-badge chroma-badge-manual">✅ Fixed</span>');
                                     index++;
@@ -3527,7 +3551,7 @@ class earlystart_SEO_Dashboard
                             errors: allIssues, // Send combined issues
                         }, function(res1) {
                             if (res1.success) {
-                                var fixedSchema = res1.data.fixed_schema;
+                                var fixedSchema = normalizeFixedSchemaPayload(res1.data.fixed_schema);
 
                                 // 2. Apply Fix
                                 $.post(ajaxurl, {
@@ -3629,17 +3653,9 @@ class earlystart_SEO_Dashboard
                         nonce: '<?php echo wp_create_nonce('earlystart_schema_inspector_nonce'); ?>',
                         schemas: allSchemas,
                         errors: allIssues
-                     }, function(response) {
+                    }, function(response) {
                         if (response.success) {
-                            var fixedSchemas = response.data.fixed_schemas;
-                            var combinedJson = '';
-                            
-                            // Combine if array, or just use string
-                            if (Array.isArray(fixedSchemas)) {
-                                combinedJson = fixedSchemas.join('\n\n');
-                            } else {
-                                combinedJson = fixedSchemas;
-                            }
+                            var combinedJson = normalizeFixedSchemaPayload(response.data.fixed_schemas);
                             
                             // Show Proposal
                             $('#bulk-fixed-schema').val(combinedJson);

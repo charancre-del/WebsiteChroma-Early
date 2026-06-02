@@ -27,6 +27,30 @@ jQuery(document).ready(function ($) {
     const $results = $('#chroma-schema-results');
     const $loading = $modal.find('.chroma-loading');
 
+    function fixedSchemaText(value) {
+        if (!value) {
+            return '';
+        }
+
+        if (typeof value === 'string') {
+            return value;
+        }
+
+        if (Array.isArray(value)) {
+            return value.map(fixedSchemaText).filter(Boolean).join('\n\n');
+        }
+
+        if (value.schema) {
+            return String(value.schema);
+        }
+
+        if (value.fixed_schema) {
+            return fixedSchemaText(value.fixed_schema);
+        }
+
+        return JSON.stringify(value);
+    }
+
     // Open Modal
     // Target the specific admin bar node ID (and its link child) for robustness
     $(document).on('click', '#wp-admin-bar-chroma-validate-schema > .ab-item, .chroma-inspector-trigger', function (e) {
@@ -204,7 +228,7 @@ jQuery(document).ready(function ($) {
                 $currentBtn.prop('disabled', false).text('✨ Auto-Fix with AI');
 
                 if (response.success) {
-                    const fixed = response.data.fixed_schema;
+                    const fixed = fixedSchemaText(response.data.fixed_schema);
                     $('#fix-result-' + btnIndex).show().html(`
                         <div style="background:#e8fdf5; border:1px solid #46b450; padding:15px; border-radius:4px;">
                             <h4 style="margin-top:0; color:#2e7d32;">✅ AI Fixed Implementation</h4>
@@ -250,7 +274,7 @@ jQuery(document).ready(function ($) {
             btn.prop('disabled', false).text('✨ Auto-Fix with AI');
 
             if (response.success) {
-                const fixed = response.data.fixed_schema;
+                const fixed = fixedSchemaText(response.data.fixed_schema);
                 container.show().html(`
                     <div style="background:#e8fdf5; border:1px solid #46b450; padding:15px; border-radius:4px;">
                         <h4 style="margin-top:0; color:#2e7d32;">✅ AI Fixed Implementation</h4>
