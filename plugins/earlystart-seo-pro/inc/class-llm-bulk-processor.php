@@ -180,7 +180,7 @@ class earlystart_LLM_Bulk_Processor
                 if (!is_wp_error($result)) {
                     $this->upsert_schema_row($post_id, '_earlystart_schema_data', $schema_type, $result);
                     $this->upsert_schema_row($post_id, '_earlystart_post_schemas', $schema_type, $result);
-                    clean_post_cache($post_id);
+                    $this->invalidate_generated_content_caches($post_id);
                     return true;
                 }
             }
@@ -195,6 +195,7 @@ class earlystart_LLM_Bulk_Processor
                 
                 if (is_array($amenities)) {
                     update_post_meta($post_id, '_earlystart_amenities', $amenities);
+                    $this->invalidate_generated_content_caches($post_id);
                     return true;
                 }
             }
@@ -241,6 +242,31 @@ class earlystart_LLM_Bulk_Processor
         }
 
         update_post_meta($post_id, $meta_key, $schemas);
+    }
+
+    /**
+     * Refresh public caches after background LLM writes.
+     *
+     * @param int $post_id Updated post ID.
+     * @return void
+     */
+    private function invalidate_generated_content_caches($post_id) {
+        $post_id = absint($post_id);
+        if ($post_id <= 0) {
+            return;
+        }
+
+        clean_post_cache($post_id);
+
+        if (function_exists('earlystart_clear_query_cache')) {
+            earlystart_clear_query_cache($post_id);
+        }
+
+        if (class_exists('earlystart_LLMs_Txt_Generator') && method_exists('earlystart_LLMs_Txt_Generator', 'refresh_file')) {
+            earlystart_LLMs_Txt_Generator::refresh_file();
+        }
+
+        do_action('earlystart_llm_bulk_post_updated', $post_id);
     }
     
     /**
