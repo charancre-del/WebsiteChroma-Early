@@ -2234,6 +2234,8 @@ class earlystart_SEO_Dashboard
         // Delete legacy meta if exists to ensure clean slate
         delete_post_meta($post_id, '_earlystart_schema_type');
         delete_post_meta($post_id, '_earlystart_schema_data');
+        delete_post_meta($post_id, '_earlystart_schema_override');
+        clean_post_cache($post_id);
 
         wp_send_json_success(['message' => 'Schemas reset successfully']);
     }

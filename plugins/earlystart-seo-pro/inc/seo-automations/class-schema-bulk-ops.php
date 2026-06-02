@@ -13,6 +13,13 @@ if (!defined('ABSPATH')) {
 
 class earlystart_Schema_Bulk_Ops
 {
+    private const SCHEMA_META_KEYS = [
+        '_earlystart_schema_override',
+        '_earlystart_post_schemas',
+        '_earlystart_schema_data',
+        '_earlystart_schema_type',
+    ];
+
     public function __construct() {
         add_action('wp_ajax_earlystart_bulk_reset_schema', [$this, 'ajax_reset_schema']);
         add_action('wp_ajax_earlystart_bulk_reset_faq', [$this, 'ajax_reset_faq']);
@@ -33,24 +40,26 @@ class earlystart_Schema_Bulk_Ops
         $count = 0;
 
         if ($reset_all) {
-            // Reset ALL posts with schema overrides
             $posts = get_posts([
                 'post_type' => 'any',
                 'posts_per_page' => -1,
-                'meta_key' => '_earlystart_schema_override',
+                'post_status' => 'any',
+                'meta_query' => $this->build_meta_exists_query(self::SCHEMA_META_KEYS),
                 'fields' => 'ids'
             ]);
             foreach ($posts as $pid) {
-                delete_post_meta($pid, '_earlystart_schema_override');
-                $count++;
+                if ($this->delete_meta_keys($pid, self::SCHEMA_META_KEYS)) {
+                    $count++;
+                }
             }
         } elseif (!empty($post_ids) && is_array($post_ids)) {
             foreach ($post_ids as $pid) {
                 if (!$pid || !earlystart_seo_can_edit_post($pid)) {
                     continue;
                 }
-                delete_post_meta($pid, '_earlystart_schema_override');
-                $count++;
+                if ($this->delete_meta_keys($pid, self::SCHEMA_META_KEYS)) {
+                    $count++;
+                }
             }
         }
 
@@ -85,32 +94,71 @@ class earlystart_Schema_Bulk_Ops
         $keys = ['_earlystart_faq_schema', 'earlystart_faq_items', '_earlystart_es_earlystart_faq_items'];
 
         if ($reset_all) {
-             $posts = get_posts([
+            $posts = get_posts([
                 'post_type' => 'any',
                 'posts_per_page' => -1,
-                'meta_query' => [
-                    'relation' => 'OR',
-                    ['key' => '_earlystart_faq_schema', 'compare' => 'EXISTS'],
-                    ['key' => 'earlystart_faq_items', 'compare' => 'EXISTS'],
-                    ['key' => '_earlystart_es_earlystart_faq_items', 'compare' => 'EXISTS']
-                ],
+                'post_status' => 'any',
+                'meta_query' => $this->build_meta_exists_query($keys),
                 'fields' => 'ids'
             ]);
             foreach ($posts as $pid) {
-                foreach($keys as $k) delete_post_meta($pid, $k);
-                $count++;
+                if ($this->delete_meta_keys($pid, $keys)) {
+                    $count++;
+                }
             }
         } elseif (!empty($post_ids) && is_array($post_ids)) {
             foreach ($post_ids as $pid) {
                 if (!$pid || !earlystart_seo_can_edit_post($pid)) {
                     continue;
                 }
-                foreach($keys as $k) delete_post_meta($pid, $k);
-                $count++;
+                if ($this->delete_meta_keys($pid, $keys)) {
+                    $count++;
+                }
             }
         }
 
         wp_send_json_success(['message' => "Reset FAQ Schema for $count items."]);
+    }
+
+    /**
+     * Build a meta query that matches posts containing any listed meta key.
+     *
+     * @param array $keys Meta keys.
+     * @return array
+     */
+    private function build_meta_exists_query($keys) {
+        $query = ['relation' => 'OR'];
+        foreach ($keys as $key) {
+            $query[] = [
+                'key' => $key,
+                'compare' => 'EXISTS',
+            ];
+        }
+
+        return $query;
+    }
+
+    /**
+     * Delete meta keys from a post and clear its cache when anything changed.
+     *
+     * @param int   $post_id Post ID.
+     * @param array $keys Meta keys.
+     * @return bool Whether any value was deleted.
+     */
+    private function delete_meta_keys($post_id, $keys) {
+        $deleted = false;
+        foreach ($keys as $key) {
+            if (metadata_exists('post', $post_id, $key)) {
+                delete_post_meta($post_id, $key);
+                $deleted = true;
+            }
+        }
+
+        if ($deleted) {
+            clean_post_cache($post_id);
+        }
+
+        return $deleted;
     }
 }
 
