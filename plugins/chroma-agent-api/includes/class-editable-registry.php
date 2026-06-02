@@ -110,7 +110,7 @@ class Editable_Registry
         }
 
         $current_key = Auth::current_key();
-        $scopes = is_array($current_key['scopes'] ?? null) ? $current_key['scopes'] : [];
+        $scopes = self::current_key_effective_scopes();
 
         if (Utils::scope_is_granted($scope, $scopes)) {
             return true;
@@ -145,6 +145,14 @@ class Editable_Registry
         }
 
         return false;
+    }
+
+    public static function current_key_effective_scopes(): array
+    {
+        $current_key = Auth::current_key();
+        $scopes = is_array($current_key['scopes'] ?? null) ? $current_key['scopes'] : [];
+
+        return Utils::complete_legacy_editable_scopes($scopes);
     }
 
     public static function target_errors(array $field, array $target): array
@@ -1599,6 +1607,8 @@ class Editable_Registry
             'writable' => $writable,
             'writable_by_current_key' => $writable_by_current_key,
             'read_only_for_current_key' => $writable > 0 && $writable_by_current_key === 0,
+            'write_access_state' => $writable_by_current_key === $writable ? 'all_writable' : ($writable_by_current_key > 0 ? 'partially_writable' : 'read_only'),
+            'current_key_effective_scopes' => self::current_key_effective_scopes(),
             'required_read_scopes' => $required_read_scopes,
             'required_write_scopes' => $required_write_scopes,
             'missing_write_scopes' => array_values(array_filter($required_write_scopes, static function ($scope): bool {

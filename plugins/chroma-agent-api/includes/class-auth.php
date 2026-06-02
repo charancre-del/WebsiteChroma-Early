@@ -63,7 +63,8 @@ class Auth
             return $token_check;
         }
 
-        $granted_scopes = is_array($verified['scopes'] ?? null) ? $verified['scopes'] : [];
+        $granted_scopes = is_array($verified['scopes'] ?? null) ? Utils::complete_legacy_editable_scopes($verified['scopes']) : [];
+        $verified['scopes'] = $granted_scopes;
         $missing = Utils::missing_scopes($required_scopes, $granted_scopes);
 
         if (!empty($missing)) {
