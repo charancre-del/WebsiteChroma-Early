@@ -98,11 +98,11 @@ class earlystart_Schema_Bulk_Ops
                 'post_type' => 'any',
                 'posts_per_page' => -1,
                 'post_status' => 'any',
-                'meta_query' => $this->build_meta_exists_query($keys),
+                'meta_query' => $this->build_meta_exists_query(array_merge($keys, ['_earlystart_post_schemas'])),
                 'fields' => 'ids'
             ]);
             foreach ($posts as $pid) {
-                if ($this->delete_meta_keys($pid, $keys)) {
+                if ($this->reset_faq_for_post($pid, $keys)) {
                     $count++;
                 }
             }
@@ -111,7 +111,7 @@ class earlystart_Schema_Bulk_Ops
                 if (!$pid || !earlystart_seo_can_edit_post($pid)) {
                     continue;
                 }
-                if ($this->delete_meta_keys($pid, $keys)) {
+                if ($this->reset_faq_for_post($pid, $keys)) {
                     $count++;
                 }
             }
@@ -159,6 +159,69 @@ class earlystart_Schema_Bulk_Ops
         }
 
         return $deleted;
+    }
+
+    /**
+     * Reset FAQ meta and modular FAQPage schema rows for a post.
+     *
+     * @param int   $post_id Post ID.
+     * @param array $keys FAQ meta keys.
+     * @return bool Whether any data changed.
+     */
+    private function reset_faq_for_post($post_id, $keys) {
+        $changed = false;
+
+        foreach ($keys as $key) {
+            if (metadata_exists('post', $post_id, $key)) {
+                delete_post_meta($post_id, $key);
+                $changed = true;
+            }
+        }
+
+        $schemas = get_post_meta($post_id, '_earlystart_post_schemas', true);
+        if (is_array($schemas) && !empty($schemas)) {
+            $filtered = [];
+            foreach ($schemas as $schema) {
+                $schema_type = $this->get_schema_type($schema);
+                if ($schema_type !== 'FAQPage') {
+                    $filtered[] = $schema;
+                }
+            }
+
+            if (count($filtered) !== count($schemas)) {
+                if (empty($filtered)) {
+                    delete_post_meta($post_id, '_earlystart_post_schemas');
+                } else {
+                    update_post_meta($post_id, '_earlystart_post_schemas', $filtered);
+                }
+                $changed = true;
+            }
+        }
+
+        if ($changed) {
+            clean_post_cache($post_id);
+        }
+
+        return $changed;
+    }
+
+    /**
+     * Read schema type from builder or raw JSON-LD schema rows.
+     *
+     * @param mixed $schema Schema row.
+     * @return string
+     */
+    private function get_schema_type($schema) {
+        if (!is_array($schema)) {
+            return '';
+        }
+
+        $type = $schema['type'] ?? ($schema['@type'] ?? '');
+        if (is_array($type)) {
+            $type = reset($type);
+        }
+
+        return is_string($type) ? $type : '';
     }
 }
 
