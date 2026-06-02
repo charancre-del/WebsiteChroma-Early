@@ -1601,6 +1601,12 @@ class Editable_Registry
             'scope_aliases' => [
                 'read:editables' => 'Grants all non-admin editable read scopes.',
                 'write:editables' => 'Grants all non-admin editable write scopes.',
+                'editables:read' => 'Legacy alias for read:editables.',
+                'editables:write' => 'Legacy alias for write:editables.',
+                'resource:read' => 'Legacy resource-first alias, for example content:read.',
+                'resource:write' => 'Legacy resource-first alias, for example content:write.',
+                'all:read' => 'Legacy alias for read:*.',
+                'all:write' => 'Legacy alias for write:*.',
                 'read:*' => 'Grants all read scopes.',
                 'write:*' => 'Grants all write scopes.',
             ],

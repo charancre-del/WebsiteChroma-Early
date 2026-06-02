@@ -167,7 +167,7 @@ class Utils
             return true;
         }
 
-        [$verb] = array_pad(explode(':', $required_scope, 2), 2, '');
+        [$verb, $resource] = array_pad(explode(':', $required_scope, 2), 2, '');
         if (!in_array($verb, ['read', 'write'], true)) {
             return false;
         }
@@ -176,8 +176,14 @@ class Utils
             $verb . ':*',
             $verb . ':all',
             $verb . ':editables',
+            'editables:' . $verb,
+            'all:' . $verb,
             '*',
         ];
+
+        if ($resource !== '') {
+            $aliases[] = $resource . ':' . $verb;
+        }
 
         return !empty(array_intersect($aliases, $granted_scopes));
     }
@@ -222,8 +228,8 @@ class Utils
     {
         $scopes = self::normalize_scopes($scopes);
 
-        $has_all_reads = !empty(array_intersect(['read:*', 'read:all', 'read:editables', '*'], $scopes));
-        $has_all_writes = !empty(array_intersect(['write:*', 'write:all', 'write:editables', '*'], $scopes));
+        $has_all_reads = !empty(array_intersect(['read:*', 'read:all', 'read:editables', 'editables:read', 'all:read', '*'], $scopes));
+        $has_all_writes = !empty(array_intersect(['write:*', 'write:all', 'write:editables', 'editables:write', 'all:write', '*'], $scopes));
 
         $legacy_read_scopes = ['read:content', 'read:theme', 'read:seo', 'read:media'];
         $legacy_write_scopes = ['write:content', 'write:theme', 'write:seo', 'write:media'];
