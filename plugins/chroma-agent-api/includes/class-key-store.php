@@ -183,12 +183,108 @@ class Key_Store
         }
 
         foreach ($rows as &$row) {
-            $decoded = json_decode((string) ($row['scopes_json'] ?? '[]'), true);
-            $row['scopes'] = is_array($decoded) ? $decoded : [];
-            unset($row['scopes_json']);
+            $row = self::prepare_public_row($row);
         }
 
         return $rows;
+    }
+
+    public static function get_key(int $id): ?array
+    {
+        global $wpdb;
+
+        if ($id <= 0) {
+            return null;
+        }
+
+        $table = Utils::table('keys');
+        $row = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT id, label, key_prefix, scopes_json, status, rate_limit_per_min, expires_at, created_by, created_at, last_used_at, last_used_ip, revoked_at
+                 FROM {$table}
+                 WHERE id = %d",
+                $id
+            ),
+            ARRAY_A
+        );
+
+        return is_array($row) ? self::prepare_public_row($row) : null;
+    }
+
+    public static function update_key(int $id, array $updates)
+    {
+        global $wpdb;
+
+        if ($id <= 0) {
+            return new WP_Error('caa_invalid_key_id', 'Invalid key id.', ['status' => 400]);
+        }
+
+        $existing = self::get_key($id);
+        if (!$existing) {
+            return new WP_Error('caa_key_not_found', 'API key not found.', ['status' => 404]);
+        }
+
+        $data = [];
+        $formats = [];
+
+        if (array_key_exists('label', $updates)) {
+            $label = sanitize_text_field((string) $updates['label']);
+            if ($label === '') {
+                return new WP_Error('caa_invalid_label', 'Key label cannot be empty.', ['status' => 400]);
+            }
+            $data['label'] = $label;
+            $formats[] = '%s';
+        }
+
+        if (array_key_exists('scopes', $updates)) {
+            $scopes = $updates['scopes'];
+            if (is_string($scopes)) {
+                $scopes = preg_split('/[\s,]+/', $scopes) ?: [];
+            }
+            if (!is_array($scopes)) {
+                $scopes = [];
+            }
+
+            $scopes = Utils::normalize_scopes($scopes);
+            if (empty($scopes)) {
+                return new WP_Error('caa_invalid_scopes', 'At least one scope is required.', ['status' => 400]);
+            }
+
+            $data['scopes_json'] = wp_json_encode($scopes);
+            $formats[] = '%s';
+        }
+
+        if (array_key_exists('rate_limit_per_min', $updates)) {
+            $data['rate_limit_per_min'] = max(1, min(10000, (int) $updates['rate_limit_per_min']));
+            $formats[] = '%d';
+        }
+
+        if (array_key_exists('expires_at', $updates)) {
+            $expires = $updates['expires_at'];
+            $data['expires_at'] = ($expires === null || $expires === '') ? null : self::normalize_expiration((string) $expires);
+            $formats[] = '%s';
+        }
+
+        if (array_key_exists('ip_allowlist', $updates)) {
+            $ips = is_array($updates['ip_allowlist']) ? $updates['ip_allowlist'] : [];
+            $ips = array_values(array_filter(array_map('strval', $ips), static function ($ip): bool {
+                return (bool) filter_var($ip, FILTER_VALIDATE_IP);
+            }));
+            $data['ip_allowlist_json'] = wp_json_encode($ips);
+            $formats[] = '%s';
+        }
+
+        if (empty($data)) {
+            return $existing;
+        }
+
+        $table = Utils::table('keys');
+        $updated = $wpdb->update($table, $data, ['id' => $id], $formats, ['%d']);
+        if ($updated === false) {
+            return new WP_Error('caa_key_update_failed', 'Failed to update API key.', ['status' => 500]);
+        }
+
+        return self::get_key($id);
     }
 
     public static function revoke_key(int $id): bool
@@ -288,5 +384,14 @@ class Key_Store
             ['%s', '%s'],
             ['%d']
         );
+    }
+
+    private static function prepare_public_row(array $row): array
+    {
+        $decoded = json_decode((string) ($row['scopes_json'] ?? '[]'), true);
+        $row['scopes'] = is_array($decoded) ? Utils::normalize_scopes($decoded) : [];
+        unset($row['scopes_json']);
+
+        return $row;
     }
 }

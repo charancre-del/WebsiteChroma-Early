@@ -939,6 +939,14 @@ class Utils
                     $meta_patterns,
                     '/^(about_|acquisition_|bridge_|careers_|contact_|consultation_|curriculum_|employers_|families_|faq_|global_|hipaa_|home_|locations_|newsroom_|parents_|privacy_|schedule_|stories_|team_|team_member_|tos_|tou_|program_|location_|city_|schema_|meta_|alternate_|_earlystart_|seo_llm_|earlystart_|_gmb_|_career_|_author_|_yoast_)/'
                 );
+                self::collect_regex_keys(
+                    $contents,
+                    '/\$_POST\s*\[\s*([\'"])(.*?)\1\s*\]/s',
+                    $meta,
+                    $meta_patterns,
+                    '/^(about_|acquisition_|bridge_|careers_|contact_|consultation_|curriculum_|employers_|families_|faq_|global_|hipaa_|home_|locations_|newsroom_|parents_|privacy_|schedule_|stories_|team_|team_member_|tos_|tou_|program_|location_|city_|schema_|meta_|alternate_|_earlystart_|seo_llm_|earlystart_|_gmb_|_career_|_author_|_yoast_)/'
+                );
+                self::collect_meta_save_array_keys($contents, $meta, $meta_patterns);
                 $ignored_patterns = [];
                 self::collect_customizer_setting_keys($contents, $theme_mods, $customizer_options);
                 self::collect_regex_keys(
@@ -1213,6 +1221,59 @@ class Utils
         }
     }
 
+    private static function collect_meta_save_array_keys(string $contents, array &$meta, array &$meta_patterns): void
+    {
+        if (!preg_match_all('/\$(?:fields|meta_fields|text_fields|textarea_fields|checkbox_fields|url_fields|number_fields|image_fields|json_fields)\s*=\s*(?:array\s*\(|\[)([\s\S]*?)(?:\);\s*|\];)/', $contents, $matches)) {
+            return;
+        }
+
+        foreach ((array) ($matches[1] ?? []) as $body) {
+            if (!is_string($body) || $body === '') {
+                continue;
+            }
+
+            if (preg_match_all('/([\'"])([A-Za-z0-9_:\-]+)\1\s*=>/', $body, $key_matches)) {
+                foreach ((array) ($key_matches[2] ?? []) as $raw_key) {
+                    self::add_discovered_meta_key((string) $raw_key, $meta, $meta_patterns);
+                }
+            }
+
+            if (preg_match_all('/(?:^|,)\s*([\'"])([A-Za-z0-9_:\-]+)\1\s*(?:,|$)/m', $body, $value_matches)) {
+                foreach ((array) ($value_matches[2] ?? []) as $raw_key) {
+                    self::add_discovered_meta_key((string) $raw_key, $meta, $meta_patterns);
+                }
+            }
+        }
+    }
+
+    private static function add_discovered_meta_key(string $key, array &$meta, array &$meta_patterns): void
+    {
+        $key = self::normalize_html_field_key($key);
+        if ($key === '' || !self::looks_like_editable_surface_key($key)) {
+            return;
+        }
+
+        if (strpos($key, '*') !== false) {
+            $meta_patterns[$key] = true;
+            return;
+        }
+
+        $meta[$key] = true;
+    }
+
+    private static function looks_like_editable_surface_key(string $key): bool
+    {
+        if ($key === '' || strpos($key, '[') !== false || strpos($key, ']') !== false) {
+            return false;
+        }
+
+        if (preg_match('/(?:nonce|nonce_field|security|action|post_type|submit|save|delete|bulk)$/', $key)) {
+            return false;
+        }
+
+        return (bool) preg_match('/^(about_|acquisition_|bridge_|careers_|contact_|consultation_|curriculum_|employers_|families_|faq_|global_|hipaa_|home_|locations_|newsroom_|parents_|privacy_|schedule_|stories_|team_|team_member_|tos_|tou_|program_|location_|city_|schema_|meta_|alternate_|_earlystart_|seo_llm_|earlystart_|_gmb_|_career_|_author_|_yoast_)/', $key);
+    }
+
     private static function collect_regex_keys(
         string $contents,
         string $pattern,
@@ -1240,6 +1301,11 @@ class Utils
                 continue;
             }
 
+            $key = self::normalize_html_field_key($key);
+            if ($key === '') {
+                continue;
+            }
+
             $allow_key = str_replace('*', '1', $key);
             if ($allow_pattern !== null && !preg_match($allow_pattern, $allow_key)) {
                 continue;
@@ -1261,6 +1327,24 @@ class Utils
 
             $exact[$key] = true;
         }
+    }
+
+    private static function normalize_html_field_key(string $key): string
+    {
+        $key = trim($key);
+        if ($key === '') {
+            return '';
+        }
+
+        if (substr($key, -2) === '[]') {
+            return substr($key, 0, -2);
+        }
+
+        if (preg_match('/^([A-Za-z0-9_:\-]+)\[[^\]]+\]$/', $key, $matches)) {
+            return (string) $matches[1];
+        }
+
+        return $key;
     }
 
     private static function is_seo_meta_key(string $key): bool

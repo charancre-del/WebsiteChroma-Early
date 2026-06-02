@@ -4,6 +4,7 @@ namespace ChromaAgentAPI\Routes;
 
 use ChromaAgentAPI\Auth;
 use ChromaAgentAPI\Audit_Log;
+use ChromaAgentAPI\Diff;
 use ChromaAgentAPI\Key_Store;
 use ChromaAgentAPI\Utils;
 use WP_REST_Request;
@@ -31,6 +32,19 @@ class Key_Routes
             ],
         ]);
 
+        register_rest_route(self::NS, '/keys/(?P<id>\d+)', [
+            [
+                'methods' => 'GET',
+                'callback' => [__CLASS__, 'get_key'],
+                'permission_callback' => [__CLASS__, 'admin_keys_permission'],
+            ],
+            [
+                'methods' => 'PATCH,POST',
+                'callback' => [__CLASS__, 'update_key'],
+                'permission_callback' => [__CLASS__, 'admin_keys_permission'],
+            ],
+        ]);
+
         register_rest_route(self::NS, '/keys/(?P<id>\d+)/revoke', [
             'methods' => 'POST',
             'callback' => [__CLASS__, 'revoke_key'],
@@ -41,6 +55,20 @@ class Key_Routes
             'methods' => 'POST',
             'callback' => [__CLASS__, 'rotate_key'],
             'permission_callback' => [__CLASS__, 'admin_keys_permission'],
+        ]);
+    }
+
+    public static function get_key(WP_REST_Request $request)
+    {
+        $id = (int) $request['id'];
+        $key = Key_Store::get_key($id);
+        if (!$key) {
+            return new \WP_Error('caa_key_not_found', 'API key not found.', ['status' => 404]);
+        }
+
+        return rest_ensure_response([
+            'success' => true,
+            'data' => $key,
         ]);
     }
 
@@ -130,6 +158,51 @@ class Key_Routes
             'data' => $result,
             'warning' => 'Store this key now. It will not be shown again.',
         ], 201);
+    }
+
+    public static function update_key(WP_REST_Request $request)
+    {
+        $id = (int) $request['id'];
+        if ($id <= 0) {
+            return new \WP_Error('caa_invalid_id', 'Invalid key id.', ['status' => 400]);
+        }
+
+        $params = $request->get_json_params();
+        if (!is_array($params)) {
+            $params = $request->get_params();
+        }
+
+        unset($params['id'], $params['api_key']);
+
+        $before = Key_Store::get_key($id);
+        if (!$before) {
+            return new \WP_Error('caa_key_not_found', 'API key not found.', ['status' => 404]);
+        }
+
+        $result = Key_Store::update_key($id, $params);
+        if (is_wp_error($result)) {
+            return $result;
+        }
+
+        Audit_Log::log_write([
+            'actor_key_id' => Auth::current_key_id(),
+            'scope' => 'admin:keys',
+            'method' => $request->get_method(),
+            'route' => $request->get_route(),
+            'target_type' => 'api_key',
+            'target_id' => (string) $id,
+            'dry_run' => false,
+            'before' => $before,
+            'after' => $result,
+            'diff' => Diff::compare($before, $result),
+            'status_code' => 200,
+            'ip' => Utils::get_request_ip(),
+        ]);
+
+        return rest_ensure_response([
+            'success' => true,
+            'data' => $result,
+        ]);
     }
 
     public static function revoke_key(WP_REST_Request $request)
