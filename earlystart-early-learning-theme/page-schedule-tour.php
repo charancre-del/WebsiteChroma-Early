@@ -8,6 +8,55 @@
 
 get_header();
 
+$page_id = get_queried_object_id();
+$schedule_shell_defaults = array(
+    'hero_eyebrow' => __('Clinic Tours', 'earlystart-early-learning'),
+    'hero_heading' => __('Experience our<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Clinical Magic.</span>', 'earlystart-early-learning'),
+    'hero_subheading' => __('Select your preferred clinic below to schedule a private walkthrough with our clinical team. We look forward to welcoming your family.', 'earlystart-early-learning'),
+    'hero_image_url' => 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1200&q=80&fm=webp',
+    'hero_image_alt' => __('Parent and child', 'earlystart-early-learning'),
+    'booking_label' => __('Schedule Tour', 'earlystart-early-learning'),
+    'inquire_label' => __('Inquire Now', 'earlystart-early-learning'),
+    'faq_heading' => __('What happens during a tour?', 'earlystart-early-learning'),
+    'faq_steps' => array(
+        array(
+            'title' => __('Walkthrough', 'earlystart-early-learning'),
+            'text' => __('See our clean, safe, and stimulating clinical environments in person.', 'earlystart-early-learning'),
+        ),
+        array(
+            'title' => __('Meet the Team', 'earlystart-early-learning'),
+            'text' => __('Speak with the Clinical Director about your child\'s unique goals.', 'earlystart-early-learning'),
+        ),
+        array(
+            'title' => __('Next Steps', 'earlystart-early-learning'),
+            'text' => __('Learn about our intake process, assessment, and individualized timelines.', 'earlystart-early-learning'),
+        ),
+    ),
+);
+$schedule_shell_raw = function_exists('earlystart_get_translated_meta')
+    ? earlystart_get_translated_meta($page_id, 'schedule_tour_shell_json', true)
+    : get_post_meta($page_id, 'schedule_tour_shell_json', true);
+$schedule_shell = $schedule_shell_defaults;
+if (is_string($schedule_shell_raw) && '' !== trim($schedule_shell_raw)) {
+    $decoded_shell = json_decode($schedule_shell_raw, true);
+    if (is_array($decoded_shell)) {
+        $schedule_shell = array_replace_recursive($schedule_shell_defaults, $decoded_shell);
+    }
+} elseif (is_array($schedule_shell_raw)) {
+    $schedule_shell = array_replace_recursive($schedule_shell_defaults, $schedule_shell_raw);
+}
+foreach ($schedule_shell_defaults as $shell_key => $default_value) {
+    if ('faq_steps' === $shell_key) {
+        continue;
+    }
+    $schedule_shell[$shell_key] = isset($schedule_shell[$shell_key]) && is_scalar($schedule_shell[$shell_key])
+        ? (string) $schedule_shell[$shell_key]
+        : $default_value;
+}
+if (empty($schedule_shell['faq_steps']) || !is_array($schedule_shell['faq_steps'])) {
+    $schedule_shell['faq_steps'] = $schedule_shell_defaults['faq_steps'];
+}
+
 // Fetch all locations
 $locations_query = new WP_Query(array(
     'post_type' => 'location',
@@ -90,16 +139,13 @@ if ($locations_query->have_posts()) {
                 <div class="fade-in-up">
                     <span
                         class="inline-block px-4 py-2 bg-rose-50 text-rose-700 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
-                        <?php _e('Clinic Tours', 'earlystart-early-learning'); ?>
+                        <?php echo esc_html($schedule_shell['hero_eyebrow']); ?>
                     </span>
                     <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight">
-                        <?php _e('Experience our', 'earlystart-early-learning'); ?><br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">
-                            <?php _e('Clinical Magic.', 'earlystart-early-learning'); ?>
-                        </span>
+                        <?php echo wp_kses_post($schedule_shell['hero_heading']); ?>
                     </h1>
                     <p class="text-xl text-stone-700 leading-relaxed mb-10 max-w-xl">
-                        <?php _e('Select your preferred clinic below to schedule a private walkthrough with our clinical team. We look forward to welcoming your family.', 'earlystart-early-learning'); ?>
+                        <?php echo esc_html($schedule_shell['hero_subheading']); ?>
                     </p>
 
                     <div class="flex flex-wrap gap-3">
@@ -116,8 +162,8 @@ if ($locations_query->have_posts()) {
                 <div class="relative fade-in-up">
                     <div
                         class="aspect-[4/3] rounded-[3rem] bg-stone-50 overflow-hidden shadow-2xl border-8 border-white">
-                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1200&q=80&fm=webp"
-                            class="w-full h-full object-cover" alt="Parent and child">
+                        <img src="<?php echo esc_url($schedule_shell['hero_image_url']); ?>"
+                            class="w-full h-full object-cover" alt="<?php echo esc_attr($schedule_shell['hero_image_alt']); ?>">
                     </div>
                     <div class="absolute -bottom-8 -left-8 w-48 h-48 bg-amber-50 rounded-full blur-3xl -z-10"></div>
                 </div>
@@ -164,12 +210,12 @@ if ($locations_query->have_posts()) {
                                 <?php if ($post['booking']): ?>
                                     <a href="<?php echo esc_url($post['booking']); ?>" target="_blank" rel="noopener noreferrer"
                                         class="block w-full py-4 bg-stone-900 text-white text-center rounded-xl font-bold text-sm tracking-widest uppercase hover:bg-rose-600 transition-all">
-                                        <?php _e('Schedule Tour', 'earlystart-early-learning'); ?>
+                                        <?php echo esc_html($schedule_shell['booking_label']); ?>
                                     </a>
                                 <?php else: ?>
                                     <a href="<?php echo esc_url($post['permalink']); ?>#contact"
                                         class="block w-full py-4 bg-stone-50 text-stone-700 text-center rounded-xl font-bold text-sm tracking-widest uppercase hover:bg-rose-50 transition-all">
-                                        <?php _e('Inquire Now', 'earlystart-early-learning'); ?>
+                                        <?php echo esc_html($schedule_shell['inquire_label']); ?>
                                     </a>
                                 <?php endif; ?>
                             </div>
@@ -184,39 +230,30 @@ if ($locations_query->have_posts()) {
     <section class="py-24 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
             <h2 class="text-3xl font-bold text-stone-900 mb-8">
-                <?php _e('What happens during a tour?', 'earlystart-early-learning'); ?>
+                <?php echo esc_html($schedule_shell['faq_heading']); ?>
             </h2>
             <div class="grid md:grid-cols-3 gap-12 text-left">
-                <div>
-                    <div
-                        class="w-12 h-12 bg-rose-50 text-rose-700 rounded-full flex items-center justify-center font-bold mb-6">
-                        1</div>
-                    <h4 class="font-bold text-stone-900 mb-2"><?php _e('Walkthrough', 'earlystart-early-learning'); ?>
-                    </h4>
-                    <p class="text-sm text-stone-700 leading-relaxed">
-                        <?php _e('See our clean, safe, and stimulating clinical environments in person.', 'earlystart-early-learning'); ?>
-                    </p>
-                </div>
-                <div>
-                    <div
-                        class="w-12 h-12 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center font-bold mb-6">
-                        2</div>
-                    <h4 class="font-bold text-stone-900 mb-2"><?php _e('Meet the Team', 'earlystart-early-learning'); ?>
-                    </h4>
-                    <p class="text-sm text-stone-700 leading-relaxed">
-                        <?php _e('Speak with the Clinical Director about your child’s unique goals.', 'earlystart-early-learning'); ?>
-                    </p>
-                </div>
-                <div>
-                    <div
-                        class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold mb-6">
-                        3</div>
-                    <h4 class="font-bold text-stone-900 mb-2"><?php _e('Next Steps', 'earlystart-early-learning'); ?>
-                    </h4>
-                    <p class="text-sm text-stone-700 leading-relaxed">
-                        <?php _e('Learn about our intake process, assessment, and individualized timelines.', 'earlystart-early-learning'); ?>
-                    </p>
-                </div>
+                <?php
+                $step_styles = array(
+                    array('bg' => 'bg-rose-50', 'text' => 'text-rose-700'),
+                    array('bg' => 'bg-orange-50', 'text' => 'text-orange-600'),
+                    array('bg' => 'bg-blue-50', 'text' => 'text-blue-600'),
+                );
+                foreach (array_slice($schedule_shell['faq_steps'], 0, 3) as $index => $step):
+                    $step = is_array($step) ? $step : array();
+                    $style = $step_styles[$index] ?? $step_styles[0];
+                    ?>
+                    <div>
+                        <div
+                            class="w-12 h-12 <?php echo esc_attr($style['bg'] . ' ' . $style['text']); ?> rounded-full flex items-center justify-center font-bold mb-6">
+                            <?php echo esc_html((string) ($index + 1)); ?></div>
+                        <h4 class="font-bold text-stone-900 mb-2"><?php echo esc_html(sanitize_text_field($step['title'] ?? '')); ?>
+                        </h4>
+                        <p class="text-sm text-stone-700 leading-relaxed">
+                            <?php echo esc_html(sanitize_text_field($step['text'] ?? '')); ?>
+                        </p>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
