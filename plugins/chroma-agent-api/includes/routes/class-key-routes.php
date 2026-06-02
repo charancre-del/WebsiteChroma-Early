@@ -72,7 +72,8 @@ class Key_Routes
         }
 
         $label = (string) ($params['label'] ?? 'Agent Key');
-        $scopes = $params['scopes'] ?? [];
+        $scopes_provided = array_key_exists('scopes', $params);
+        $scopes = $scopes_provided ? ($params['scopes'] ?? []) : Utils::default_key_scopes();
 
         if (is_string($scopes)) {
             $scopes = array_filter(array_map('trim', explode(',', $scopes)));
@@ -80,6 +81,10 @@ class Key_Routes
 
         if (!is_array($scopes)) {
             $scopes = [];
+        }
+
+        if (empty($scopes) && !$scopes_provided) {
+            $scopes = Utils::default_key_scopes();
         }
 
         $expires_at = isset($params['expires_at']) ? (string) $params['expires_at'] : null;

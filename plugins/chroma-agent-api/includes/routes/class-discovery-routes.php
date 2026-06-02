@@ -3,6 +3,7 @@
 namespace ChromaAgentAPI\Routes;
 
 use ChromaAgentAPI\Auth;
+use ChromaAgentAPI\Editable_Registry;
 use ChromaAgentAPI\Utils;
 use WP_REST_Request;
 
@@ -81,6 +82,7 @@ class Discovery_Routes
                     'content_meta_keys_route' => '/wp-json/' . self::NS . '/content/meta-keys',
                     'geo_contract_route' => '/wp-json/' . self::NS . '/geo-contract',
                 ],
+                'editables_capabilities' => Editable_Registry::manifest()['capabilities'] ?? [],
                 'scopes' => Auth::current_key()['scopes'] ?? [],
             ],
         ]);

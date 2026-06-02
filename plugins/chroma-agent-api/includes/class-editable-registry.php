@@ -39,11 +39,15 @@ class Editable_Registry
             $groups[$group]['count']++;
         }
 
+        $fields = self::annotate_field_capabilities($fields);
+        $capabilities = self::summarize_field_capabilities($fields);
+
         return [
             'version' => 1,
             'value_route' => self::VALUE_ROUTE,
             'generated_at' => current_time('mysql', true),
             'field_count' => count($fields),
+            'capabilities' => $capabilities,
             'groups' => array_values($groups),
             'fields' => $fields,
         ];
@@ -1099,6 +1103,76 @@ class Editable_Registry
 
         $field['id'] = $id;
         $fields[$id] = $field;
+    }
+
+    private static function annotate_field_capabilities(array $fields): array
+    {
+        foreach ($fields as &$field) {
+            $read_scope = (string) ($field['read_scope'] ?? '');
+            $write_scope = (string) ($field['write_scope'] ?? '');
+            $read_allowed = self::current_key_can($read_scope);
+            $write_allowed = self::current_key_can($write_scope);
+
+            $field['readable'] = $read_scope !== '';
+            $field['writable'] = $write_scope !== '';
+            $field['readable_by_current_key'] = $read_allowed;
+            $field['writable_by_current_key'] = $write_allowed;
+            $field['required_scopes'] = array_values(array_filter(array_unique([$read_scope, $write_scope])));
+            $field['missing_scopes'] = array_values(array_filter([
+                $read_allowed ? '' : $read_scope,
+                $write_allowed ? '' : $write_scope,
+            ]));
+            $field['write_status'] = $write_allowed ? 'writable' : 'requires_scope';
+        }
+        unset($field);
+
+        return $fields;
+    }
+
+    private static function summarize_field_capabilities(array $fields): array
+    {
+        $required_read_scopes = [];
+        $required_write_scopes = [];
+        $writable = 0;
+        $writable_by_current_key = 0;
+        $readable_by_current_key = 0;
+
+        foreach ($fields as $field) {
+            $read_scope = (string) ($field['read_scope'] ?? '');
+            $write_scope = (string) ($field['write_scope'] ?? '');
+
+            if ($read_scope !== '') {
+                $required_read_scopes[] = $read_scope;
+            }
+
+            if ($write_scope !== '') {
+                $required_write_scopes[] = $write_scope;
+                $writable++;
+            }
+
+            if (!empty($field['readable_by_current_key'])) {
+                $readable_by_current_key++;
+            }
+
+            if (!empty($field['writable_by_current_key'])) {
+                $writable_by_current_key++;
+            }
+        }
+
+        $required_read_scopes = Utils::normalize_scopes($required_read_scopes);
+        $required_write_scopes = Utils::normalize_scopes($required_write_scopes);
+
+        return [
+            'readable_by_current_key' => $readable_by_current_key,
+            'writable' => $writable,
+            'writable_by_current_key' => $writable_by_current_key,
+            'read_only_for_current_key' => $writable > 0 && $writable_by_current_key === 0,
+            'required_read_scopes' => $required_read_scopes,
+            'required_write_scopes' => $required_write_scopes,
+            'missing_write_scopes' => array_values(array_filter($required_write_scopes, static function ($scope): bool {
+                return !self::current_key_can($scope);
+            })),
+        ];
     }
 
     private static function target_key_is_allowed(array $field, string $target_key): bool
