@@ -43,7 +43,8 @@ class earlystart_LLMs_Txt_Generator
      */
     public static function refresh_file()
     {
-        (new self())->write_physical_file(true);
+        $generator = new self();
+        return $generator->write_physical_file(true);
     }
 
     /**
@@ -129,6 +130,9 @@ class earlystart_LLMs_Txt_Generator
         if ($handle) {
             fwrite($handle, $content);
             fclose($handle);
+            $signature = $this->get_generation_signature();
+            update_option('earlystart_llms_txt_generated_version', $signature, false);
+            update_option('earlystart_llms_txt_refresh_attempt_version', $signature, false);
             return true;
         }
 
