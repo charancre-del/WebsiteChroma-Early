@@ -21,6 +21,12 @@ while (have_posts()):
 	$corporate_name = get_post_meta($page_id, 'contact_corporate_name', true) ?: __('Chroma Early Start HQ', 'earlystart-early-learning');
 	$corporate_address = get_post_meta($page_id, 'contact_corporate_address', true) ?: '';
 	$corporate_phone = get_post_meta($page_id, 'contact_corporate_phone', true) ?: '';
+	if ('' === trim((string) $corporate_address) || earlystart_is_placeholder_global_setting('contact_corporate_address', $corporate_address)) {
+		$corporate_address = earlystart_global_full_address();
+	}
+	if ('' === trim((string) $corporate_phone) || earlystart_is_placeholder_global_setting('contact_corporate_phone', $corporate_phone)) {
+		$corporate_phone = earlystart_global_phone();
+	}
 	$careers_title = get_post_meta($page_id, 'contact_careers_title', true) ?: __('Careers', 'earlystart-early-learning');
 	$careers_description = get_post_meta($page_id, 'contact_careers_description', true) ?: '';
 	$careers_link_text = get_post_meta($page_id, 'contact_careers_link_text', true) ?: __('View Open Positions', 'earlystart-early-learning');
