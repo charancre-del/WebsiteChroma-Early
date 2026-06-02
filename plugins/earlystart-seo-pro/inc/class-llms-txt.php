@@ -15,6 +15,8 @@ if (!defined('ABSPATH')) {
 class earlystart_LLMs_Txt_Generator
 {
     const CONTENT_SCHEMA_VERSION = '2';
+    const CONTENT_CACHE_KEY = 'earlystart_llms_txt_content';
+    const CONTENT_CACHE_TTL = HOUR_IN_SECONDS;
 
     /**
      * Init hooks
@@ -119,7 +121,8 @@ class earlystart_LLMs_Txt_Generator
         }
 
         $file_path = ABSPATH . 'llms.txt';
-        $content = $this->generate_content();
+        $this->clear_content_cache();
+        $content = $this->generate_content(true);
 
         // Write file
         $handle = @fopen($file_path, 'w');
@@ -130,6 +133,16 @@ class earlystart_LLMs_Txt_Generator
         }
 
         return false;
+    }
+
+    private function clear_content_cache()
+    {
+        delete_transient($this->get_content_cache_key());
+    }
+
+    private function get_content_cache_key()
+    {
+        return self::CONTENT_CACHE_KEY . '_' . md5($this->get_generation_signature());
     }
 
     /**
@@ -155,6 +168,7 @@ class earlystart_LLMs_Txt_Generator
             return false;
         }
 
+        $this->clear_content_cache();
         return $this->write_physical_file(true);
     }
 
@@ -280,7 +294,22 @@ class earlystart_LLMs_Txt_Generator
     /**
      * Generate Content
      */
-    private function generate_content()
+    private function generate_content($force = false)
+    {
+        if (!$force) {
+            $cached = get_transient($this->get_content_cache_key());
+            if (is_string($cached) && $cached !== '') {
+                return $cached;
+            }
+        }
+
+        $output = $this->build_content();
+        set_transient($this->get_content_cache_key(), $output, self::CONTENT_CACHE_TTL);
+
+        return $output;
+    }
+
+    private function build_content()
     {
         $site_name = get_bloginfo('name');
         $site_desc = get_bloginfo('description');
