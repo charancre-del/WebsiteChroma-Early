@@ -883,16 +883,25 @@ document.addEventListener('DOMContentLoaded', function () {
    */
   const initEnhancedLazyLoading = () => {
     // All images with data-lazy-src attribute
-    const lazyImages = document.querySelectorAll('img[data-lazy-src]');
+    const lazyImages = document.querySelectorAll('img[data-lazy-src]:not([data-lazy-bound])');
 
     // Also handle images with loading="lazy" that aren't above-the-fold
-    const nativeLazyImages = document.querySelectorAll('img[loading="lazy"]:not(.no-lazy)');
+    const nativeLazyImages = document.querySelectorAll('img[loading="lazy"]:not(.no-lazy):not([data-lazy-bound])');
+
+    if (!lazyImages.length && !nativeLazyImages.length) {
+      return;
+    }
+
+    const markLazyBound = (img) => {
+      img.dataset.lazyBound = 'true';
+    };
 
     if ('IntersectionObserver' in window) {
       const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const img = entry.target;
+            markLazyBound(img);
 
             // Handle data-lazy-src images
             if (img.dataset.lazySrc) {
@@ -928,10 +937,15 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       // Observe data-lazy-src images
-      lazyImages.forEach(img => imageObserver.observe(img));
+      lazyImages.forEach(img => {
+        markLazyBound(img);
+        imageObserver.observe(img);
+      });
 
       // Observe native lazy images for fade-in effect
       nativeLazyImages.forEach(img => {
+        markLazyBound(img);
+
         // Add fade-in for when they load
         if (!img.complete) {
           img.style.opacity = '0';
@@ -946,6 +960,8 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       // Fallback for browsers without IntersectionObserver
       lazyImages.forEach(img => {
+        markLazyBound(img);
+
         if (img.dataset.lazySrc) {
           img.src = img.dataset.lazySrc;
           if (img.dataset.lazySrcset) {
@@ -953,6 +969,7 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         }
       });
+      nativeLazyImages.forEach(markLazyBound);
     }
   };
 
