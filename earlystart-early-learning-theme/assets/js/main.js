@@ -251,37 +251,93 @@ document.addEventListener('DOMContentLoaded', function () {
     containers.forEach((container) => {
       const tabs = container.querySelectorAll(`[data-${attrPrefix}-tab]`);
       const panels = container.querySelectorAll(`[data-${attrPrefix}-panel]`);
+      const tabGroupId = container.id || `${attrPrefix}-tabs`;
 
-      tabs.forEach((tab) => {
-        tab.addEventListener('click', () => {
-          const target = tab.getAttribute(`data-${attrPrefix}-tab`);
+      if (!container.hasAttribute('role')) {
+        container.setAttribute('role', 'tablist');
+      }
 
-          // Update tabs
-          tabs.forEach((t) => {
-            const isActive = t === tab;
-            t.classList.toggle('active', isActive);
-            t.setAttribute('aria-selected', isActive.toString());
+      const activateTab = (tab, shouldFocus = false) => {
+        const target = tab.getAttribute(`data-${attrPrefix}-tab`);
+        if (!target) return;
 
-            // Handle specific styling for therapy tabs
-            if (attrPrefix === 'services') {
-              t.classList.toggle('bg-rose-600', isActive);
-              t.classList.toggle('text-white', isActive);
-              t.classList.toggle('bg-white', !isActive);
-              t.classList.toggle('text-stone-600', !isActive);
-            }
-          });
+        // Update tabs
+        tabs.forEach((t) => {
+          const isActive = t === tab;
+          t.classList.toggle('active', isActive);
+          t.setAttribute('aria-selected', isActive.toString());
+          t.setAttribute('tabindex', isActive ? '0' : '-1');
 
-          // Update panels
-          panels.forEach((panel) => {
-            const isMatch = panel.getAttribute(`data-${attrPrefix}-panel`) === target;
-            panel.classList.toggle('hidden', !isMatch);
-            if (isMatch) {
-              panel.classList.add('fade-in');
-            }
-          });
+          // Handle specific styling for therapy tabs
+          if (attrPrefix === 'services') {
+            t.classList.toggle('bg-rose-600', isActive);
+            t.classList.toggle('text-white', isActive);
+            t.classList.toggle('bg-white', !isActive);
+            t.classList.toggle('text-stone-600', !isActive);
+          }
+        });
 
-          // Refresh Lucide icons in panels if needed
-          refreshIcons();
+        // Update panels
+        panels.forEach((panel) => {
+          const isMatch = panel.getAttribute(`data-${attrPrefix}-panel`) === target;
+          panel.classList.toggle('hidden', !isMatch);
+          panel.toggleAttribute('hidden', !isMatch);
+          if (isMatch) {
+            panel.classList.add('fade-in');
+          }
+        });
+
+        if (shouldFocus) {
+          tab.focus();
+        }
+
+        // Refresh Lucide icons in panels if needed
+        refreshIcons();
+      };
+
+      tabs.forEach((tab, index) => {
+        const key = tab.getAttribute(`data-${attrPrefix}-tab`) || String(index);
+        const tabId = tab.id || `${tabGroupId}-${key}-tab`;
+        const panelId = `${tabGroupId}-${key}-panel`;
+        const panel = container.querySelector(`[data-${attrPrefix}-panel="${key}"]`);
+        const isActive = tab.classList.contains('active') || index === 0;
+
+        tab.id = tabId;
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('aria-controls', panelId);
+        tab.setAttribute('aria-selected', isActive.toString());
+        tab.setAttribute('tabindex', isActive ? '0' : '-1');
+
+        if (panel) {
+          panel.id = panel.id || panelId;
+          panel.setAttribute('role', 'tabpanel');
+          panel.setAttribute('aria-labelledby', tabId);
+          panel.setAttribute('tabindex', '0');
+          panel.toggleAttribute('hidden', !isActive);
+          panel.classList.toggle('hidden', !isActive);
+        }
+
+        tab.addEventListener('click', () => activateTab(tab));
+        tab.addEventListener('keydown', (event) => {
+          const keyHandlers = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'];
+          if (!keyHandlers.includes(event.key)) {
+            return;
+          }
+
+          event.preventDefault();
+
+          let nextIndex = index;
+          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+            nextIndex = (index + 1) % tabs.length;
+          } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+            nextIndex = (index - 1 + tabs.length) % tabs.length;
+          } else if (event.key === 'Home') {
+            nextIndex = 0;
+          } else if (event.key === 'End') {
+            nextIndex = tabs.length - 1;
+          }
+
+          activateTab(tabs[nextIndex], true);
         });
       });
     });
@@ -582,8 +638,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const panels = schedule.querySelectorAll('[data-schedule-panel]');
     const tabs = schedule.querySelectorAll('[data-schedule-tab]');
     const defaultKey = tabs[0]?.getAttribute('data-schedule-tab');
+    const tabList = schedule.querySelector('[data-schedule-tabs]');
+    const scheduleId = schedule.id || 'schedule-tabs';
 
-    const activate = (key) => {
+    if (tabList && !tabList.hasAttribute('role')) {
+      tabList.setAttribute('role', 'tablist');
+    }
+
+    const activate = (key, shouldFocus = false) => {
       tabs.forEach((btn) => {
         const isActive = btn.getAttribute('data-schedule-tab') === key;
         btn.classList.toggle('bg-chroma-blue', isActive);
@@ -597,18 +659,67 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.style.backgroundColor = '';
         btn.style.color = '';
         btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        btn.setAttribute('aria-selected', isActive.toString());
+        btn.setAttribute('tabindex', isActive ? '0' : '-1');
+
+        if (isActive && shouldFocus) {
+          btn.focus();
+        }
       });
 
       panels.forEach((panel) => {
         const isMatch = panel.getAttribute('data-schedule-panel') === key;
         panel.classList.toggle('hidden', !isMatch);
         panel.classList.toggle('active', isMatch);
+        panel.toggleAttribute('hidden', !isMatch);
       });
     };
 
-    tabs.forEach((btn) => {
+    tabs.forEach((btn, index) => {
+      const key = btn.getAttribute('data-schedule-tab') || String(index);
+      const isActive = key === defaultKey;
+      const tabId = btn.id || `${scheduleId}-${key}-tab`;
+      const panelId = `${scheduleId}-${key}-panel`;
+      const panel = schedule.querySelector(`[data-schedule-panel="${key}"]`);
+
+      btn.id = tabId;
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-controls', panelId);
+      btn.setAttribute('aria-selected', isActive.toString());
+      btn.setAttribute('tabindex', isActive ? '0' : '-1');
+
+      if (panel) {
+        panel.id = panel.id || panelId;
+        panel.setAttribute('role', 'tabpanel');
+        panel.setAttribute('aria-labelledby', tabId);
+        panel.setAttribute('tabindex', '0');
+        panel.toggleAttribute('hidden', !isActive);
+      }
+
       btn.addEventListener('click', () => {
         activate(btn.getAttribute('data-schedule-tab'));
+      });
+
+      btn.addEventListener('keydown', (event) => {
+        const keyHandlers = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'];
+        if (!keyHandlers.includes(event.key)) {
+          return;
+        }
+
+        event.preventDefault();
+
+        let nextIndex = index;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+          nextIndex = (index + 1) % tabs.length;
+        } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+          nextIndex = (index - 1 + tabs.length) % tabs.length;
+        } else if (event.key === 'Home') {
+          nextIndex = 0;
+        } else if (event.key === 'End') {
+          nextIndex = tabs.length - 1;
+        }
+
+        activate(tabs[nextIndex].getAttribute('data-schedule-tab'), true);
       });
     });
 
