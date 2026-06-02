@@ -362,7 +362,9 @@ function earlystart_seed_core_content()
         '_privacy_defaults_seeded' => '1',
     );
 
-    update_option('earlystart_global_settings', array(
+    $existing_global_settings = get_option('earlystart_global_settings', array());
+    $existing_global_settings = is_array($existing_global_settings) ? $existing_global_settings : array();
+    $seed_global_settings = array(
         'global_phone' => '(404) 905-6775',
         'global_email' => 'info@chromaearlystart.com',
         'global_tour_email' => 'info@chromaearlystart.com',
@@ -377,7 +379,9 @@ function earlystart_seed_core_content()
         'global_zip' => '30005',
         'global_facebook_url' => 'https://facebook.com/chromaearlystart',
         'global_instagram_url' => 'https://instagram.com/chromaearlystart',
-    ));
+    );
+
+    update_option('earlystart_global_settings', array_merge($seed_global_settings, $existing_global_settings));
 
     $home_services = array(
         array('id' => 'aba', 'title' => 'ABA Therapy', 'subtitle' => 'Applied Behavior Analysis', 'icon' => 'puzzle', 'heading' => 'Individualized Behavioral Growth', 'description' => 'Our ABA therapy focuses on increasing helpful behaviors and decreasing harmful ones to improve learning and social skills.', 'image' => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80&fm=webp', 'bullets' => array('One-on-one sessions', 'Data-driven progress tracking', 'Positive reinforcement focus')),
@@ -617,6 +621,7 @@ function earlystart_seed_core_content()
 
 add_action('admin_init', function () {
     if (isset($_GET['earlystart_seed']) && $_GET['earlystart_seed'] === '1') {
+        check_admin_referer('earlystart_seed_core_content');
         earlystart_seed_core_content();
     }
 });
