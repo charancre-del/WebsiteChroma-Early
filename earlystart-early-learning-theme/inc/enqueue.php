@@ -256,18 +256,15 @@ function earlystart_move_jquery_to_footer()
                 return;
         }
 
-        // Dequeue jQuery entirely for non-logged in users (Performance)
-        // If specific plugins need it, they usually enqueue it as a dependency, 
-        // but we'll deregister it initially to avoid auto-loading.
+        // Dequeue jQuery for anonymous visitors when nothing needs it, but keep
+        // WordPress's registered handles intact so later plugin enqueues can
+        // still resolve jquery as a declared dependency.
         wp_dequeue_script('jquery');
         wp_dequeue_script('jquery-core');
         wp_dequeue_script('jquery-migrate');
-        wp_deregister_script('jquery');
-        wp_deregister_script('jquery-core');
-        wp_deregister_script('jquery-migrate');
 
-        // OPTIONAL: If you encounter plugin errors, comment out the deregister lines above 
-        // and uncomment the lines below to keep it but move to footer:
+        // OPTIONAL: If a plugin explicitly needs jQuery on anonymous pages, uncomment
+        // the lines below to force-load it in the footer:
         /*
         wp_register_script('jquery', includes_url('/js/jquery/jquery.min.js'), false, null, true);
         wp_enqueue_script('jquery');
