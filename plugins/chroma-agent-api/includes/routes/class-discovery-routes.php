@@ -69,8 +69,10 @@ class Discovery_Routes
                 'allowlists' => [
                     'theme_options' => Utils::get_theme_option_allowlist(),
                     'theme_mods' => Utils::get_theme_mod_allowlist(),
+                    'customizer_options' => Utils::get_customizer_option_allowlist(),
                     'seo_options' => Utils::get_seo_option_allowlist(),
                     'seo_meta' => Utils::get_seo_meta_allowlist(),
+                    'term_meta' => Utils::get_term_meta_key_inventory(),
                 ],
                 'introspection' => [
                     'editables_manifest_route' => '/wp-json/' . self::NS . '/editables',
@@ -96,10 +98,12 @@ class Discovery_Routes
                 'taxonomies' => array_values($taxonomies),
                 'theme_option_allowlist' => Utils::get_theme_option_allowlist(),
                 'theme_mod_allowlist' => Utils::get_theme_mod_allowlist(),
+                'customizer_option_allowlist' => Utils::get_customizer_option_allowlist(),
                 'seo_option_allowlist' => Utils::get_seo_option_allowlist(),
                 'seo_meta_allowlist' => Utils::get_seo_meta_allowlist(),
                 'plugin_setting_allowlist' => Utils::get_plugin_setting_allowlist(),
                 'content_meta_inventory' => Utils::get_theme_meta_key_inventory(),
+                'term_meta_inventory' => Utils::get_term_meta_key_inventory(),
                 'content_meta_write_policy' => Content_Routes::describe_meta_write_policy(),
                 'editables_manifest' => '/wp-json/' . self::NS . '/editables',
                 'editables_values' => '/wp-json/' . self::NS . '/editables/values',

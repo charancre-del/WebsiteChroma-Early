@@ -198,6 +198,8 @@ class Utils
         return self::normalize_allowlist(array_merge(
             $defaults,
             self::discover_theme_option_keys(),
+            self::discover_customizer_option_keys(),
+            self::discover_registered_option_keys(),
             $saved
         ));
     }
@@ -707,16 +709,41 @@ class Utils
         return [
             'exact' => self::normalize_allowlist(array_merge(
                 $surfaces['meta'],
-                self::discover_registered_post_meta_keys()
+                self::discover_registered_post_meta_keys(),
+                self::discover_existing_public_post_meta_keys()
             )),
             'patterns' => $surfaces['meta_patterns'],
         ];
+    }
+
+    public static function get_customizer_option_allowlist(): array
+    {
+        return self::normalize_allowlist(self::discover_customizer_option_keys());
+    }
+
+    public static function get_term_meta_key_inventory(): array
+    {
+        return self::normalize_allowlist(array_merge(
+            [
+                'region_color_bg',
+                'region_color_text',
+                'region_color_border',
+            ],
+            self::discover_registered_term_meta_keys(),
+            self::discover_existing_public_term_meta_keys()
+        ));
     }
 
     private static function discover_theme_mod_keys(): array
     {
         $surfaces = self::discover_theme_surfaces();
         return $surfaces['theme_mods'];
+    }
+
+    private static function discover_customizer_option_keys(): array
+    {
+        $surfaces = self::discover_theme_surfaces();
+        return $surfaces['customizer_options'];
     }
 
     private static function discover_theme_option_keys(): array
@@ -737,6 +764,7 @@ class Utils
             'meta' => [],
             'meta_patterns' => [],
             'theme_mods' => [],
+            'customizer_options' => [],
             'options' => [],
         ];
 
@@ -747,6 +775,7 @@ class Utils
         $meta = [];
         $meta_patterns = [];
         $theme_mods = [];
+        $customizer_options = [];
         $options = [];
 
         foreach (self::discover_surface_scan_roots() as $root) {
@@ -783,9 +812,10 @@ class Utils
                     '/^(about_|careers_|contact_|curriculum_|employers_|home_|parents_|privacy_|stories_|program_|location_|city_|schema_|meta_|alternate_|_earlystart_|seo_llm_|earlystart_|_gmb_|_career_|_author_|_yoast_)/'
                 );
                 $ignored_patterns = [];
+                self::collect_customizer_setting_keys($contents, $theme_mods, $customizer_options);
                 self::collect_regex_keys(
                     $contents,
-                    '/(?:add_setting|get_theme_mod|set_theme_mod|earlystart_get_theme_mod)\s*\(\s*([\'"])(.*?)\1/s',
+                    '/(?:get_theme_mod|set_theme_mod|earlystart_get_theme_mod)\s*\(\s*([\'"])(.*?)\1/s',
                     $theme_mods,
                     $ignored_patterns
                 );
@@ -813,6 +843,7 @@ class Utils
             'meta' => self::normalize_allowlist(array_keys($meta)),
             'meta_patterns' => self::normalize_allowlist(array_keys($meta_patterns)),
             'theme_mods' => self::normalize_allowlist(array_keys($theme_mods)),
+            'customizer_options' => self::normalize_allowlist(array_keys($customizer_options)),
             'options' => self::normalize_allowlist(array_keys($options)),
         ];
 
@@ -870,6 +901,188 @@ class Utils
         }
 
         return self::normalize_allowlist($keys);
+    }
+
+    private static function discover_registered_term_meta_keys(): array
+    {
+        if (!function_exists('get_registered_meta_keys') || !function_exists('get_taxonomies')) {
+            return [];
+        }
+
+        $keys = [];
+        foreach (get_taxonomies(['public' => true], 'names') as $taxonomy) {
+            $registered = get_registered_meta_keys('term', (string) $taxonomy);
+            if (!is_array($registered)) {
+                continue;
+            }
+
+            foreach (array_keys($registered) as $key) {
+                $keys[] = (string) $key;
+            }
+        }
+
+        return self::normalize_allowlist($keys);
+    }
+
+    private static function discover_registered_option_keys(): array
+    {
+        global $wp_registered_settings;
+
+        if (!is_array($wp_registered_settings)) {
+            return [];
+        }
+
+        $keys = [];
+        foreach (array_keys($wp_registered_settings) as $key) {
+            if (is_string($key) && preg_match('/^(blogname|blogdescription|show_on_front|page_on_front|page_for_posts|earlystart_|chroma_)/', $key)) {
+                $keys[] = $key;
+            }
+        }
+
+        return self::normalize_allowlist($keys);
+    }
+
+    private static function discover_existing_public_post_meta_keys(): array
+    {
+        global $wpdb;
+
+        if (!isset($wpdb) || !$wpdb instanceof \wpdb || !function_exists('get_post_types')) {
+            return [];
+        }
+
+        $post_types = get_post_types(['public' => true], 'names');
+        if (empty($post_types)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($post_types), '%s'));
+        $sql = "SELECT DISTINCT pm.meta_key
+            FROM {$wpdb->postmeta} pm
+            INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+            WHERE p.post_type IN ({$placeholders})
+            AND pm.meta_key <> ''
+            ORDER BY pm.meta_key ASC
+            LIMIT 1000";
+
+        $keys = $wpdb->get_col($wpdb->prepare($sql, array_values($post_types)));
+        if (!is_array($keys)) {
+            return [];
+        }
+
+        return self::normalize_allowlist(array_filter(array_map('strval', $keys), static function (string $key): bool {
+            return self::is_editable_post_meta_key($key);
+        }));
+    }
+
+    private static function discover_existing_public_term_meta_keys(): array
+    {
+        global $wpdb;
+
+        if (!isset($wpdb) || !$wpdb instanceof \wpdb || !function_exists('get_taxonomies')) {
+            return [];
+        }
+
+        $taxonomies = get_taxonomies(['public' => true], 'names');
+        if (empty($taxonomies)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($taxonomies), '%s'));
+        $sql = "SELECT DISTINCT tm.meta_key
+            FROM {$wpdb->termmeta} tm
+            INNER JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = tm.term_id
+            WHERE tt.taxonomy IN ({$placeholders})
+            AND tm.meta_key <> ''
+            ORDER BY tm.meta_key ASC
+            LIMIT 500";
+
+        $keys = $wpdb->get_col($wpdb->prepare($sql, array_values($taxonomies)));
+        if (!is_array($keys)) {
+            return [];
+        }
+
+        return self::normalize_allowlist(array_filter(array_map('strval', $keys), static function (string $key): bool {
+            return self::is_editable_term_meta_key($key);
+        }));
+    }
+
+    private static function is_editable_post_meta_key(string $key): bool
+    {
+        if ($key === '') {
+            return false;
+        }
+
+        $blocked_prefixes = [
+            '_edit_',
+            '_enclose',
+            '_oembed_',
+            '_pingme',
+            '_wp_attached_',
+            '_wp_attachment_',
+            '_wp_old_',
+            '_wp_trash_',
+        ];
+
+        foreach ($blocked_prefixes as $prefix) {
+            if (strpos($key, $prefix) === 0) {
+                return false;
+            }
+        }
+
+        if (in_array($key, ['_thumbnail_id', '_wp_page_template'], true)) {
+            return false;
+        }
+
+        if ($key[0] !== '_') {
+            return true;
+        }
+
+        return (bool) preg_match('/^_(earlystart|yoast|gmb|career|author)_/', $key);
+    }
+
+    private static function is_editable_term_meta_key(string $key): bool
+    {
+        if ($key === '') {
+            return false;
+        }
+
+        if ($key[0] !== '_') {
+            return true;
+        }
+
+        return strpos($key, '_earlystart_') === 0;
+    }
+
+    private static function collect_customizer_setting_keys(string $contents, array &$theme_mods, array &$customizer_options): void
+    {
+        if (!preg_match_all('/add_setting\s*\(\s*([\'"])(.*?)\1/s', $contents, $matches, PREG_OFFSET_CAPTURE)) {
+            return;
+        }
+
+        foreach ((array) ($matches[2] ?? []) as $match) {
+            $key = trim((string) ($match[0] ?? ''));
+            $offset = (int) ($match[1] ?? 0);
+
+            if ($key === '' || strpos($key, '<?php') !== false || strpos($key, '?>') !== false) {
+                continue;
+            }
+
+            $snippet = substr($contents, $offset, 1800);
+            $next_control = strpos($snippet, 'add_control');
+            if ($next_control !== false) {
+                $snippet = substr($snippet, 0, $next_control);
+            }
+
+            if (preg_match('/[\'"]type[\'"]\s*=>\s*[\'"]option[\'"]/', $snippet)) {
+                $customizer_options[$key] = true;
+                unset($theme_mods[$key]);
+                continue;
+            }
+
+            if (!isset($customizer_options[$key])) {
+                $theme_mods[$key] = true;
+            }
+        }
     }
 
     private static function collect_regex_keys(

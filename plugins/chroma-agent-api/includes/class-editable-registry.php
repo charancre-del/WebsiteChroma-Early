@@ -565,6 +565,20 @@ class Editable_Registry
 
         self::add_global_setting_fields($fields);
 
+        foreach (Utils::get_customizer_option_allowlist() as $key) {
+            self::add_field($fields, [
+                'id' => 'customizer.option.' . $key,
+                'label' => self::label_from_key($key),
+                'group' => 'customizer',
+                'type' => self::guess_type($key),
+                'sanitize' => self::guess_sanitizer($key),
+                'storage' => ['type' => 'option', 'key' => $key],
+                'read_scope' => 'read:theme',
+                'write_scope' => 'write:theme',
+                'multilingual_variant' => substr($key, -3) === '_es',
+            ]);
+        }
+
         foreach (Utils::get_theme_mod_allowlist() as $key) {
             self::add_field($fields, [
                 'id' => 'theme.mod.' . $key,
@@ -727,7 +741,7 @@ class Editable_Registry
             ]);
         }
 
-        foreach (['region_color_bg', 'region_color_text', 'region_color_border'] as $key) {
+        foreach (Utils::get_term_meta_key_inventory() as $key) {
             self::add_field($fields, [
                 'id' => 'taxonomy.meta.' . $key,
                 'label' => self::label_from_key($key),
@@ -791,6 +805,11 @@ class Editable_Registry
             'canonical_write_path' => self::VALUE_ROUTE,
             'read_method' => 'GET',
             'write_method' => 'PATCH',
+            'methods' => [
+                'read' => 'GET',
+                'write' => 'PATCH',
+                'dry_run' => 'PATCH',
+            ],
             'writable' => true,
         ], $field);
 
