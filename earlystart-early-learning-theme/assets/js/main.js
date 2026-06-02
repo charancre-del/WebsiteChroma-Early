@@ -19,9 +19,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
+  const hasLucideIcons = () => !!document.querySelector('[data-lucide]');
+
   const loadLucide = () => {
     if (typeof lucide !== 'undefined') {
       return Promise.resolve(lucide);
+    }
+
+    if (!hasLucideIcons()) {
+      return Promise.resolve(null);
     }
 
     if (lucideLoadPromise) {
@@ -45,6 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const refreshIcons = () => {
+    if (!hasLucideIcons() && typeof lucide === 'undefined') {
+      return;
+    }
+
     onIdle(() => {
       loadLucide().then((icons) => {
         if (icons && typeof icons.createIcons === 'function') {
