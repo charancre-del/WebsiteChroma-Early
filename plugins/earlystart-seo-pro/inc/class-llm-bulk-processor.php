@@ -16,6 +16,8 @@ class earlystart_LLM_Bulk_Processor
     const QUEUE_OPTION = 'earlystart_llm_bulk_queue';
     const STATUS_OPTION = 'earlystart_llm_bulk_status';
     const CRON_HOOK = 'earlystart_llm_process_queue';
+    const STALE_PROCESSING_SECONDS = 10 * MINUTE_IN_SECONDS;
+    const MAX_PROCESSING_ATTEMPTS = 3;
     
     public function __construct() {
         // Register cron hook
@@ -69,6 +71,8 @@ class earlystart_LLM_Bulk_Processor
             'total' => count($queue),
             'completed' => $this->count_queue_status($queue, 'completed'),
             'failed' => $this->count_queue_status($queue, 'failed'),
+            'pending' => $this->count_queue_status($queue, 'pending'),
+            'processing' => $this->count_queue_status($queue, 'processing'),
             'in_progress' => true,
             'started_at' => !empty($existing_status['in_progress']) && !empty($existing_status['started_at'])
                 ? $existing_status['started_at']
@@ -94,6 +98,9 @@ class earlystart_LLM_Bulk_Processor
             $this->mark_complete();
             return;
         }
+
+        $queue = $this->recover_stale_processing_items($queue);
+        $this->sync_status_counts($queue);
         
         // Find next pending item
         $next_index = null;
@@ -105,12 +112,21 @@ class earlystart_LLM_Bulk_Processor
         }
         
         if ($next_index === null) {
+            if ($this->count_queue_status($queue, 'processing') > 0) {
+                if (!wp_next_scheduled(self::CRON_HOOK)) {
+                    wp_schedule_single_event(time() + 60, self::CRON_HOOK);
+                }
+                return;
+            }
+
             $this->mark_complete();
             return;
         }
         
         $item = $queue[$next_index];
         $queue[$next_index]['status'] = 'processing';
+        $queue[$next_index]['processing_started_at'] = current_time('timestamp');
+        $queue[$next_index]['attempts'] = absint($queue[$next_index]['attempts'] ?? 0) + 1;
         update_option(self::QUEUE_OPTION, $queue);
         
         // Process the item
@@ -119,18 +135,19 @@ class earlystart_LLM_Bulk_Processor
         // Update queue
         $queue[$next_index]['status'] = $success ? 'completed' : 'failed';
         $queue[$next_index]['completed_at'] = current_time('mysql');
+        unset($queue[$next_index]['processing_started_at']);
         update_option(self::QUEUE_OPTION, $queue);
         
-        // Update status
-        $status = get_option(self::STATUS_OPTION, []);
-        if ($success) {
-            $status['completed'] = ($status['completed'] ?? 0) + 1;
-        } else {
-            $status['failed'] = ($status['failed'] ?? 0) + 1;
-        }
-        update_option(self::STATUS_OPTION, $status);
+        $this->sync_status_counts($queue);
 
         if (!$this->has_pending_items($queue)) {
+            if ($this->count_queue_status($queue, 'processing') > 0) {
+                if (!wp_next_scheduled(self::CRON_HOOK)) {
+                    wp_schedule_single_event(time() + 60, self::CRON_HOOK);
+                }
+                return;
+            }
+
             $this->mark_complete();
             return;
         }
@@ -272,6 +289,8 @@ class earlystart_LLM_Bulk_Processor
     private function mark_complete() {
         $status = get_option(self::STATUS_OPTION, []);
         $status['in_progress'] = false;
+        $status['pending'] = 0;
+        $status['processing'] = 0;
         $status['completed_at'] = current_time('mysql');
         update_option(self::STATUS_OPTION, $status);
         delete_option(self::QUEUE_OPTION);
@@ -299,6 +318,63 @@ class earlystart_LLM_Bulk_Processor
     }
 
     /**
+     * Requeue or fail processing rows that were abandoned by an interrupted cron run.
+     *
+     * @param array $queue Queue rows.
+     * @return array
+     */
+    private function recover_stale_processing_items($queue) {
+        $changed = false;
+        $now = current_time('timestamp');
+
+        foreach ((array) $queue as $index => $item) {
+            if (($item['status'] ?? '') !== 'processing') {
+                continue;
+            }
+
+            $started_at = absint($item['processing_started_at'] ?? 0);
+            if (!$started_at || ($now - $started_at) < self::STALE_PROCESSING_SECONDS) {
+                continue;
+            }
+
+            $attempts = absint($item['attempts'] ?? 1);
+            if ($attempts >= self::MAX_PROCESSING_ATTEMPTS) {
+                $queue[$index]['status'] = 'failed';
+                $queue[$index]['completed_at'] = current_time('mysql');
+                $queue[$index]['error'] = 'Processing timed out after repeated attempts.';
+            } else {
+                $queue[$index]['status'] = 'pending';
+            }
+
+            unset($queue[$index]['processing_started_at']);
+            $changed = true;
+        }
+
+        if ($changed) {
+            update_option(self::QUEUE_OPTION, $queue);
+        }
+
+        return $queue;
+    }
+
+    /**
+     * Keep progress counters aligned with queue row statuses.
+     *
+     * @param array $queue Queue rows.
+     * @return void
+     */
+    private function sync_status_counts($queue) {
+        $status = get_option(self::STATUS_OPTION, []);
+        $status['total'] = count((array) $queue);
+        $status['completed'] = $this->count_queue_status($queue, 'completed');
+        $status['failed'] = $this->count_queue_status($queue, 'failed');
+        $status['processing'] = $this->count_queue_status($queue, 'processing');
+        $status['pending'] = $this->count_queue_status($queue, 'pending');
+
+        update_option(self::STATUS_OPTION, $status);
+    }
+
+    /**
      * Determine whether any queue items remain pending.
      *
      * @param array $queue Queue rows.
@@ -322,6 +398,8 @@ class earlystart_LLM_Bulk_Processor
             'total' => 0,
             'completed' => 0,
             'failed' => 0,
+            'pending' => 0,
+            'processing' => 0,
             'in_progress' => false,
             'started_at' => '',
             'completed_at' => '',
@@ -346,6 +424,8 @@ class earlystart_LLM_Bulk_Processor
         
         $status = get_option(self::STATUS_OPTION, []);
         $status['in_progress'] = false;
+        $status['pending'] = 0;
+        $status['processing'] = 0;
         $status['cancelled'] = true;
         $status['cancelled_at'] = current_time('mysql');
         update_option(self::STATUS_OPTION, $status);
