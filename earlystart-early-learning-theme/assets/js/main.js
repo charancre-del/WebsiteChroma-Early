@@ -782,6 +782,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentIndex = 0;
     const totalSlides = slides.length;
     let autoplayInterval = null;
+    let isCarouselVisible = !('IntersectionObserver' in window);
 
     const goToSlide = (index) => {
       if (index < 0) index = totalSlides - 1;
@@ -830,7 +831,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Autoplay
     const startAutoplay = () => {
-      if (totalSlides > 1 && !autoplayInterval && shouldRunAutoplay()) {
+      if (totalSlides > 1 && isCarouselVisible && !autoplayInterval && shouldRunAutoplay()) {
         autoplayInterval = setInterval(nextSlide, 6000);
       }
     };
@@ -847,8 +848,26 @@ document.addEventListener('DOMContentLoaded', function () {
       startAutoplay();
     };
 
-    // Start autoplay on load
-    startAutoplay();
+    if ('IntersectionObserver' in window) {
+      const carouselObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.target !== reviewsCarousel) {
+            return;
+          }
+
+          isCarouselVisible = entry.isIntersecting;
+          if (isCarouselVisible) {
+            startAutoplay();
+          } else {
+            stopAutoplay();
+          }
+        });
+      }, { threshold: 0.15 });
+
+      carouselObserver.observe(reviewsCarousel);
+    } else {
+      startAutoplay();
+    }
 
     // Pause on hover
     reviewsCarousel.addEventListener('mouseenter', stopAutoplay);
@@ -917,6 +936,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentIndex = 0;
     const totalSlides = slides.length;
     let autoplayInterval = null;
+    let isCarouselVisible = !('IntersectionObserver' in window);
 
     const updateCarousel = (index) => {
       if (index < 0) index = totalSlides - 1;
@@ -968,7 +988,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Autoplay
     const startAutoplay = () => {
-      if (totalSlides > 1 && !autoplayInterval && shouldRunAutoplay()) {
+      if (totalSlides > 1 && isCarouselVisible && !autoplayInterval && shouldRunAutoplay()) {
         autoplayInterval = setInterval(nextSlide, 5000);
       }
     };
@@ -985,8 +1005,26 @@ document.addEventListener('DOMContentLoaded', function () {
       startAutoplay();
     };
 
-    // Start
-    startAutoplay();
+    if ('IntersectionObserver' in window) {
+      const carouselObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.target !== locationCarousel) {
+            return;
+          }
+
+          isCarouselVisible = entry.isIntersecting;
+          if (isCarouselVisible) {
+            startAutoplay();
+          } else {
+            stopAutoplay();
+          }
+        });
+      }, { threshold: 0.15 });
+
+      carouselObserver.observe(locationCarousel);
+    } else {
+      startAutoplay();
+    }
 
     // Pause on hover
     locationCarousel.addEventListener('mouseenter', stopAutoplay);
