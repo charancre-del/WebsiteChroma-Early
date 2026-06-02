@@ -336,9 +336,8 @@ class earlystart_LLM_Client
         }
 
         if (isset($_POST['api_key']) && trim((string) wp_unslash($_POST['api_key'])) !== '') {
-            $key = sanitize_text_field(wp_unslash($_POST['api_key']));
-            $encrypted_key = self::encrypt_api_key($key);
-            update_option(self::API_KEY_OPTION, $encrypted_key);
+            $key = self::sanitize_api_key_option(wp_unslash($_POST['api_key']));
+            update_option(self::API_KEY_OPTION, $key);
         }
         if (isset($_POST['model'])) {
             $model = trim(sanitize_text_field(wp_unslash($_POST['model'])));
@@ -347,8 +346,19 @@ class earlystart_LLM_Client
         if (isset($_POST['base_url'])) {
             $url = trim(esc_url_raw(wp_unslash($_POST['base_url'])));
             $url = $url !== '' ? rtrim($url, '/') : self::DEFAULT_GEMINI_BASE_URL;
+            if (
+                $url === ''
+                || strtolower((string) wp_parse_url($url, PHP_URL_SCHEME)) !== 'https'
+                || !wp_http_validate_url($url)
+            ) {
+                $url = self::DEFAULT_GEMINI_BASE_URL;
+            }
             update_option('earlystart_llm_base_url', $url);
         }
+
+        $this->api_key = self::get_api_key();
+        $this->model = self::get_configured_model();
+        $this->base_url = self::get_configured_base_url();
 
         $debug_msg = 'Settings saved.';
         if (isset($key)) {
