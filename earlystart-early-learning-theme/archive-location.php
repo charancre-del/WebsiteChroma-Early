@@ -83,6 +83,7 @@ $hero_badge_text = sprintf(
 					<i data-lucide="search" class="w-5 h-5 absolute left-6 top-1/2 -translate-y-1/2 text-stone-300"></i>
 					<input type="text" id="location-search"
 						placeholder="<?php esc_attr_e('Search by City or ZIP...', 'earlystart-early-learning'); ?>"
+						aria-label="<?php esc_attr_e('Search locations by city, clinic name, or ZIP code', 'earlystart-early-learning'); ?>"
 						class="w-full pl-14 pr-6 py-4 rounded-full focus:outline-none text-stone-900 bg-transparent" />
 				</div>
 				<div class="flex gap-2 p-1 overflow-x-auto no-scrollbar">
@@ -98,6 +99,7 @@ $hero_badge_text = sprintf(
 					<?php endforeach; ?>
 				</div>
 			</div>
+			<p id="location-results-status" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 		</div>
 	</section>
 
@@ -255,6 +257,17 @@ $hero_badge_text = sprintf(
 					wp_reset_postdata(); ?>
 				</div>
 			</div>
+			<div id="location-empty-state"
+				class="hidden rounded-[2rem] border border-stone-200 bg-white px-8 py-12 text-center shadow-sm"
+				aria-hidden="true">
+				<h2 class="text-2xl font-bold text-stone-900 mb-3">
+					<?php esc_html_e('No matching locations found', 'earlystart-early-learning'); ?>
+				</h2>
+				<p class="text-stone-700 max-w-xl mx-auto">
+					<?php esc_html_e('Try another city, ZIP code, or region to find nearby pediatric therapy support.', 'earlystart-early-learning'); ?>
+				</p>
+			</div>
+		</div>
 	</section>
 
 	<!-- Global CTA -->
@@ -295,6 +308,8 @@ $hero_badge_text = sprintf(
 		const cards = document.querySelectorAll('.location-card');
 		const buttons = document.querySelectorAll('.filter-btn');
 		const searchInput = document.getElementById('location-search');
+		const resultsStatus = document.getElementById('location-results-status');
+		const emptyState = document.getElementById('location-empty-state');
 
 		function setActiveButton(region) {
 			buttons.forEach(function (btn) {
@@ -309,6 +324,26 @@ $hero_badge_text = sprintf(
 			});
 		}
 
+		function setCardVisibility(card, isVisible) {
+			card.classList.toggle('hidden', !isVisible);
+			card.setAttribute('aria-hidden', isVisible ? 'false' : 'true');
+			if (isVisible) {
+				card.classList.add('fade-in-up');
+			}
+		}
+
+		function updateResultState(visibleCount) {
+			if (resultsStatus) {
+				resultsStatus.textContent = visibleCount === 1 ? '1 location found.' : visibleCount + ' locations found.';
+			}
+
+			if (emptyState) {
+				const isEmpty = visibleCount === 0;
+				emptyState.classList.toggle('hidden', !isEmpty);
+				emptyState.setAttribute('aria-hidden', isEmpty ? 'false' : 'true');
+			}
+		}
+
 		function filterLocations(region) {
 			const selectedRegion = region || 'all';
 			if (searchInput) {
@@ -317,13 +352,15 @@ $hero_badge_text = sprintf(
 
 			setActiveButton(selectedRegion);
 
+			let visibleCount = 0;
 			cards.forEach(function (card) {
 				const isVisible = selectedRegion === 'all' || card.dataset.region === selectedRegion;
-				card.style.display = isVisible ? 'block' : 'none';
 				if (isVisible) {
-					card.classList.add('fade-in-up');
+					visibleCount++;
 				}
+				setCardVisibility(card, isVisible);
 			});
+			updateResultState(visibleCount);
 		}
 
 		buttons.forEach(function (button) {
@@ -334,15 +371,23 @@ $hero_badge_text = sprintf(
 
 		if (searchInput) {
 			searchInput.addEventListener('input', function (e) {
-				const term = e.target.value.toLowerCase();
-				setActiveButton('');
+				const term = e.target.value.trim().toLowerCase();
+				setActiveButton(term === '' ? 'all' : '');
 
+				let visibleCount = 0;
 				cards.forEach(function (card) {
 					const text = (card.dataset.name || '').toLowerCase();
-					card.style.display = text.includes(term) ? 'block' : 'none';
+					const isVisible = term === '' || text.includes(term);
+					if (isVisible) {
+						visibleCount++;
+					}
+					setCardVisibility(card, isVisible);
 				});
+				updateResultState(visibleCount);
 			});
 		}
+
+		updateResultState(cards.length);
 	});
 </script>
 
