@@ -332,7 +332,7 @@ Return JSON with keys: alt_text, caption, keywords";
 
             $model = class_exists('earlystart_LLM_Client')
                 ? earlystart_LLM_Client::get_configured_model()
-                : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gemini-3.5-flash');
+                : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gemini-2.5-flash');
             $response = wp_remote_post(rtrim($base_url, '/') . '/models/' . rawurlencode($model) . ':generateContent', array(
                 'headers' => array(
                     'Content-Type' => 'application/json',

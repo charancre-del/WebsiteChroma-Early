@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 class earlystart_LLM_Client
 {
-    public const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash';
+    public const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
     public const DEFAULT_GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
     private const API_KEY_OPTION = 'earlystart_openai_api_key';
     private const ENC_PREFIX = 'enc:v1:';
@@ -151,7 +151,7 @@ class earlystart_LLM_Client
     }
 
     /**
-     * Detect Gemini model IDs that are already shut down or legacy defaults.
+     * Detect Gemini model IDs that are already shut down, legacy defaults, or unsupported aliases.
      */
     public static function is_deprecated_gemini_model($model)
     {
@@ -169,6 +169,8 @@ class earlystart_LLM_Client
             'gemini-1.5-flash',
             'gemini-1.5-pro',
             'gemini-1.5-flash-8b',
+            'gemini-3.5-flash',
+            'gemini-3.1-flash-lite',
         ];
 
         return in_array($model, $deprecated_models, true);
@@ -234,7 +236,7 @@ class earlystart_LLM_Client
                     <td>
                         <input type="text" id="earlystart_llm_model" value="<?php echo esc_attr($model); ?>"
                             class="regular-text" placeholder="<?php echo esc_attr(self::DEFAULT_GEMINI_MODEL); ?>">
-                        <p class="description">e.g., <code><?php echo esc_html(self::DEFAULT_GEMINI_MODEL); ?></code>, <code>gemini-3.1-flash-lite</code>, or an OpenAI-compatible model when using a non-Gemini base URL.
+                        <p class="description">e.g., <code><?php echo esc_html(self::DEFAULT_GEMINI_MODEL); ?></code>, <code>gemini-2.5-flash-lite</code>, or an OpenAI-compatible model when using a non-Gemini base URL.
                         </p>
                     </td>
                 </tr>
