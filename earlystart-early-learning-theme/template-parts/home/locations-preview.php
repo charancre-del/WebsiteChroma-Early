@@ -115,7 +115,11 @@ $has_map = !empty($locations_data['map_points']);
                                             <?php if ($image): ?>
                                                 <img src="<?php echo esc_url($image); ?>"
                                                     alt="<?php echo esc_attr($location['title']); ?>"
-                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                    width="80"
+                                                    height="80"
+                                                    loading="lazy"
+                                                    decoding="async">
                                             <?php else: ?>
                                                 <div class="w-full h-full flex items-center justify-center <?php echo esc_attr($designation === 'clinic' ? 'bg-rose-50 text-rose-300' : 'bg-blue-50 text-blue-300'); ?>">
                                                     <i data-lucide="<?php echo esc_attr($designation === 'clinic' ? 'building-2' : 'school'); ?>" class="w-8 h-8"></i>

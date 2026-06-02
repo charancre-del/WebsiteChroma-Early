@@ -56,20 +56,20 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden relative">
                             <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1544717305-27a734ef202e', 100, 100, 60)); ?>"
-                                class="absolute inset-0 w-full h-full object-cover" alt="User" width="48" height="48"
-                                loading="lazy">
+                                class="absolute inset-0 w-full h-full object-cover" alt="<?php esc_attr_e('Smiling Chroma Early Start family member', 'earlystart-early-learning'); ?>" width="48" height="48"
+                                loading="lazy" decoding="async">
                         </div>
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden relative">
                             <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1544005313-94ddf0286df2', 100, 100, 60)); ?>"
-                                class="absolute inset-0 w-full h-full object-cover" alt="User" width="48" height="48"
-                                loading="lazy">
+                                class="absolute inset-0 w-full h-full object-cover" alt="<?php esc_attr_e('Parent from the Chroma Early Start community', 'earlystart-early-learning'); ?>" width="48" height="48"
+                                loading="lazy" decoding="async">
                         </div>
                         <div
                             class="w-12 h-12 rounded-full border-4 border-white bg-stone-100 flex items-center justify-center overflow-hidden relative">
                             <img src="<?php echo esc_url(earlystart_get_optimized_unsplash_url('https://images.unsplash.com/photo-1548142813-c348350df52b', 100, 100, 60)); ?>"
-                                class="absolute inset-0 w-full h-full object-cover" alt="User" width="48" height="48"
-                                loading="lazy">
+                                class="absolute inset-0 w-full h-full object-cover" alt="<?php esc_attr_e('Child supported by Chroma Early Start care', 'earlystart-early-learning'); ?>" width="48" height="48"
+                                loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="text-sm">

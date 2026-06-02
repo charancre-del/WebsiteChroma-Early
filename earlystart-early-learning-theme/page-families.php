@@ -97,7 +97,7 @@ while (have_posts()):
                 <div class="grid lg:grid-cols-2 gap-12 items-center mb-12">
                     <div class="rounded-[2.5rem] overflow-hidden bg-stone-100 h-[260px] sm:h-[320px] lg:h-[360px] border border-stone-100 shadow-sm relative">
                         <?php if ($parents_events_image): ?>
-                            <img src="<?php echo esc_url($parents_events_image); ?>" alt="<?php echo esc_attr($parents_events_title); ?>" class="absolute inset-0 w-full h-full object-cover object-center">
+                            <img src="<?php echo esc_url($parents_events_image); ?>" alt="<?php echo esc_attr($parents_events_title); ?>" class="absolute inset-0 w-full h-full object-cover object-center" width="1200" height="720" loading="lazy" decoding="async">
                             <div class="absolute inset-0 bg-stone-900/35"></div>
                         <?php endif; ?>
                         <div class="relative z-10 p-6 sm:p-10 h-full flex flex-col justify-end <?php echo $parents_events_image ? 'text-white' : 'text-stone-900'; ?>">
@@ -135,7 +135,7 @@ while (have_posts()):
                         <p class="text-stone-700 leading-relaxed mb-6"><?php echo esc_html($parents_nutrition_description); ?></p>
                         <?php if ($parents_nutrition_image): ?>
                             <div class="rounded-3xl overflow-hidden mb-6">
-                                <img src="<?php echo esc_url($parents_nutrition_image); ?>" alt="<?php echo esc_attr($parents_nutrition_title); ?>" class="w-full h-56 sm:h-64 md:h-72 object-cover object-center">
+                                <img src="<?php echo esc_url($parents_nutrition_image); ?>" alt="<?php echo esc_attr($parents_nutrition_title); ?>" class="w-full h-56 sm:h-64 md:h-72 object-cover object-center" width="800" height="500" loading="lazy" decoding="async">
                             </div>
                         <?php endif; ?>
                         <div class="space-y-3">
