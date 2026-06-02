@@ -22,7 +22,7 @@ class Key_Store
 
         $table = Utils::table('keys');
         $label = sanitize_text_field($label);
-        $scopes = Utils::normalize_scopes($scopes);
+        $scopes = Utils::complete_legacy_editable_scopes($scopes);
 
         if ($label === '') {
             return new WP_Error('caa_invalid_label', 'Key label is required.', ['status' => 400]);
@@ -146,7 +146,16 @@ class Key_Store
         $scopes = [];
         $decoded_scopes = json_decode((string) ($row['scopes_json'] ?? '[]'), true);
         if (is_array($decoded_scopes)) {
-            $scopes = Utils::normalize_scopes($decoded_scopes);
+            $scopes = Utils::complete_legacy_editable_scopes($decoded_scopes);
+            if ($scopes !== Utils::normalize_scopes($decoded_scopes)) {
+                $wpdb->update(
+                    $table,
+                    ['scopes_json' => wp_json_encode($scopes)],
+                    ['id' => $id],
+                    ['%s'],
+                    ['%d']
+                );
+            }
         }
 
         self::touch_last_used($id, $ip);
@@ -245,7 +254,7 @@ class Key_Store
                 $scopes = [];
             }
 
-            $scopes = Utils::normalize_scopes($scopes);
+            $scopes = Utils::complete_legacy_editable_scopes($scopes);
             if (empty($scopes)) {
                 return new WP_Error('caa_invalid_scopes', 'At least one scope is required.', ['status' => 400]);
             }
@@ -389,7 +398,7 @@ class Key_Store
     private static function prepare_public_row(array $row): array
     {
         $decoded = json_decode((string) ($row['scopes_json'] ?? '[]'), true);
-        $row['scopes'] = is_array($decoded) ? Utils::normalize_scopes($decoded) : [];
+        $row['scopes'] = is_array($decoded) ? Utils::complete_legacy_editable_scopes($decoded) : [];
         unset($row['scopes_json']);
 
         return $row;

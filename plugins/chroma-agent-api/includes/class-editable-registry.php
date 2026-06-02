@@ -1102,6 +1102,36 @@ class Editable_Registry
         }
 
         $field['id'] = $id;
+        $field['editability'] = 'read_write';
+        $field['target']['requires'] = array_values(array_unique((array) ($field['target']['requires'] ?? [])));
+        $field['read_contract'] = [
+            'method' => 'GET',
+            'route' => self::VALUE_ROUTE,
+            'query' => [
+                'ids' => [$id],
+                'target' => $field['target'],
+            ],
+        ];
+        $field['write_contract'] = [
+            'method' => 'PATCH',
+            'route' => self::VALUE_ROUTE,
+            'body' => [
+                'target' => $field['target'],
+                'updates' => [
+                    $id => '<' . (string) ($field['type'] ?? 'mixed') . ' value>',
+                ],
+                'dry_run' => true,
+                'strict_write' => true,
+            ],
+            'per_field_target_body' => [
+                'updates' => [
+                    $id => [
+                        'value' => '<' . (string) ($field['type'] ?? 'mixed') . ' value>',
+                        'target' => $field['target'],
+                    ],
+                ],
+            ],
+        ];
         $fields[$id] = $field;
     }
 

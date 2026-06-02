@@ -147,6 +147,7 @@ class Editables_Routes
     public static function get_values(WP_REST_Request $request)
     {
         $target = self::target_from_request($request);
+        $target_overrides = self::field_targets_from_request($request);
         $ids = self::ids_from_request($request);
         if (empty($ids)) {
             $ids = Editable_Registry::field_ids_for_target($target);
@@ -172,18 +173,20 @@ class Editables_Routes
                 continue;
             }
 
-            $target_errors = Editable_Registry::target_errors($field, $target);
+            $field_target = self::target_for_field($id, $target, $target_overrides);
+            $target_errors = Editable_Registry::target_errors($field, $field_target);
             if (!empty($target_errors)) {
                 $errors[$id] = $target_errors;
                 continue;
             }
 
-            $data[$id] = Editable_Registry::read_value($field, $target, true);
+            $data[$id] = Editable_Registry::read_value($field, $field_target, true);
         }
 
         return rest_ensure_response([
             'success' => empty($errors),
             'target' => $target,
+            'field_targets' => $target_overrides,
             'blocked_fields' => $blocked,
             'errors' => $errors,
             'data' => $data,
@@ -194,6 +197,7 @@ class Editables_Routes
     {
         $payload = self::payload($request);
         $target = isset($payload['target']) && is_array($payload['target']) ? self::normalize_target($payload['target']) : self::target_from_request($request);
+        $target_overrides = self::field_targets_from_request($request);
         $updates = isset($payload['updates']) && is_array($payload['updates']) ? $payload['updates'] : [];
         $dry_run = Utils::truthy($payload['dry_run'] ?? false);
         $strict_write = Utils::truthy($payload['strict_write'] ?? false);
@@ -205,12 +209,13 @@ class Editables_Routes
         $before = [];
         $after = [];
         $live = [];
+        $field_targets = [];
         $blocked = [];
         $errors = [];
         $snapshot_ids = [];
         $write_mismatches = [];
 
-        foreach ($updates as $id => $value) {
+        foreach ($updates as $id => $raw_update) {
             $id = trim((string) $id);
             $field = Editable_Registry::get_field($id);
             if (!$field) {
@@ -227,16 +232,20 @@ class Editables_Routes
                 continue;
             }
 
-            $target_errors = Editable_Registry::target_errors($field, $target);
+            [$value, $field_target] = self::unpack_update($id, $raw_update, $target);
+            $field_target = self::target_for_field($id, $field_target, $target_overrides);
+            $field_targets[$id] = $field_target;
+
+            $target_errors = Editable_Registry::target_errors($field, $field_target);
             if (!empty($target_errors)) {
                 $errors[$id] = $target_errors;
                 continue;
             }
 
-            $is_sensitive = Editable_Registry::field_is_sensitive($field, $target);
-            $before_raw = Editable_Registry::read_value($field, $target, false);
+            $is_sensitive = Editable_Registry::field_is_sensitive($field, $field_target);
+            $before_raw = Editable_Registry::read_value($field, $field_target, false);
             $before[$id] = $is_sensitive ? '[REDACTED]' : $before_raw;
-            $sanitized = Editable_Registry::sanitize_value_for_target($field, $target, $value);
+            $sanitized = Editable_Registry::sanitize_value_for_target($field, $field_target, $value);
             $after[$id] = $is_sensitive ? '[REDACTED]' : $sanitized;
 
             if ($dry_run) {
@@ -254,14 +263,14 @@ class Editables_Routes
                 );
             }
 
-            $result = Editable_Registry::write_value($field, $target, $value);
+            $result = Editable_Registry::write_value($field, $field_target, $value);
             if (is_wp_error($result)) {
                 $errors[$id] = $result->get_error_message();
                 continue;
             }
 
-            $live_value = Editable_Registry::read_value($field, $target, false);
-            $live[$id] = $is_sensitive ? '[REDACTED]' : Editable_Registry::read_value($field, $target, true);
+            $live_value = Editable_Registry::read_value($field, $field_target, false);
+            $live[$id] = $is_sensitive ? '[REDACTED]' : Editable_Registry::read_value($field, $field_target, true);
 
             if ($strict_write && !$is_sensitive && !self::values_equivalent($sanitized, $live_value)) {
                 $write_mismatches[$id] = [
@@ -304,6 +313,7 @@ class Editables_Routes
             'success' => empty($errors) && empty($blocked),
             'dry_run' => $dry_run,
             'target' => $target,
+            'field_targets' => $field_targets,
             'blocked_fields' => $blocked,
             'errors' => $errors,
             'snapshot_ids' => $snapshot_ids,
@@ -692,6 +702,20 @@ class Editables_Routes
             return array_values(array_filter(array_map('strval', $ids)));
         }
 
+        $fields = $request->get_param('fields');
+        if (is_array($fields)) {
+            $out = [];
+            foreach ($fields as $field) {
+                if (is_array($field) && isset($field['id'])) {
+                    $out[] = (string) $field['id'];
+                } elseif (is_string($field)) {
+                    $out[] = $field;
+                }
+            }
+
+            return array_values(array_filter(array_map('trim', $out)));
+        }
+
         return [];
     }
 
@@ -705,9 +729,70 @@ class Editables_Routes
         return is_array($payload) ? $payload : [];
     }
 
+    private static function field_targets_from_request(WP_REST_Request $request): array
+    {
+        $payload = self::payload($request);
+        $targets = $payload['targets'] ?? $request->get_param('targets');
+
+        if (is_string($targets) && $targets !== '') {
+            $decoded = json_decode($targets, true);
+            $targets = is_array($decoded) ? $decoded : [];
+        }
+
+        if (!is_array($targets)) {
+            $targets = [];
+        }
+
+        $fields = $payload['fields'] ?? $request->get_param('fields');
+        if (is_array($fields)) {
+            foreach ($fields as $field) {
+                if (!is_array($field) || empty($field['id']) || !isset($field['target']) || !is_array($field['target'])) {
+                    continue;
+                }
+
+                $targets[(string) $field['id']] = $field['target'];
+            }
+        }
+
+        $out = [];
+        foreach ($targets as $id => $target) {
+            if (!is_array($target)) {
+                continue;
+            }
+
+            $id = trim((string) $id);
+            if ($id !== '') {
+                $out[$id] = self::normalize_target($target);
+            }
+        }
+
+        return $out;
+    }
+
     private static function target_from_request(WP_REST_Request $request): array
     {
         return self::normalize_target($request->get_params());
+    }
+
+    private static function target_for_field(string $id, array $base_target, array $target_overrides): array
+    {
+        if (!isset($target_overrides[$id]) || !is_array($target_overrides[$id])) {
+            return $base_target;
+        }
+
+        return array_merge($base_target, $target_overrides[$id]);
+    }
+
+    private static function unpack_update(string $id, $raw_update, array $base_target): array
+    {
+        if (is_array($raw_update) && array_key_exists('target', $raw_update) && is_array($raw_update['target']) && array_key_exists('value', $raw_update)) {
+            return [
+                $raw_update['value'],
+                array_merge($base_target, self::normalize_target($raw_update['target'])),
+            ];
+        }
+
+        return [$raw_update, $base_target];
     }
 
     private static function normalize_target(array $input): array
@@ -720,7 +805,7 @@ class Editables_Routes
         }
         foreach (['meta_key', 'option_key', 'theme_mod_key'] as $key) {
             if (isset($input[$key]) && $input[$key] !== '') {
-                $target[$key] = sanitize_key((string) $input[$key]);
+                $target[$key] = sanitize_text_field((string) $input[$key]);
             }
         }
         if (isset($input['taxonomy']) && $input['taxonomy'] !== '') {
