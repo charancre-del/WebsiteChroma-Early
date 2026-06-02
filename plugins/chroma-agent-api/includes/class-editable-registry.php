@@ -1857,8 +1857,12 @@ class Editable_Registry
             'wp_kses_post' => ['html', 'html'],
             'earlystart_sanitize_checkbox' => ['boolean', 'bool'],
             'earlystart_contact_sanitize_json' => ['array', 'array'],
+            'earlystart_contact_sanitize_webhook_url' => ['url', 'url'],
             'earlystart_career_sanitize_json' => ['array', 'array'],
+            'earlystart_career_sanitize_webhook_url' => ['url', 'url'],
             'earlystart_acquisition_sanitize_json' => ['array', 'array'],
+            'earlystart_acquisition_sanitize_webhook_url' => ['url', 'url'],
+            'earlystart_lead_log_sanitize_webhook_url' => ['url', 'url'],
         ];
 
         return $map[$callback] ?? null;
