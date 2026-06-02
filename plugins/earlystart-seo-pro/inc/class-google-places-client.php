@@ -23,6 +23,44 @@ class earlystart_Google_Places_Client
         add_action('wp_ajax_earlystart_sync_gmb_data', [$this, 'ajax_sync_gmb_data']);
         add_action('wp_ajax_earlystart_get_place_id', [$this, 'ajax_get_place_id']);
     }
+
+    /**
+     * Build strict request arguments for outbound Google/redirect calls.
+     */
+    private function remote_request_args($args = []) {
+        return array_merge([
+            'timeout' => 10,
+            'sslverify' => true,
+            'reject_unsafe_urls' => true,
+        ], $args);
+    }
+
+    /**
+     * Validate an outbound URL before WordPress opens a connection.
+     */
+    private function validate_remote_url($url, $allowed_hosts = []) {
+        $safe_url = esc_url_raw((string) $url);
+        if ($safe_url === '') {
+            return false;
+        }
+
+        if (strtolower((string) wp_parse_url($safe_url, PHP_URL_SCHEME)) !== 'https') {
+            return false;
+        }
+
+        if (function_exists('wp_http_validate_url') && !wp_http_validate_url($safe_url)) {
+            return false;
+        }
+
+        if (!empty($allowed_hosts)) {
+            $host = strtolower((string) wp_parse_url($safe_url, PHP_URL_HOST));
+            if (!in_array($host, $allowed_hosts, true)) {
+                return false;
+            }
+        }
+
+        return $safe_url;
+    }
     
     /**
      * Get Place ID from GMB URL or coordinates
@@ -99,10 +137,15 @@ class earlystart_Google_Places_Client
      * Follow g.page redirect to get final URL with Place ID
      */
     private function follow_gpage_redirect($url) {
-        $response = wp_remote_head($url, [
+        $safe_url = $this->validate_remote_url($url, ['g.page', 'www.g.page']);
+        if (!$safe_url) {
+            return false;
+        }
+
+        $response = wp_remote_head($safe_url, $this->remote_request_args([
             'redirection' => 0,
-            'timeout' => 10
-        ]);
+            'timeout' => 10,
+        ]));
         
         if (is_wp_error($response)) {
             return false;
@@ -124,14 +167,14 @@ class earlystart_Google_Places_Client
             return false;
         }
         
-        $query = urlencode($name . ' ' . $address);
-        $url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
-            . "?input={$query}"
-            . "&inputtype=textquery"
-            . "&fields=place_id"
-            . "&key={$this->api_key}";
+        $url = add_query_arg([
+            'input' => $name . ' ' . $address,
+            'inputtype' => 'textquery',
+            'fields' => 'place_id',
+            'key' => $this->api_key,
+        ], 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json');
         
-        $response = wp_remote_get($url, ['timeout' => 10]);
+        $response = wp_remote_get(esc_url_raw($url), $this->remote_request_args(['timeout' => 10]));
         
         if (is_wp_error($response)) {
             return false;
@@ -153,18 +196,25 @@ class earlystart_Google_Places_Client
         if (empty($this->api_key)) {
             return false;
         }
-        
-        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-            . "?location={$lat},{$lng}"
-            . "&radius=50"
-            . "&type=establishment"
-            . "&key={$this->api_key}";
-        
-        if ($name) {
-            $url .= "&keyword=" . urlencode($name);
+
+        if (!is_numeric($lat) || !is_numeric($lng)) {
+            return false;
         }
         
-        $response = wp_remote_get($url, ['timeout' => 10]);
+        $args = [
+            'location' => (float) $lat . ',' . (float) $lng,
+            'radius' => 50,
+            'type' => 'establishment',
+            'key' => $this->api_key,
+        ];
+
+        if ($name) {
+            $args['keyword'] = $name;
+        }
+
+        $url = add_query_arg($args, 'https://maps.googleapis.com/maps/api/place/nearbysearch/json');
+        
+        $response = wp_remote_get(esc_url_raw($url), $this->remote_request_args(['timeout' => 10]));
         
         if (is_wp_error($response)) {
             return false;
@@ -191,10 +241,11 @@ class earlystart_Google_Places_Client
             . 'rating,user_ratings_total,reviews,opening_hours,'
             . 'photos,price_level,business_status,geometry';
         
-        $url = "https://maps.googleapis.com/maps/api/place/details/json"
-            . "?place_id={$place_id}"
-            . "&fields={$fields}"
-            . "&key={$this->api_key}";
+        $url = add_query_arg([
+            'place_id' => sanitize_text_field($place_id),
+            'fields' => $fields,
+            'key' => $this->api_key,
+        ], 'https://maps.googleapis.com/maps/api/place/details/json');
         
         // Cache for 24 hours
         $cache_key = 'earlystart_gmb_' . md5($place_id);
@@ -203,7 +254,7 @@ class earlystart_Google_Places_Client
             return $cached;
         }
         
-        $response = wp_remote_get($url, ['timeout' => 15]);
+        $response = wp_remote_get(esc_url_raw($url), $this->remote_request_args(['timeout' => 15]));
         
         if (is_wp_error($response)) {
             return false;

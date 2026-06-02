@@ -38,6 +38,17 @@ class earlystart_LLM_Client
     }
 
     /**
+     * Build strict HTTP arguments for outbound LLM and page-context requests.
+     */
+    private static function remote_request_args($args = [])
+    {
+        return array_merge([
+            'sslverify' => true,
+            'reject_unsafe_urls' => true,
+        ], $args);
+    }
+
+    /**
      * AJAX: Fetch available models from Gemini API
      */
     public function ajax_fetch_available_models()
@@ -67,6 +78,8 @@ class earlystart_LLM_Client
         $response = wp_remote_get($url, [
             'timeout' => 15,
             'headers' => $headers,
+            'sslverify' => true,
+            'reject_unsafe_urls' => true,
         ]);
 
         if (is_wp_error($response)) {
@@ -167,7 +180,20 @@ class earlystart_LLM_Client
     public static function get_configured_base_url()
     {
         $base_url = trim((string) get_option('earlystart_llm_base_url', ''));
-        return $base_url !== '' ? rtrim($base_url, '/') : self::DEFAULT_GEMINI_BASE_URL;
+        if ($base_url === '') {
+            return self::DEFAULT_GEMINI_BASE_URL;
+        }
+
+        $safe_url = esc_url_raw($base_url);
+        if (
+            $safe_url === ''
+            || strtolower((string) wp_parse_url($safe_url, PHP_URL_SCHEME)) !== 'https'
+            || (function_exists('wp_http_validate_url') && !wp_http_validate_url($safe_url))
+        ) {
+            return self::DEFAULT_GEMINI_BASE_URL;
+        }
+
+        return rtrim($safe_url, '/');
     }
 
     /**
@@ -1032,7 +1058,7 @@ class earlystart_LLM_Client
         // 1. Try to get the live page content (if published)
         $permalink = get_permalink($post_id);
         if ($permalink && get_post_status($post_id) === 'publish') {
-            $response = wp_remote_get($permalink, ['timeout' => 5, 'sslverify' => true]);
+            $response = wp_remote_get($permalink, self::remote_request_args(['timeout' => 5]));
             if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
                 $body = wp_remote_retrieve_body($response);
                 // Extract main content or body text
@@ -1046,7 +1072,7 @@ class earlystart_LLM_Client
         $home_url = home_url('/');
         // Avoid fetching homepage if we just fetched it as the permalink
         if ($permalink !== $home_url) {
-            $response = wp_remote_get($home_url, ['timeout' => 5, 'sslverify' => true]);
+            $response = wp_remote_get($home_url, self::remote_request_args(['timeout' => 5]));
             if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
                 $body = wp_remote_retrieve_body($response);
                 $text = strip_tags($body);
@@ -1379,7 +1405,9 @@ class earlystart_LLM_Client
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $api_key
             ],
-            'timeout' => $timeout
+            'timeout' => $timeout,
+            'sslverify' => true,
+            'reject_unsafe_urls' => true,
         ]);
 
         if (is_wp_error($response)) {
@@ -1454,6 +1482,8 @@ class earlystart_LLM_Client
                 'x-goog-api-key' => $api_key,
             ],
             'timeout' => $timeout,
+            'sslverify' => true,
+            'reject_unsafe_urls' => true,
         ]);
 
         if (is_wp_error($response)) {
