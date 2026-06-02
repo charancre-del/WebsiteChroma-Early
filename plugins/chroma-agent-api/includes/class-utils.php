@@ -155,9 +155,50 @@ class Utils
         return $out;
     }
 
+    public static function scope_is_granted(string $required_scope, array $granted_scopes): bool
+    {
+        $required_scope = strtolower(trim($required_scope));
+        if ($required_scope === '') {
+            return true;
+        }
+
+        $granted_scopes = self::normalize_scopes($granted_scopes);
+        if (in_array($required_scope, $granted_scopes, true)) {
+            return true;
+        }
+
+        [$verb] = array_pad(explode(':', $required_scope, 2), 2, '');
+        if (!in_array($verb, ['read', 'write'], true)) {
+            return false;
+        }
+
+        $aliases = [
+            $verb . ':*',
+            $verb . ':all',
+            $verb . ':editables',
+            '*',
+        ];
+
+        return !empty(array_intersect($aliases, $granted_scopes));
+    }
+
+    public static function missing_scopes(array $required_scopes, array $granted_scopes): array
+    {
+        $missing = [];
+        foreach (self::normalize_scopes($required_scopes) as $scope) {
+            if (!self::scope_is_granted($scope, $granted_scopes)) {
+                $missing[] = $scope;
+            }
+        }
+
+        return $missing;
+    }
+
     public static function default_key_scopes(): array
     {
         return [
+            'read:editables',
+            'write:editables',
             'read:content',
             'write:content',
             'read:theme',

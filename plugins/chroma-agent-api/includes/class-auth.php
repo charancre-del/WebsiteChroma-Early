@@ -64,7 +64,7 @@ class Auth
         }
 
         $granted_scopes = is_array($verified['scopes'] ?? null) ? $verified['scopes'] : [];
-        $missing = array_diff($required_scopes, $granted_scopes);
+        $missing = Utils::missing_scopes($required_scopes, $granted_scopes);
 
         if (!empty($missing)) {
             $err = new WP_Error(

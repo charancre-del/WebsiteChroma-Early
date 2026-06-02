@@ -69,7 +69,7 @@ class Audit_Routes
             }
 
             $required_scope = sanitize_text_field((string) ($snapshot['scope'] ?? ''));
-            if (strpos($required_scope, 'write:') === 0 && !in_array($required_scope, $scopes, true)) {
+            if (strpos($required_scope, 'write:') === 0 && !Utils::scope_is_granted($required_scope, $scopes)) {
                 return new \WP_Error(
                     'caa_scope_denied',
                     'Rollback requires the original snapshot write scope: ' . $required_scope,
@@ -80,9 +80,9 @@ class Audit_Routes
             return true;
         }
 
-        $write_allowed = in_array('write:theme', $scopes, true)
-            || in_array('write:seo', $scopes, true)
-            || in_array('write:settings', $scopes, true);
+        $write_allowed = Utils::scope_is_granted('write:theme', $scopes)
+            || Utils::scope_is_granted('write:seo', $scopes)
+            || Utils::scope_is_granted('write:settings', $scopes);
         if (!$write_allowed) {
             return new \WP_Error('caa_scope_denied', 'Rollback requires write:theme, write:seo, or write:settings scope.', ['status' => 403]);
         }

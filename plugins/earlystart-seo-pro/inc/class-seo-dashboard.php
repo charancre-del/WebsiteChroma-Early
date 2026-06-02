@@ -3789,6 +3789,11 @@ class earlystart_SEO_Dashboard
 
             foreach ($posts as $post) {
                 $pid = $post->ID;
+
+                if (!earlystart_seo_can_edit_post($pid)) {
+                    continue;
+                }
+
                 $permalink = get_permalink($pid);
                 
                 // Feature 7 & 10: Use shared helper (Handles cache & retry & logging)

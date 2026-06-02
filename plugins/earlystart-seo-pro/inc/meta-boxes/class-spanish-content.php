@@ -685,7 +685,12 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         check_ajax_referer('earlystart_seo_nonce', 'nonce');
         if (!current_user_can('edit_posts')) wp_send_json_error();
 
-        $post_id = intval($_POST['post_id']);
+        $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+
+        if (!earlystart_seo_can_edit_post($post_id)) {
+            wp_send_json_error(['message' => 'Permission denied']);
+        }
+
         $history = get_post_meta($post_id, '_earlystart_es_history', true) ?: [];
 
         wp_send_json_success(['history' => $history]);
@@ -699,8 +704,13 @@ class earlystart_Spanish_Content_Meta_Box extends earlystart_Advanced_SEO_Meta_B
         check_ajax_referer('earlystart_seo_nonce', 'nonce');
         if (!current_user_can('edit_posts')) wp_send_json_error();
 
-        $post_id = intval($_POST['post_id']);
-        $index = intval($_POST['version_index']);
+        $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+
+        if (!earlystart_seo_can_edit_post($post_id)) {
+            wp_send_json_error(['message' => 'Permission denied']);
+        }
+
+        $index = isset($_POST['version_index']) ? intval($_POST['version_index']) : -1;
         
         $history = get_post_meta($post_id, '_earlystart_es_history', true) ?: [];
         

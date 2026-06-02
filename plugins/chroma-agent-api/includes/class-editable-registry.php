@@ -111,7 +111,7 @@ class Editable_Registry
         $current_key = Auth::current_key();
         $scopes = is_array($current_key['scopes'] ?? null) ? $current_key['scopes'] : [];
 
-        return in_array($scope, Utils::normalize_scopes($scopes), true);
+        return Utils::scope_is_granted($scope, $scopes);
     }
 
     public static function target_errors(array $field, array $target): array
@@ -1172,6 +1172,12 @@ class Editable_Registry
             'missing_write_scopes' => array_values(array_filter($required_write_scopes, static function ($scope): bool {
                 return !self::current_key_can($scope);
             })),
+            'scope_aliases' => [
+                'read:editables' => 'Grants all non-admin editable read scopes.',
+                'write:editables' => 'Grants all non-admin editable write scopes.',
+                'read:*' => 'Grants all read scopes.',
+                'write:*' => 'Grants all write scopes.',
+            ],
         ];
     }
 
