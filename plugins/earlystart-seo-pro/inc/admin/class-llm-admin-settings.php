@@ -81,7 +81,7 @@ class earlystart_LLM_Admin_Settings
         register_setting('earlystart_llm_settings', 'earlystart_llm_model', [
             'type' => 'string',
             'sanitize_callback' => [__CLASS__, 'sanitize_llm_model'],
-            'default' => 'gemini-2.0-flash-exp',
+            'default' => 'gemini-3.5-flash',
         ]);
         register_setting('earlystart_llm_settings', 'earlystart_llm_base_url', [
             'type' => 'string',
@@ -153,9 +153,17 @@ class earlystart_LLM_Admin_Settings
         $model = trim(sanitize_text_field(wp_unslash($input)));
         $default_model = class_exists('earlystart_LLM_Client')
             ? earlystart_LLM_Client::DEFAULT_GEMINI_MODEL
-            : 'gemini-2.0-flash-exp';
+            : 'gemini-3.5-flash';
 
-        return $model !== '' ? $model : $default_model;
+        if ($model === '') {
+            return $default_model;
+        }
+
+        if (class_exists('earlystart_LLM_Client') && earlystart_LLM_Client::is_deprecated_gemini_model($model)) {
+            return $default_model;
+        }
+
+        return $model;
     }
 
     /**
@@ -263,17 +271,30 @@ class earlystart_LLM_Admin_Settings
                                 <?php 
                                 $current = class_exists('earlystart_LLM_Client')
                                     ? earlystart_LLM_Client::get_configured_model()
-                                    : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gemini-2.0-flash-exp');
+                                    : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gemini-3.5-flash');
                                 $cached_models = get_option('earlystart_llm_available_models', []);
                                 
+                                if (is_array($cached_models) && class_exists('earlystart_LLM_Client')) {
+                                    $cached_models = array_filter(
+                                        $cached_models,
+                                        static function($label, $model_id) {
+                                            return !earlystart_LLM_Client::is_deprecated_gemini_model($model_id);
+                                        },
+                                        ARRAY_FILTER_USE_BOTH
+                                    );
+                                }
+
                                 // Default models if none fetched yet
                                 if (empty($cached_models)) {
                                     $cached_models = [
-                                        'gemini-2.0-flash-exp' => 'Gemini 2.0 Flash (Experimental)',
-                                        'gemini-1.5-flash' => 'Gemini 1.5 Flash (Fast)',
-                                        'gemini-1.5-pro' => 'Gemini 1.5 Pro (Best Quality)',
-                                        'gemini-1.5-flash-8b' => 'Gemini 1.5 Flash 8B (Cheapest)',
+                                        'gemini-3.5-flash' => 'Gemini 3.5 Flash (Stable)',
+                                        'gemini-3.1-flash-lite' => 'Gemini 3.1 Flash-Lite (Fast)',
+                                        'gemini-2.5-flash' => 'Gemini 2.5 Flash (Legacy Stable)',
+                                        'gemini-2.5-pro' => 'Gemini 2.5 Pro (Legacy Advanced)',
                                     ];
+                                }
+                                if ($current && !isset($cached_models[$current])) {
+                                    $cached_models = [$current => $current] + $cached_models;
                                 }
                                 foreach ($cached_models as $m => $label): ?>
                                     <option value="<?php echo esc_attr($m); ?>" <?php selected($current, $m); ?>><?php echo esc_html($label); ?></option>
@@ -433,7 +454,7 @@ class earlystart_LLM_Admin_Settings
         $stats = earlystart_LLM_Client::get_usage_stats();
         $model = class_exists('earlystart_LLM_Client')
             ? earlystart_LLM_Client::get_configured_model()
-            : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gemini-2.0-flash-exp');
+            : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gemini-3.5-flash');
         $cost = earlystart_LLM_Client::estimate_cost($stats['total_tokens'], $model);
         ?>
         <div class="wrap">

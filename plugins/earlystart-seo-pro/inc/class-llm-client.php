@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 class earlystart_LLM_Client
 {
-    public const DEFAULT_GEMINI_MODEL = 'gemini-2.0-flash-exp';
+    public const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash';
     public const DEFAULT_GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
     private const API_KEY_OPTION = 'earlystart_openai_api_key';
     private const ENC_PREFIX = 'enc:v1:';
@@ -94,7 +94,7 @@ class earlystart_LLM_Client
                 $model_id = str_replace('models/', '', $name);
                 $supported = $model['supportedGenerationMethods'] ?? [];
 
-                if ($model_id && in_array('generateContent', $supported, true)) {
+                if ($model_id && !self::is_deprecated_gemini_model($model_id) && in_array('generateContent', $supported, true)) {
                     $models[$model_id] = $display_name ?: $model_id;
                 }
             }
@@ -130,7 +130,35 @@ class earlystart_LLM_Client
     public static function get_configured_model($fallback = self::DEFAULT_GEMINI_MODEL)
     {
         $model = trim((string) get_option('earlystart_llm_model', ''));
-        return $model !== '' ? $model : $fallback;
+        if ($model === '') {
+            return $fallback;
+        }
+
+        return self::is_deprecated_gemini_model($model) ? $fallback : $model;
+    }
+
+    /**
+     * Detect Gemini model IDs that are already shut down or legacy defaults.
+     */
+    public static function is_deprecated_gemini_model($model)
+    {
+        $model = strtolower(trim((string) $model));
+        if ($model === '') {
+            return false;
+        }
+
+        $deprecated_models = [
+            'gemini-2.0-flash-exp',
+            'gemini-2.0-flash',
+            'gemini-2.0-flash-001',
+            'gemini-2.0-flash-lite',
+            'gemini-2.0-flash-lite-001',
+            'gemini-1.5-flash',
+            'gemini-1.5-pro',
+            'gemini-1.5-flash-8b',
+        ];
+
+        return in_array($model, $deprecated_models, true);
     }
 
     /**
@@ -180,7 +208,7 @@ class earlystart_LLM_Client
                     <td>
                         <input type="text" id="earlystart_llm_model" value="<?php echo esc_attr($model); ?>"
                             class="regular-text" placeholder="<?php echo esc_attr(self::DEFAULT_GEMINI_MODEL); ?>">
-                        <p class="description">e.g., <code><?php echo esc_html(self::DEFAULT_GEMINI_MODEL); ?></code>, <code>gemini-1.5-pro</code>, or an OpenAI-compatible model when using a non-Gemini base URL.
+                        <p class="description">e.g., <code><?php echo esc_html(self::DEFAULT_GEMINI_MODEL); ?></code>, <code>gemini-3.1-flash-lite</code>, or an OpenAI-compatible model when using a non-Gemini base URL.
                         </p>
                     </td>
                 </tr>
@@ -286,7 +314,7 @@ class earlystart_LLM_Client
         }
         if (isset($_POST['model'])) {
             $model = trim(sanitize_text_field(wp_unslash($_POST['model'])));
-            update_option('earlystart_llm_model', $model !== '' ? $model : self::DEFAULT_GEMINI_MODEL);
+            update_option('earlystart_llm_model', ($model !== '' && !self::is_deprecated_gemini_model($model)) ? $model : self::DEFAULT_GEMINI_MODEL);
         }
         if (isset($_POST['base_url'])) {
             $url = trim(esc_url_raw(wp_unslash($_POST['base_url'])));
