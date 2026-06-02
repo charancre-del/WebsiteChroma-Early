@@ -55,8 +55,6 @@ while (have_posts()):
 		$mission_quote = get_post_meta($page_id, 'about_mission_quote', true) ?: __('"To cultivate a vibrant community of lifelong learners by blending clinical excellence with the nurturing warmth of home, ensuring every child feels seen, valued, and capable."', 'earlystart-early-learning');
 		?>
 		<section class="bg-stone-900 text-white py-24 relative overflow-hidden">
-			<div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-			</div>
 			<div class="max-w-5xl mx-auto px-4 text-center relative z-10">
 				<i data-lucide="sparkles" class="w-12 h-12 text-amber-400 mx-auto mb-8"></i>
 				<span class="text-sm font-bold text-stone-300 uppercase tracking-widest mb-6 block">

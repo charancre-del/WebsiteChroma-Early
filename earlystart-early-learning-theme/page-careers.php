@@ -169,8 +169,6 @@ while (have_posts()):
 
 		<!-- Training Program CTA -->
 		<section class="py-24 bg-rose-600 text-white relative overflow-hidden">
-			<div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-			</div>
 			<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center fade-in-up">
 				<div
 					class="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-white/20">
