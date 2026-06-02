@@ -65,6 +65,7 @@ class Editable_Registry
         self::add_plugin_setting_fields($map);
         self::add_taxonomy_fields($map);
         self::add_menu_fields($map);
+        self::add_generic_escape_hatch_fields($map);
 
         ksort($map);
         $fields = array_values($map);
@@ -114,11 +115,15 @@ class Editable_Registry
         $storage = $field['storage']['type'] ?? '';
         $errors = [];
 
-        if (in_array($storage, ['post_field', 'post_meta', 'featured_image', 'post_taxonomy'], true) && empty($target['post_id'])) {
+        if (in_array($storage, ['post_field', 'post_meta', 'post_meta_any', 'featured_image', 'post_taxonomy'], true) && empty($target['post_id'])) {
             $errors[] = 'post_id is required.';
         }
 
-        if (in_array($storage, ['term_field', 'term_meta'], true) && empty($target['term_id'])) {
+        if (in_array($storage, ['post_meta_any', 'term_meta_any'], true) && empty($target['meta_key'])) {
+            $errors[] = 'meta_key is required.';
+        }
+
+        if (in_array($storage, ['term_field', 'term_meta', 'term_meta_any'], true) && empty($target['term_id'])) {
             $errors[] = 'term_id is required.';
         }
 
@@ -130,7 +135,34 @@ class Editable_Registry
             $errors[] = 'menu_item_id is required.';
         }
 
+        if ($storage === 'option_any' && empty($target['option_key'])) {
+            $errors[] = 'option_key is required.';
+        }
+
+        if ($storage === 'theme_mod_any' && empty($target['theme_mod_key'])) {
+            $errors[] = 'theme_mod_key is required.';
+        }
+
+        $target_key = (string) ($target['meta_key'] ?? $target['option_key'] ?? $target['theme_mod_key'] ?? '');
+        if ($target_key !== '' && !self::target_key_is_allowed($field, $target_key)) {
+            $errors[] = 'Target key is outside the editable field pattern.';
+        }
+
         return $errors;
+    }
+
+    public static function field_is_sensitive(array $field, array $target = []): bool
+    {
+        if (!empty($field['sensitive'])) {
+            return true;
+        }
+
+        $storage = (string) ($field['storage']['type'] ?? '');
+        if ($storage !== 'option_any') {
+            return false;
+        }
+
+        return Utils::is_sensitive_option_key((string) ($target['option_key'] ?? ''));
     }
 
     public static function read_value(array $field, array $target, bool $redact = true)
@@ -147,8 +179,17 @@ class Editable_Registry
                 $value = self::read_option_path((string) $storage['key'], (array) ($storage['path'] ?? []));
                 return ($redact && !empty($field['sensitive'])) ? self::redacted_value($value) : $value;
 
+            case 'option_any':
+                $key = (string) ($target['option_key'] ?? '');
+                $value = $key !== '' ? get_option($key, null) : null;
+                return ($redact && Utils::is_sensitive_option_key($key)) ? self::redacted_value($value) : $value;
+
             case 'theme_mod':
                 return get_theme_mod((string) $storage['key'], null);
+
+            case 'theme_mod_any':
+                $key = (string) ($target['theme_mod_key'] ?? '');
+                return $key !== '' ? get_theme_mod($key, null) : null;
 
             case 'post_field':
                 $post = get_post((int) $target['post_id']);
@@ -160,6 +201,9 @@ class Editable_Registry
 
             case 'post_meta':
                 return get_post_meta((int) $target['post_id'], (string) $storage['key'], true);
+
+            case 'post_meta_any':
+                return get_post_meta((int) $target['post_id'], (string) ($target['meta_key'] ?? ''), true);
 
             case 'featured_image':
                 return (int) get_post_thumbnail_id((int) $target['post_id']);
@@ -182,6 +226,9 @@ class Editable_Registry
             case 'term_meta':
                 return get_term_meta((int) $target['term_id'], (string) $storage['key'], true);
 
+            case 'term_meta_any':
+                return get_term_meta((int) $target['term_id'], (string) ($target['meta_key'] ?? ''), true);
+
             case 'menu_location':
                 $locations = get_nav_menu_locations();
                 return (int) ($locations[(string) $storage['location']] ?? 0);
@@ -197,7 +244,7 @@ class Editable_Registry
     {
         $storage = $field['storage'];
         $type = (string) ($storage['type'] ?? '');
-        $new_value = self::sanitize_value($field, $value);
+        $new_value = self::sanitize_value_for_target($field, $target, $value);
 
         switch ($type) {
             case 'option':
@@ -218,6 +265,20 @@ class Editable_Registry
                 }
                 return $result;
 
+            case 'option_any':
+                $key = (string) ($target['option_key'] ?? '');
+                if ($key === '') {
+                    return new \WP_Error('caa_editable_option_key_missing', 'option_key is required.', ['status' => 400]);
+                }
+                $stored_value = $new_value;
+                if ($new_value === null) {
+                    delete_option($key);
+                } else {
+                    update_option($key, $stored_value, false);
+                }
+                Utils::invalidate_global_caches('option_any');
+                return true;
+
             case 'theme_mod':
                 $key = (string) $storage['key'];
                 if ($new_value === null) {
@@ -226,6 +287,19 @@ class Editable_Registry
                     set_theme_mod($key, $new_value);
                 }
                 Utils::invalidate_global_caches('theme_mod');
+                return true;
+
+            case 'theme_mod_any':
+                $key = (string) ($target['theme_mod_key'] ?? '');
+                if ($key === '') {
+                    return new \WP_Error('caa_editable_theme_mod_key_missing', 'theme_mod_key is required.', ['status' => 400]);
+                }
+                if ($new_value === null) {
+                    remove_theme_mod($key);
+                } else {
+                    set_theme_mod($key, $new_value);
+                }
+                Utils::invalidate_global_caches('theme_mod_any');
                 return true;
 
             case 'post_field':
@@ -248,6 +322,21 @@ class Editable_Registry
                     delete_post_meta($post_id, $meta_key);
                 } else {
                     update_post_meta($post_id, $meta_key, $new_value);
+                }
+                Utils::invalidate_content_caches_for_post($post_id);
+                return true;
+
+            case 'post_meta_any':
+                $post_id = (int) $target['post_id'];
+                $meta_key = (string) ($target['meta_key'] ?? '');
+                if ($meta_key === '') {
+                    return new \WP_Error('caa_editable_meta_key_missing', 'meta_key is required.', ['status' => 400]);
+                }
+                $stored_value = $new_value;
+                if ($new_value === null) {
+                    delete_post_meta($post_id, $meta_key);
+                } else {
+                    update_post_meta($post_id, $meta_key, $stored_value);
                 }
                 Utils::invalidate_content_caches_for_post($post_id);
                 return true;
@@ -286,6 +375,20 @@ class Editable_Registry
             case 'term_meta':
                 $term_id = (int) $target['term_id'];
                 $key = (string) $storage['key'];
+                if ($new_value === null) {
+                    delete_term_meta($term_id, $key);
+                } else {
+                    update_term_meta($term_id, $key, $new_value);
+                }
+                Utils::invalidate_term_caches($term_id, (string) ($target['taxonomy'] ?? ($storage['taxonomy'] ?? '')));
+                return true;
+
+            case 'term_meta_any':
+                $term_id = (int) $target['term_id'];
+                $key = (string) ($target['meta_key'] ?? '');
+                if ($key === '') {
+                    return new \WP_Error('caa_editable_term_meta_key_missing', 'meta_key is required.', ['status' => 400]);
+                }
                 if ($new_value === null) {
                     delete_term_meta($term_id, $key);
                 } else {
@@ -450,6 +553,24 @@ class Editable_Registry
             default:
                 return sanitize_text_field((string) $value);
         }
+    }
+
+    public static function sanitize_value_for_target(array $field, array $target, $value)
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $storage = (string) ($field['storage']['type'] ?? '');
+        if ($storage === 'option_any') {
+            return Utils::sanitize_option_for_storage_by_key((string) ($target['option_key'] ?? ''), $value);
+        }
+
+        if (in_array($storage, ['post_meta_any', 'term_meta_any'], true)) {
+            return Utils::sanitize_mixed_for_storage_by_key((string) ($target['meta_key'] ?? ''), $value);
+        }
+
+        return self::sanitize_value($field, $value);
     }
 
     public static function prepare_term($term): array
@@ -656,6 +777,10 @@ class Editable_Registry
             ]);
         }
 
+        foreach ((array) ($inventory['patterns'] ?? []) as $pattern) {
+            self::add_meta_pattern_field($fields, 'content', 'content_meta', $pattern, 'read:content', 'write:content');
+        }
+
         $taxonomies = get_taxonomies(['public' => true], 'objects');
         foreach ($taxonomies as $taxonomy => $object) {
             self::add_field($fields, [
@@ -704,6 +829,10 @@ class Editable_Registry
                 'write_scope' => 'write:seo',
                 'multilingual_variant' => strpos($key, '_earlystart_es_') === 0,
             ]);
+        }
+
+        foreach (Utils::get_seo_meta_patterns() as $pattern) {
+            self::add_meta_pattern_field($fields, 'seo', 'seo_content', $pattern, 'read:seo', 'write:seo');
         }
     }
 
@@ -785,6 +914,152 @@ class Editable_Registry
         ]);
     }
 
+    private static function add_generic_escape_hatch_fields(array &$fields): void
+    {
+        self::add_field($fields, [
+            'id' => 'content.meta.__any',
+            'label' => 'Any public post metabox/meta field',
+            'description' => 'Reads or writes a post meta key supplied as target.meta_key.',
+            'group' => 'content_meta',
+            'type' => 'mixed',
+            'sanitize' => 'mixed',
+            'storage' => [
+                'type' => 'post_meta_any',
+                'key_pattern' => '*',
+            ],
+            'target' => ['requires' => ['post_id', 'meta_key']],
+            'read_scope' => 'read:content',
+            'write_scope' => 'write:content',
+        ]);
+
+        self::add_field($fields, [
+            'id' => 'seo.meta.__any',
+            'label' => 'Any SEO metabox/meta field',
+            'description' => 'Reads or writes an SEO post meta key supplied as target.meta_key.',
+            'group' => 'seo_content',
+            'type' => 'mixed',
+            'sanitize' => 'mixed',
+            'storage' => [
+                'type' => 'post_meta_any',
+                'key_pattern' => '*',
+            ],
+            'target' => ['requires' => ['post_id', 'meta_key']],
+            'read_scope' => 'read:seo',
+            'write_scope' => 'write:seo',
+        ]);
+
+        self::add_field($fields, [
+            'id' => 'taxonomy.meta.__any',
+            'label' => 'Any public term meta field',
+            'description' => 'Reads or writes a term meta key supplied as target.meta_key.',
+            'group' => 'taxonomy',
+            'type' => 'mixed',
+            'sanitize' => 'mixed',
+            'storage' => [
+                'type' => 'term_meta_any',
+                'key_pattern' => '*',
+            ],
+            'target' => ['requires' => ['term_id', 'meta_key']],
+            'read_scope' => 'read:taxonomy',
+            'write_scope' => 'write:taxonomy',
+        ]);
+
+        self::add_field($fields, [
+            'id' => 'customizer.theme_mod.__any',
+            'label' => 'Any Customizer theme mod',
+            'description' => 'Reads or writes a Customizer theme mod supplied as target.theme_mod_key.',
+            'group' => 'customizer',
+            'type' => 'mixed',
+            'sanitize' => 'mixed',
+            'storage' => [
+                'type' => 'theme_mod_any',
+                'key_pattern' => '*',
+            ],
+            'target' => ['requires' => ['theme_mod_key']],
+            'read_scope' => 'read:theme',
+            'write_scope' => 'write:theme',
+        ]);
+
+        self::add_field($fields, [
+            'id' => 'theme.option.__any',
+            'label' => 'Any editable theme option',
+            'description' => 'Reads or writes a theme option supplied as target.option_key.',
+            'group' => 'theme',
+            'type' => 'mixed',
+            'sanitize' => 'mixed',
+            'storage' => [
+                'type' => 'option_any',
+                'key_pattern' => '*',
+            ],
+            'target' => ['requires' => ['option_key']],
+            'read_scope' => 'read:theme',
+            'write_scope' => 'write:theme',
+        ]);
+
+        self::add_field($fields, [
+            'id' => 'seo.option.__any',
+            'label' => 'Any SEO plugin option',
+            'description' => 'Reads or writes an SEO option supplied as target.option_key. Sensitive keys are redacted on read.',
+            'group' => 'seo_settings',
+            'type' => 'mixed',
+            'sanitize' => 'mixed',
+            'storage' => [
+                'type' => 'option_any',
+                'key_pattern' => 'earlystart_*',
+            ],
+            'target' => ['requires' => ['option_key']],
+            'read_scope' => 'read:seo',
+            'write_scope' => 'write:seo',
+        ]);
+
+        self::add_field($fields, [
+            'id' => 'plugin.setting.__any',
+            'label' => 'Any plugin setting option',
+            'description' => 'Reads or writes a plugin setting supplied as target.option_key. Sensitive keys are redacted on read.',
+            'group' => 'plugin_settings',
+            'type' => 'mixed',
+            'sanitize' => 'mixed',
+            'storage' => [
+                'type' => 'option_any',
+                'key_pattern' => '*',
+            ],
+            'target' => ['requires' => ['option_key']],
+            'read_scope' => 'read:settings',
+            'write_scope' => 'write:settings',
+        ]);
+    }
+
+    private static function add_meta_pattern_field(
+        array &$fields,
+        string $prefix,
+        string $group,
+        string $pattern,
+        string $read_scope,
+        string $write_scope
+    ): void {
+        $pattern = trim($pattern);
+        if ($pattern === '') {
+            return;
+        }
+
+        self::add_field($fields, [
+            'id' => $prefix . '.meta_pattern.' . substr(md5($pattern), 0, 12),
+            'label' => self::label_from_key(str_replace('*', ' wildcard ', $pattern)),
+            'description' => 'Pattern-backed metabox field. Supply the exact key as target.meta_key.',
+            'group' => $group,
+            'type' => self::guess_type($pattern),
+            'sanitize' => self::guess_sanitizer($pattern),
+            'storage' => [
+                'type' => 'post_meta_any',
+                'key_pattern' => $pattern,
+            ],
+            'target' => ['requires' => ['post_id', 'meta_key']],
+            'read_scope' => $read_scope,
+            'write_scope' => $write_scope,
+            'multilingual_variant' => strpos($pattern, '_earlystart_es_') === 0,
+        ]);
+    }
+
     private static function add_field(array &$fields, array $field): void
     {
         $field = array_merge([
@@ -820,6 +1095,23 @@ class Editable_Registry
 
         $field['id'] = $id;
         $fields[$id] = $field;
+    }
+
+    private static function target_key_is_allowed(array $field, string $target_key): bool
+    {
+        $storage = (array) ($field['storage'] ?? []);
+        $pattern = (string) ($storage['key_pattern'] ?? '');
+        if ($pattern === '' || $pattern === '*') {
+            return true;
+        }
+
+        return self::wildcard_match($pattern, $target_key);
+    }
+
+    private static function wildcard_match(string $pattern, string $value): bool
+    {
+        $regex = '/^' . str_replace('\*', '.*', preg_quote($pattern, '/')) . '$/';
+        return (bool) preg_match($regex, $value);
     }
 
     private static function write_menu_item(int $item_id, array $updates)

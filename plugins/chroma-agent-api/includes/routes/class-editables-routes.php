@@ -233,21 +233,23 @@ class Editables_Routes
                 continue;
             }
 
-            $before[$id] = Editable_Registry::read_value($field, $target, false);
-            $sanitized = Editable_Registry::sanitize_value($field, $value);
-            $after[$id] = !empty($field['sensitive']) ? '[REDACTED]' : $sanitized;
+            $is_sensitive = Editable_Registry::field_is_sensitive($field, $target);
+            $before_raw = Editable_Registry::read_value($field, $target, false);
+            $before[$id] = $is_sensitive ? '[REDACTED]' : $before_raw;
+            $sanitized = Editable_Registry::sanitize_value_for_target($field, $target, $value);
+            $after[$id] = $is_sensitive ? '[REDACTED]' : $sanitized;
 
             if ($dry_run) {
                 continue;
             }
 
-            if (self::supports_snapshot($field) && $before[$id] !== $sanitized) {
+            if (!$is_sensitive && self::supports_snapshot($field) && $before_raw !== $sanitized) {
                 $snapshot_ids[] = Snapshot_Store::create_snapshot(
                     Auth::current_key_id(),
                     $scope,
                     (string) ($field['storage']['type'] ?? 'editable'),
                     (string) ($field['storage']['key'] ?? $id),
-                    $before[$id],
+                    $before_raw,
                     $sanitized
                 );
             }
@@ -259,9 +261,9 @@ class Editables_Routes
             }
 
             $live_value = Editable_Registry::read_value($field, $target, false);
-            $live[$id] = !empty($field['sensitive']) ? '[REDACTED]' : Editable_Registry::read_value($field, $target, true);
+            $live[$id] = $is_sensitive ? '[REDACTED]' : Editable_Registry::read_value($field, $target, true);
 
-            if ($strict_write && empty($field['sensitive']) && !self::values_equivalent($sanitized, $live_value)) {
+            if ($strict_write && !$is_sensitive && !self::values_equivalent($sanitized, $live_value)) {
                 $write_mismatches[$id] = [
                     'expected' => $sanitized,
                     'actual' => $live_value,
@@ -714,6 +716,11 @@ class Editables_Routes
         foreach (['post_id', 'term_id', 'menu_id', 'menu_item_id'] as $key) {
             if (isset($input[$key]) && $input[$key] !== '') {
                 $target[$key] = (int) $input[$key];
+            }
+        }
+        foreach (['meta_key', 'option_key', 'theme_mod_key'] as $key) {
+            if (isset($input[$key]) && $input[$key] !== '') {
+                $target[$key] = sanitize_key((string) $input[$key]);
             }
         }
         if (isset($input['taxonomy']) && $input['taxonomy'] !== '') {

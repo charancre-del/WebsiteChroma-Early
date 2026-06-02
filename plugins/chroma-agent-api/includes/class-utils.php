@@ -295,7 +295,7 @@ class Utils
             $saved = [];
         }
 
-        return self::normalize_allowlist(array_merge($defaults, $saved));
+        return self::normalize_allowlist(array_merge($defaults, self::discover_seo_option_keys(), $saved));
     }
 
     public static function get_seo_meta_allowlist(): array
@@ -516,7 +516,13 @@ class Utils
             $saved = [];
         }
 
-        return self::normalize_allowlist(array_merge($defaults, $saved));
+        $inventory = self::get_theme_meta_key_inventory();
+
+        return self::normalize_allowlist(array_merge(
+            $defaults,
+            self::discover_seo_meta_keys((array) ($inventory['exact'] ?? [])),
+            $saved
+        ));
     }
 
     public static function get_plugin_setting_allowlist(): array
@@ -734,6 +740,16 @@ class Utils
         ));
     }
 
+    public static function get_seo_meta_patterns(): array
+    {
+        $inventory = self::get_theme_meta_key_inventory();
+
+        return self::normalize_allowlist(array_filter(
+            (array) ($inventory['patterns'] ?? []),
+            [__CLASS__, 'is_seo_meta_key']
+        ));
+    }
+
     private static function discover_theme_mod_keys(): array
     {
         $surfaces = self::discover_theme_surfaces();
@@ -750,6 +766,21 @@ class Utils
     {
         $surfaces = self::discover_theme_surfaces();
         return $surfaces['options'];
+    }
+
+    private static function discover_seo_option_keys(): array
+    {
+        return self::normalize_allowlist(array_filter(
+            self::discover_theme_option_keys(),
+            static function (string $key): bool {
+                return (bool) preg_match('/^(earlystart_(seo|llm|breadcrumbs|citation|combo|enable|indexnow|faq|validator|careers|sitemap|multilingual|google_places|openai)|chroma_seo_)/', $key);
+            }
+        ));
+    }
+
+    private static function discover_seo_meta_keys(array $keys): array
+    {
+        return self::normalize_allowlist(array_filter($keys, [__CLASS__, 'is_seo_meta_key']));
     }
 
     private static function discover_theme_surfaces(): array
@@ -809,7 +840,7 @@ class Utils
                     '/name\s*=\s*([\'"])(.*?)\1/s',
                     $meta,
                     $meta_patterns,
-                    '/^(about_|careers_|contact_|curriculum_|employers_|home_|parents_|privacy_|stories_|program_|location_|city_|schema_|meta_|alternate_|_earlystart_|seo_llm_|earlystart_|_gmb_|_career_|_author_|_yoast_)/'
+                    '/^(about_|acquisition_|bridge_|careers_|contact_|consultation_|curriculum_|employers_|families_|faq_|global_|hipaa_|home_|locations_|newsroom_|parents_|privacy_|schedule_|stories_|team_|team_member_|tos_|tou_|program_|location_|city_|schema_|meta_|alternate_|_earlystart_|seo_llm_|earlystart_|_gmb_|_career_|_author_|_yoast_)/'
                 );
                 $ignored_patterns = [];
                 self::collect_customizer_setting_keys($contents, $theme_mods, $customizer_options);
@@ -1099,11 +1130,21 @@ class Utils
 
         foreach ((array) ($matches[$match_index] ?? []) as $raw_key) {
             $key = trim((string) $raw_key);
-            if ($key === '' || strpos($key, '<?php') !== false || strpos($key, '?>') !== false) {
+            if ($key === '') {
                 continue;
             }
 
-            if ($allow_pattern !== null && !preg_match($allow_pattern, $key)) {
+            if (strpos($key, '<?') !== false) {
+                $key = preg_replace('/<\?(?:php|=)?[\s\S]*?\?>/', '*', $key);
+                $key = is_string($key) ? trim($key) : '';
+            }
+
+            if ($key === '' || strpos($key, '<?') !== false || strpos($key, '?>') !== false) {
+                continue;
+            }
+
+            $allow_key = str_replace('*', '1', $key);
+            if ($allow_pattern !== null && !preg_match($allow_pattern, $allow_key)) {
                 continue;
             }
 
@@ -1114,8 +1155,24 @@ class Utils
                 continue;
             }
 
+            if (strpos($key, '*') !== false) {
+                if ($patterns !== null) {
+                    $patterns[$key] = true;
+                }
+                continue;
+            }
+
             $exact[$key] = true;
         }
+    }
+
+    private static function is_seo_meta_key(string $key): bool
+    {
+        if ($key === '') {
+            return false;
+        }
+
+        return (bool) preg_match('/^(seo_llm_|schema_|meta_|alternate_|city_|location_|program_|_earlystart_|_yoast_|_gmb_|_author_|_career_|earlystart_faq_items|related_location_ids)/', $key);
     }
 
     public static function normalize_allowlist(array $values): array
