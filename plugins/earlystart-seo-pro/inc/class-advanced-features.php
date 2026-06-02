@@ -280,6 +280,36 @@ class earlystart_Multilang_Schema
 class earlystart_Image_Analyzer
 {
     /**
+     * Build strict HTTP arguments for outbound image and provider requests.
+     */
+    private static function remote_request_args($args = [])
+    {
+        return array_merge([
+            'sslverify' => true,
+            'reject_unsafe_urls' => true,
+        ], $args);
+    }
+
+    /**
+     * Validate a computed LLM provider endpoint before opening a connection.
+     */
+    private static function validate_provider_url($url)
+    {
+        $safe_url = function_exists('earlystart_seo_validate_remote_url')
+            ? earlystart_seo_validate_remote_url($url, true)
+            : esc_url_raw((string) $url, ['https']);
+
+        if (
+            !$safe_url
+            || strtolower((string) wp_parse_url($safe_url, PHP_URL_SCHEME)) !== 'https'
+        ) {
+            return false;
+        }
+
+        return $safe_url;
+    }
+
+    /**
      * Analyze image and generate alt text
      */
     public static function analyze_image($image_url) {
@@ -311,11 +341,10 @@ Return JSON with keys: alt_text, caption, keywords";
             : strtolower((string) wp_parse_url($base_url, PHP_URL_HOST)) === 'generativelanguage.googleapis.com';
 
         if ($is_gemini) {
-            $image_response = wp_remote_get($image_url, array(
+            $image_response = wp_remote_get($image_url, self::remote_request_args(array(
                 'timeout' => 20,
                 'redirection' => 3,
-                'reject_unsafe_urls' => true,
-            ));
+            )));
             if (is_wp_error($image_response)) {
                 return $image_response;
             }
@@ -326,14 +355,26 @@ Return JSON with keys: alt_text, caption, keywords";
             }
 
             $content_type = wp_remote_retrieve_header($image_response, 'content-type');
-            if (!$content_type || stripos($content_type, 'image/') !== 0) {
-                $content_type = 'image/jpeg';
+            $content_type = is_array($content_type) ? reset($content_type) : $content_type;
+            $content_type = strtolower(trim((string) $content_type));
+            $content_type = preg_replace('/\s*;.*/', '', $content_type);
+            if ($content_type === '' || stripos($content_type, 'image/') !== 0) {
+                return new WP_Error('invalid_image_response', 'Downloaded URL did not return an image');
+            }
+
+            if (strlen($image_body) > 8 * 1024 * 1024) {
+                return new WP_Error('image_too_large', 'Image exceeds the 8 MB analysis limit');
             }
 
             $model = class_exists('earlystart_LLM_Client')
                 ? earlystart_LLM_Client::get_configured_model()
                 : (trim((string) get_option('earlystart_llm_model', '')) ?: 'gemini-2.5-flash');
-            $response = wp_remote_post(rtrim($base_url, '/') . '/models/' . rawurlencode($model) . ':generateContent', array(
+            $provider_url = self::validate_provider_url(rtrim($base_url, '/') . '/models/' . rawurlencode($model) . ':generateContent');
+            if (!$provider_url) {
+                return new WP_Error('invalid_llm_provider_url', 'Invalid LLM provider URL');
+            }
+
+            $response = wp_remote_post($provider_url, self::remote_request_args(array(
                 'headers' => array(
                     'Content-Type' => 'application/json',
                     'x-goog-api-key' => $api_key,
@@ -359,9 +400,14 @@ Return JSON with keys: alt_text, caption, keywords";
                     ),
                 )),
                 'timeout' => 60,
-            ));
+            )));
         } else {
-            $response = wp_remote_post(rtrim($base_url ?: 'https://api.openai.com/v1', '/') . '/chat/completions', [
+            $provider_url = self::validate_provider_url(rtrim($base_url ?: 'https://api.openai.com/v1', '/') . '/chat/completions');
+            if (!$provider_url) {
+                return new WP_Error('invalid_llm_provider_url', 'Invalid LLM provider URL');
+            }
+
+            $response = wp_remote_post($provider_url, self::remote_request_args([
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Authorization' => 'Bearer ' . $api_key
@@ -380,7 +426,7 @@ Return JSON with keys: alt_text, caption, keywords";
                     'max_tokens' => 500
                 ]),
                 'timeout' => 30
-            ]);
+            ]));
         }
 
         if (is_wp_error($response)) {
