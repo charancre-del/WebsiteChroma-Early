@@ -2,6 +2,13 @@
  * Leaflet map layer.
  */
 (function () {
+  const isDebug = () => !!(window.chromaData && window.chromaData.debug && window.console);
+  const debugError = (...args) => {
+    if (isDebug() && typeof window.console.error === 'function') {
+      window.console.error(...args);
+    }
+  };
+
   const escapeHtml = (value) =>
     String(value || '')
       .replace(/&/g, '&amp;')
@@ -86,7 +93,7 @@
         }))
         .filter((location) => Number.isFinite(location.lat) && Number.isFinite(location.lng));
     } catch (error) {
-      console.error('Invalid JSON in data-chroma-locations', error);
+      debugError('Invalid JSON in data-chroma-locations', error);
       return [];
     }
   };
@@ -156,7 +163,7 @@
         { passive: true }
       );
     } catch (error) {
-      console.error('Unable to initialize map', error);
+      debugError('Unable to initialize map', error);
       renderUnavailable(container);
     }
   };

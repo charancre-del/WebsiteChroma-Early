@@ -8,6 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
     return;
   }
 
+  const isDebug = () => !!(window.chromaData && window.chromaData.debug && window.console);
+  const debugError = (...args) => {
+    if (isDebug() && typeof window.console.error === 'function') {
+      window.console.error(...args);
+    }
+  };
+
   const leafletCssSources = [
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
     'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css',
@@ -38,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }))
         .filter((location) => Number.isFinite(location.lat) && Number.isFinite(location.lng));
     } catch (error) {
-      console.error('Unable to parse map locations', error);
+      debugError('Unable to parse map locations', error);
       return [];
     }
   };

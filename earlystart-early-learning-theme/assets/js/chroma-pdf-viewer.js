@@ -6,7 +6,10 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-    const debugLog = window.chromaPdfConfig && window.chromaPdfConfig.debug ? console.log.bind(console) : function () {};
+    const isDebug = !!(window.chromaPdfConfig && window.chromaPdfConfig.debug && window.console);
+    const debugLog = isDebug && typeof window.console.log === 'function' ? window.console.log.bind(window.console) : function () {};
+    const debugWarn = isDebug && typeof window.console.warn === 'function' ? window.console.warn.bind(window.console) : function () {};
+    const debugError = isDebug && typeof window.console.error === 'function' ? window.console.error.bind(window.console) : function () {};
 
     // Viewer State
     const viewerState = {
@@ -88,7 +91,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderPage(num) {
         if (!viewerState.pdfDoc) return;
         if (!ensureCanvas()) {
-            console.error('PDF Viewer: Fatal - Canvas or Context missing from DOM');
+            debugError('PDF Viewer: Fatal - Canvas or Context missing from DOM');
+            setLoadingError();
             return;
         }
 
@@ -102,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (containerWidth <= 0) {
                 // If container is not yet painted, fallback to modal or window
                 containerWidth = modal.clientWidth || window.innerWidth || 800;
-                console.warn('PDF Viewer: Container width 0, using fallback: ' + containerWidth);
+                debugWarn('PDF Viewer: Container width 0, using fallback: ' + containerWidth);
             }
 
             const unscaledViewport = page.getViewport({ scale: 1 });
@@ -140,12 +144,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     viewerState.pageNumPending = null;
                 }
             }).catch(err => {
-                console.error('PDF Viewer: Render task failed', err);
+                debugError('PDF Viewer: Render task failed', err);
                 viewerState.pageRendering = false;
+                setLoadingError();
             });
         }).catch(err => {
-            console.error('PDF Viewer: Could not get page ' + num, err);
+            debugError('PDF Viewer: Could not get page ' + num, err);
             viewerState.pageRendering = false;
+            setLoadingError();
         });
 
         // Update page counters
@@ -259,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Render first page (with a small delay for layout stabilization)
                 setTimeout(() => renderPage(viewerState.pageNum), 50);
             }).catch(err => {
-                console.error('PDF Error:', err);
+                debugError('PDF Error:', err);
                 setLoadingError();
             });
         });
