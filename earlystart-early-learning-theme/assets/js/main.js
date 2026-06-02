@@ -774,7 +774,9 @@ document.addEventListener('DOMContentLoaded', function () {
       const targetElement = getHashTarget(targetId);
       if (targetElement) {
         e.preventDefault();
-        targetElement.scrollIntoView({ behavior: 'smooth' });
+        targetElement.scrollIntoView({
+          behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+        });
       }
     });
   });
