@@ -4255,14 +4255,21 @@ class earlystart_SEO_Dashboard
         $exclusions = array_filter(array_map('trim', explode("\n", $exclusions_raw)));
         
         $all_urls = [];
+        $max_urls = 10000;
         
+        $visited_sitemaps = [];
         foreach ($sitemap_urls as $sitemap_url) {
-            $urls = $this->parse_sitemap($sitemap_url);
-            $all_urls = array_merge($all_urls, $urls);
+            $urls = $this->parse_sitemap($sitemap_url, 0, $visited_sitemaps);
+            foreach ($urls as $url) {
+                $all_urls[] = $url;
+                if (count($all_urls) >= $max_urls) {
+                    break 2;
+                }
+            }
         }
         
         // Remove duplicates
-        $all_urls = array_unique($all_urls);
+        $all_urls = array_slice(array_unique($all_urls), 0, $max_urls);
         
         // Filter Exclusions
         if (!empty($exclusions)) {
@@ -4289,19 +4296,40 @@ class earlystart_SEO_Dashboard
      * @param string $sitemap_url
      * @return array
      */
-    private function parse_sitemap($sitemap_url)
+    private function parse_sitemap($sitemap_url, $depth = 0, &$visited = null)
     {
+        $max_depth = 5;
+        $max_sitemaps = 100;
+        $max_urls = 10000;
+        $max_body_bytes = 5 * 1024 * 1024;
+
+        if (!is_array($visited)) {
+            $visited = [];
+        }
+
+        if ($depth > $max_depth || count($visited) >= $max_sitemaps) {
+            earlystart_debug_log('[Chroma SEO] Sitemap parse limit reached for: ' . $sitemap_url);
+            return [];
+        }
+
         $safe_sitemap_url = $this->normalize_remote_url($sitemap_url, false);
         if (!$safe_sitemap_url) {
             earlystart_debug_log('[Chroma SEO] Blocked sitemap URL: ' . $sitemap_url);
             return [];
         }
 
+        $visited_key = strtolower($safe_sitemap_url);
+        if (isset($visited[$visited_key])) {
+            return [];
+        }
+        $visited[$visited_key] = true;
+
         $response = wp_remote_get($safe_sitemap_url, [
             'timeout' => 30,
             'sslverify' => true,
             'reject_unsafe_urls' => true,
-            'user-agent' => 'Mozilla/5.0 (compatible; ChromaSEO/1.0)'
+            'user-agent' => 'Mozilla/5.0 (compatible; ChromaSEO/1.0)',
+            'limit_response_size' => $max_body_bytes + 1
         ]);
         
         if (is_wp_error($response)) {
@@ -4310,6 +4338,10 @@ class earlystart_SEO_Dashboard
         }
         
         $body = wp_remote_retrieve_body($response);
+        if (strlen((string) $body) > $max_body_bytes) {
+            earlystart_debug_log('[Chroma SEO] Sitemap too large to parse: ' . $sitemap_url);
+            return [];
+        }
         
         // Suppress XML errors
         libxml_use_internal_errors(true);
@@ -4329,8 +4361,13 @@ class earlystart_SEO_Dashboard
                 $child_url = (string) $sitemap->loc;
                 if ($child_url) {
                     // Recursively parse child sitemaps
-                    $child_urls = $this->parse_sitemap($child_url);
-                    $urls = array_merge($urls, $child_urls);
+                    $child_urls = $this->parse_sitemap($child_url, $depth + 1, $visited);
+                    foreach ($child_urls as $child_url_value) {
+                        $urls[] = $child_url_value;
+                        if (count($urls) >= $max_urls) {
+                            break 2;
+                        }
+                    }
                 }
             }
         }
@@ -4341,11 +4378,14 @@ class earlystart_SEO_Dashboard
                 $loc = (string) $url->loc;
                 if ($loc) {
                     $urls[] = $loc;
+                    if (count($urls) >= $max_urls) {
+                        break;
+                    }
                 }
             }
         }
         
-        return $urls;
+        return array_slice($urls, 0, $max_urls);
     }
 
     /**
