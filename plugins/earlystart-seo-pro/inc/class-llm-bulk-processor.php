@@ -27,6 +27,8 @@ class earlystart_LLM_Bulk_Processor
         add_action('wp_ajax_earlystart_bulk_generate_start', [$this, 'ajax_start_bulk']);
         add_action('wp_ajax_earlystart_bulk_generate_status', [$this, 'ajax_get_status']);
         add_action('wp_ajax_earlystart_bulk_generate_cancel', [$this, 'ajax_cancel']);
+        add_action('wp_ajax_earlystart_bulk_reset_schema', [$this, 'ajax_reset_schema']);
+        add_action('wp_ajax_earlystart_bulk_reset_faq', [$this, 'ajax_reset_faq']);
     }
     
     /**
@@ -570,6 +572,220 @@ class earlystart_LLM_Bulk_Processor
         $this->cancel();
         
         wp_send_json_success(['message' => 'Cancelled']);
+    }
+
+    /**
+     * AJAX: Reset generated schema data for selected posts or all public posts.
+     */
+    public function ajax_reset_schema() {
+        check_ajax_referer('earlystart_seo_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Permission denied']);
+        }
+
+        $post_ids = $this->reset_post_ids_from_request();
+        if (empty($post_ids)) {
+            wp_send_json_error(['message' => 'No editable posts found to reset.']);
+        }
+
+        $reset_count = 0;
+        foreach ($post_ids as $post_id) {
+            if ($this->reset_schema_for_post($post_id)) {
+                $reset_count++;
+            }
+        }
+
+        wp_send_json_success([
+            'message' => sprintf('Reset schema data for %d post(s).', $reset_count),
+            'reset' => $reset_count,
+        ]);
+    }
+
+    /**
+     * AJAX: Reset FAQ data for selected posts or all public posts.
+     */
+    public function ajax_reset_faq() {
+        check_ajax_referer('earlystart_seo_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Permission denied']);
+        }
+
+        $post_ids = $this->reset_post_ids_from_request();
+        if (empty($post_ids)) {
+            wp_send_json_error(['message' => 'No editable posts found to reset.']);
+        }
+
+        $reset_count = 0;
+        foreach ($post_ids as $post_id) {
+            if ($this->reset_faq_for_post($post_id)) {
+                $reset_count++;
+            }
+        }
+
+        wp_send_json_success([
+            'message' => sprintf('Reset FAQ data for %d post(s).', $reset_count),
+            'reset' => $reset_count,
+        ]);
+    }
+
+    /**
+     * Resolve reset target post IDs from the current AJAX request.
+     *
+     * @return int[]
+     */
+    private function reset_post_ids_from_request() {
+        $reset_all = !empty($_POST['reset_all']) && filter_var(wp_unslash($_POST['reset_all']), FILTER_VALIDATE_BOOLEAN);
+        $post_ids = isset($_POST['post_ids']) ? array_map('absint', (array) wp_unslash($_POST['post_ids'])) : [];
+
+        if ($reset_all) {
+            $post_types = get_post_types(['public' => true], 'names');
+            unset($post_types['attachment']);
+
+            $post_ids = get_posts([
+                'post_type' => array_values($post_types),
+                'post_status' => ['publish', 'draft', 'pending', 'private', 'future'],
+                'posts_per_page' => -1,
+                'fields' => 'ids',
+                'no_found_rows' => true,
+            ]);
+        }
+
+        return array_values(array_filter(array_unique(array_map('absint', (array) $post_ids)), function($post_id) {
+            return $post_id > 0 && current_user_can('edit_post', $post_id);
+        }));
+    }
+
+    /**
+     * Reset generated schema meta for a post.
+     *
+     * @param int $post_id Post ID.
+     * @return bool
+     */
+    private function reset_schema_for_post($post_id) {
+        $post_id = absint($post_id);
+        if ($post_id <= 0) {
+            return false;
+        }
+
+        foreach ($this->schema_reset_meta_keys() as $meta_key) {
+            delete_post_meta($post_id, $meta_key);
+        }
+
+        $this->invalidate_generated_content_caches($post_id);
+        return true;
+    }
+
+    /**
+     * Reset FAQ meta and FAQPage schema rows for a post.
+     *
+     * @param int $post_id Post ID.
+     * @return bool
+     */
+    private function reset_faq_for_post($post_id) {
+        $post_id = absint($post_id);
+        if ($post_id <= 0) {
+            return false;
+        }
+
+        delete_post_meta($post_id, 'earlystart_faq_items');
+        delete_post_meta($post_id, '_earlystart_es_earlystart_faq_items');
+        delete_post_meta($post_id, 'program_faqs');
+
+        $this->remove_schema_type_rows($post_id, '_earlystart_post_schemas', 'FAQPage');
+        $this->remove_schema_type_rows($post_id, '_earlystart_schema_data', 'FAQPage');
+
+        if (get_post_meta($post_id, '_earlystart_schema_type', true) === 'FAQPage') {
+            delete_post_meta($post_id, '_earlystart_schema_type');
+            delete_post_meta($post_id, '_earlystart_schema_data');
+        }
+
+        $this->invalidate_generated_content_caches($post_id);
+        return true;
+    }
+
+    /**
+     * Meta keys cleared by the bulk schema reset action.
+     *
+     * @return string[]
+     */
+    private function schema_reset_meta_keys() {
+        return [
+            '_earlystart_post_schemas',
+            '_earlystart_schema_type',
+            '_earlystart_schema_data',
+            '_earlystart_schema_override',
+            '_earlystart_schema_confidence',
+            '_earlystart_needs_review',
+            '_earlystart_review_reason',
+            '_earlystart_schema_history',
+            '_earlystart_schema_validation_status',
+            '_earlystart_schema_errors',
+        ];
+    }
+
+    /**
+     * Remove only one schema type from a modular schema collection.
+     *
+     * @param int    $post_id Post ID.
+     * @param string $meta_key Schema collection meta key.
+     * @param string $schema_type Schema.org type to remove.
+     * @return void
+     */
+    private function remove_schema_type_rows($post_id, $meta_key, $schema_type) {
+        $schemas = get_post_meta($post_id, $meta_key, true);
+        if (!is_array($schemas)) {
+            return;
+        }
+
+        $direct_type = $this->schema_row_type($schemas);
+        if ($direct_type !== '') {
+            if ($direct_type === $schema_type) {
+                delete_post_meta($post_id, $meta_key);
+            }
+            return;
+        }
+
+        $filtered = [];
+        foreach ($schemas as $schema) {
+            if (!is_array($schema)) {
+                $filtered[] = $schema;
+                continue;
+            }
+
+            $row_type = $this->schema_row_type($schema);
+
+            if ((string) $row_type !== $schema_type) {
+                $filtered[] = $schema;
+            }
+        }
+
+        if (empty($filtered)) {
+            delete_post_meta($post_id, $meta_key);
+            return;
+        }
+
+        update_post_meta($post_id, $meta_key, array_values($filtered));
+    }
+
+    /**
+     * Read a schema type from either builder rows or direct JSON-LD arrays.
+     *
+     * @param array $schema Schema row.
+     * @return string
+     */
+    private function schema_row_type($schema) {
+        if (!is_array($schema)) {
+            return '';
+        }
+
+        $row_type = $schema['type'] ?? ($schema['@type'] ?? '');
+        if (is_array($row_type)) {
+            $row_type = reset($row_type);
+        }
+
+        return is_scalar($row_type) ? (string) $row_type : '';
     }
 }
 
