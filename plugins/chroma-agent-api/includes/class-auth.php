@@ -132,10 +132,17 @@ class Auth
         }
 
         $body = $request->get_body();
-        $message = $request->get_method() . '\n' . $request->get_route() . '\n' . $timestamp . '\n' . $body;
+        $message = implode("\n", [
+            $request->get_method(),
+            $request->get_route(),
+            $timestamp,
+            $body,
+        ]);
+        $legacy_message = $request->get_method() . '\n' . $request->get_route() . '\n' . $timestamp . '\n' . $body;
         $expected = hash_hmac('sha256', $message, $raw_key);
+        $legacy_expected = hash_hmac('sha256', $legacy_message, $raw_key);
 
-        if (!hash_equals($expected, $signature)) {
+        if (!hash_equals($expected, $signature) && !hash_equals($legacy_expected, $signature)) {
             return new WP_Error('caa_signature_mismatch', 'Request signature mismatch.', ['status' => 401]);
         }
 
