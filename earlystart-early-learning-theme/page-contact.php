@@ -29,6 +29,21 @@ while (have_posts()):
 	};
 	$form_heading = $contact_meta('contact_form_heading', __('Get Started Today', 'earlystart-early-learning'));
 	$form_intro = $contact_meta('contact_form_intro', __('Ready to learn more? Fill out the form, and our admissions team will reach out within 24 hours to guide you through the process.', 'earlystart-early-learning'));
+	$contact_value = static function ($key, $default = '') use ($contact_meta) {
+		$value = $contact_meta($key, '');
+
+		if (is_string($value) && function_exists('earlystart_is_placeholder_global_setting') && earlystart_is_placeholder_global_setting($key, $value)) {
+			$value = '';
+		}
+
+		return '' === $value ? $default : $value;
+	};
+	$form_phone_label = $contact_meta('contact_form_phone_label', __('Call Us', 'earlystart-early-learning'));
+	$form_phone = $contact_value('contact_form_phone', function_exists('earlystart_global_phone') ? earlystart_global_phone() : '');
+	$form_email_label = $contact_meta('contact_form_email_label', __('Email Us', 'earlystart-early-learning'));
+	$form_email = $contact_value('contact_form_email', function_exists('earlystart_global_email') ? earlystart_global_email() : '');
+	$form_office_label = $contact_meta('contact_form_office_label', __('Main Office', 'earlystart-early-learning'));
+	$form_office_address = $contact_value('contact_form_office_address', function_exists('earlystart_global_full_address') ? earlystart_global_full_address() : '');
 	$form_submit_text = get_post_meta($page_id, 'contact_form_submit_text', true) ?: __('Request Consultation', 'earlystart-early-learning');
 	$form_card_title = $contact_meta('contact_form_card_title', __('Send a Message', 'earlystart-early-learning'));
 	$form_fallback_intro = $contact_meta('contact_form_fallback_intro', __('Our admissions team can help with program questions, referrals, tours, and next steps for your family.', 'earlystart-early-learning'));
@@ -146,11 +161,29 @@ while (have_posts()):
 						<div class="space-y-8">
 							<?php
 							$contacts = array(
-								array('icon' => 'phone', 'title' => 'Call Us', 'value' => earlystart_global_phone()),
-								array('icon' => 'mail', 'title' => 'Email Us', 'value' => earlystart_global_email()),
-								array('icon' => 'map-pin', 'title' => 'Main Office', 'value' => earlystart_global_full_address()),
+								array(
+									'icon' => 'phone',
+									'title' => $form_phone_label,
+									'value' => $form_phone,
+									'href' => '' !== preg_replace('/[^0-9+]/', '', (string) $form_phone) ? 'tel:' . preg_replace('/[^0-9+]/', '', (string) $form_phone) : '',
+								),
+								array(
+									'icon' => 'mail',
+									'title' => $form_email_label,
+									'value' => $form_email,
+									'href' => is_email($form_email) ? 'mailto:' . $form_email : '',
+								),
+								array(
+									'icon' => 'map-pin',
+									'title' => $form_office_label,
+									'value' => $form_office_address,
+									'href' => '',
+								),
 							);
 							foreach ($contacts as $c): ?>
+								<?php if ('' === trim((string) $c['value'])) {
+									continue;
+								} ?>
 								<div class="flex items-center">
 									<div
 										class="w-12 h-12 bg-stone-50 rounded-full flex items-center justify-center mr-6 text-stone-900 shadow-sm">
@@ -158,7 +191,11 @@ while (have_posts()):
 									</div>
 									<div>
 										<h4 class="font-bold text-stone-900"><?php echo esc_html($c['title']); ?></h4>
-										<p class="text-stone-700"><?php echo esc_html($c['value']); ?></p>
+										<?php if (!empty($c['href'])): ?>
+											<a class="text-stone-700 hover:text-rose-700 transition-colors" href="<?php echo esc_url($c['href']); ?>"><?php echo esc_html($c['value']); ?></a>
+										<?php else: ?>
+											<p class="text-stone-700 whitespace-pre-line"><?php echo esc_html($c['value']); ?></p>
+										<?php endif; ?>
 									</div>
 								</div>
 							<?php endforeach; ?>

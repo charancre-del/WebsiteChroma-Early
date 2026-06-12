@@ -23,13 +23,13 @@ function earlystart_get_global_setting($key, $default = '')
 {
         $defaults = array(
                 'global_phone' => '(404) 905-6775',
-                'global_email' => 'info@chromaearlystart.com',
-                'global_tour_email' => 'info@chromaearlystart.com',
-                'global_admissions_email' => 'admissions@chromaearlystart.com',
-                'global_careers_email' => 'careers@chromaearlystart.com',
-                'global_billing_email' => 'billing@chromaearlystart.com',
-                'global_media_email' => 'media@chromaearlystart.com',
-                'global_privacy_email' => 'privacy@chromaearlystart.com',
+                'global_email' => 'intake@chromaela.com',
+                'global_tour_email' => 'intake@chromaela.com',
+                'global_admissions_email' => 'intake@chromaela.com',
+                'global_careers_email' => 'intake@chromaela.com',
+                'global_billing_email' => 'intake@chromaela.com',
+                'global_media_email' => 'intake@chromaela.com',
+                'global_privacy_email' => 'intake@chromaela.com',
                 'global_address' => '3554 Old Milton Pkwy',
                 'global_city' => 'Alpharetta',
                 'global_state' => 'GA',
@@ -76,7 +76,8 @@ function earlystart_is_placeholder_global_setting($key, $value)
         if (false !== strpos($key, 'email')) {
                 $email = strtolower($value);
                 return 'hello@chromaearlystart.com' === $email
-                        || false !== strpos($email, 'intake@')
+                        || false !== strpos($email, 'chromaearlystart.com')
+                        || false !== strpos($email, 'chromaearlylearning.com')
                         || false !== strpos($email, 'earlystarttherapy.com');
         }
 

@@ -118,6 +118,12 @@ function earlystart_contact_form_meta_box_render( $post ) {
 	$form_submit_text = get_post_meta( $post->ID, 'contact_form_submit_text', true );
 	$form_heading     = get_post_meta( $post->ID, 'contact_form_heading', true );
 	$form_intro       = get_post_meta( $post->ID, 'contact_form_intro', true );
+	$phone_label      = get_post_meta( $post->ID, 'contact_form_phone_label', true );
+	$phone            = get_post_meta( $post->ID, 'contact_form_phone', true );
+	$email_label      = get_post_meta( $post->ID, 'contact_form_email_label', true );
+	$email            = get_post_meta( $post->ID, 'contact_form_email', true );
+	$office_label     = get_post_meta( $post->ID, 'contact_form_office_label', true );
+	$office_address   = get_post_meta( $post->ID, 'contact_form_office_address', true );
 	$form_card_title  = get_post_meta( $post->ID, 'contact_form_card_title', true );
 	$fallback_intro   = get_post_meta( $post->ID, 'contact_form_fallback_intro', true );
 	$fallback_call_label = get_post_meta( $post->ID, 'contact_form_fallback_call_label', true );
@@ -143,6 +149,55 @@ function earlystart_contact_form_meta_box_render( $post ) {
 			<td>
 				<textarea id="contact_form_intro" name="contact_form_intro"
 						  rows="3" class="large-text"><?php echo esc_textarea( $form_intro ); ?></textarea>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_phone_label">Phone Row Label</label></th>
+			<td>
+				<input type="text" id="contact_form_phone_label" name="contact_form_phone_label"
+					   value="<?php echo esc_attr( $phone_label ); ?>"
+					   class="large-text" placeholder="e.g., Call Us" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_phone">Phone Row Value</label></th>
+			<td>
+				<input type="text" id="contact_form_phone" name="contact_form_phone"
+					   value="<?php echo esc_attr( $phone ); ?>"
+					   class="large-text" placeholder="Leave blank to use the global phone number" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_email_label">Email Row Label</label></th>
+			<td>
+				<input type="text" id="contact_form_email_label" name="contact_form_email_label"
+					   value="<?php echo esc_attr( $email_label ); ?>"
+					   class="large-text" placeholder="e.g., Email Us" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_email">Email Row Value</label></th>
+			<td>
+				<input type="email" id="contact_form_email" name="contact_form_email"
+					   value="<?php echo esc_attr( $email ); ?>"
+					   class="large-text" placeholder="Leave blank to use the global email address" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_office_label">Office Row Label</label></th>
+			<td>
+				<input type="text" id="contact_form_office_label" name="contact_form_office_label"
+					   value="<?php echo esc_attr( $office_label ); ?>"
+					   class="large-text" placeholder="e.g., Main Office" />
+			</td>
+		</tr>
+		<tr>
+			<th><label for="contact_form_office_address">Office Row Address</label></th>
+			<td>
+				<textarea id="contact_form_office_address" name="contact_form_office_address"
+						  rows="3" class="large-text"
+						  placeholder="Leave blank to use the global address"><?php echo esc_textarea( $office_address ); ?></textarea>
+				<p class="description">This controls the Main Office row above the contact form. Enter each line of the address on a new line.</p>
 			</td>
 		</tr>
 		<tr>
@@ -422,6 +477,12 @@ function earlystart_save_contact_page_meta( $post_id ) {
 		'earlystart_contact_form_nonce' => array(
 			'contact_form_heading'             => 'sanitize_text_field',
 			'contact_form_intro'               => 'sanitize_textarea_field',
+			'contact_form_phone_label'         => 'sanitize_text_field',
+			'contact_form_phone'               => 'sanitize_text_field',
+			'contact_form_email_label'         => 'sanitize_text_field',
+			'contact_form_email'               => 'sanitize_email',
+			'contact_form_office_label'        => 'sanitize_text_field',
+			'contact_form_office_address'      => 'sanitize_textarea_field',
 			'contact_form_card_title'          => 'sanitize_text_field',
 			'contact_form_submit_text'         => 'sanitize_text_field',
 			'contact_form_fallback_intro'      => 'sanitize_textarea_field',
@@ -539,6 +600,12 @@ function earlystart_seed_contact_page_defaults( $post_id ) {
 
 		'contact_form_heading'        => 'Get Started Today',
 		'contact_form_intro'          => 'Ready to learn more? Fill out the form, and our admissions team will reach out within 24 hours to guide you through the process.',
+		'contact_form_phone_label'    => 'Call Us',
+		'contact_form_phone'          => '',
+		'contact_form_email_label'    => 'Email Us',
+		'contact_form_email'          => '',
+		'contact_form_office_label'   => 'Main Office',
+		'contact_form_office_address' => '',
 		'contact_form_card_title'     => 'Send a Message',
 		'contact_form_submit_text'    => 'Submit Request',
 		'contact_form_fallback_intro' => 'Our admissions team can help with program questions, referrals, tours, and next steps for your family.',
