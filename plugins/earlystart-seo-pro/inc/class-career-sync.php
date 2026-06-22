@@ -193,12 +193,18 @@ class earlystart_Career_Sync
      */
     private static function normalize_employment_type($raw_type)
     {
+        if (class_exists('earlystart_Careers_API') && method_exists('earlystart_Careers_API', 'normalize_employment_type')) {
+            return earlystart_Careers_API::normalize_employment_type($raw_type);
+        }
+
         $type = strtoupper(trim($raw_type));
         $map = [
             'FULL_TIME' => 'FULL_TIME',
             'FULL TIME' => 'FULL_TIME',
+            'FULLTIME' => 'FULL_TIME',
             'PART_TIME' => 'PART_TIME',
             'PART TIME' => 'PART_TIME',
+            'PARTTIME' => 'PART_TIME',
             'CONTRACT' => 'CONTRACTOR',
             'CONTRACTOR' => 'CONTRACTOR',
             'TEMP' => 'TEMPORARY',

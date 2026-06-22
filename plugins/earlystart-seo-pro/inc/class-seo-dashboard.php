@@ -4540,7 +4540,9 @@ class earlystart_SEO_Dashboard
     {
         $last_sync = get_option('earlystart_last_career_sync', 'Never');
         $last_count = get_option('earlystart_last_career_sync_count', 0);
-        $feed_url = get_option('earlystart_careers_feed_url', 'https://app.acquire4hire.com/careers/list.json?id=4668');
+        $feed_url = class_exists('earlystart_Careers_API')
+            ? earlystart_Careers_API::maybe_migrate_default_feed_url()
+            : get_option('earlystart_careers_feed_url', 'https://app.acquire4hire.com/feed/indeed.xml?id=8154');
         ?>
         <div class="chroma-seo-card">
             <h2>💼 Career Feed Synchronization</h2>
@@ -4563,10 +4565,10 @@ class earlystart_SEO_Dashboard
                 <?php settings_fields('earlystart_careers_options'); ?>
                 <table class="form-table">
                     <tr>
-                        <th scope="row"><label for="earlystart_careers_feed_url">External Feed URL (JSON/HTML)</label></th>
+                        <th scope="row"><label for="earlystart_careers_feed_url">External Feed URL (JSON/XML/HTML)</label></th>
                         <td>
                             <input name="earlystart_careers_feed_url" type="url" id="earlystart_careers_feed_url" value="<?php echo esc_url($feed_url); ?>" class="regular-text">
-                            <p class="description">The URL of the Acquire4Hire career list. Usually ends in <code>list.json?id=XXXX</code>.</p>
+                            <p class="description">The URL of the Acquire4Hire careers feed. The default Chroma Early Start feed is <code>indeed.xml?id=8154</code>.</p>
                         </td>
                     </tr>
                 </table>

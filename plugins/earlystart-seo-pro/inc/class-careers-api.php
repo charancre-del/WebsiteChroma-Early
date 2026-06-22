@@ -13,6 +13,27 @@ if (!defined('ABSPATH')) {
 
 class earlystart_Careers_API
 {
+    const DEFAULT_FEED_URL = 'https://app.acquire4hire.com/feed/indeed.xml?id=8154';
+    const OLD_DEFAULT_FEED_URL = 'https://app.acquire4hire.com/careers/list.json?id=4668';
+
+    /**
+     * Migrate the legacy default feed URL without touching custom admin values.
+     *
+     * @return string Current careers feed URL.
+     */
+    public static function maybe_migrate_default_feed_url()
+    {
+        $current = get_option('earlystart_careers_feed_url', null);
+
+        if ($current === null || $current === false || trim((string) $current) === '' || trim((string) $current) === self::OLD_DEFAULT_FEED_URL) {
+            update_option('earlystart_careers_feed_url', self::DEFAULT_FEED_URL);
+            delete_transient('earlystart_careers_data');
+            return self::DEFAULT_FEED_URL;
+        }
+
+        return (string) $current;
+    }
+
     /**
      * Get careers data
      *
@@ -27,8 +48,8 @@ class earlystart_Careers_API
             return $cached_jobs;
         }
 
-        // Use option for feed URL to avoid hardcoding in plugin
-        $url = get_option('earlystart_careers_feed_url', 'https://app.acquire4hire.com/careers/list.json?id=4668');
+        // Use option for feed URL to avoid hardcoding in plugin.
+        $url = self::maybe_migrate_default_feed_url();
         $safe_url = function_exists('earlystart_seo_validate_remote_url')
             ? earlystart_seo_validate_remote_url($url, true)
             : esc_url_raw($url, array('http', 'https'));
@@ -58,6 +79,9 @@ class earlystart_Careers_API
         }
 
         $jobs = self::parse_json_feed($body, $safe_url);
+        if (empty($jobs)) {
+            $jobs = self::parse_xml_feed($body, $safe_url);
+        }
         if (empty($jobs)) {
             $jobs = self::parse_html_feed($body, $safe_url);
         }
@@ -120,10 +144,66 @@ class earlystart_Careers_API
             $jobs[] = array(
                 'title' => sanitize_text_field($title),
                 'location' => sanitize_text_field($location),
-                'type' => sanitize_text_field(self::first_non_empty($row, array('type', 'employment_type', 'employmentType', 'job_type')) ?: 'FULL_TIME'),
+                'type' => self::normalize_employment_type(self::first_non_empty($row, array('type', 'employment_type', 'employmentType', 'job_type')) ?: 'FULL_TIME'),
                 'url' => self::normalize_url($url, $source_url),
                 'description' => self::first_non_empty($row, array('description', 'summary', 'excerpt')),
                 'date_posted' => self::first_non_empty($row, array('date_posted', 'posted_at', 'postedDate', 'published_at', 'date')),
+            );
+        }
+
+        return array_values(array_filter($jobs, function ($job) {
+            return !empty($job['title']) && !empty($job['url']);
+        }));
+    }
+
+    /**
+     * Parse Indeed XML feed format from Acquire4Hire.
+     *
+     * @param string $body       Response body.
+     * @param string $source_url Feed URL.
+     * @return array
+     */
+    private static function parse_xml_feed($body, $source_url)
+    {
+        if (!function_exists('simplexml_load_string')) {
+            return array();
+        }
+
+        $previous_errors = libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA | LIBXML_NONET);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous_errors);
+
+        if (!$xml) {
+            return array();
+        }
+
+        $job_nodes = $xml->xpath('//job');
+        if (empty($job_nodes)) {
+            return array();
+        }
+
+        $jobs = array();
+        foreach ($job_nodes as $job_node) {
+            $title = self::xml_text($job_node, 'title');
+            $url = self::xml_text($job_node, 'url');
+
+            if ($title === '' || $url === '') {
+                continue;
+            }
+
+            $jobs[] = array(
+                'title' => sanitize_text_field($title),
+                'location' => sanitize_text_field(self::build_location(
+                    self::xml_text($job_node, 'city'),
+                    self::xml_text($job_node, 'state'),
+                    self::xml_text($job_node, 'postalcode')
+                )),
+                'type' => self::normalize_employment_type(self::xml_text($job_node, 'jobtype')),
+                'url' => self::normalize_url($url, $source_url),
+                'description' => self::xml_text($job_node, 'description'),
+                'date_posted' => self::xml_text($job_node, 'date'),
+                'reference_number' => self::xml_text($job_node, 'referencenumber'),
             );
         }
 
@@ -178,6 +258,73 @@ class earlystart_Careers_API
         return array_values(array_filter($jobs, function ($job) {
             return !empty($job['title']) && !empty($job['url']);
         }));
+    }
+
+    /**
+     * Normalize employment type value to Schema.org supported enums.
+     *
+     * @param string $raw_type Input type.
+     * @return string
+     */
+    public static function normalize_employment_type($raw_type)
+    {
+        $type = strtoupper(trim((string) $raw_type));
+        $type = str_replace(array('-', '_'), ' ', $type);
+        $type = preg_replace('/\s+/', ' ', $type);
+
+        $map = array(
+            'FULL TIME' => 'FULL_TIME',
+            'FULLTIME' => 'FULL_TIME',
+            'PART TIME' => 'PART_TIME',
+            'PARTTIME' => 'PART_TIME',
+            'CONTRACT' => 'CONTRACTOR',
+            'CONTRACTOR' => 'CONTRACTOR',
+            'TEMP' => 'TEMPORARY',
+            'TEMPORARY' => 'TEMPORARY',
+            'INTERN' => 'INTERN',
+            'INTERNSHIP' => 'INTERN',
+            'VOLUNTEER' => 'VOLUNTEER',
+        );
+
+        return isset($map[$type]) ? $map[$type] : 'FULL_TIME';
+    }
+
+    /**
+     * Return a child node's trimmed text from a SimpleXML element.
+     *
+     * @param SimpleXMLElement $node Source node.
+     * @param string           $key  Child key.
+     * @return string
+     */
+    private static function xml_text($node, $key)
+    {
+        if (!isset($node->{$key})) {
+            return '';
+        }
+
+        return trim((string) $node->{$key});
+    }
+
+    /**
+     * Build a concise display location from XML address parts.
+     *
+     * @param string $city       City.
+     * @param string $state      State.
+     * @param string $postalcode Postal code.
+     * @return string
+     */
+    private static function build_location($city, $state, $postalcode)
+    {
+        $city = trim((string) $city);
+        $state = strtoupper(trim((string) $state));
+        $postalcode = trim((string) $postalcode);
+        $state_zip = trim($state . ' ' . $postalcode);
+
+        if ($city !== '' && $state_zip !== '') {
+            return $city . ', ' . $state_zip;
+        }
+
+        return $city !== '' ? $city : $state_zip;
     }
 
     /**
