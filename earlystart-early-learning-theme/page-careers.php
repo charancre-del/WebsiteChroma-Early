@@ -127,6 +127,14 @@ while (have_posts()):
 				<div class="space-y-6">
 					<?php if (!empty($display_jobs)): ?>
 						<?php foreach ($display_jobs as $job): ?>
+							<?php
+							$raw_description = (string) ($job['description'] ?? '');
+							$decoded_description = wp_specialchars_decode($raw_description, ENT_QUOTES);
+							$description_with_spaces = preg_replace('/<\s*br\s*\/?>|<\/p>|<\/li>|<\/ul>|<\/ol>|<\/h[1-6]>/i', ' ', $decoded_description);
+							$job_description = trim(preg_replace('/\s+/', ' ', wp_strip_all_tags($description_with_spaces)));
+							$job_description = $job_description ? wp_trim_words($job_description, 42, '...') : __('Join our clinical team and make a difference in the lives of early learners. We prioritize evidence-based care and staff support.', 'earlystart-early-learning');
+							$job_type_label = !empty($job['type']) ? str_replace('_', ' ', (string) $job['type']) : __('Full Time', 'earlystart-early-learning');
+							?>
 							<div
 								class="border border-stone-200 rounded-[2rem] p-8 hover:shadow-lg transition-shadow bg-stone-50/50 fade-in-up relative group">
 								<div class="md:flex justify-between items-start">
@@ -135,10 +143,10 @@ while (have_posts()):
 											<h3 class="text-2xl font-bold text-stone-900"><?php echo esc_html($job['title']); ?>
 											</h3>
 											<span
-												class="bg-rose-100 text-rose-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"><?php echo esc_html($job['type'] ?: 'Full Time'); ?></span>
+												class="bg-rose-100 text-rose-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"><?php echo esc_html($job_type_label); ?></span>
 										</div>
 										<p class="text-stone-700 mb-6 max-w-2xl text-sm leading-relaxed">
-											<?php echo esc_html($job['description'] ?: 'Join our clinical team and make a difference in the lives of early learners. We prioritize evidence-based care and staff support.'); ?>
+											<?php echo esc_html($job_description); ?>
 										</p>
 										<div class="flex flex-wrap gap-4 text-xs text-stone-700 font-bold uppercase tracking-wider">
 											<span class="flex items-center"><i data-lucide="map-pin"
