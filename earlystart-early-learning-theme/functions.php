@@ -203,8 +203,10 @@ if (is_customize_preview() || is_admin()) {
     require_once earlystart_THEME_DIR . '/inc/customizer-footer.php';
     require_once earlystart_THEME_DIR . '/inc/customizer-locations.php';
     require_once earlystart_THEME_DIR . '/inc/customizer-seo.php';
-    require_once earlystart_THEME_DIR . '/inc/customizer-scripts.php';
 }
+
+// Global scripts must load on the front end so their wp_head/wp_footer hooks can run.
+require_once earlystart_THEME_DIR . '/inc/customizer-scripts.php';
 
 // Legacy helper files (ACF plugin optional; helpers run on core WP functions only)
 // Native Theme Settings (Replaces ACF Options Page)
