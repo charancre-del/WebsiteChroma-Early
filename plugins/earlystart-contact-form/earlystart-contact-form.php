@@ -35,9 +35,9 @@ function earlystart_contact_register_settings()
     register_setting('earlystart_contact_options', 'earlystart_contact_fields', array('type' => 'string', 'sanitize_callback' => 'earlystart_contact_sanitize_json', 'default' => wp_json_encode(earlystart_contact_default_fields())));
     register_setting('earlystart_contact_options', 'earlystart_contact_webhook_url', array('type' => 'string', 'sanitize_callback' => 'earlystart_contact_sanitize_webhook_url', 'default' => ''));
     register_setting('earlystart_contact_options', 'earlystart_contact_email_recipient', array('type' => 'string', 'sanitize_callback' => 'sanitize_email', 'default' => get_option('admin_email')));
-    register_setting('earlystart_contact_options', 'earlystart_contact_form_id', array('type' => 'string', 'default' => 'ibinKhrBmF0n4S5tFcz6', 'sanitize_callback' => 'sanitize_text_field'));
-    register_setting('earlystart_contact_options', 'earlystart_contact_form_height', array('type' => 'integer', 'default' => 779, 'sanitize_callback' => 'absint'));
-    register_setting('earlystart_contact_options', 'earlystart_contact_form_name', array('type' => 'string', 'default' => 'Chroma Early Start Inquiry', 'sanitize_callback' => 'sanitize_text_field'));
+    register_setting('earlystart_contact_options', 'earlystart_contact_form_id', array('type' => 'string', 'default' => 'M3WZTpTW5KHrkzf5XfYG', 'sanitize_callback' => 'sanitize_text_field'));
+    register_setting('earlystart_contact_options', 'earlystart_contact_form_height', array('type' => 'integer', 'default' => 1100, 'sanitize_callback' => 'absint'));
+    register_setting('earlystart_contact_options', 'earlystart_contact_form_name', array('type' => 'string', 'default' => 'Chroma Early Start - A2P Inquiry Form', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_contact_options', 'earlystart_contact_sms_disclosure', array('type' => 'string', 'default' => earlystart_contact_default_sms_disclosure(), 'sanitize_callback' => 'wp_kses_post'));
     register_setting('earlystart_contact_options', 'earlystart_contact_lazy_load', array('type' => 'boolean', 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean'));
     register_setting('earlystart_contact_options', 'earlystart_contact_lazy_delay', array('type' => 'integer', 'default' => 2000, 'sanitize_callback' => 'absint'));
@@ -97,9 +97,9 @@ function earlystart_contact_settings_page_html()
             <?php
             settings_fields('earlystart_contact_options');
             $email_recipient = get_option('earlystart_contact_email_recipient', get_option('admin_email'));
-            $form_id = get_option('earlystart_contact_form_id', 'ibinKhrBmF0n4S5tFcz6');
-            $form_height = get_option('earlystart_contact_form_height', 779);
-            $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start Inquiry');
+            $form_id = get_option('earlystart_contact_form_id', 'M3WZTpTW5KHrkzf5XfYG');
+            $form_height = get_option('earlystart_contact_form_height', 1100);
+            $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start - A2P Inquiry Form');
             $sms_disclosure = get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure());
             ?>
             <table class="form-table">
@@ -148,9 +148,9 @@ function earlystart_contact_settings_page_html()
  */
 function earlystart_contact_form_shortcode()
 {
-    $form_id = get_option('earlystart_contact_form_id', 'ibinKhrBmF0n4S5tFcz6');
-    $form_height = get_option('earlystart_contact_form_height', 779);
-    $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start Inquiry');
+    $form_id = get_option('earlystart_contact_form_id', 'M3WZTpTW5KHrkzf5XfYG');
+    $form_height = get_option('earlystart_contact_form_height', 1100);
+    $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start - A2P Inquiry Form');
     $sms_disclosure = get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure());
     $lazy_load = get_option('earlystart_contact_lazy_load', true);
     $lazy_delay = get_option('earlystart_contact_lazy_delay', 2000);
