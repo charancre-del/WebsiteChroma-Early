@@ -99,6 +99,73 @@ $hipaa_url = earlystart_get_link_by_slug('hipaa', 'page');
 if (!$hipaa_url) {
     $hipaa_url = earlystart_get_page_link('hipaa');
 }
+
+$required_a2p_sections = array(
+    array(
+        'title' => __('Information We Collect', 'earlystart-early-learning'),
+        'match' => array('information we collect', 'information collection'),
+        'content' => '<p>' . __('We may collect information you provide through our website, forms, phone calls, emails, SMS messages, referrals, and service interactions. This may include names, email addresses, phone numbers, child or family information, service interests, appointment or intake details, insurance or payment-related information, communication preferences, SMS opt-in status and consent records, and any message content you choose to send us.', 'earlystart-early-learning') . '</p>
+        <p>' . __('We may also collect website and device information such as IP address, browser type, pages visited, referral source, approximate location, and cookie or analytics identifiers.', 'earlystart-early-learning') . '</p>'
+    ),
+    array(
+        'title' => __('How We Use Information', 'earlystart-early-learning'),
+        'match' => array('how we use', 'use information'),
+        'content' => '<p>' . __('We use information to respond to inquiries, schedule and coordinate services, provide pediatric therapy and related support, communicate with families and referral partners, process administrative requests, maintain records, comply with legal obligations, improve our website and operations, and send SMS communications only when a user has opted in or when otherwise permitted by law.', 'earlystart-early-learning') . '</p>'
+    ),
+    array(
+        'title' => __('SMS Communications and Opt-In Data', 'earlystart-early-learning'),
+        'match' => array('sms', 'opt-in'),
+        'required_text' => 'will not be sold, rented, or shared',
+        'content' => '<p>' . __('If you choose to opt in to SMS communications, Chroma Early Start may use your phone number and consent record to send inquiry follow-up, appointment reminders, care coordination messages, service updates, and other messages related to your request or services.', 'earlystart-early-learning') . '</p>
+        <p><strong>' . __('SMS opt-in is optional and is not required to submit an inquiry or receive services.', 'earlystart-early-learning') . '</strong> ' . __('You may opt out at any time by replying STOP to a text message, and you may request help by replying HELP or contacting us directly.', 'earlystart-early-learning') . '</p>
+        <p><strong>' . __('No sharing statement:', 'earlystart-early-learning') . '</strong> ' . __('SMS opt-in data, consent records, and mobile phone numbers collected for SMS purposes will not be sold, rented, or shared with third parties or affiliates for their marketing or promotional purposes.', 'earlystart-early-learning') . '</p>'
+    ),
+    array(
+        'title' => __('Cookies, Analytics, and Tracking', 'earlystart-early-learning'),
+        'match' => array('cookie', 'tracking', 'analytics'),
+        'content' => '<p>' . __('Our website may use cookies, pixels, analytics tools, and similar technologies to understand site usage, improve performance, measure marketing effectiveness, and support security. These tools may collect device, browser, IP address, referral, page interaction, and approximate location data.', 'earlystart-early-learning') . '</p>
+        <p>' . __('You can control cookies through your browser settings. Some site features may not work as intended if cookies are disabled.', 'earlystart-early-learning') . '</p>'
+    ),
+    array(
+        'title' => __('Managing Your Information and Communication Preferences', 'earlystart-early-learning'),
+        'match' => array('unsubscribe', 'communication preferences'),
+        'content' => '<p>' . __('You may ask us to update, correct, or delete information where applicable, and you may unsubscribe from non-essential communications. For SMS messages, reply STOP to opt out. For privacy requests, contact us using the information on this page.', 'earlystart-early-learning') . '</p>
+        <p>' . __('We use reasonable administrative, technical, and physical safeguards to protect personal information, including access controls and vendor management practices. No electronic system can be guaranteed completely secure.', 'earlystart-early-learning') . '</p>'
+    ),
+    array(
+        'title' => __('Data Security Practices', 'earlystart-early-learning'),
+        'match' => array('data security', 'security practices', 'digital security'),
+        'content' => '<p>' . __('We use reasonable administrative, technical, and physical safeguards designed to protect personal information from unauthorized access, disclosure, alteration, or destruction. These practices may include access controls, vendor oversight, secure systems, staff training, and retention practices appropriate to the information involved.', 'earlystart-early-learning') . '</p>'
+    ),
+);
+
+$existing_section_titles = array_map(static function ($section) {
+    return strtolower(trim((string) ($section['title'] ?? '')));
+}, $sections);
+$existing_section_content = strtolower(wp_strip_all_tags(wp_json_encode($sections)));
+
+foreach ($required_a2p_sections as $required_section) {
+    $already_present = false;
+    if (!empty($required_section['required_text'])) {
+        $already_present = strpos($existing_section_content, strtolower((string) $required_section['required_text'])) !== false;
+    } else {
+        foreach ($existing_section_titles as $existing_title) {
+            foreach ((array) $required_section['match'] as $keyword) {
+                if ($existing_title !== '' && strpos($existing_title, $keyword) !== false) {
+                    $already_present = true;
+                    break 2;
+                }
+            }
+        }
+    }
+    if (!$already_present) {
+        unset($required_section['match']);
+        unset($required_section['required_text']);
+        $sections[] = $required_section;
+        $existing_section_titles[] = strtolower(trim((string) $required_section['title']));
+        $existing_section_content .= ' ' . strtolower(wp_strip_all_tags((string) $required_section['content']));
+    }
+}
 ?>
 
 <main id="primary" class="bg-stone-50 min-h-screen">

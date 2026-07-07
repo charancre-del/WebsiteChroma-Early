@@ -37,11 +37,17 @@ function earlystart_contact_register_settings()
     register_setting('earlystart_contact_options', 'earlystart_contact_email_recipient', array('type' => 'string', 'sanitize_callback' => 'sanitize_email', 'default' => get_option('admin_email')));
     register_setting('earlystart_contact_options', 'earlystart_contact_form_id', array('type' => 'string', 'default' => 'ibinKhrBmF0n4S5tFcz6', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_contact_options', 'earlystart_contact_form_height', array('type' => 'integer', 'default' => 779, 'sanitize_callback' => 'absint'));
-    register_setting('earlystart_contact_options', 'earlystart_contact_form_name', array('type' => 'string', 'default' => 'Contact Us - Early Start Early Learning', 'sanitize_callback' => 'sanitize_text_field'));
+    register_setting('earlystart_contact_options', 'earlystart_contact_form_name', array('type' => 'string', 'default' => 'Chroma Early Start Inquiry', 'sanitize_callback' => 'sanitize_text_field'));
+    register_setting('earlystart_contact_options', 'earlystart_contact_sms_disclosure', array('type' => 'string', 'default' => earlystart_contact_default_sms_disclosure(), 'sanitize_callback' => 'wp_kses_post'));
     register_setting('earlystart_contact_options', 'earlystart_contact_lazy_load', array('type' => 'boolean', 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean'));
     register_setting('earlystart_contact_options', 'earlystart_contact_lazy_delay', array('type' => 'integer', 'default' => 2000, 'sanitize_callback' => 'absint'));
 }
 add_action('admin_init', 'earlystart_contact_register_settings');
+
+function earlystart_contact_default_sms_disclosure()
+{
+    return 'SMS opt-in is optional and is not required to submit this form or receive services. By checking the optional SMS consent box in the form, you agree to receive intake follow-up, appointment reminders, care coordination, service updates, and other inquiry-related text messages from Chroma Early Start. Message frequency varies. Message and data rates may apply. Reply STOP to opt out and HELP for help. See our Privacy Policy and Terms of Use.';
+}
 
 function earlystart_contact_sanitize_webhook_url($input)
 {
@@ -91,12 +97,41 @@ function earlystart_contact_settings_page_html()
             <?php
             settings_fields('earlystart_contact_options');
             $email_recipient = get_option('earlystart_contact_email_recipient', get_option('admin_email'));
+            $form_id = get_option('earlystart_contact_form_id', 'ibinKhrBmF0n4S5tFcz6');
+            $form_height = get_option('earlystart_contact_form_height', 779);
+            $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start Inquiry');
+            $sms_disclosure = get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure());
             ?>
             <table class="form-table">
                 <tr>
                     <th scope="row">Email Recipient</th>
                     <td><input type="email" name="earlystart_contact_email_recipient"
                             value="<?php echo esc_attr($email_recipient); ?>" class="regular-text" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">GHL Inquiry Form ID</th>
+                    <td>
+                        <input type="text" name="earlystart_contact_form_id"
+                            value="<?php echo esc_attr($form_id); ?>" class="regular-text" />
+                        <p class="description">Use the new A2P-compliant GHL Inquiry form ID after it is created in HighLevel.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">GHL Form Name</th>
+                    <td><input type="text" name="earlystart_contact_form_name"
+                            value="<?php echo esc_attr($form_name); ?>" class="regular-text" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">GHL Form Height</th>
+                    <td><input type="number" name="earlystart_contact_form_height"
+                            value="<?php echo esc_attr($form_height); ?>" class="small-text" min="300" step="1" /> px</td>
+                </tr>
+                <tr>
+                    <th scope="row">SMS Compliance Disclosure</th>
+                    <td>
+                        <textarea name="earlystart_contact_sms_disclosure" rows="5" class="large-text"><?php echo esc_textarea($sms_disclosure); ?></textarea>
+                        <p class="description">This text appears above the embedded GHL Inquiry form. Keep the matching optional, unchecked SMS checkbox inside the GHL form.</p>
+                    </td>
                 </tr>
             </table>
             <?php submit_button(); ?>
@@ -115,7 +150,8 @@ function earlystart_contact_form_shortcode()
 {
     $form_id = get_option('earlystart_contact_form_id', 'ibinKhrBmF0n4S5tFcz6');
     $form_height = get_option('earlystart_contact_form_height', 779);
-    $form_name = get_option('earlystart_contact_form_name', 'Contact Us - Early Start Early Learning');
+    $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start Inquiry');
+    $sms_disclosure = get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure());
     $lazy_load = get_option('earlystart_contact_lazy_load', true);
     $lazy_delay = get_option('earlystart_contact_lazy_delay', 2000);
 
@@ -128,6 +164,35 @@ function earlystart_contact_form_shortcode()
     ?>
     <div id="<?php echo esc_attr($wrapper_id); ?>" class="earlystart-contact-form-wrapper" data-lazy="<?php echo $lazy_load ? 'true' : 'false'; ?>"
         data-delay="<?php echo esc_attr($lazy_delay); ?>">
+        <?php if (!empty($sms_disclosure)): ?>
+            <?php
+            $privacy_url = function_exists('earlystart_get_link_by_slug') ? earlystart_get_link_by_slug('privacy-policy', 'page') : '';
+            if (!$privacy_url && function_exists('earlystart_get_link_by_slug')) {
+                $privacy_url = earlystart_get_link_by_slug('privacy', 'page');
+            }
+            if (!$privacy_url && function_exists('earlystart_get_page_link')) {
+                $privacy_url = earlystart_get_page_link('privacy-policy');
+            }
+            $terms_url = function_exists('earlystart_get_link_by_slug') ? earlystart_get_link_by_slug('terms', 'page') : '';
+            if (!$terms_url && function_exists('earlystart_get_page_link')) {
+                $terms_url = earlystart_get_page_link('terms');
+            }
+            ?>
+            <div class="earlystart-sms-disclosure rounded-2xl border border-stone-200 bg-stone-50 p-5 mb-6 text-xs leading-relaxed text-stone-700">
+                <p><?php echo esc_html($sms_disclosure); ?></p>
+                <p class="mt-3">
+                    <?php if ($privacy_url): ?>
+                        <a class="font-bold text-rose-700 hover:text-rose-800" href="<?php echo esc_url($privacy_url); ?>">Privacy Policy</a>
+                    <?php endif; ?>
+                    <?php if ($privacy_url && $terms_url): ?>
+                        <span aria-hidden="true"> | </span>
+                    <?php endif; ?>
+                    <?php if ($terms_url): ?>
+                        <a class="font-bold text-rose-700 hover:text-rose-800" href="<?php echo esc_url($terms_url); ?>">Terms of Use</a>
+                    <?php endif; ?>
+                </p>
+            </div>
+        <?php endif; ?>
         <div class="earlystart-ghl-iframe-container" style="min-height: <?php echo esc_attr($form_height); ?>px;">
             <iframe <?php echo $lazy_load ? 'data-src="' . esc_url($form_url) . '"' : 'src="' . esc_url($form_url) . '"'; ?>
                 style="width:100%;height:100%;border:none;border-radius:3px;min-height:<?php echo esc_attr($form_height); ?>px;"

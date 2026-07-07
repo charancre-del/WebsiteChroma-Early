@@ -609,6 +609,7 @@ class Utils
             'earlystart_contact_form_id',
             'earlystart_contact_form_height',
             'earlystart_contact_form_name',
+            'earlystart_contact_sms_disclosure',
             'earlystart_contact_lazy_load',
             'earlystart_contact_lazy_delay',
             'earlystart_career_fields',

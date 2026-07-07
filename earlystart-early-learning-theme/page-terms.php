@@ -103,6 +103,75 @@ $hipaa_url = earlystart_get_link_by_slug('hipaa', 'page');
 if (!$hipaa_url) {
     $hipaa_url = earlystart_get_page_link('hipaa');
 }
+
+$sms_support_methods = array_filter(array($global_contact_email, $global_contact_phone));
+$sms_support_contact = !empty($sms_support_methods) ? implode(' or ', $sms_support_methods) : home_url('/contact/');
+
+$required_sms_terms = array(
+    array(
+        'title' => __('SMS Messaging Program', 'earlystart-early-learning'),
+        'match' => array('sms', 'messaging'),
+        'required_text' => 'Message types may include inquiry follow-up',
+        'content' => '<p>' . __('Chroma Early Start may offer optional SMS messaging for families, caregivers, referral partners, job applicants, and other website visitors who request information or services. Message types may include inquiry follow-up, appointment reminders, intake and scheduling coordination, service updates, care coordination, billing or administrative notices, and responses to support requests.', 'earlystart-early-learning') . '</p>
+        <p>' . __('SMS consent is optional and is not required as a condition of purchasing or receiving services. Message frequency varies based on your relationship with us and your requests.', 'earlystart-early-learning') . '</p>'
+    ),
+    array(
+        'title' => __('SMS Opt-Out, Help, and Charges', 'earlystart-early-learning'),
+        'match' => array('stop', 'opt-out', 'data rates'),
+        'required_text' => 'Carriers are not liable',
+        'content' => '<p>' . __('You can opt out of SMS messages at any time by replying STOP. You may reply HELP for help or contact Chroma Early Start using the contact information below.', 'earlystart-early-learning') . '</p>
+        <p>' . __('Message and data rates may apply. Your mobile carrier may charge fees according to your wireless plan. Carriers are not liable for delayed or undelivered messages.', 'earlystart-early-learning') . '</p>'
+    ),
+    array(
+        'title' => __('SMS Eligibility and Privacy', 'earlystart-early-learning'),
+        'match' => array('age', 'eligibility', '18'),
+        'required_text' => 'at least 18 years old',
+        'content' => '<p>' . __('You must be at least 18 years old or have the authority of a parent or legal guardian to opt in to SMS communications. By opting in, you confirm that you are the account holder or have permission from the account holder to receive messages at the phone number provided.', 'earlystart-early-learning') . '</p>
+        <p>' . sprintf(
+            wp_kses(
+                __('Our SMS privacy practices are described in our <a href="%s">Privacy Policy</a>, including our no-sharing statement for SMS opt-in data and mobile numbers.', 'earlystart-early-learning'),
+                array('a' => array('href' => array()))
+            ),
+            esc_url($privacy_url)
+        ) . '</p>'
+    ),
+    array(
+        'title' => __('SMS Support Contact', 'earlystart-early-learning'),
+        'match' => array('sms support', 'support contact'),
+        'content' => '<p>' . sprintf(
+            esc_html__('For SMS program support, contact Chroma Early Start at %s. You may also reply HELP to an SMS message for assistance.', 'earlystart-early-learning'),
+            esc_html($sms_support_contact)
+        ) . '</p>'
+    ),
+);
+
+$existing_section_titles = array_map(static function ($section) {
+    return strtolower(trim((string) ($section['title'] ?? '')));
+}, $sections);
+$existing_section_content = strtolower(wp_strip_all_tags(wp_json_encode($sections)));
+
+foreach ($required_sms_terms as $required_section) {
+    $already_present = false;
+    if (!empty($required_section['required_text'])) {
+        $already_present = strpos($existing_section_content, strtolower((string) $required_section['required_text'])) !== false;
+    } else {
+        foreach ($existing_section_titles as $existing_title) {
+            foreach ((array) $required_section['match'] as $keyword) {
+                if ($existing_title !== '' && strpos($existing_title, $keyword) !== false) {
+                    $already_present = true;
+                    break 2;
+                }
+            }
+        }
+    }
+    if (!$already_present) {
+        unset($required_section['match']);
+        unset($required_section['required_text']);
+        $sections[] = $required_section;
+        $existing_section_titles[] = strtolower(trim((string) $required_section['title']));
+        $existing_section_content .= ' ' . strtolower(wp_strip_all_tags((string) $required_section['content']));
+    }
+}
 ?>
 
 <main id="primary" class="bg-stone-50 min-h-screen">
