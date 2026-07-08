@@ -111,6 +111,8 @@ function earlystart_launch_service_expansion_programs(): array
  */
 function earlystart_apply_service_expansion_migration(): void
 {
+    global $wpdb;
+
     foreach (earlystart_launch_service_expansion_programs() as $slug => $data) {
         $post = get_page_by_path($slug, OBJECT, 'program');
         $post_id = $post ? (int) $post->ID : 0;
@@ -163,6 +165,27 @@ function earlystart_apply_service_expansion_migration(): void
         }
     }
 
+    $copy_updates = array(
+        'Specialized ABA, Speech, and Occupational Therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
+        'Integrating speech, OT, and ABA for holistic outcomes.' => 'Integrating diagnosis, behavioral health, speech, OT, and ABA for holistic outcomes.',
+        'Our team includes licensed and board-certified professionals across ABA, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism diagnosis, ABA, behavioral health, speech, and occupational therapy disciplines.',
+        'Find a clinic near you and schedule a tour for ABA, Speech, or OT.' => 'Find a clinic near you and schedule a tour for autism diagnosis, ABA, behavioral health, speech, or OT.',
+        'ABA, Speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.' => 'Diagnosis, ABA, behavioral health, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.',
+    );
+
+    foreach ($copy_updates as $before => $after) {
+        $meta_ids = $wpdb->get_col(
+            $wpdb->prepare(
+                "SELECT meta_id FROM {$wpdb->postmeta} WHERE meta_value = %s",
+                $before
+            )
+        );
+
+        foreach ((array) $meta_ids as $meta_id) {
+            update_metadata_by_mid('post', (int) $meta_id, wp_slash($after));
+        }
+    }
+
     $old_special_programs = "ABA Therapy\nSpeech Therapy\nOccupational Therapy\nParent Coaching";
     $new_special_programs = "Autism Diagnosis\nABA Therapy\nBehavioral Health\nSpeech Therapy\nOccupational Therapy\nParent Coaching";
     $location_ids = get_posts(array(
@@ -192,7 +215,7 @@ function earlystart_run_launch_content_cleanup(): void
         return;
     }
 
-    $version = '2026-07-08.5';
+    $version = '2026-07-08.6';
     if (get_option('earlystart_launch_content_cleanup_version') === $version) {
         return;
     }
