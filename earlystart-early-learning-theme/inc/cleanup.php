@@ -66,15 +66,19 @@ remove_action('wp_head', 'wp_generator');
 /**
  * Disable RSS feeds
  */
-function chroma_disable_feeds()
+function earlystart_disable_feeds()
 {
-        wp_die(__('No feed available. Please visit the <a href="' . esc_url(home_url('/')) . '">homepage</a>!', 'chroma-excellence'));
+        wp_die(
+                __('No feed available. Please visit the <a href="' . esc_url(home_url('/')) . '">homepage</a>!', 'earlystart-early-learning'),
+                __('Feed unavailable', 'earlystart-early-learning'),
+                array('response' => 404)
+        );
 }
-add_action('do_feed', 'chroma_disable_feeds', 1);
-add_action('do_feed_rdf', 'chroma_disable_feeds', 1);
-add_action('do_feed_rss', 'chroma_disable_feeds', 1);
-add_action('do_feed_rss2', 'chroma_disable_feeds', 1);
-add_action('do_feed_atom', 'chroma_disable_feeds', 1);
+add_action('do_feed', 'earlystart_disable_feeds', 1);
+add_action('do_feed_rdf', 'earlystart_disable_feeds', 1);
+add_action('do_feed_rss', 'earlystart_disable_feeds', 1);
+add_action('do_feed_rss2', 'earlystart_disable_feeds', 1);
+add_action('do_feed_atom', 'earlystart_disable_feeds', 1);
 
 /**
  * Disable emojis to reduce extraneous HTTP requests and inline scripts.

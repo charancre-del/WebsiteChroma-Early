@@ -19,9 +19,6 @@ function earlystart_theme_setup()
 	// Make theme available for translation.
 	load_theme_textdomain('earlystart-early-learning', get_template_directory() . '/languages');
 
-	// Add default posts and comments RSS feed links to head
-	add_theme_support('automatic-feed-links');
-
 	// Let WordPress manage the document title
 	add_theme_support('title-tag');
 
