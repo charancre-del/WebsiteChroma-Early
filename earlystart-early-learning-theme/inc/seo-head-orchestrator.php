@@ -183,19 +183,84 @@ function earlystart_normalize_seo_title_branding($title)
         return $title;
     }
 
+    return earlystart_normalize_legacy_branding_text($title);
+}
+add_filter('pre_get_document_title', 'earlystart_normalize_seo_title_branding', 99);
+add_filter('wpseo_title', 'earlystart_normalize_seo_title_branding', 99);
+
+/**
+ * Normalize document title parts before WordPress joins the final title.
+ *
+ * @param array $parts Document title parts.
+ * @return array
+ */
+function earlystart_normalize_document_title_parts($parts)
+{
+    if (!is_array($parts)) {
+        return $parts;
+    }
+
+    foreach ($parts as $key => $value) {
+        if (is_string($value)) {
+            $parts[$key] = earlystart_normalize_legacy_branding_text($value);
+        }
+    }
+
+    return $parts;
+}
+add_filter('document_title_parts', 'earlystart_normalize_document_title_parts', 99);
+
+/**
+ * Normalize stale launch-era brand strings from saved SEO/plugin output.
+ *
+ * @param string $text Text to normalize.
+ * @return string
+ */
+function earlystart_normalize_legacy_branding_text($text)
+{
+    if (!is_string($text) || '' === $text) {
+        return $text;
+    }
+
     return str_replace(
         array(
             'earlystart Early Learning',
             'Early Start Early Learning',
+            'Early Learning Academy',
+            'Chroma Early Learning Academy',
             'Chrom Early Start',
             'Chroma Early Learning',
+            '| Early Learning',
         ),
-        'Chroma Early Start',
-        $title
+        array(
+            'Chroma Early Start',
+            'Chroma Early Start',
+            'Chroma Early Start',
+            'Chroma Early Start',
+            'Chroma Early Start',
+            'Chroma Early Start',
+            '| Chroma Early Start',
+        ),
+        $text
     );
 }
-add_filter('pre_get_document_title', 'earlystart_normalize_seo_title_branding', 99);
-add_filter('wpseo_title', 'earlystart_normalize_seo_title_branding', 99);
+
+/**
+ * Last-resort public HTML normalizer for third-party SEO output.
+ *
+ * Some production SEO fields are emitted by plugins from saved database values
+ * after WordPress title filters have run. Keep this scoped to exact legacy brand
+ * strings so ordinary copy such as "early intervention" remains untouched.
+ */
+function earlystart_start_legacy_branding_buffer()
+{
+    if (is_admin() || wp_doing_ajax() || is_feed() || is_robots() || (defined('REST_REQUEST') && REST_REQUEST)) {
+        return;
+    }
+
+    ob_start('earlystart_normalize_legacy_branding_text');
+}
+add_action('template_redirect', 'earlystart_start_legacy_branding_buffer', 0);
 
 /**
  * Debug comment for active SEO mode.
