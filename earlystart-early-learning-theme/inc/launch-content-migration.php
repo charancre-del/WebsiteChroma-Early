@@ -10,6 +10,27 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Recursively normalize legacy strings inside option arrays.
+ *
+ * @param mixed $value Stored option value.
+ * @return mixed
+ */
+function earlystart_normalize_launch_content_value($value)
+{
+    if (is_string($value)) {
+        return earlystart_normalize_legacy_branding_text($value);
+    }
+
+    if (is_array($value)) {
+        foreach ($value as $key => $item) {
+            $value[$key] = earlystart_normalize_launch_content_value($item);
+        }
+    }
+
+    return $value;
+}
+
+/**
  * Normalize saved legacy content when an administrator opens wp-admin.
  *
  * This intentionally runs in wp-admin only. Front-end requests should not be
@@ -22,7 +43,7 @@ function earlystart_run_launch_content_cleanup(): void
         return;
     }
 
-    $version = '2026-07-08.2';
+    $version = '2026-07-08.3';
     if (get_option('earlystart_launch_content_cleanup_version') === $version) {
         return;
     }
@@ -97,7 +118,22 @@ function earlystart_run_launch_content_cleanup(): void
         }
     }
 
+    $option_rows = $wpdb->get_results(
+        "SELECT option_name, option_value FROM {$wpdb->options}
+        WHERE option_name IN ('blogname', 'blogdescription')
+        OR option_name LIKE 'theme\\_mods\\_%'
+        OR option_name LIKE 'earlystart\\_%'"
+    );
+
+    foreach ((array) $option_rows as $row) {
+        $before = maybe_unserialize($row->option_value);
+        $after = earlystart_normalize_launch_content_value($before);
+
+        if ($after !== $before) {
+            update_option($row->option_name, $after);
+        }
+    }
+
     update_option('earlystart_launch_content_cleanup_version', $version, false);
 }
 add_action('admin_init', 'earlystart_run_launch_content_cleanup', 30);
-
