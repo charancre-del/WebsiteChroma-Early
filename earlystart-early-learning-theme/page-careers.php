@@ -25,6 +25,9 @@ while (have_posts()):
 	$cta_button_url = get_post_meta($page_id, 'careers_cta_button_url', true) ?: earlystart_get_page_link('contact');
 	if (preg_match('/^mailto:(info|careers)@chromaearlystart\.com\b/i', (string) $cta_button_url)) {
 		$careers_email = function_exists('earlystart_global_careers_email') ? earlystart_global_careers_email() : 'careers@chromaela.com';
+		if (!$careers_email || preg_match('/@chromaearlystart\.com$/i', (string) $careers_email)) {
+			$careers_email = 'careers@chromaela.com';
+		}
 		$cta_button_url = 'mailto:' . sanitize_email($careers_email ?: 'careers@chromaela.com');
 	}
 
