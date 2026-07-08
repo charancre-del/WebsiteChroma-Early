@@ -90,6 +90,18 @@ if (!$has_custom_content) {
     $sections = $default_sections;
 }
 
+foreach ($sections as &$section) {
+    $section_text = wp_strip_all_tags((string) ($section['title'] ?? '') . ' ' . (string) ($section['content'] ?? ''));
+    if (
+        stripos($section_text, 'sms') !== false
+        && stripos($section_text, 'opt-in') !== false
+        && stripos($section_text, 'Message frequency varies') === false
+    ) {
+        $section['content'] = (string) ($section['content'] ?? '') . '<p>' . __('Message frequency varies based on your request and relationship with us. Message and data rates may apply.', 'earlystart-early-learning') . '</p>';
+    }
+}
+unset($section);
+
 $terms_url = earlystart_get_link_by_slug('terms', 'page');
 if (!$terms_url) {
     $terms_url = earlystart_get_page_link('terms');

@@ -303,6 +303,10 @@ function earlystart_redirect_legacy_public_slugs()
         '/privacy-policy' => 'privacy',
         '/terms-of-service' => 'terms',
         '/schedule-a-tour' => 'schedule-tour',
+        '/locations/ellenwood-campus' => 'locations/ellenwood-2',
+        '/locations/pleasanthill-campus' => 'locations/duluth',
+        '/locations/tyrone-campus' => 'locations/tyrone',
+        '/locations/west-cobb-campus' => 'locations/marietta',
     );
 
     if (!isset($redirects[$path])) {
