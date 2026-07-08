@@ -233,8 +233,13 @@ function earlystart_normalize_legacy_branding_text($text)
             'Careers at Early Start',
             'Early Start&#039;s',
             "Early Start's",
+            'Daycare &amp; Therapy',
             'Daycare & Therapy',
+            'Daycare &amp; ABA',
             'Daycare & ABA',
+            'Licensed Childcare Center',
+            'Childcare Centers',
+            'Childcare Center',
             'childcare center',
             'childcare centers',
             '| Early Start',
@@ -250,8 +255,13 @@ function earlystart_normalize_legacy_branding_text($text)
             'Careers at Chroma Early Start',
             'Chroma Early Start&#039;s',
             "Chroma Early Start's",
+            'Pediatric Therapy &amp; Early Intervention',
             'Pediatric Therapy & Early Intervention',
+            'Pediatric Therapy &amp; ABA',
             'Pediatric Therapy & ABA',
+            'Licensed Pediatric Therapy Clinic',
+            'Pediatric Therapy Clinics',
+            'Pediatric Therapy Clinic',
             'pediatric therapy clinic',
             'pediatric therapy clinics',
             '| Chroma Early Start',
@@ -270,12 +280,24 @@ function earlystart_normalize_legacy_branding_text($text)
  */
 function earlystart_start_legacy_branding_buffer()
 {
-    if (is_admin() || wp_doing_ajax() || is_feed() || is_robots() || (defined('REST_REQUEST') && REST_REQUEST)) {
+    static $started = false;
+
+    if ($started || is_admin() || wp_doing_ajax() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('WP_CLI') && WP_CLI)) {
         return;
     }
 
+    if (function_exists('is_feed') && is_feed()) {
+        return;
+    }
+
+    if (function_exists('is_robots') && is_robots()) {
+        return;
+    }
+
+    $started = true;
     ob_start('earlystart_normalize_legacy_branding_text');
 }
+add_action('init', 'earlystart_start_legacy_branding_buffer', 0);
 add_action('template_redirect', 'earlystart_start_legacy_branding_buffer', 0);
 
 /**

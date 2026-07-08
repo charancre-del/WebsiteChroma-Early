@@ -28,7 +28,7 @@ error_reporting(0);
 /**
  * Define theme constants
  */
-define('earlystart_VERSION', '1.0.1');
+define('earlystart_VERSION', '1.0.4');
 define('earlystart_THEME_DIR', get_template_directory());
 define('earlystart_THEME_URI', get_template_directory_uri());
 

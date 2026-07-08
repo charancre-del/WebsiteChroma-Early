@@ -43,7 +43,7 @@ function earlystart_run_launch_content_cleanup(): void
         return;
     }
 
-    $version = '2026-07-08.3';
+    $version = '2026-07-08.4';
     if (get_option('earlystart_launch_content_cleanup_version') === $version) {
         return;
     }
