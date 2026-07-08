@@ -176,10 +176,10 @@ foreach ($city_map as $city_name => $schools) {
     $neighborhoods = isset($city_neighborhoods_flat[$city_name]) ? $city_neighborhoods_flat[$city_name] : array();
     $county = isset($city_county_map[$city_name]) ? $city_county_map[$city_name] : 'Local';
 
-    // Fallback: Use School Names as neighborhoods if none hardcoded
+    // Fallback: Use location names as neighborhoods if none hardcoded.
     if (empty($neighborhoods)) {
         foreach ($schools as $s) {
-            $neighborhoods[] = str_replace(['Campus', 'Clinic', 'Academy by Early Start Early Learning', 'Clinic by Chroma Early Start'], '', $s['school_name']);
+            $neighborhoods[] = str_replace(['Campus', 'Clinic', 'Academy by Early Start Early Learning', 'Clinic by Chroma Early Start', 'Therapy by Chroma Early Start'], '', $s['school_name']);
         }
     }
 

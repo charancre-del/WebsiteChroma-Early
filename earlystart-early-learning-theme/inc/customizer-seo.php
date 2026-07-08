@@ -178,11 +178,11 @@ function earlystart_seo_customizer_settings($wp_customize) {
     
     $wp_customize->add_control('earlystart_global_brand_phonetic', [
         'label'       => __('Brand Phonetic Name', 'earlystart-early-learning'),
-        'description' => __('How your brand is pronounced (for voice search). E.g., "KROH-muh Early Learning"', 'earlystart-early-learning'),
+        'description' => __('How your brand is pronounced (for voice search). E.g., "KROH-muh Early Start"', 'earlystart-early-learning'),
         'section'     => 'earlystart_seo_settings',
         'type'        => 'text',
         'input_attrs' => [
-            'placeholder' => 'KROH-muh Early Learning',
+            'placeholder' => 'KROH-muh Early Start',
         ],
     ]);
     

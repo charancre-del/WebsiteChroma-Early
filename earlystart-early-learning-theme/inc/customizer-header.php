@@ -25,7 +25,7 @@ function earlystart_header_customizer_settings($wp_customize)
 
 	// Header Text
 	$wp_customize->add_setting('earlystart_header_text', array(
-		'default' => "Early Learning\nAcademy",
+		'default' => "Pediatric Therapy\n& Early Support",
 		'sanitize_callback' => 'sanitize_textarea_field',
 		'transport' => 'refresh',
 	));
@@ -36,7 +36,7 @@ function earlystart_header_customizer_settings($wp_customize)
 		'section' => 'earlystart_header_settings',
 		'type' => 'textarea',
 		'input_attrs' => array(
-			'placeholder' => "Early Learning\nAcademy",
+			'placeholder' => "Pediatric Therapy\n& Early Support",
 			'rows' => 3,
 		),
 	));

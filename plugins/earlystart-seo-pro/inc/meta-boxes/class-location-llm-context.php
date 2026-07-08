@@ -49,9 +49,9 @@ class earlystart_Location_LLM_Context_Meta_Box extends earlystart_Advanced_SEO_M
             'id' => 'seo_llm_primary_intent',
             'label' => __('Primary Intent', 'chroma-excellence'),
             'value' => $primary_intent,
-            'placeholder' => 'childcare_discovery',
+            'placeholder' => 'pediatric_therapy_discovery',
             'description' => 'What is the primary search intent this location serves?',
-            'fallback_notice' => empty($primary_intent) ? 'childcare_discovery' : '',
+            'fallback_notice' => empty($primary_intent) ? 'pediatric_therapy_discovery' : '',
             'class' => 'regular-text',
         ]);
 

@@ -157,7 +157,7 @@ while (have_posts()):
 					<div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
 						<?php
 						$milestones = array(
-							array('year' => '2022', 'title' => 'The Beginning', 'desc' => 'Chroma Early Learning Academy opens its first childcare center.', 'color' => 'rose'),
+							array('year' => '2022', 'title' => 'The Beginning', 'desc' => 'Chroma expands its child development and early support platform.', 'color' => 'rose'),
 							array('year' => '2023-2025', 'title' => 'Regional Growth', 'desc' => 'Regional expansion across Metro Atlanta.', 'color' => 'orange'),
 							array('year' => '2026', 'title' => 'Chroma Early Start', 'desc' => 'Official launch of Chroma Early Start.', 'color' => 'amber'),
 							array('year' => 'Today', 'title' => 'A Holistic Network', 'desc' => '19+ locations integrating education and clinical therapy.', 'color' => 'rose'),

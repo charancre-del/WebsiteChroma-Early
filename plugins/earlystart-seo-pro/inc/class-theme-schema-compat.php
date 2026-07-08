@@ -437,12 +437,12 @@ if (!function_exists('earlystart_city_schema_pro')) {
 
         // Localize English Fallback if needed
         if ((class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) && !$desc) {
-            $desc = "Servicios de cuidado infantil y educación temprana de primer nivel en $city_name, GA.";
+            $desc = "Servicios de terapia pediatrica en $city_name, GA, incluyendo ABA, habla y terapia ocupacional.";
         }
 
         $service_name = "Pediatric Therapy in $city_name";
         if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) {
-            $service_name = "Guardería y Preescolar en $city_name";
+            $service_name = "Terapia pediatrica en $city_name";
         }
 
         $location_ids = get_post_meta($post_id, 'city_nearby_locations', true);

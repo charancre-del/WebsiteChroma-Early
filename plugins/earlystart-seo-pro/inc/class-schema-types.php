@@ -26,6 +26,7 @@ class earlystart_Schema_Types
             'NewsArticle' => self::get_article_schema(), // Inherits from Article
             'LocalBusiness' => self::get_local_business_schema(),
             'MedicalClinic' => self::get_medical_clinic_schema(),
+            'SpeechPathology' => self::get_speech_pathology_schema(),
             'OccupationalTherapy' => self::get_occupational_therapy_schema(),
             'Organization' => self::get_organization_schema(),
             'Person' => self::get_person_schema(),
@@ -49,12 +50,12 @@ class earlystart_Schema_Types
     }
 
     /**
-     * ChildCare (Inherits from LocalBusiness)
+     * ChildCare (legacy compatibility, inherits from LocalBusiness)
      */
     private static function get_childcare_schema()
     {
         $schema = self::get_local_business_schema();
-        $schema['label'] = 'Legacy Child Care / Preschool';
+        $schema['label'] = 'Deprecated Legacy Business Type';
         return $schema;
     }
 

@@ -1,7 +1,7 @@
 {
   "name": "earlystart-early-learning-theme",
   "version": "1.0.0",
-  "description": "Custom WordPress theme for Early Start Early Learning Academy with Prismpath™ curriculum",
+  "description": "Custom WordPress theme for Chroma Early Start pediatric therapy and early support",
   "private": true,
   "scripts": {
     "dev:css": "postcss assets/css/input.css -o assets/css/main.css --watch",
@@ -14,7 +14,7 @@
     "wordpress",
     "theme",
     "tailwind",
-    "childcare",
+    "pediatric-therapy",
     "education"
   ],
   "author": "Early Start Development Team",

@@ -502,7 +502,7 @@ function earlystart_location_schema()
                 $schema['makesOffer'] = $offers;
                 $schema['hasOfferCatalog'] = array(
                         '@type' => 'OfferCatalog',
-                        'name' => 'Early Learning Programs',
+                        'name' => 'Pediatric Therapy Programs',
                         'itemListElement' => $offers
                 );
         }

@@ -723,14 +723,14 @@ class earlystart_Multilingual_Manager
                 'Skip to content' => 'Saltar al contenido',
                 'Toggle menu' => 'Alternar menú',
                 'Close menu' => 'Cerrar menú',
-                'Premium pediatric therapy & early education across Metro Atlanta.' => 'Cuidado infantil premium y educación temprana en todo Metro Atlanta.',
-                'Chroma Early Learning Academy. All rights reserved.' => 'Chroma Early Learning Academy. Todos los derechos reservados.',
+                'Premium pediatric therapy & early education across Metro Atlanta.' => 'Terapia pediatrica y apoyo de desarrollo temprano en Metro Atlanta.',
+                'Chroma Early Start. All rights reserved.' => 'Chroma Early Start. Todos los derechos reservados.',
                 'Ready to experience the Chroma difference?' => '¿Listo para experimentar la diferencia Chroma?',
                 'Schedule a Tour' => 'Agenda un Recorrido',
                 'Book a Tour' => 'Reserva un Recorrido',
-                'Early Learning Academy' => 'Academia de Educación Temprana', // Fallback if customizer is empty
-                'Early Learning' => 'Educación Temprana',
-                'Academy' => 'Academia',
+                'Chroma Early Start' => 'Chroma Early Start', // Fallback if customizer is empty
+                'Early Intervention' => 'Intervencion temprana',
+                'Pediatric Therapy' => 'Terapia pediatrica',
                 'Ready to enroll in <strong>%s</strong>?' => '¿Listo para inscribirse en <strong>%s</strong>?',
                 'Ready to visit our <strong>%s</strong> campus?' => '¿Listo para visitar nuestro campus de <strong>%s</strong>?',
 
@@ -1176,7 +1176,7 @@ class earlystart_Multilingual_Manager
                 'Start Over' => 'Empezar de Nuevo',
                 'What Parents Say' => 'Lo que dicen los padres',
                 'Trusted by thousands of Atlanta families' => 'Con la confianza de miles de familias de Atlanta',
-                "Don't just take our word for it. Here's what parents have to say about their experience with Chroma Early Learning." => 'No se quede solo con nuestra palabra. Esto es lo que los padres tienen que decir sobre su experiencia con Chroma Early Learning.',
+                "Don't just take our word for it. Here's what parents have to say about their experience with Chroma Early Start." => 'No se quede solo con nuestra palabra. Esto es lo que los padres tienen que decir sobre su experiencia con Chroma Early Start.',
                 'Go to review %d' => 'Ir a la reseña %d',
                 'Schedule a private tour' => 'Programar un recorrido privado',
                 'Why families choose Chroma' => 'Por qué las familias eligen Chroma',
@@ -1281,11 +1281,11 @@ class earlystart_Multilingual_Manager
                 'Prismpath™ Focus' => 'Enfoque Prismpath™',
 
                 // Footer & Sticky CTA
-                'Premium pediatric therapy & early education across Metro Atlanta.' => 'Cuidado infantil de primera y educación temprana en todo Metro Atlanta.',
+                'Premium pediatric therapy & early education across Metro Atlanta.' => 'Terapia pediatrica y apoyo de desarrollo temprano en Metro Atlanta.',
                 'Quick Links' => 'Enlaces Rápidos',
                 'Connect With Us' => 'Conéctate con Nosotros',
                 'Latest Blogs' => 'Últimos Blogs',
-                'Chroma Early Learning Academy. All rights reserved.' => 'Chroma Early Learning Academy. Todos los derechos reservados.',
+                'Chroma Early Start. All rights reserved.' => 'Chroma Early Start. Todos los derechos reservados.',
                 'Privacy Policy' => 'Política de Privacidad',
                 'Terms of Service' => 'Términos de Servicio',
                 'Ready to experience the Chroma difference?' => '¿Listo para experimentar la diferencia de Chroma?',
