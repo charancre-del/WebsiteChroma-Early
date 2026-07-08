@@ -230,6 +230,11 @@ function earlystart_normalize_legacy_branding_text($text)
             'Chroma Early Learning Academy',
             'Chrom Early Start',
             'Chroma Early Learning',
+            'Careers at Early Start',
+            'Daycare & Therapy',
+            'childcare center',
+            'childcare centers',
+            '| Early Start',
             '| Early Learning',
         ),
         array(
@@ -239,6 +244,11 @@ function earlystart_normalize_legacy_branding_text($text)
             'Chroma Early Start',
             'Chroma Early Start',
             'Chroma Early Start',
+            'Careers at Chroma Early Start',
+            'Pediatric Therapy & Early Intervention',
+            'pediatric therapy clinic',
+            'pediatric therapy clinics',
+            '| Chroma Early Start',
             '| Chroma Early Start',
         ),
         $text
