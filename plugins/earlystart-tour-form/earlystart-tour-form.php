@@ -229,9 +229,8 @@ function earlystart_tour_form_shortcode()
                         }
                     }, { rootMargin: '300px 0px' });
                     observer.observe(container);
-                } else {
-                    setTimeout(loadGHLScript, Math.max(delay, 0));
                 }
+                setTimeout(loadGHLScript, Math.max(delay, 0));
             })();
         </script>
     <?php else: ?>
@@ -341,7 +340,7 @@ function earlystart_tour_register_settings()
     register_setting('earlystart_tour_settings', 'earlystart_tour_form_id', array('type' => 'string', 'default' => '848tl2LjoZVsUIhhNOxd', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_tour_settings', 'earlystart_tour_form_height', array('type' => 'integer', 'default' => 1600, 'sanitize_callback' => 'absint'));
     register_setting('earlystart_tour_settings', 'earlystart_tour_form_name', array('type' => 'string', 'default' => 'PARENT INFORMATION - Early Start Early Learning', 'sanitize_callback' => 'sanitize_text_field'));
-    register_setting('earlystart_tour_settings', 'earlystart_tour_lazy_load', array('type' => 'boolean', 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean'));
+    register_setting('earlystart_tour_settings', 'earlystart_tour_lazy_load', array('type' => 'boolean', 'default' => false, 'sanitize_callback' => 'rest_sanitize_boolean'));
     register_setting('earlystart_tour_settings', 'earlystart_tour_lazy_delay', array('type' => 'integer', 'default' => 2000, 'sanitize_callback' => 'absint'));
 }
 add_action('admin_init', 'earlystart_tour_register_settings');
@@ -365,7 +364,7 @@ function earlystart_tour_settings_page_html()
     $form_id = get_option('earlystart_tour_form_id', '848tl2LjoZVsUIhhNOxd');
     $form_height = get_option('earlystart_tour_form_height', 1600);
     $form_name = get_option('earlystart_tour_form_name', 'PARENT INFORMATION - Early Start Early Learning');
-    $lazy_load = get_option('earlystart_tour_lazy_load', true);
+    $lazy_load = get_option('earlystart_tour_lazy_load', false);
     $lazy_delay = get_option('earlystart_tour_lazy_delay', 2000);
     ?>
     <div class="wrap">

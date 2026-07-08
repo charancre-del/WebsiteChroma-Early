@@ -51,6 +51,11 @@ function earlystart_contact_maybe_migrate_form_options()
             update_option('earlystart_contact_form_height', 1600);
         }
     }
+
+    $current_lazy = get_option('earlystart_contact_lazy_load', null);
+    if ($current_lazy === null || $current_lazy === '') {
+        update_option('earlystart_contact_lazy_load', false);
+    }
 }
 add_action('init', 'earlystart_contact_maybe_migrate_form_options', 5);
 
@@ -66,7 +71,7 @@ function earlystart_contact_register_settings()
     register_setting('earlystart_contact_options', 'earlystart_contact_form_height', array('type' => 'integer', 'default' => 1600, 'sanitize_callback' => 'absint'));
     register_setting('earlystart_contact_options', 'earlystart_contact_form_name', array('type' => 'string', 'default' => 'Chroma Early Start - A2P Inquiry Form', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_contact_options', 'earlystart_contact_sms_disclosure', array('type' => 'string', 'default' => earlystart_contact_default_sms_disclosure(), 'sanitize_callback' => 'wp_kses_post'));
-    register_setting('earlystart_contact_options', 'earlystart_contact_lazy_load', array('type' => 'boolean', 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean'));
+    register_setting('earlystart_contact_options', 'earlystart_contact_lazy_load', array('type' => 'boolean', 'default' => false, 'sanitize_callback' => 'rest_sanitize_boolean'));
     register_setting('earlystart_contact_options', 'earlystart_contact_lazy_delay', array('type' => 'integer', 'default' => 2000, 'sanitize_callback' => 'absint'));
 }
 add_action('admin_init', 'earlystart_contact_register_settings');
@@ -231,7 +236,7 @@ function earlystart_contact_form_shortcode()
     $form_height = get_option('earlystart_contact_form_height', 1600);
     $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start - A2P Inquiry Form');
     $sms_disclosure = get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure());
-    $lazy_load = get_option('earlystart_contact_lazy_load', true);
+    $lazy_load = get_option('earlystart_contact_lazy_load', false);
     $lazy_delay = get_option('earlystart_contact_lazy_delay', 2000);
 
     $form_url = earlystart_contact_build_tracked_form_url($form_id);
@@ -343,9 +348,8 @@ function earlystart_contact_form_shortcode()
                         }
                     }, { rootMargin: '300px 0px' });
                     observer.observe(container);
-                } else {
-                    setTimeout(loadGHLScript, Math.max(delay, 0));
                 }
+                setTimeout(loadGHLScript, Math.max(delay, 0));
             })();
         </script>
     <?php else: ?>
