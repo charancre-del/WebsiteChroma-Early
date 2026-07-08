@@ -122,6 +122,12 @@ $required_a2p_sections = array(
         <p><strong>' . __('No sharing statement:', 'earlystart-early-learning') . '</strong> ' . __('SMS opt-in data, consent records, and mobile phone numbers collected for SMS purposes will not be sold, rented, or shared with third parties or affiliates for their marketing or promotional purposes.', 'earlystart-early-learning') . '</p>'
     ),
     array(
+        'title' => __('SMS Message Frequency and Rates', 'earlystart-early-learning'),
+        'match' => array('message frequency', 'data rates'),
+        'required_text' => 'Message frequency varies',
+        'content' => '<p>' . __('Message frequency varies based on your request and relationship with us. Message and data rates may apply. Your mobile carrier may charge fees according to your wireless plan.', 'earlystart-early-learning') . '</p>'
+    ),
+    array(
         'title' => __('Cookies, Analytics, and Tracking', 'earlystart-early-learning'),
         'match' => array('cookie', 'tracking', 'analytics'),
         'content' => '<p>' . __('Our website may use cookies, pixels, analytics tools, and similar technologies to understand site usage, improve performance, measure marketing effectiveness, and support security. These tools may collect device, browser, IP address, referral, page interaction, and approximate location data.', 'earlystart-early-learning') . '</p>
