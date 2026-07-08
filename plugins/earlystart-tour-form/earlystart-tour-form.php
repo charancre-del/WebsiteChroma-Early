@@ -68,18 +68,70 @@ function earlystart_tour_get_dynamic_options()
     return $options;
 }
 
+function earlystart_tour_tracking_keys()
+{
+    return array(
+        'utm_source',
+        'utm_medium',
+        'utm_campaign',
+        'utm_term',
+        'utm_content',
+        'utm_id',
+        'gclid',
+        'fbclid',
+        'msclkid',
+        'ttclid',
+        'li_fat_id',
+        'gbraid',
+        'wbraid',
+    );
+}
+
+function earlystart_tour_build_tracked_form_url($form_id)
+{
+    $form_url = 'https://api.leadconnectorhq.com/widget/form/' . rawurlencode((string) $form_id);
+    $tracking = array('source' => 'website_tour_form');
+
+    if (!empty($_SERVER['REQUEST_URI'])) {
+        $request_uri = esc_url_raw(wp_unslash($_SERVER['REQUEST_URI']));
+        if ($request_uri) {
+            $tracking['page_url'] = home_url($request_uri);
+        }
+    }
+
+    foreach (earlystart_tour_tracking_keys() as $key) {
+        if (!isset($_GET[$key])) {
+            continue;
+        }
+
+        $value = sanitize_text_field(wp_unslash($_GET[$key]));
+        if ($value !== '') {
+            $tracking[$key] = $value;
+        }
+    }
+
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+        $referrer = esc_url_raw(wp_unslash($_SERVER['HTTP_REFERER']));
+        if ($referrer) {
+            $tracking['referrer'] = $referrer;
+        }
+    }
+
+    return add_query_arg($tracking, $form_url);
+}
+
 /**
  * Tour Form Shortcode
  */
 function earlystart_tour_form_shortcode()
 {
     $form_id = get_option('earlystart_tour_form_id', '848tl2LjoZVsUIhhNOxd');
-    $form_height = get_option('earlystart_tour_form_height', 1125);
+    $form_height = get_option('earlystart_tour_form_height', 1600);
     $form_name = get_option('earlystart_tour_form_name', 'PARENT INFORMATION - Early Start Early Learning');
     $lazy_load = get_option('earlystart_tour_lazy_load', true);
     $lazy_delay = get_option('earlystart_tour_lazy_delay', 2000);
 
-    $form_url = 'https://api.leadconnectorhq.com/widget/form/' . rawurlencode((string) $form_id);
+    $form_url = earlystart_tour_build_tracked_form_url($form_id);
     $loading_attr = $lazy_load ? 'lazy' : 'eager';
     $wrapper_id = 'earlystart-tour-form-' . sanitize_html_class($form_id);
     $iframe_id = 'inline-' . sanitize_html_class($form_id);
@@ -133,11 +185,32 @@ function earlystart_tour_form_shortcode()
                 var container = document.getElementById('<?php echo esc_js($wrapper_id); ?>');
                 var iframe = container ? container.querySelector('iframe[data-src]') : null;
                 var delay = <?php echo intval($lazy_delay); ?>;
+                var trackingKeys = <?php echo wp_json_encode(earlystart_tour_tracking_keys()); ?>;
+                function addTrackingParams(url) {
+                    try {
+                        var trackedUrl = new URL(url, window.location.href);
+                        var pageParams = new URLSearchParams(window.location.search);
+                        trackingKeys.forEach(function (key) {
+                            var value = pageParams.get(key);
+                            if (value && !trackedUrl.searchParams.has(key)) {
+                                trackedUrl.searchParams.set(key, value);
+                            }
+                        });
+                        trackedUrl.searchParams.set('source', trackedUrl.searchParams.get('source') || 'website_tour_form');
+                        trackedUrl.searchParams.set('page_url', window.location.href);
+                        if (document.referrer) {
+                            trackedUrl.searchParams.set('referrer', document.referrer);
+                        }
+                        return trackedUrl.toString();
+                    } catch (error) {
+                        return url;
+                    }
+                }
                 function loadGHLScript() {
                     if (loaded) return;
                     loaded = true;
                     if (iframe && !iframe.getAttribute('src')) {
-                        iframe.setAttribute('src', iframe.getAttribute('data-src'));
+                        iframe.setAttribute('src', addTrackingParams(iframe.getAttribute('data-src')));
                     }
                     if (document.querySelector('script[data-earlystart-ghl-embed]')) {
                         return;
@@ -164,6 +237,31 @@ function earlystart_tour_form_shortcode()
     <?php else: ?>
         <script>
             (function () {
+                var iframe = document.getElementById('<?php echo esc_js($iframe_id); ?>');
+                var trackingKeys = <?php echo wp_json_encode(earlystart_tour_tracking_keys()); ?>;
+                function addTrackingParams(url) {
+                    try {
+                        var trackedUrl = new URL(url, window.location.href);
+                        var pageParams = new URLSearchParams(window.location.search);
+                        trackingKeys.forEach(function (key) {
+                            var value = pageParams.get(key);
+                            if (value && !trackedUrl.searchParams.has(key)) {
+                                trackedUrl.searchParams.set(key, value);
+                            }
+                        });
+                        trackedUrl.searchParams.set('source', trackedUrl.searchParams.get('source') || 'website_tour_form');
+                        trackedUrl.searchParams.set('page_url', window.location.href);
+                        if (document.referrer) {
+                            trackedUrl.searchParams.set('referrer', document.referrer);
+                        }
+                        return trackedUrl.toString();
+                    } catch (error) {
+                        return url;
+                    }
+                }
+                if (iframe && iframe.getAttribute('src')) {
+                    iframe.setAttribute('src', addTrackingParams(iframe.getAttribute('src')));
+                }
                 if (document.querySelector('script[data-earlystart-ghl-embed]')) {
                     return;
                 }
@@ -241,7 +339,7 @@ add_action('template_redirect', 'earlystart_handle_tour_submission');
 function earlystart_tour_register_settings()
 {
     register_setting('earlystart_tour_settings', 'earlystart_tour_form_id', array('type' => 'string', 'default' => '848tl2LjoZVsUIhhNOxd', 'sanitize_callback' => 'sanitize_text_field'));
-    register_setting('earlystart_tour_settings', 'earlystart_tour_form_height', array('type' => 'integer', 'default' => 1125, 'sanitize_callback' => 'absint'));
+    register_setting('earlystart_tour_settings', 'earlystart_tour_form_height', array('type' => 'integer', 'default' => 1600, 'sanitize_callback' => 'absint'));
     register_setting('earlystart_tour_settings', 'earlystart_tour_form_name', array('type' => 'string', 'default' => 'PARENT INFORMATION - Early Start Early Learning', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_tour_settings', 'earlystart_tour_lazy_load', array('type' => 'boolean', 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean'));
     register_setting('earlystart_tour_settings', 'earlystart_tour_lazy_delay', array('type' => 'integer', 'default' => 2000, 'sanitize_callback' => 'absint'));
@@ -265,7 +363,7 @@ function earlystart_tour_settings_page_html()
     if (!current_user_can('manage_options'))
         return;
     $form_id = get_option('earlystart_tour_form_id', '848tl2LjoZVsUIhhNOxd');
-    $form_height = get_option('earlystart_tour_form_height', 1125);
+    $form_height = get_option('earlystart_tour_form_height', 1600);
     $form_name = get_option('earlystart_tour_form_name', 'PARENT INFORMATION - Early Start Early Learning');
     $lazy_load = get_option('earlystart_tour_lazy_load', true);
     $lazy_delay = get_option('earlystart_tour_lazy_delay', 2000);

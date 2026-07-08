@@ -60,6 +60,7 @@ function earlystart_normalize_internal_url($url)
         '/families' => '/parents/',
         '/for-families' => '/parents/',
         '/privacy-policy' => '/privacy/',
+        '/terms-of-service' => '/terms/',
         '/schedule-a-tour' => '/schedule-tour/',
     );
 
@@ -254,6 +255,7 @@ function earlystart_get_page_link($name)
         'privacy-policy' => 'privacy',
         'terms' => 'terms',
         'terms-of-use' => 'terms',
+        'terms-of-service' => 'terms',
         'hipaa' => 'hipaa',
         'preschool' => 'programs/preschool',
         'ga-pre-k' => 'programs/ga-pre-k',
@@ -299,6 +301,7 @@ function earlystart_redirect_legacy_public_slugs()
         '/families' => 'parents',
         '/for-families' => 'parents',
         '/privacy-policy' => 'privacy',
+        '/terms-of-service' => 'terms',
         '/schedule-a-tour' => 'schedule-tour',
     );
 
@@ -345,6 +348,7 @@ function earlystart_expected_page_template_fallback($template)
         'privacy' => 'page-privacy.php',
         'privacy-policy' => 'page-privacy.php',
         'terms' => 'page-terms.php',
+        'terms-of-service' => 'page-terms.php',
         'hipaa' => 'page-hipaa.php',
     );
 

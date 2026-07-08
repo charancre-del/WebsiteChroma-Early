@@ -27,6 +27,33 @@ function earlystart_contact_default_fields()
     );
 }
 
+function earlystart_contact_default_form_id()
+{
+    return 'M3WZTpTW5KHrkzf5XfYG';
+}
+
+function earlystart_contact_previous_form_ids()
+{
+    return array(
+        'ibinKhrBmF0n4S5tFcz6',
+    );
+}
+
+function earlystart_contact_maybe_migrate_form_options()
+{
+    $current_form_id = trim((string) get_option('earlystart_contact_form_id', ''));
+
+    if ($current_form_id === '' || in_array($current_form_id, earlystart_contact_previous_form_ids(), true)) {
+        update_option('earlystart_contact_form_id', earlystart_contact_default_form_id());
+
+        $current_height = (int) get_option('earlystart_contact_form_height', 0);
+        if ($current_height <= 1200) {
+            update_option('earlystart_contact_form_height', 1600);
+        }
+    }
+}
+add_action('init', 'earlystart_contact_maybe_migrate_form_options', 5);
+
 /**
  * Register Settings
  */
@@ -35,8 +62,8 @@ function earlystart_contact_register_settings()
     register_setting('earlystart_contact_options', 'earlystart_contact_fields', array('type' => 'string', 'sanitize_callback' => 'earlystart_contact_sanitize_json', 'default' => wp_json_encode(earlystart_contact_default_fields())));
     register_setting('earlystart_contact_options', 'earlystart_contact_webhook_url', array('type' => 'string', 'sanitize_callback' => 'earlystart_contact_sanitize_webhook_url', 'default' => ''));
     register_setting('earlystart_contact_options', 'earlystart_contact_email_recipient', array('type' => 'string', 'sanitize_callback' => 'sanitize_email', 'default' => get_option('admin_email')));
-    register_setting('earlystart_contact_options', 'earlystart_contact_form_id', array('type' => 'string', 'default' => 'M3WZTpTW5KHrkzf5XfYG', 'sanitize_callback' => 'sanitize_text_field'));
-    register_setting('earlystart_contact_options', 'earlystart_contact_form_height', array('type' => 'integer', 'default' => 1100, 'sanitize_callback' => 'absint'));
+    register_setting('earlystart_contact_options', 'earlystart_contact_form_id', array('type' => 'string', 'default' => earlystart_contact_default_form_id(), 'sanitize_callback' => 'sanitize_text_field'));
+    register_setting('earlystart_contact_options', 'earlystart_contact_form_height', array('type' => 'integer', 'default' => 1600, 'sanitize_callback' => 'absint'));
     register_setting('earlystart_contact_options', 'earlystart_contact_form_name', array('type' => 'string', 'default' => 'Chroma Early Start - A2P Inquiry Form', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_contact_options', 'earlystart_contact_sms_disclosure', array('type' => 'string', 'default' => earlystart_contact_default_sms_disclosure(), 'sanitize_callback' => 'wp_kses_post'));
     register_setting('earlystart_contact_options', 'earlystart_contact_lazy_load', array('type' => 'boolean', 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean'));
@@ -74,6 +101,58 @@ function earlystart_contact_sanitize_json($input)
     return $input;
 }
 
+function earlystart_contact_tracking_keys()
+{
+    return array(
+        'utm_source',
+        'utm_medium',
+        'utm_campaign',
+        'utm_term',
+        'utm_content',
+        'utm_id',
+        'gclid',
+        'fbclid',
+        'msclkid',
+        'ttclid',
+        'li_fat_id',
+        'gbraid',
+        'wbraid',
+    );
+}
+
+function earlystart_contact_build_tracked_form_url($form_id)
+{
+    $form_url = 'https://api.leadconnectorhq.com/widget/form/' . rawurlencode((string) $form_id);
+    $tracking = array('source' => 'website_contact_form');
+
+    if (!empty($_SERVER['REQUEST_URI'])) {
+        $request_uri = esc_url_raw(wp_unslash($_SERVER['REQUEST_URI']));
+        if ($request_uri) {
+            $tracking['page_url'] = home_url($request_uri);
+        }
+    }
+
+    foreach (earlystart_contact_tracking_keys() as $key) {
+        if (!isset($_GET[$key])) {
+            continue;
+        }
+
+        $value = sanitize_text_field(wp_unslash($_GET[$key]));
+        if ($value !== '') {
+            $tracking[$key] = $value;
+        }
+    }
+
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+        $referrer = esc_url_raw(wp_unslash($_SERVER['HTTP_REFERER']));
+        if ($referrer) {
+            $tracking['referrer'] = $referrer;
+        }
+    }
+
+    return add_query_arg($tracking, $form_url);
+}
+
 /**
  * Admin Menu
  */
@@ -97,8 +176,8 @@ function earlystart_contact_settings_page_html()
             <?php
             settings_fields('earlystart_contact_options');
             $email_recipient = get_option('earlystart_contact_email_recipient', get_option('admin_email'));
-            $form_id = get_option('earlystart_contact_form_id', 'M3WZTpTW5KHrkzf5XfYG');
-            $form_height = get_option('earlystart_contact_form_height', 1100);
+            $form_id = get_option('earlystart_contact_form_id', earlystart_contact_default_form_id());
+            $form_height = get_option('earlystart_contact_form_height', 1600);
             $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start - A2P Inquiry Form');
             $sms_disclosure = get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure());
             ?>
@@ -148,14 +227,14 @@ function earlystart_contact_settings_page_html()
  */
 function earlystart_contact_form_shortcode()
 {
-    $form_id = get_option('earlystart_contact_form_id', 'M3WZTpTW5KHrkzf5XfYG');
-    $form_height = get_option('earlystart_contact_form_height', 1100);
+    $form_id = get_option('earlystart_contact_form_id', earlystart_contact_default_form_id());
+    $form_height = get_option('earlystart_contact_form_height', 1600);
     $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start - A2P Inquiry Form');
     $sms_disclosure = get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure());
     $lazy_load = get_option('earlystart_contact_lazy_load', true);
     $lazy_delay = get_option('earlystart_contact_lazy_delay', 2000);
 
-    $form_url = 'https://api.leadconnectorhq.com/widget/form/' . rawurlencode((string) $form_id);
+    $form_url = earlystart_contact_build_tracked_form_url($form_id);
     $loading_attr = $lazy_load ? 'lazy' : 'eager';
     $wrapper_id = 'earlystart-contact-form-' . sanitize_html_class($form_id);
     $iframe_id = 'inline-' . sanitize_html_class($form_id);
@@ -220,11 +299,32 @@ function earlystart_contact_form_shortcode()
                 var container = document.getElementById('<?php echo esc_js($wrapper_id); ?>');
                 var iframe = container ? container.querySelector('iframe[data-src]') : null;
                 var delay = <?php echo intval($lazy_delay); ?>;
+                var trackingKeys = <?php echo wp_json_encode(earlystart_contact_tracking_keys()); ?>;
+                function addTrackingParams(url) {
+                    try {
+                        var trackedUrl = new URL(url, window.location.href);
+                        var pageParams = new URLSearchParams(window.location.search);
+                        trackingKeys.forEach(function (key) {
+                            var value = pageParams.get(key);
+                            if (value && !trackedUrl.searchParams.has(key)) {
+                                trackedUrl.searchParams.set(key, value);
+                            }
+                        });
+                        trackedUrl.searchParams.set('source', trackedUrl.searchParams.get('source') || 'website_contact_form');
+                        trackedUrl.searchParams.set('page_url', window.location.href);
+                        if (document.referrer) {
+                            trackedUrl.searchParams.set('referrer', document.referrer);
+                        }
+                        return trackedUrl.toString();
+                    } catch (error) {
+                        return url;
+                    }
+                }
                 function loadGHLScript() {
                     if (loaded) return;
                     loaded = true;
                     if (iframe && !iframe.getAttribute('src')) {
-                        iframe.setAttribute('src', iframe.getAttribute('data-src'));
+                        iframe.setAttribute('src', addTrackingParams(iframe.getAttribute('data-src')));
                     }
                     if (document.querySelector('script[data-earlystart-ghl-embed]')) {
                         return;
@@ -251,6 +351,31 @@ function earlystart_contact_form_shortcode()
     <?php else: ?>
         <script>
             (function () {
+                var iframe = document.getElementById('<?php echo esc_js($iframe_id); ?>');
+                var trackingKeys = <?php echo wp_json_encode(earlystart_contact_tracking_keys()); ?>;
+                function addTrackingParams(url) {
+                    try {
+                        var trackedUrl = new URL(url, window.location.href);
+                        var pageParams = new URLSearchParams(window.location.search);
+                        trackingKeys.forEach(function (key) {
+                            var value = pageParams.get(key);
+                            if (value && !trackedUrl.searchParams.has(key)) {
+                                trackedUrl.searchParams.set(key, value);
+                            }
+                        });
+                        trackedUrl.searchParams.set('source', trackedUrl.searchParams.get('source') || 'website_contact_form');
+                        trackedUrl.searchParams.set('page_url', window.location.href);
+                        if (document.referrer) {
+                            trackedUrl.searchParams.set('referrer', document.referrer);
+                        }
+                        return trackedUrl.toString();
+                    } catch (error) {
+                        return url;
+                    }
+                }
+                if (iframe && iframe.getAttribute('src')) {
+                    iframe.setAttribute('src', addTrackingParams(iframe.getAttribute('src')));
+                }
                 if (document.querySelector('script[data-earlystart-ghl-embed]')) {
                     return;
                 }
