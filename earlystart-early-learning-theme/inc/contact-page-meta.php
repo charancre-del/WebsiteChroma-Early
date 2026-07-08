@@ -622,7 +622,7 @@ function earlystart_seed_contact_page_defaults( $post_id ) {
 				array(
 					'icon'  => 'baby',
 					'title' => 'For Families',
-					'desc'  => 'Find a clinic near you and schedule a tour for ABA, Speech, or OT.',
+					'desc'  => 'Find a clinic near you and schedule a tour for autism diagnosis, ABA, behavioral health, speech, or OT.',
 					'link'  => '/locations',
 					'label' => 'Find a Clinic',
 					'color' => 'rose',

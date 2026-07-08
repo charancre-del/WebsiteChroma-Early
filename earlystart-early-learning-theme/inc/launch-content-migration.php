@@ -31,6 +31,155 @@ function earlystart_normalize_launch_content_value($value)
 }
 
 /**
+ * New service cards added after launch.
+ *
+ * @return array<string,array<string,mixed>>
+ */
+function earlystart_launch_service_expansion_cards(): array
+{
+    return array(
+        'autism-diagnosis' => array(
+            'id' => 'autism-diagnosis',
+            'title' => 'Autism Diagnosis',
+            'subtitle' => 'Diagnostic Evaluation',
+            'icon' => 'clipboard-check',
+            'heading' => 'Clear Answers for Next Steps',
+            'description' => 'Comprehensive autism diagnostic evaluations help families understand developmental needs and plan the right care pathway.',
+            'image' => 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=800&q=80&fm=webp',
+            'bullets' => array('Developmental history review', 'Standardized diagnostic tools', 'Care planning guidance'),
+        ),
+        'behavioral-health' => array(
+            'id' => 'behavioral-health',
+            'title' => 'Behavioral Health',
+            'subtitle' => 'Mental & Emotional Support',
+            'icon' => 'heart-pulse',
+            'heading' => 'Whole-Child Behavioral Support',
+            'description' => 'Behavioral health services support emotional regulation, coping skills, family routines, and coordinated care for children and caregivers.',
+            'image' => 'https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?auto=format&fit=crop&w=800&q=80&fm=webp',
+            'bullets' => array('Emotional regulation support', 'Family-centered care plans', 'Coordinated clinical guidance'),
+        ),
+    );
+}
+
+/**
+ * Program post definitions for service lines added after launch.
+ *
+ * @return array<string,array<string,mixed>>
+ */
+function earlystart_launch_service_expansion_programs(): array
+{
+    return array(
+        'autism-diagnosis' => array(
+            'title' => 'Autism Diagnosis',
+            'excerpt' => 'Comprehensive autism diagnostic evaluations that help families understand needs and next steps.',
+            'meta' => array(
+                'program_icon' => 'clipboard-check',
+                'program_age_range' => '18mo - 12y',
+                'program_color_scheme' => 'rose',
+                'program_hero_title' => 'Clear Answers for Next Steps.',
+                'program_hero_description' => 'Our diagnostic evaluation pathway helps families understand developmental needs, document clinical findings, and plan the right support.',
+                'program_prism_title' => 'Diagnostic Core',
+                'program_prism_physical' => 20,
+                'program_prism_emotional' => 80,
+                'program_prism_social' => 75,
+                'program_prism_academic' => 60,
+                'program_prism_creative' => 40,
+            ),
+        ),
+        'behavioral-health' => array(
+            'title' => 'Behavioral Health',
+            'excerpt' => 'Behavioral health support for emotional regulation, coping skills, and family-centered care.',
+            'meta' => array(
+                'program_icon' => 'heart-pulse',
+                'program_age_range' => '2y - 12y',
+                'program_color_scheme' => 'orange',
+                'program_hero_title' => 'Whole-Child Behavioral Support.',
+                'program_hero_description' => 'Our behavioral health services support emotional regulation, coping skills, caregiver guidance, and coordinated care for children and families.',
+                'program_prism_title' => 'Behavioral Health Core',
+                'program_prism_physical' => 25,
+                'program_prism_emotional' => 95,
+                'program_prism_social' => 80,
+                'program_prism_academic' => 45,
+                'program_prism_creative' => 55,
+            ),
+        ),
+    );
+}
+
+/**
+ * Add newly confirmed service lines without overwriting admin-customized content.
+ */
+function earlystart_apply_service_expansion_migration(): void
+{
+    foreach (earlystart_launch_service_expansion_programs() as $slug => $data) {
+        $post = get_page_by_path($slug, OBJECT, 'program');
+        $post_id = $post ? (int) $post->ID : 0;
+
+        if (!$post_id) {
+            $post_id = wp_insert_post(array(
+                'post_title' => $data['title'],
+                'post_name' => $slug,
+                'post_excerpt' => $data['excerpt'],
+                'post_status' => 'publish',
+                'post_type' => 'program',
+            ));
+        }
+
+        if (!$post_id || is_wp_error($post_id)) {
+            continue;
+        }
+
+        foreach ($data['meta'] as $meta_key => $meta_value) {
+            if (get_post_meta($post_id, $meta_key, true) === '') {
+                update_post_meta($post_id, $meta_key, $meta_value);
+            }
+        }
+    }
+
+    $home_id = (int) get_option('page_on_front');
+    if ($home_id > 0) {
+        $raw = get_post_meta($home_id, 'home_services_json', true);
+        $services = is_string($raw) && $raw !== '' ? json_decode($raw, true) : array();
+
+        if (is_array($services)) {
+            $seen = array();
+            foreach ($services as $service) {
+                if (is_array($service) && !empty($service['id'])) {
+                    $seen[(string) $service['id']] = true;
+                }
+            }
+
+            $changed = false;
+            foreach (earlystart_launch_service_expansion_cards() as $service_id => $card) {
+                if (empty($seen[$service_id])) {
+                    $services[] = $card;
+                    $changed = true;
+                }
+            }
+
+            if ($changed) {
+                update_post_meta($home_id, 'home_services_json', wp_json_encode($services));
+            }
+        }
+    }
+
+    $old_special_programs = "ABA Therapy\nSpeech Therapy\nOccupational Therapy\nParent Coaching";
+    $new_special_programs = "Autism Diagnosis\nABA Therapy\nBehavioral Health\nSpeech Therapy\nOccupational Therapy\nParent Coaching";
+    $location_ids = get_posts(array(
+        'post_type' => 'location',
+        'posts_per_page' => -1,
+        'fields' => 'ids',
+        'post_status' => 'any',
+        'meta_key' => 'location_special_programs',
+        'meta_value' => $old_special_programs,
+    ));
+
+    foreach ((array) $location_ids as $location_id) {
+        update_post_meta((int) $location_id, 'location_special_programs', $new_special_programs);
+    }
+}
+
+/**
  * Normalize saved legacy content when an administrator opens wp-admin.
  *
  * This intentionally runs in wp-admin only. Front-end requests should not be
@@ -43,7 +192,7 @@ function earlystart_run_launch_content_cleanup(): void
         return;
     }
 
-    $version = '2026-07-08.4';
+    $version = '2026-07-08.5';
     if (get_option('earlystart_launch_content_cleanup_version') === $version) {
         return;
     }
@@ -133,6 +282,8 @@ function earlystart_run_launch_content_cleanup(): void
             update_option($row->option_name, $after);
         }
     }
+
+    earlystart_apply_service_expansion_migration();
 
     update_option('earlystart_launch_content_cleanup_version', $version, false);
 }

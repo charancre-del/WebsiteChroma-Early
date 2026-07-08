@@ -493,7 +493,7 @@ class earlystart_LLMs_Txt_Generator
 
         $output .= "## About Us\n\n";
         $output .= "Chroma Early Start is a network of pediatric therapy clinics across Metro Atlanta.\n";
-        $output .= "We provide coordinated ABA therapy, speech therapy, occupational therapy, and early intervention support for children and families.\n";
+        $output .= "We provide coordinated autism diagnosis, ABA therapy, behavioral health, speech therapy, occupational therapy, and early intervention support for children and families.\n";
 
         return $output;
     }

@@ -442,6 +442,8 @@ class earlystart_Schema_Injector
             ],
             'availableService' => function_exists('earlystart_seo_all_service_schemas') ? earlystart_seo_all_service_schemas() : [],
             'medicalSpecialty' => [
+                'Autism diagnostic evaluation',
+                'Behavioral health',
                 'https://schema.org/SpeechPathology',
                 'Occupational Therapy',
                 'Applied Behavior Analysis (ABA) therapy',

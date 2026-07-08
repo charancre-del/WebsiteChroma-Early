@@ -215,7 +215,7 @@ function earlystart_get_location_faq_items($post_id = null)
         ),
         array(
             'question' => __('Which services are available?', 'earlystart-early-learning'),
-            'answer' => __('Most locations offer ABA therapy, speech therapy, occupational therapy, and caregiver guidance, though exact services vary by clinic.', 'earlystart-early-learning'),
+            'answer' => __('Most locations offer autism diagnosis, ABA therapy, behavioral health, speech therapy, occupational therapy, and caregiver guidance, though exact services vary by clinic.', 'earlystart-early-learning'),
         ),
         array(
             'question' => __('Do you accept insurance?', 'earlystart-early-learning'),

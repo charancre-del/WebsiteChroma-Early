@@ -106,7 +106,7 @@ class earlystart_Facts_Generator
                 'phone' => $phone,
                 'license_number' => $license,
                 'quality_rated_level' => $quality_rated,
-                'core_services' => 'ABA Therapy, Speech Therapy, Occupational Therapy',
+                'core_services' => 'Autism Diagnosis, ABA Therapy, Behavioral Health, Speech Therapy, Occupational Therapy',
                 'has_security_cameras' => $cameras ? 'Yes' : 'No',
                 'programs_offered' => implode(', ', $offered_programs),
                 'email' => $email

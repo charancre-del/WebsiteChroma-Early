@@ -23,7 +23,7 @@ function earlystart_home_default_hero()
 {
         return array(
                 'heading' => __('Compassionate <span class="bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-600 italic">Therapy</span> for Growing Minds', 'earlystart-early-learning'),
-                'subheading' => __('Specialized ABA, Speech, and Occupational Therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.', 'earlystart-early-learning'),
+                'subheading' => __('Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.', 'earlystart-early-learning'),
                 'cta_label' => __('Start Your Journey', 'earlystart-early-learning'),
                 'cta_url' => '#contact',
                 'secondary_label' => __('Explore Services', 'earlystart-early-learning'),
@@ -45,6 +45,20 @@ function earlystart_home_default_services()
 {
         return array(
                 array(
+                        'id' => 'autism-diagnosis',
+                        'title' => __('Autism Diagnosis', 'earlystart-early-learning'),
+                        'subtitle' => __('Diagnostic Evaluation', 'earlystart-early-learning'),
+                        'icon' => 'clipboard-check',
+                        'heading' => __('Clear Answers for Next Steps', 'earlystart-early-learning'),
+                        'description' => __('Comprehensive autism diagnostic evaluations help families understand developmental needs and plan the right care pathway.', 'earlystart-early-learning'),
+                        'image' => 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=800&q=80&fm=webp',
+                        'bullets' => array(
+                                __('Developmental history review', 'earlystart-early-learning'),
+                                __('Standardized diagnostic tools', 'earlystart-early-learning'),
+                                __('Care planning guidance', 'earlystart-early-learning')
+                        )
+                ),
+                array(
                         'id' => 'aba',
                         'title' => __('ABA Therapy', 'earlystart-early-learning'),
                         'subtitle' => __('Applied Behavior Analysis', 'earlystart-early-learning'),
@@ -56,6 +70,20 @@ function earlystart_home_default_services()
                                 __('One-on-one sessions', 'earlystart-early-learning'),
                                 __('Data-driven progress tracking', 'earlystart-early-learning'),
                                 __('Positive reinforcement focus', 'earlystart-early-learning')
+                        )
+                ),
+                array(
+                        'id' => 'behavioral-health',
+                        'title' => __('Behavioral Health', 'earlystart-early-learning'),
+                        'subtitle' => __('Mental & Emotional Support', 'earlystart-early-learning'),
+                        'icon' => 'heart-pulse',
+                        'heading' => __('Whole-Child Behavioral Support', 'earlystart-early-learning'),
+                        'description' => __('Behavioral health services support emotional regulation, coping skills, family routines, and coordinated care for children and caregivers.', 'earlystart-early-learning'),
+                        'image' => 'https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?auto=format&fit=crop&w=800&q=80&fm=webp',
+                        'bullets' => array(
+                                __('Emotional regulation support', 'earlystart-early-learning'),
+                                __('Family-centered care plans', 'earlystart-early-learning'),
+                                __('Coordinated clinical guidance', 'earlystart-early-learning')
                         )
                 ),
                 array(

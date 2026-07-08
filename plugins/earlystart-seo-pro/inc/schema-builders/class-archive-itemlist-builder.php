@@ -51,7 +51,7 @@ class earlystart_Archive_ItemList_Builder
         $list_name = ($post_type === 'location') ? 'Our Clinics' : 'Our Therapy Services';
         $list_desc = ($post_type === 'location') 
             ? 'All Chroma Early Start pediatric therapy clinics' 
-            : 'All ABA, speech, and occupational therapy services at Chroma Early Start';
+            : 'All autism diagnosis, ABA, behavioral health, speech, and occupational therapy services at Chroma Early Start';
 
         $schema = [
             '@context' => 'https://schema.org',

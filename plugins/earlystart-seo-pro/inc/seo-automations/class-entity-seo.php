@@ -99,9 +99,19 @@ class earlystart_Entity_SEO
     public static function get_topic_clusters() {
         // Define topic clusters
         $clusters = [
+            'autism-diagnosis' => [
+                'name' => 'Autism Diagnosis',
+                'keywords' => ['autism diagnosis', 'autism evaluation', 'diagnostic evaluation'],
+                'hub_page' => null
+            ],
             'aba' => [
                 'name' => 'ABA Therapy',
                 'keywords' => ['aba therapy', 'applied behavior analysis', 'behavior therapy'],
+                'hub_page' => null
+            ],
+            'behavioral-health' => [
+                'name' => 'Behavioral Health',
+                'keywords' => ['behavioral health', 'emotional regulation', 'coping skills'],
                 'hub_page' => null
             ],
             'speech' => [

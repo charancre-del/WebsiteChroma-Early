@@ -236,7 +236,7 @@ class earlystart_Combo_AI_Generator
             'messages' => [
                 [
                     'role' => 'system',
-                    'content' => 'You are a local SEO expert helping generate location-specific content for a pediatric therapy website focused on ABA, speech, and occupational therapy. Return valid JSON only.'
+                    'content' => 'You are a local SEO expert helping generate location-specific content for a pediatric therapy website focused on autism diagnosis, ABA, behavioral health, speech, and occupational therapy. Return valid JSON only.'
                 ],
                 [
                     'role' => 'user',
