@@ -38,7 +38,7 @@ function earlystart_career_register_settings()
     register_setting('earlystart_career_options', 'earlystart_career_email_recipient', array('type' => 'string', 'sanitize_callback' => 'sanitize_email', 'default' => $default_recipient));
     register_setting('earlystart_career_options', 'earlystart_career_form_id', array('type' => 'string', 'default' => 'WYGFB2WBYuti6S6ys30H', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_career_options', 'earlystart_career_form_height', array('type' => 'integer', 'default' => 522, 'sanitize_callback' => 'absint'));
-    register_setting('earlystart_career_options', 'earlystart_career_form_name', array('type' => 'string', 'default' => 'Careers Form - Early Start Early Learning', 'sanitize_callback' => 'sanitize_text_field'));
+    register_setting('earlystart_career_options', 'earlystart_career_form_name', array('type' => 'string', 'default' => 'Careers Form - Chroma Early Start', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_career_options', 'earlystart_career_lazy_load', array('type' => 'boolean', 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean'));
     register_setting('earlystart_career_options', 'earlystart_career_lazy_delay', array('type' => 'integer', 'default' => 2000, 'sanitize_callback' => 'absint'));
 }
@@ -116,7 +116,7 @@ function earlystart_career_form_shortcode()
 {
     $form_id = get_option('earlystart_career_form_id', 'WYGFB2WBYuti6S6ys30H');
     $form_height = get_option('earlystart_career_form_height', 522);
-    $form_name = get_option('earlystart_career_form_name', 'Careers Form - Early Start Early Learning');
+    $form_name = get_option('earlystart_career_form_name', 'Careers Form - Chroma Early Start');
     $lazy_load = get_option('earlystart_career_lazy_load', true);
     $lazy_delay = get_option('earlystart_career_lazy_delay', 2000);
 

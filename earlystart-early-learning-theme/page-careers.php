@@ -23,6 +23,10 @@ while (have_posts()):
 	$cta_description = get_post_meta($page_id, 'careers_cta_description', true) ?: __('We offer a paid RBT Training Program for compassionate individuals. We cover your 40-hour coursework, background checks, and exam fees.', 'earlystart-early-learning');
 	$cta_button_text = get_post_meta($page_id, 'careers_cta_button_text', true) ?: __('Apply for Training', 'earlystart-early-learning');
 	$cta_button_url = get_post_meta($page_id, 'careers_cta_button_url', true) ?: earlystart_get_page_link('contact');
+	if (preg_match('/^mailto:(info|careers)@chromaearlystart\.com\b/i', (string) $cta_button_url)) {
+		$careers_email = function_exists('earlystart_global_careers_email') ? earlystart_global_careers_email() : 'careers@chromaela.com';
+		$cta_button_url = 'mailto:' . sanitize_email($careers_email ?: 'careers@chromaela.com');
+	}
 
 	// Fetch jobs from API or internal logic
 	$jobs = function_exists('earlystart_get_careers') ? earlystart_get_careers() : array();

@@ -118,6 +118,7 @@ $required_a2p_sections = array(
         'required_text' => 'will not be sold, rented, or shared',
         'content' => '<p>' . __('If you choose to opt in to SMS communications, Chroma Early Start may use your phone number and consent record to send inquiry follow-up, appointment reminders, care coordination messages, service updates, and other messages related to your request or services.', 'earlystart-early-learning') . '</p>
         <p><strong>' . __('SMS opt-in is optional and is not required to submit an inquiry or receive services.', 'earlystart-early-learning') . '</strong> ' . __('You may opt out at any time by replying STOP to a text message, and you may request help by replying HELP or contacting us directly.', 'earlystart-early-learning') . '</p>
+        <p>' . __('Message frequency varies based on your request and relationship with us. Message and data rates may apply.', 'earlystart-early-learning') . '</p>
         <p><strong>' . __('No sharing statement:', 'earlystart-early-learning') . '</strong> ' . __('SMS opt-in data, consent records, and mobile phone numbers collected for SMS purposes will not be sold, rented, or shared with third parties or affiliates for their marketing or promotional purposes.', 'earlystart-early-learning') . '</p>'
     ),
     array(

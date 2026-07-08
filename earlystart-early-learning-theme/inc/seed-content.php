@@ -191,7 +191,7 @@ function earlystart_seed_core_content()
         'careers_cta_title' => 'Do not see your role?',
         'careers_cta_description' => 'We are always growing. Send us your resume and we will keep it on file.',
         'careers_cta_button_text' => 'Email HR Team',
-        'careers_cta_button_url' => 'mailto:' . (function_exists('earlystart_global_careers_email') ? earlystart_global_careers_email() : 'intake@chromaela.com'),
+        'careers_cta_button_url' => 'mailto:' . (function_exists('earlystart_global_careers_email') ? earlystart_global_careers_email() : 'careers@chromaela.com'),
         '_careers_defaults_seeded' => '1',
     );
 
@@ -375,7 +375,7 @@ function earlystart_seed_core_content()
         'global_email' => 'intake@chromaela.com',
         'global_tour_email' => 'intake@chromaela.com',
         'global_admissions_email' => 'intake@chromaela.com',
-        'global_careers_email' => 'intake@chromaela.com',
+        'global_careers_email' => 'careers@chromaela.com',
         'global_billing_email' => 'intake@chromaela.com',
         'global_media_email' => 'intake@chromaela.com',
         'global_privacy_email' => 'intake@chromaela.com',
