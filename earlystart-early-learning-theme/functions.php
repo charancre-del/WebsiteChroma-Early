@@ -194,6 +194,7 @@ require_once earlystart_THEME_DIR . '/inc/template-tags.php';
 require_once earlystart_THEME_DIR . '/inc/dynamic-links.php';
 require_once earlystart_THEME_DIR . '/inc/seo-head-tags.php';
 require_once earlystart_THEME_DIR . '/inc/seo-head-orchestrator.php';
+require_once earlystart_THEME_DIR . '/inc/launch-content-migration.php';
 // require_once earlystart_THEME_DIR . '/inc/about-seo.php';
 
 // Customizer (Only load in Customizer preview or Admin)
