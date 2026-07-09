@@ -220,13 +220,13 @@ function earlystart_seed_default_team_members()
         ),
         array(
             'post_title' => __('Samira Patel', 'earlystart-early-learning'),
-            'post_content' => __('Samira partners with families and educators to ensure each center reflects the needs of its community.', 'earlystart-early-learning'),
+            'post_content' => __('Samira partners with families and clinicians to ensure each clinic reflects the needs of its community.', 'earlystart-early-learning'),
             'role' => __('Director of Family Partnerships', 'earlystart-early-learning'),
         ),
         array(
             'post_title' => __('Luis Moreno', 'earlystart-early-learning'),
-            'post_content' => __('Luis coaches classroom teams, championing playful curricula that meet students where they are.', 'earlystart-early-learning'),
-            'role' => __('Director of Learning', 'earlystart-early-learning'),
+            'post_content' => __('Luis coaches clinical teams, championing playful therapy strategies that meet children where they are.', 'earlystart-early-learning'),
+            'role' => __('Director of Clinical Learning', 'earlystart-early-learning'),
         ),
     );
 

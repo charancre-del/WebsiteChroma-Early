@@ -1,7 +1,7 @@
 <?php
 /**
  * HowTo Schema Meta Box
- * Handles "How to Enroll" steps for rich snippets
+ * Handles intake steps for rich snippets
  *
  * @package earlystart_Excellence
  * @since 1.0.0
@@ -31,7 +31,7 @@ class earlystart_Location_HowTo_Meta_Box extends earlystart_Advanced_SEO_Meta_Bo
      */
     public function get_title()
     {
-        return __('How to Enroll (HowTo Schema)', 'chroma-excellence');
+        return __('How to Start Intake (HowTo Schema)', 'chroma-excellence');
     }
 
     /**
@@ -59,7 +59,7 @@ class earlystart_Location_HowTo_Meta_Box extends earlystart_Advanced_SEO_Meta_Bo
         ?>
         <div class="chroma-meta-section">
             <p class="description">
-                <?php _e('Define the enrollment process steps. Google uses this to generate "HowTo" rich snippets.', 'chroma-excellence'); ?>
+                <?php _e('Define the intake process steps. Google uses this to generate "HowTo" rich snippets.', 'chroma-excellence'); ?>
             </p>
 
             <div class="chroma-repeater-field" data-field-id="location_enrollment_steps">
@@ -70,7 +70,7 @@ class earlystart_Location_HowTo_Meta_Box extends earlystart_Advanced_SEO_Meta_Bo
                                 <div style="flex: 1; display: flex; gap: 10px; flex-direction: column;">
                                     <input type="text" name="location_enrollment_steps[title][]"
                                         value="<?php echo esc_attr($step['title']); ?>" class="widefat"
-                                        placeholder="Step Title (e.g., Schedule a Tour)" />
+                                        placeholder="Step Title (e.g., Request a Consultation)" />
                                     <textarea name="location_enrollment_steps[text][]" class="widefat" rows="2"
                                         placeholder="Step Description"><?php echo esc_textarea($step['text']); ?></textarea>
                                     <input type="url" name="location_enrollment_steps[url][]"

@@ -1,7 +1,7 @@
 <?php
 /**
- * Template Name: Schedule a Tour
- * Displays a premium clinic selection and tour booking interface.
+ * Template Name: Request a Consultation
+ * Displays a clinic selection and intake consultation interface.
  *
  * @package EarlyStart_Early_Start
  */
@@ -10,21 +10,21 @@ get_header();
 
 $page_id = get_queried_object_id();
 $schedule_shell_defaults = array(
-    'hero_eyebrow' => __('Clinic Tours', 'earlystart-early-learning'),
-    'hero_heading' => __('Experience our<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Clinical Magic.</span>', 'earlystart-early-learning'),
-    'hero_subheading' => __('Select your preferred clinic below to schedule a private walkthrough with our clinical team. We look forward to welcoming your family.', 'earlystart-early-learning'),
+    'hero_eyebrow' => __('Clinical Consultations', 'earlystart-early-learning'),
+    'hero_heading' => __('Start with a<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Clinical Consultation.</span>', 'earlystart-early-learning'),
+    'hero_subheading' => __('Select your preferred clinic below to begin an intake conversation with our clinical team. We will help confirm fit, availability, and next steps for your family.', 'earlystart-early-learning'),
     'hero_image_url' => 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1200&q=80&fm=webp',
     'hero_image_alt' => __('Parent and child', 'earlystart-early-learning'),
-    'booking_label' => __('Schedule Tour', 'earlystart-early-learning'),
+    'booking_label' => __('Start Intake', 'earlystart-early-learning'),
     'inquire_label' => __('Inquire Now', 'earlystart-early-learning'),
-    'faq_heading' => __('What happens during a tour?', 'earlystart-early-learning'),
+    'faq_heading' => __('What happens after you inquire?', 'earlystart-early-learning'),
     'faq_steps' => array(
         array(
-            'title' => __('Walkthrough', 'earlystart-early-learning'),
-            'text' => __('See our clean, safe, and stimulating clinical environments in person.', 'earlystart-early-learning'),
+            'title' => __('Intake Review', 'earlystart-early-learning'),
+            'text' => __('Our team reviews your child\'s needs, preferred services, and scheduling goals.', 'earlystart-early-learning'),
         ),
         array(
-            'title' => __('Meet the Team', 'earlystart-early-learning'),
+            'title' => __('Clinical Match', 'earlystart-early-learning'),
             'text' => __('Speak with the Clinical Director about your child\'s unique goals.', 'earlystart-early-learning'),
         ),
         array(

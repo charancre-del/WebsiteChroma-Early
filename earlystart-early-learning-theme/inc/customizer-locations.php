@@ -38,7 +38,7 @@ function earlystart_customize_locations($wp_customize)
 
     // Setting: Archive Subtitle
     $wp_customize->add_setting('earlystart_locations_archive_subtitle', array(
-        'default' => 'Serving families across Metro Atlanta with the same high standards of safety, curriculum, and care at every single location.',
+        'default' => 'Serving families across Metro Atlanta with the same high standards of safety, clinical support, and coordinated care at every single location.',
         'sanitize_callback' => 'sanitize_textarea_field',
         'transport' => 'refresh',
     ));
@@ -66,14 +66,14 @@ function earlystart_customize_locations($wp_customize)
 
     // Setting: Badge Fallback Text
     $wp_customize->add_setting('earlystart_locations_badge_fallback', array(
-        'default' => 'Now Enrolling',
+        'default' => 'Accepting New Families',
         'sanitize_callback' => 'sanitize_text_field',
         'transport' => 'refresh',
     ));
 
     $wp_customize->add_control('earlystart_locations_badge_fallback', array(
         'label' => __('Badge Fallback Text', 'earlystart-early-learning'),
-        'description' => __('Text to show on the location card badge if not "New Clinic" (e.g., "Now Enrolling").', 'earlystart-early-learning'),
+        'description' => __('Text to show on the location card badge if not "New Clinic" (e.g., "Accepting New Families").', 'earlystart-early-learning'),
         'section' => 'earlystart_locations_settings',
         'type' => 'text',
     ));

@@ -1,8 +1,6 @@
 <?php
 /**
- * Daily Schedule Tabs
- * Template Part: Schedule Tabs
- * "A Day in the Life" - Daily rhythm tabs for different age groups
+ * Care rhythm tabs.
  *
  * @package EarlyStart_Early_Start
  */
@@ -14,16 +12,16 @@ if (empty($tracks)) {
 }
 ?>
 
-<section id="schedule" class="py-20 bg-brand-cream relative" data-section="schedule">
+<section id="care-rhythm" class="py-20 bg-brand-cream relative" data-section="care-rhythm">
 	<div
 		class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-chroma-red via-chroma-yellow to-chroma-blue opacity-40">
 	</div>
 	<div class="max-w-6xl mx-auto px-4 lg:px-6" data-schedule
 		data-tracks='<?php echo esc_attr(wp_json_encode($tracks)); ?>'>
 		<div class="text-center mb-12">
-			<span class="text-chroma-green font-bold tracking-[0.2em] text-xs uppercase mb-4 block"><?php _e('Day by Day', 'earlystart-early-learning'); ?></span>
-			<h2 class="text-3xl md:text-4xl font-serif text-brand-ink mb-3"><?php _e('A Daily Rhythm of Joy', 'earlystart-early-learning'); ?></h2>
-			<p class="text-brand-ink max-w-2xl mx-auto"><?php _e('We don\'t just fill time. Every classroom follows a thoughtful flow designed to balance stimulation, nourishment, and rest.', 'earlystart-early-learning'); ?></p>
+			<span class="text-chroma-green font-bold tracking-[0.2em] text-xs uppercase mb-4 block"><?php _e('Care Rhythm', 'earlystart-early-learning'); ?></span>
+			<h2 class="text-3xl md:text-4xl font-serif text-brand-ink mb-3"><?php _e('A Supportive Flow for Progress', 'earlystart-early-learning'); ?></h2>
+			<p class="text-brand-ink max-w-2xl mx-auto"><?php _e('Our therapy routines balance structured practice, regulation, communication, movement, and rest so each child can participate with confidence.', 'earlystart-early-learning'); ?></p>
 		</div>
 
 		<div class="flex justify-center mb-12">

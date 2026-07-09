@@ -35,7 +35,7 @@ $global_phone_href = preg_replace('/[^0-9+]/', '', $global_phone);
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="<?php echo esc_url($tour_cta['cta_url']); ?>"
                     class="bg-white text-rose-700 px-12 py-5 rounded-full font-bold text-lg hover:bg-rose-50 transition-all shadow-2xl hover:scale-105 active:scale-95">
-                    <?php echo esc_html($tour_cta['cta_label'] ?: __('Schedule a Tour', 'earlystart-early-learning')); ?>
+                    <?php echo esc_html($tour_cta['cta_label'] ?: __('Request a Consultation', 'earlystart-early-learning')); ?>
                 </a>
                 <?php if ($global_phone && $global_phone_href): ?>
                     <a href="tel:<?php echo esc_attr($global_phone_href); ?>"

@@ -12,7 +12,7 @@ $faq_page_id = get_the_ID();
 $faq_hero_eyebrow = earlystart_get_translated_meta($faq_page_id, 'faq_hero_eyebrow', true) ?: __('Support & Clarity', 'earlystart-early-learning');
 $faq_hero_heading = earlystart_get_translated_meta($faq_page_id, 'faq_hero_heading', true) ?: __('How can we', 'earlystart-early-learning');
 $faq_hero_highlight = earlystart_get_translated_meta($faq_page_id, 'faq_hero_highlight', true) ?: __('Help you today?', 'earlystart-early-learning');
-$faq_hero_subheading = earlystart_get_translated_meta($faq_page_id, 'faq_hero_subheading', true) ?: __('Find answers to common questions about our clinical model, enrollment process, and how we support your child\'s unique journey.', 'earlystart-early-learning');
+$faq_hero_subheading = earlystart_get_translated_meta($faq_page_id, 'faq_hero_subheading', true) ?: __('Find answers to common questions about our clinical model, intake process, and how we support your child\'s unique journey.', 'earlystart-early-learning');
 $faq_cta_heading = earlystart_get_translated_meta($faq_page_id, 'faq_cta_heading', true) ?: __('Still have questions?', 'earlystart-early-learning');
 $faq_cta_text = earlystart_get_translated_meta($faq_page_id, 'faq_cta_text', true) ?: __('Our admissions coordinators are happy to jump on a call and talk through your specific situation. We are here to help.', 'earlystart-early-learning');
 $global_phone = function_exists('earlystart_global_phone') ? trim((string) earlystart_global_phone()) : '';
@@ -67,7 +67,7 @@ $global_phone_href = preg_replace('/[^0-9+]/', '', $global_phone);
                 array(
                     'title' => 'The Bridge Program',
                     'questions' => array(
-                        array('q' => 'What makes the Bridge Program different from standard ABA?', 'a' => 'The Bridge Program simulates a preschool environment. While a child still has clinical support, they are learning "group skills" like sitting in a circle, transitions, and peer play that are vital for success in a general education classroom.'),
+                        array('q' => 'What makes the Bridge Program different from standard ABA?', 'a' => 'The Bridge Program adds supported peer practice to individualized ABA goals. Children work on group participation, transitions, communication, and peer play with clinical support.'),
                         array('q' => 'Is the Bridge Program full-time?', 'a' => 'We offer both part-time and full-time tracks for Bridge, depending on the child\'s current readiness and the family\'s goals for school transition.'),
                     )
                 )

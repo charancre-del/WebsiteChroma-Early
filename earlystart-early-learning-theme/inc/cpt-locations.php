@@ -463,7 +463,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 		<div class="chroma-meta-field">
 			<label for="location_hero_subtitle"><?php _e('Hero Subtitle', 'earlystart-early-learning'); ?></label>
 			<input type="text" id="location_hero_subtitle" name="location_hero_subtitle"
-				value="<?php echo esc_attr($hero_subtitle); ?>" placeholder="e.g., Now Enrolling: Pre-K & Toddlers" />
+				value="<?php echo esc_attr($hero_subtitle); ?>" placeholder="e.g., Accepting New Families" />
 			<small><?php _e('Small badge text shown above the location name', 'earlystart-early-learning'); ?></small>
 		</div>
 
@@ -523,7 +523,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 		<div class="chroma-meta-field">
 			<label for="location_special_programs"><?php _e('Special Programs (Badges)', 'earlystart-early-learning'); ?></label>
 			<textarea id="location_special_programs" name="location_special_programs" rows="2"
-				placeholder="e.g., GA Pre-K, Summer Camp"><?php echo esc_textarea(get_post_meta($post->ID, 'location_special_programs', true)); ?></textarea>
+				placeholder="e.g., Autism Assessment, ABA Therapy, Speech Therapy"><?php echo esc_textarea(get_post_meta($post->ID, 'location_special_programs', true)); ?></textarea>
 			<small><?php _e('Enter programs separated by commas. These appear as badges on the location card.', 'earlystart-early-learning'); ?></small>
 		</div>
 
@@ -540,16 +540,16 @@ function earlystart_render_location_custom_fields_meta_box($post)
 		<label for="location_quality_rated" class="chroma-checkbox-label">
 			<input type="checkbox" id="location_quality_rated" name="location_quality_rated" value="1"
 				<?php checked(get_post_meta($post->ID, 'location_quality_rated', true), '1'); ?> />
-			<?php _e('Quality Rated by Georgia DECAL', 'earlystart-early-learning'); ?>
+			<?php _e('Verified clinic quality status', 'earlystart-early-learning'); ?>
 		</label>
-		<small><?php _e('Check if this location has achieved Georgia\'s Quality Rated status', 'earlystart-early-learning'); ?></small>
+		<small><?php _e('Optional internal quality flag for clinic operations.', 'earlystart-early-learning'); ?></small>
 	</div>
 
 	<div class="chroma-meta-field">
-		<label for="_earlystart_license_number"><?php _e('DECAL License Number', 'earlystart-early-learning'); ?></label>
+		<label for="_earlystart_license_number"><?php _e('Internal License or Credential ID', 'earlystart-early-learning'); ?></label>
 		<input type="text" id="_earlystart_license_number" name="_earlystart_license_number"
 			value="<?php echo esc_attr(get_post_meta($post->ID, '_earlystart_license_number', true)); ?>" placeholder="e.g., CCLC-12345" />
-		<small><?php _e('Enter the official Georgia DECAL license number for this facility', 'earlystart-early-learning'); ?></small>
+		<small><?php _e('Internal reference only. This is not emitted in public schema.', 'earlystart-early-learning'); ?></small>
 	</div>
 		<div class="chroma-meta-field">
 			<label for="location_google_rating"><?php _e('Google Rating', 'earlystart-early-learning'); ?></label>
@@ -702,18 +702,18 @@ function earlystart_render_location_custom_fields_meta_box($post)
 	</div>
 
 	<div class="chroma-meta-section">
-		<h4><?php _e('Tour Booking', 'earlystart-early-learning'); ?></h4>
+		<h4><?php _e('Consultation Booking', 'earlystart-early-learning'); ?></h4>
 
 		<div class="chroma-meta-field">
-			<label for="location_tour_booking_link"><?php _e('Tour Booking Link', 'earlystart-early-learning'); ?></label>
+			<label for="location_tour_booking_link"><?php _e('Consultation Booking Link', 'earlystart-early-learning'); ?></label>
 			<input type="url" id="location_tour_booking_link" name="location_tour_booking_link"
 				value="<?php echo esc_attr($tour_booking_link); ?>" placeholder="https://..." />
-			<small><?php _e('External link for "Book a Tour Now" button (e.g., online scheduling system)', 'earlystart-early-learning'); ?></small>
+			<small><?php _e('External link for the consultation button (e.g., online intake or scheduling system)', 'earlystart-early-learning'); ?></small>
 		</div>
 	</div>
 
 	<div class="chroma-meta-section">
-		<h4><?php _e('School Pickups', 'earlystart-early-learning'); ?></h4>
+		<h4><?php _e('Partner School Support', 'earlystart-early-learning'); ?></h4>
 
 		<div class="chroma-meta-field">
 			<label for="location_school_pickups"><?php _e('Elementary Schools', 'earlystart-early-learning'); ?></label>

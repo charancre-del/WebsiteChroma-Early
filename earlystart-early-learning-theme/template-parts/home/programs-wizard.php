@@ -17,20 +17,13 @@ if (empty($options)) {
 function earlystart_get_wizard_color_classes($key)
 {
     $map = array(
-        'infant-care' => 'bg-chroma-redLight border-chroma-red/30 text-brand-ink hover:border-chroma-red hover:text-chroma-red',
-        'toddlers' => 'bg-white border-chroma-blue/20 text-brand-ink hover:border-chroma-blue hover:text-chroma-blue',
-        'preschool' => 'bg-white border-chroma-yellow/20 text-brand-ink hover:border-chroma-yellow hover:text-chroma-yellow',
-        'pre-k-prep' => 'bg-white border-chroma-blue/20 text-brand-ink hover:border-chroma-blue hover:text-chroma-blue',
-        'pre-k-ga-pre-k' => 'bg-white border-chroma-blue/20 text-brand-ink hover:border-chroma-blue hover:text-chroma-blue',
-        'schoolagers' => 'bg-white border-chroma-green/20 text-brand-ink hover:border-chroma-green hover:text-chroma-green',
-        'camp' => 'bg-white border-chroma-orange/20 text-brand-ink hover:border-chroma-orange hover:text-chroma-orange',
-        'parents-day-out' => 'bg-white border-chroma-teal/20 text-brand-ink hover:border-chroma-teal hover:text-chroma-teal',
-        // Fallbacks for old keys just in case
-        'infant' => 'bg-chroma-redLight border-chroma-red/30 text-brand-ink hover:border-chroma-red hover:text-chroma-red',
-        'toddler' => 'bg-white border-chroma-blue/20 text-brand-ink hover:border-chroma-blue hover:text-chroma-blue',
-        'prep' => 'bg-white border-chroma-blue/20 text-brand-ink hover:border-chroma-blue hover:text-chroma-blue',
-        'prek' => 'bg-white border-chroma-blue/20 text-brand-ink hover:border-chroma-blue hover:text-chroma-blue',
-        'afterschool' => 'bg-white border-chroma-green/20 text-brand-ink hover:border-chroma-green hover:text-chroma-green',
+        'autism-assessment' => 'bg-chroma-redLight border-chroma-red/30 text-brand-ink hover:border-chroma-red hover:text-chroma-red',
+        'behavioral-assessment' => 'bg-white border-chroma-yellow/20 text-brand-ink hover:border-chroma-yellow hover:text-chroma-yellow',
+        'adhd-assessment' => 'bg-white border-chroma-blue/20 text-brand-ink hover:border-chroma-blue hover:text-chroma-blue',
+        'aba' => 'bg-white border-chroma-red/20 text-brand-ink hover:border-chroma-red hover:text-chroma-red',
+        'speech' => 'bg-white border-chroma-teal/20 text-brand-ink hover:border-chroma-teal hover:text-chroma-teal',
+        'ot' => 'bg-white border-chroma-green/20 text-brand-ink hover:border-chroma-green hover:text-chroma-green',
+        'parent-coaching' => 'bg-white border-chroma-orange/20 text-brand-ink hover:border-chroma-orange hover:text-chroma-orange',
     );
 
     // Default fallback
@@ -85,7 +78,7 @@ function earlystart_get_wizard_color_classes($key)
                             </a>
                             <a href="#contact"
                                 class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-chroma-red text-white font-semibold hover:bg-chroma-red/90 transition shadow-soft">
-                                <?php _e('Speak to an enrollment specialist', 'earlystart-early-learning'); ?>
+                                <?php _e('Speak to an intake specialist', 'earlystart-early-learning'); ?>
                             </a>
 
                         </div>

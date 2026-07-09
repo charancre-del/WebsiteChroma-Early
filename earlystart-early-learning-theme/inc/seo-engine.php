@@ -396,25 +396,7 @@ function earlystart_location_schema()
             $schema['amenityFeature'] = array();
         }
         
-        // License/Permit (Tier 5 - AA)
-        $license_num = get_post_meta($location_id, '_earlystart_license_number', true);
-        if ($license_num) {
-            $schema['hasCredential'] = array(
-                '@type' => 'EducationalOccupationalCredential',
-                'credentialCategory' => 'license',
-                'name' => 'Georgia DECAL License',
-                'identifier' => array(
-                    '@type' => 'PropertyValue',
-                    'propertyID' => 'License Number',
-                    'value' => $license_num
-                ),
-                'recognizedBy' => array(
-                    '@type' => 'GovernmentOrganization',
-                    'name' => 'Georgia Department of Early Care and Learning',
-                    'url' => 'https://www.decal.ga.gov/'
-                )
-            );
-        }
+        // Legacy childcare license credentials are not emitted in public schema.
         
         // Safety Amenities (Tier 5 - BB)
         $amenities = get_post_meta($location_id, '_earlystart_amenities', true);
@@ -428,18 +410,10 @@ function earlystart_location_schema()
             }
         }
         
-        if ($quality_rated) {
-                $knowsAbout[] = 'Quality Rated Provider';
-                $schema['amenityFeature'][] = array(
-                        '@type' => 'LocationFeatureSpecification',
-                        'name' => 'Quality Rated',
-                        'value' => true
-                );
-        }
         if ($school_pickups) {
                 $schema['amenityFeature'][] = array(
                         '@type' => 'LocationFeatureSpecification',
-                        'name' => 'School Transportation',
+                        'name' => 'Partner Setting Support',
                         'value' => true
                 );
         }

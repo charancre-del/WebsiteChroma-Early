@@ -264,7 +264,7 @@ function earlystart_program_meta_box_render($post)
 		<label for="program_seo_highlights"
 			class="screen-reader-text"><?php esc_html_e('SEO Highlights', 'earlystart-early-learning'); ?></label>
 		<textarea id="program_seo_highlights" name="program_seo_highlights" class="widefat" rows="4"
-			placeholder="<?php esc_attr_e("One bullet per line (e.g. ratios, curriculum)", 'earlystart-early-learning'); ?>"><?php echo esc_textarea($highlights); ?></textarea>
+			placeholder="<?php esc_attr_e("One bullet per line (e.g. assessment steps, therapy goals)", 'earlystart-early-learning'); ?>"><?php echo esc_textarea($highlights); ?></textarea>
 	</p>
 	<hr />
 	<p>
@@ -526,14 +526,12 @@ function earlystart_program_details_meta_box_render($post)
 			<div class="chroma-emoji-presets" style="display: flex; gap: 5px; flex-wrap: wrap;">
 				<?php
 				$presets = array(
-					'👶' => 'Infant',
-					'🚀' => 'Toddler',
-					'🎨' => 'Preschool',
-					'🖍️' => 'Pre-K Prep',
-					'🎓' => 'GA Pre-K',
-					'🚌' => 'After School',
-					'☀️' => 'Summer Camp',
-					'🎉' => 'Parents Day Out',
+					'A' => 'Autism Assessment',
+					'B' => 'Behavioral Assessment',
+					'ADHD' => 'ADHD Assessment',
+					'ABA' => 'ABA Therapy',
+					'S' => 'Speech Therapy',
+					'OT' => 'Occupational Therapy',
 				);
 				foreach ($presets as $emoji => $label) {
 					echo sprintf(
@@ -603,11 +601,11 @@ function earlystart_program_details_meta_box_render($post)
 	<div class="chroma-program-field">
 		<label for="program_color_scheme"><?php _e('Color Scheme', 'earlystart-early-learning'); ?></label>
 		<select id="program_color_scheme" name="program_color_scheme">
-			<option value="red" <?php selected($color_scheme, 'red'); ?>>Red - Infant Care</option>
-			<option value="blue" <?php selected($color_scheme, 'blue'); ?>>Blue - Toddler</option>
-			<option value="yellow" <?php selected($color_scheme, 'yellow'); ?>>Yellow - Preschool</option>
-			<option value="blueDark" <?php selected($color_scheme, 'blueDark'); ?>>Dark Blue - Pre-K Prep</option>
-			<option value="green" <?php selected($color_scheme, 'green'); ?>>Green - GA Pre-K</option>
+			<option value="red" <?php selected($color_scheme, 'red'); ?>>Red - Autism Assessment</option>
+			<option value="blue" <?php selected($color_scheme, 'blue'); ?>>Blue - ADHD Assessment</option>
+			<option value="yellow" <?php selected($color_scheme, 'yellow'); ?>>Yellow - Speech Therapy</option>
+			<option value="blueDark" <?php selected($color_scheme, 'blueDark'); ?>>Dark Blue - ABA Therapy</option>
+			<option value="green" <?php selected($color_scheme, 'green'); ?>>Green - Occupational Therapy</option>
 		</select>
 		<div class="chroma-color-preview">
 			<div class="color-swatch" style="background-color: #D67D6B;" title="Red"></div>
@@ -782,12 +780,11 @@ function earlystart_program_single_page_meta_box_render($post)
 		<label><?php _e('Prismpath Chart Values (0-100)', 'earlystart-early-learning'); ?></label>
 		<div style="margin-bottom: 15px;">
 			<span style="font-size: 12px; font-weight: bold; margin-right: 10px;">Quick Fill:</span>
-			<button type="button" class="button chroma-chart-preset" data-values="[90,90,40,15,40]">Infant</button>
-			<button type="button" class="button chroma-chart-preset" data-values="[85,75,65,30,70]">Toddler</button>
-			<button type="button" class="button chroma-chart-preset" data-values="[75,65,70,55,80]">Preschool</button>
-			<button type="button" class="button chroma-chart-preset" data-values="[65,60,75,75,70]">Pre-K Prep</button>
-			<button type="button" class="button chroma-chart-preset" data-values="[60,60,80,90,70]">GA Pre-K</button>
-			<button type="button" class="button chroma-chart-preset" data-values="[50,70,85,75,80]">After School</button>
+			<button type="button" class="button chroma-chart-preset" data-values="[55,80,65,55,45]">Assessment</button>
+			<button type="button" class="button chroma-chart-preset" data-values="[55,90,80,45,55]">ABA</button>
+			<button type="button" class="button chroma-chart-preset" data-values="[40,70,85,65,55]">Speech</button>
+			<button type="button" class="button chroma-chart-preset" data-values="[90,75,60,50,65]">OT</button>
+			<button type="button" class="button chroma-chart-preset" data-values="[55,85,85,65,60]">Care Coordination</button>
 		</div>
 		<div class="chroma-chart-inputs">
 			<div class="chroma-chart-input">

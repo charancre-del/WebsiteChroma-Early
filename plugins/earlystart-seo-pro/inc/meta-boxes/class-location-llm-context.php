@@ -83,7 +83,7 @@ class earlystart_Location_LLM_Context_Meta_Box extends earlystart_Advanced_SEO_M
             'id' => 'seo_llm_key_differentiators',
             'label' => '',
             'values' => $key_differentiators,
-            'placeholder' => 'e.g., "Quality Rated by Bright from the Start"',
+            'placeholder' => 'e.g., "Autism assessment, ABA, speech, and OT services available"',
             'button_text' => 'Add Differentiator',
         ]);
     }

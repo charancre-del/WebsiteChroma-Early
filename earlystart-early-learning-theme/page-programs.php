@@ -12,14 +12,14 @@ $page_id = get_queried_object_id();
 $programs_shell_defaults = array(
     'hero_eyebrow' => __('What We Do', 'earlystart-early-learning'),
     'hero_heading' => __('Holistic Therapy,<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Integrated Care.</span>', 'earlystart-early-learning'),
-    'hero_subheading' => __('We offer a full spectrum of pediatric services. Whether you need focused behavioral support or a comprehensive school-readiness plan, we have a pathway for you.', 'earlystart-early-learning'),
+    'hero_subheading' => __('We offer a full spectrum of pediatric services. Whether you need focused behavioral support, assessment, ABA, speech, or OT, we have a pathway for you.', 'earlystart-early-learning'),
     'settings_heading' => __('Flexible Service Settings', 'earlystart-early-learning'),
     'settings_text' => __('We offer therapy in three distinct environments to best suit your family\'s needs and your child\'s goals.', 'earlystart-early-learning'),
     'settings_cards' => array(
         array(
             'icon' => 'building',
             'title' => __('Clinic Based', 'earlystart-early-learning'),
-            'text' => __('Structured environments with sensory gyms and mock classrooms designed for focused skill acquisition.', 'earlystart-early-learning'),
+            'text' => __('Structured environments with therapy spaces designed for focused skill acquisition and regulation support.', 'earlystart-early-learning'),
         ),
         array(
             'icon' => 'home',
@@ -29,7 +29,7 @@ $programs_shell_defaults = array(
         array(
             'icon' => 'school',
             'title' => __('School Integrated', 'earlystart-early-learning'),
-            'text' => __('Push-in support at partner schools. We generalize skills to the classroom in real-time.', 'earlystart-early-learning'),
+            'text' => __('Push-in support at partner schools and community settings. We help generalize skills into daily routines in real time.', 'earlystart-early-learning'),
         ),
     ),
     'cta_heading' => __('Unsure where to start?', 'earlystart-early-learning'),

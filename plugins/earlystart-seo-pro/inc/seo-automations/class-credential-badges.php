@@ -1,7 +1,7 @@
 <?php
 /**
  * Credential Badges
- * Display trust badges for DECAL, NAEYC, etc.
+ * Display trust badges for clinical services and safety.
  *
  * @package earlystart_Excellence
  * @since 1.0.0
@@ -14,21 +14,21 @@ if (!defined('ABSPATH')) {
 class earlystart_Credential_Badges
 {
     private static $badges = [
-        'ga_decal' => [
-            'name' => 'GA DECAL Licensed',
-            'description' => 'Georgia Department of Early Care and Learning Licensed Facility',
+        'pediatric_therapy' => [
+            'name' => 'Pediatric Therapy',
+            'description' => 'Coordinated pediatric therapy and assessment services',
             'icon' => '🏛️',
             'color' => '#1a5c8a'
         ],
         'naeyc' => [
-            'name' => 'NAEYC Accredited',
-            'description' => 'National Association for the Education of Young Children',
+            'name' => 'Clinical Team',
+            'description' => 'Credentialed clinical care team',
             'icon' => '⭐',
             'color' => '#2e7d32'
         ],
         'quality_rated' => [
-            'name' => 'Quality Rated',
-            'description' => 'Georgia Quality Rated Program',
+            'name' => 'Assessment Support',
+            'description' => 'Autism, behavioral, and ADHD assessment support',
             'icon' => '✓',
             'color' => '#ff9800'
         ],
@@ -69,8 +69,8 @@ class earlystart_Credential_Badges
             return $schema_data[0]['data']['hasCredential'];
         }
         
-        // Default: assume all locations have these
-        return ['ga_decal', 'quality_rated'];
+        // Default: show therapy-specific badges only.
+        return ['pediatric_therapy', 'quality_rated'];
     }
     
     /**

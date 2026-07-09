@@ -23,7 +23,7 @@ $solutions = array(
 	),
 	array(
 		'title' => earlystart_get_translated_meta($page_id, 'employers_solution2_title') ?: __('Tuition Subsidies', 'earlystart-early-learning'),
-		'desc' => earlystart_get_translated_meta($page_id, 'employers_solution2_desc') ?: __('We manage employer-sponsored tuition matching programs, making quality care affordable for your team.', 'earlystart-early-learning'),
+		'desc' => earlystart_get_translated_meta($page_id, 'employers_solution2_desc') ?: __('We support employer-sponsored care navigation resources, helping working families access the right pediatric therapy and assessment support.', 'earlystart-early-learning'),
 	),
 	array(
 		'title' => earlystart_get_translated_meta($page_id, 'employers_solution3_title') ?: __('Back-Up Care', 'earlystart-early-learning'),

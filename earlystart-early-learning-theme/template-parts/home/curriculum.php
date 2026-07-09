@@ -1,7 +1,7 @@
 <?php
 /**
- * Template Part: Curriculum (Prismpath)
- * Showcase the proprietary curriculum with multi-card layout
+ * Template Part: Care Model
+ * Showcase the proprietary care model with multi-card layout
  *
  * @package EarlyStart_Early_Start
  */
@@ -12,13 +12,13 @@ if (!$curriculum) {
 }
 ?>
 
-<section class="py-20 bg-gradient-to-br from-chroma-teal/10 to-chroma-green/10" data-section="curriculum">
+<section class="py-20 bg-gradient-to-br from-chroma-teal/10 to-chroma-green/10" data-section="care-model">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- Section Header -->
         <div class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-bold text-brand-ink mb-4">
-                <?php echo esc_html($curriculum['heading'] ?: __('The Prismpath Curriculum', 'earlystart-early-learning')); ?>
+                <?php echo esc_html($curriculum['heading'] ?: __('The Chroma Care Model', 'earlystart-early-learning')); ?>
             </h2>
             <?php if (!empty($curriculum['subheading'])): ?>
                 <p class="text-xl text-brand-ink max-w-3xl mx-auto">
@@ -33,7 +33,7 @@ if (!$curriculum) {
             <!-- Card 1: Philosophy -->
             <?php if (!empty($curriculum['card_1_heading'])): ?>
                 <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-shadow duration-300"
-                    data-curriculum-card="philosophy">
+                    data-care-model-card="philosophy">
                     <div class="text-chroma-red text-5xl mb-4">
                         <i class="fas fa-brain"></i>
                     </div>
@@ -49,7 +49,7 @@ if (!$curriculum) {
             <!-- Card 2: Approach -->
             <?php if (!empty($curriculum['card_2_heading'])): ?>
                 <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-shadow duration-300"
-                    data-curriculum-card="approach">
+                    data-care-model-card="approach">
                     <div class="text-chroma-teal text-5xl mb-4">
                         <i class="fas fa-palette"></i>
                     </div>
@@ -65,7 +65,7 @@ if (!$curriculum) {
             <!-- Card 3: Outcomes -->
             <?php if (!empty($curriculum['card_3_heading'])): ?>
                 <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-shadow duration-300"
-                    data-curriculum-card="outcomes">
+                    data-care-model-card="outcomes">
                     <div class="text-chroma-yellow text-5xl mb-4">
                         <i class="fas fa-trophy"></i>
                     </div>
@@ -94,7 +94,7 @@ if (!$curriculum) {
             <div class="text-center">
                 <a href="<?php echo esc_url($curriculum['cta_link']); ?>"
                     class="inline-block bg-chroma-red text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-chroma-red/90 transition-colors">
-                    <?php echo esc_html($curriculum['cta_label'] ?: __('Learn About Prismpath', 'earlystart-early-learning')); ?>
+                    <?php echo esc_html($curriculum['cta_label'] ?: __('Learn About Our Care Model', 'earlystart-early-learning')); ?>
                 </a>
             </div>
         <?php endif; ?>

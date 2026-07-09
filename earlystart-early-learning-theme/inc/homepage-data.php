@@ -130,11 +130,11 @@ function earlystart_home_default_services()
                 ),
                 array(
                         'id' => 'readiness',
-                        'title' => __('School Readiness', 'earlystart-early-learning'),
-                        'subtitle' => __('Academic Foundation', 'earlystart-early-learning'),
+                        'title' => __('Clinical Readiness', 'earlystart-early-learning'),
+                        'subtitle' => __('Group Participation', 'earlystart-early-learning'),
                         'icon' => 'graduation-cap',
-                        'heading' => __('Prepared for the Classroom', 'earlystart-early-learning'),
-                        'description' => __('An integrated program designed to bridge the gap between clinical therapy and traditional classroom success.', 'earlystart-early-learning'),
+                        'heading' => __('Prepared for Daily Participation', 'earlystart-early-learning'),
+                        'description' => __('Guided support helps children carry therapy gains into group routines, peer interaction, and everyday family life.', 'earlystart-early-learning'),
                         'image' => 'https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'bullets' => array(
                                 __('Social-emotional prep', 'earlystart-early-learning'),
@@ -414,107 +414,105 @@ function earlystart_home_default_program_wizard_options()
 
         return array(
                 array(
-                        'key' => 'infant',
-                        'emoji' => '👶',
-                        'label' => __("Infant\n(6 weeks–12m)", 'earlystart-early-learning'),
-                        'description' => __('Low ratios, safe sleep practices, responsive caregiving, and sensory play in a peaceful, predictable environment.', 'earlystart-early-learning'),
-                        'link' => $program_url . '#infant',
+                        'key' => 'autism-assessment',
+                        'emoji' => 'A',
+                        'label' => __("Autism\nAssessment", 'earlystart-early-learning'),
+                        'description' => __('Comprehensive developmental assessment and care planning for children and families.', 'earlystart-early-learning'),
+                        'link' => $program_url . '#autism-assessment',
                 ),
                 array(
-                        'key' => 'toddler',
-                        'emoji' => '🚀',
-                        'label' => __("Toddler\n(1 year)", 'earlystart-early-learning'),
-                        'description' => __('Curated environments for walkers and explorers with language bursts and social skills.', 'earlystart-early-learning'),
-                        'link' => $program_url . '#toddler',
+                        'key' => 'behavioral-assessment',
+                        'emoji' => 'B',
+                        'label' => __("Behavioral\nAssessment", 'earlystart-early-learning'),
+                        'description' => __('Family-centered behavior review for regulation, routines, barriers, and next steps.', 'earlystart-early-learning'),
+                        'link' => $program_url . '#behavioral-assessment',
                 ),
                 array(
-                        'key' => 'preschool',
-                        'emoji' => '🎨',
-                        'label' => __("Preschool\n(2 years)", 'earlystart-early-learning'),
-                        'description' => __('Early concepts in math, literacy, and science introduced through hands-on centers and guided play.', 'earlystart-early-learning'),
-                        'link' => $program_url . '#preschool',
+                        'key' => 'adhd-assessment',
+                        'emoji' => 'ADHD',
+                        'label' => __("ADHD\nAssessment", 'earlystart-early-learning'),
+                        'description' => __('Attention, executive function, impulsivity, and regulation review for clearer care planning.', 'earlystart-early-learning'),
+                        'link' => $program_url . '#adhd-assessment',
                 ),
                 array(
-                        'key' => 'prep',
-                        'emoji' => '✏️',
-                        'label' => __("Pre-K Prep\n(3 years)", 'earlystart-early-learning'),
-                        'description' => __('Structured centers and small-group instruction that build independence before GA Pre-K.', 'earlystart-early-learning'),
-                        'link' => $program_url . '#pre-k-prep',
+                        'key' => 'aba',
+                        'emoji' => 'ABA',
+                        'label' => __("ABA\nTherapy", 'earlystart-early-learning'),
+                        'description' => __('Individualized ABA therapy focused on meaningful behavior change and skill building.', 'earlystart-early-learning'),
+                        'link' => $program_url . '#aba',
                 ),
                 array(
-                        'key' => 'prek',
-                        'emoji' => '🎓',
-                        'label' => __("GA Pre-K\n(4 years)", 'earlystart-early-learning'),
-                        'description' => __('Balanced academic readiness, social-emotional learning, and joyful experiences aligned with GA standards.', 'earlystart-early-learning'),
-                        'link' => $program_url . '#ga-pre-k',
+                        'key' => 'speech',
+                        'emoji' => 'S',
+                        'label' => __("Speech\nTherapy", 'earlystart-early-learning'),
+                        'description' => __('Support for articulation, language, communication, and social interaction goals.', 'earlystart-early-learning'),
+                        'link' => $program_url . '#speech',
                 ),
                 array(
-                        'key' => 'afterschool',
-                        'emoji' => '🚌',
-                        'label' => __("After School\n(5–12 years)", 'earlystart-early-learning'),
-                        'description' => __('Transportation from local schools, homework support, clubs, and outdoor play.', 'earlystart-early-learning'),
-                        'link' => $program_url . '#after-school',
+                        'key' => 'ot',
+                        'emoji' => 'OT',
+                        'label' => __("Occupational\nTherapy", 'earlystart-early-learning'),
+                        'description' => __('Occupational therapy for sensory, motor, daily living, and independence goals.', 'earlystart-early-learning'),
+                        'link' => $program_url . '#ot',
                 ),
         );
 }
-
 function earlystart_home_default_curriculum_profiles()
 {
         return array(
                 'labels' => array('Physical', 'Emotional', 'Social', 'Academic', 'Creative'),
                 'profiles' => array(
                         array(
-                                'key' => 'infant',
-                                'label' => 'Infant',
-                                'title' => 'Foundation Phase',
-                                'description' => 'Infant classrooms emphasize emotional security, attachment, physical health, and sensory experiences. Academics are embedded through language-rich interactions.',
+                                'key' => 'assessment',
+                                'label' => 'Assessment',
+                                'title' => 'Understanding Phase',
+                                'description' => 'Assessment visits clarify developmental, behavioral, attention, sensory, and communication needs so the care plan starts from real evidence.',
                                 'color' => '#D67D6B',
-                                'data' => array(90, 90, 40, 15, 40),
+                                'data' => array(55, 80, 65, 55, 45),
                         ),
                         array(
-                                'key' => 'toddler',
-                                'label' => 'Toddler',
-                                'title' => 'Discovery Phase',
-                                'description' => 'Toddlers explore movement, language, early problem-solving, and social skills through guided play and routines.',
+                                'key' => 'aba',
+                                'label' => 'ABA',
+                                'title' => 'Skill Building Phase',
+                                'description' => 'ABA therapy targets meaningful skills, behavior patterns, communication, routines, and caregiver goals through individualized support.',
                                 'color' => '#4A6C7C',
-                                'data' => array(85, 75, 65, 30, 70),
+                                'data' => array(55, 90, 80, 45, 55),
                         ),
                         array(
-                                'key' => 'preschool',
-                                'label' => 'Preschool',
-                                'title' => 'Exploration Phase',
-                                'description' => 'Preschoolers work on early literacy, math concepts, dramatic play, and collaborative projects, supported by strong routines.',
+                                'key' => 'speech',
+                                'label' => 'Speech',
+                                'title' => 'Communication Phase',
+                                'description' => 'Speech therapy supports language, articulation, comprehension, social communication, and confident expression.',
                                 'color' => '#E6BE75',
-                                'data' => array(75, 65, 70, 55, 80),
+                                'data' => array(40, 70, 85, 65, 55),
                         ),
                         array(
-                                'key' => 'prep',
-                                'label' => 'Pre-K Prep',
-                                'title' => 'Pre-K Prep Phase',
-                                'description' => 'Children build stamina for small-group work, early writing, and multi-step directions while strengthening self-regulation.',
+                                'key' => 'ot',
+                                'label' => 'OT',
+                                'title' => 'Independence Phase',
+                                'description' => 'Occupational therapy supports sensory processing, fine motor skills, self-regulation, and everyday participation.',
                                 'color' => '#2F4858',
-                                'data' => array(65, 60, 75, 75, 70),
+                                'data' => array(90, 75, 60, 50, 65),
                         ),
                         array(
-                                'key' => 'prek',
-                                'label' => 'GA Pre-K',
-                                'title' => 'GA Pre-K Readiness',
-                                'description' => 'Balanced academic readiness, social-emotional learning, and joyful experiences aligned with GA standards.',
+                                'key' => 'care-coordination',
+                                'label' => 'Care Coordination',
+                                'title' => 'Integrated Care Phase',
+                                'description' => 'Our team aligns goals across assessment, ABA, speech, OT, and family communication so care stays coordinated.',
                                 'color' => '#4A6C7C',
-                                'data' => array(60, 60, 80, 90, 70),
+                                'data' => array(55, 85, 85, 65, 60),
                         ),
                         array(
-                                'key' => 'afterschool',
-                                'label' => 'After School',
-                                'title' => 'Enrichment Phase',
-                                'description' => 'School-age programming offers homework help, social clubs, athletic play, and creative enrichment for older children.',
+                                'key' => 'family-support',
+                                'label' => 'Family Support',
+                                'title' => 'Everyday Carryover Phase',
+                                'description' => 'Caregiver guidance helps families carry therapy gains into daily routines, peer interaction, and community life.',
                                 'color' => '#E6BE75',
-                                'data' => array(50, 70, 85, 75, 80),
+                                'data' => array(50, 85, 85, 60, 70),
                         ),
                 ),
         );
 }
-
 /**
  * Home FAQ Items
  */
@@ -522,8 +520,8 @@ function earlystart_home_default_faq_items()
 {
         return array(
                 array(
-                        'question' => __('What is the enrollment process?', 'earlystart-early-learning'),
-                        'answer' => __('Our process starts with an initial consultation and tour. We then conduct a baseline assessment to develop a customized therapy plan tailored to your child\'s specific needs.', 'earlystart-early-learning'),
+                        'question' => __('What is the intake process?', 'earlystart-early-learning'),
+                        'answer' => __('Our process starts with an initial consultation. We then complete assessment steps when clinically appropriate and develop a therapy plan tailored to your child\'s needs.', 'earlystart-early-learning'),
                 ),
                 array(
                         'question' => __('Do you accept insurance?', 'earlystart-early-learning'),
@@ -625,28 +623,28 @@ function earlystart_home_default_schedule_tracks()
                         ),
                 ),
                 array(
-                        'key' => 'prek',
-                        'label' => 'Pre-K',
-                        'title' => 'Kindergarten Readiness',
-                        'description' => 'The Pre-K rhythm mirrors elementary flow, building stamina and focus.',
+                        'key' => 'group-readiness',
+                        'label' => 'Group Readiness',
+                        'title' => 'Daily Participation',
+                        'description' => 'The readiness rhythm supports stamina, focus, communication, and participation in daily routines.',
                         'color' => 'chroma-red',
                         'background' => 'bg-chroma-redLight',
                         'image' => 'https://images.unsplash.com/photo-1503919545874-86c1d9a04595?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'steps' => array(
                                 array(
                                         'time' => '9:00',
-                                        'title' => 'Literacy & Logic',
-                                        'copy' => 'Phonics games, calendar math, and story comprehension.',
+                                        'title' => 'Communication Warmup',
+                                        'copy' => 'Language practice, choice-making, and shared attention.',
                                 ),
                                 array(
                                         'time' => '11:00',
-                                        'title' => 'Project-Based Learning',
-                                        'copy' => 'Collaborative science experiments and art projects.',
+                                        'title' => 'Guided Practice',
+                                        'copy' => 'Therapy goals carried into structured peer and group routines.',
                                 ),
                                 array(
                                         'time' => '2:00',
                                         'title' => 'Social Centers',
-                                        'copy' => 'Dramatic play and negotiation skills.',
+                                        'copy' => 'Peer play, turn taking, and regulation support.',
                                 ),
                         ),
                 ),
@@ -1106,10 +1104,10 @@ function earlystart_home_tour_cta()
 {
         $post_id = earlystart_get_home_page_id();
         $defaults = array(
-                'heading' => __('Schedule a private tour', 'earlystart-early-learning'),
-                'subheading' => __('Share a few details and your preferred clinic. A Chroma Early Start team member will reach out to confirm visit times.', 'earlystart-early-learning'),
+                'heading' => __('Request a private consultation', 'earlystart-early-learning'),
+                'subheading' => __('Share a few details and your preferred clinic. A Chroma Early Start team member will reach out to discuss care options.', 'earlystart-early-learning'),
                 'trust_text' => __('No obligation. We’ll never share your information.', 'earlystart-early-learning'),
-                'cta_label' => __('Schedule a Tour', 'earlystart-early-learning'),
+                'cta_label' => __('Request a Consultation', 'earlystart-early-learning'),
                 'cta_url' => '#contact',
         );
 
@@ -1144,23 +1142,22 @@ function earlystart_home_featured_stories()
 {
         return array(
                 array(
-                        'title' => __('Inside the Prismpath™ Classroom', 'earlystart-early-learning'),
-                        'excerpt' => __('Take a peek at how our educators weave play and academics together each day.', 'earlystart-early-learning'),
-                        'url' => '/stories/prismpath-classroom/',
+                        'title' => __('Inside the Chroma Care Model', 'earlystart-early-learning'),
+                        'excerpt' => __('See how our clinical team aligns assessment, therapy goals, and family communication.', 'earlystart-early-learning'),
+                        'url' => '/stories/chroma-care-model/',
                 ),
                 array(
-                        'title' => __('Family-Style Dining at Early Start', 'earlystart-early-learning'),
-                        'excerpt' => __('Why shared meals matter for social-emotional growth and independence.', 'earlystart-early-learning'),
-                        'url' => '/stories/family-style-dining',
+                        'title' => __('Supporting Everyday Progress', 'earlystart-early-learning'),
+                        'excerpt' => __('Why coordinated care and caregiver guidance matter for meaningful therapy gains.', 'earlystart-early-learning'),
+                        'url' => '/stories/everyday-progress',
                 ),
                 array(
                         'title' => __('Partnering with Parents', 'earlystart-early-learning'),
-                        'excerpt' => __('See how we communicate daily to keep families connected to the classroom.', 'earlystart-early-learning'),
+                        'excerpt' => __('See how we communicate daily to keep families connected to care progress.', 'earlystart-early-learning'),
                         'url' => '/stories/partnering-with-parents',
                 ),
         );
 }
-
 /**
  * Parent Reviews for homepage carousel
  */
@@ -1171,19 +1168,19 @@ function earlystart_home_default_parent_reviews()
                         'name' => 'Sarah M.',
                         'location' => __('Marietta Clinic', 'earlystart-early-learning'),
                         'rating' => '5',
-                        'review' => __('Our daughter has flourished at Early Start. The teachers genuinely care, and the Prismpath curriculum has her excited to learn every day. We couldn\'t ask for a better early learning experience.', 'earlystart-early-learning'),
+                        'review' => __('Our daughter has flourished at Early Start. The clinicians genuinely care, and the coordinated therapy plan helped us understand each next step.', 'earlystart-early-learning'),
                 ),
                 array(
                         'name' => 'James & Lisa T.',
                         'location' => __('Johns Creek Clinic', 'earlystart-early-learning'),
                         'rating' => '5',
-                        'review' => __('After touring several centers, Early Start stood out immediately. The transparency, the warmth, and the expert care made our decision easy. Our son has been there for two years and we\'ve never looked back.', 'earlystart-early-learning'),
+                        'review' => __('After speaking with several providers, Early Start stood out immediately. The transparency, warmth, and expert care made our decision easy.', 'earlystart-early-learning'),
                 ),
                 array(
                         'name' => 'Maria G.',
                         'location' => __('Austell Clinic', 'earlystart-early-learning'),
                         'rating' => '5',
-                        'review' => __('The family-style meals, the daily communication, the beautiful facilities — everything exceeds expectations. Early Start feels like an extension of our family, and our twins are thriving.', 'earlystart-early-learning'),
+                        'review' => __('The daily communication, welcoming team, and coordinated therapy support exceeded expectations. Early Start feels like a true partner for our family.', 'earlystart-early-learning'),
                 ),
         );
 }

@@ -94,7 +94,7 @@ while (have_posts()):
 	$state = $location_fields['state'];
 	$zip = $location_fields['zip'];
 
-	$hero_subtitle = $get_location_meta($location_id, 'location_hero_subtitle') ?: __('Now Enrolling', 'earlystart-early-learning');
+	$hero_subtitle = $get_location_meta($location_id, 'location_hero_subtitle') ?: __('Accepting New Families', 'earlystart-early-learning');
 	$hero_gallery_raw = $get_location_meta($location_id, 'location_hero_gallery');
 	$tagline = $get_location_meta($location_id, 'location_tagline') ?: sprintf(__('Personalized therapy for %s families.', 'earlystart-early-learning'), $city ?: __('your community', 'earlystart-early-learning'));
 	$description = $get_location_meta($location_id, 'location_description');
@@ -139,7 +139,7 @@ while (have_posts()):
 	$hours_label = $is_clinic_hub ? __('Clinic Hours', 'earlystart-early-learning') : __('Partner Hours', 'earlystart-early-learning');
 	$inside_heading = $is_clinic_hub ? __('Inside Our Clinic', 'earlystart-early-learning') : __('Inside Our Partner Location', 'earlystart-early-learning');
 	$faq_heading = $is_clinic_hub ? __('Clinic FAQs', 'earlystart-early-learning') : __('Partner Location FAQs', 'earlystart-early-learning');
-	$tour_heading = $is_clinic_hub ? __('Book a Tour', 'earlystart-early-learning') : __('Book a Visit', 'earlystart-early-learning');
+	$tour_heading = $is_clinic_hub ? __('Request a Consultation', 'earlystart-early-learning') : __('Book a Visit', 'earlystart-early-learning');
 	$tour_description = $is_clinic_hub
 		? __('Come see the facility and meet our team. No commitment required.', 'earlystart-early-learning')
 		: __('Come see the partner location and meet our local team. No commitment required.', 'earlystart-early-learning');

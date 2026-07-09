@@ -1,7 +1,7 @@
 <?php
 /**
- * Template Name: Curriculum Page
- * Displays the curriculum page using seeded metabox content.
+ * Template Name: Clinical Approach Page
+ * Displays the clinical approach page using seeded metabox content.
  *
  * @package EarlyStart_Early_Start
  */
@@ -19,7 +19,7 @@ while (have_posts()):
 	$framework_title = get_post_meta($page_id, 'curriculum_framework_title', true) ?: __('The Chroma Framework', 'earlystart-early-learning');
 	$framework_description = get_post_meta($page_id, 'curriculum_framework_description', true) ?: __('Every activity is designed to support more than one developmental domain at a time.', 'earlystart-early-learning');
 
-	$timeline_badge = get_post_meta($page_id, 'curriculum_timeline_badge', true) ?: __('Learning Journey', 'earlystart-early-learning');
+	$timeline_badge = get_post_meta($page_id, 'curriculum_timeline_badge', true) ?: __('Care Journey', 'earlystart-early-learning');
 	$timeline_title = get_post_meta($page_id, 'curriculum_timeline_title', true) ?: __('How development unfolds.', 'earlystart-early-learning');
 	$timeline_description = get_post_meta($page_id, 'curriculum_timeline_description', true) ?: __('We adapt expectations, routines, and supports to each stage of early development.', 'earlystart-early-learning');
 	$timeline_image = get_post_meta($page_id, 'curriculum_timeline_image', true);
@@ -32,7 +32,7 @@ while (have_posts()):
 	$milestones_subtitle = get_post_meta($page_id, 'curriculum_milestones_subtitle', true) ?: __('We track progress consistently so treatment and teaching decisions stay grounded in real progress.', 'earlystart-early-learning');
 
 	$cta_title = get_post_meta($page_id, 'curriculum_cta_title', true) ?: __('See it in action.', 'earlystart-early-learning');
-	$cta_description = get_post_meta($page_id, 'curriculum_cta_description', true) ?: __('Schedule a visit and see how our routines, spaces, and team support early learners.', 'earlystart-early-learning');
+	$cta_description = get_post_meta($page_id, 'curriculum_cta_description', true) ?: __('Request a consultation and see how our routines, spaces, and team support meaningful progress.', 'earlystart-early-learning');
 
 	$pillars = array(
 		array('key' => 'physical', 'color' => 'rose'),
@@ -230,9 +230,9 @@ while (have_posts()):
 				<div class="rounded-[3rem] bg-gradient-to-r from-emerald-600 to-blue-600 p-8 md:p-16 text-white text-center shadow-xl fade-in-up">
 					<h2 class="text-3xl md:text-4xl font-bold mb-6"><?php echo esc_html($cta_title); ?></h2>
 					<p class="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-8"><?php echo esc_html($cta_description); ?></p>
-					<a href="<?php echo esc_url(earlystart_get_page_link('schedule-tour')); ?>"
+					<a href="<?php echo esc_url(earlystart_get_page_link('consultation')); ?>"
 						class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-emerald-700 font-bold hover:bg-stone-100 transition-colors">
-						<?php _e('Schedule a Tour', 'earlystart-early-learning'); ?>
+						<?php _e('Request a Consultation', 'earlystart-early-learning'); ?>
 					</a>
 				</div>
 			</div>

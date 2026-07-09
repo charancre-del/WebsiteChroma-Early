@@ -218,16 +218,16 @@ function earlystart_seed_privacy_page_defaults( $post_id ) {
 		'privacy_section1_content' => '<p class="mb-4">Chroma Early Start ("Chroma", "we", "us") respects your privacy. This policy outlines how we collect, use, and protect the personal information of our families, patients, caregivers, and website visitors.</p>',
 
 		'privacy_section2_title' => '2. Information Collection',
-		'privacy_section2_content' => '<p class="mb-4">We collect information necessary for enrollment, safety, and communication, including:</p>
+		'privacy_section2_content' => '<p class="mb-4">We collect information necessary for intake, safety, care coordination, and communication, including:</p>
 <ul class="list-disc pl-6 mb-4 space-y-2">
-  <li>Student and parent names, addresses, and contact details.</li>
-  <li>Medical and immunization records required by state law.</li>
+  <li>Child, caregiver, and parent names, addresses, and contact details.</li>
+  <li>Medical, developmental, insurance, and referral information needed for care.</li>
   <li>Emergency contact information.</li>
-  <li>Digital media (photos/videos) for classroom documentation (with consent).</li>
+  <li>Digital media (photos/videos) for care documentation when consent is provided.</li>
 </ul>',
 
 		'privacy_section3_title' => '3. Digital Security',
-		'privacy_section3_content' => '<p class="mb-4">We use secure platforms (Procare) for all student data. Classroom camera feeds are encrypted and accessible only to authorized leadership for monitoring purposes; they are not publicly broadcast.</p>',
+		'privacy_section3_content' => '<p class="mb-4">We use secure platforms for intake, care coordination, and family communication. Access is limited to authorized team members based on role and business need.</p>',
 
 		'privacy_section4_title' => '4. Families\' Rights',
 		'privacy_section4_content' => '<p class="mb-4">Early Start upholds the rights of all families to:</p>

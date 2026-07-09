@@ -126,7 +126,7 @@ $hero_badge_text = sprintf(
 						$region_name = $region_term ? $region_term->name : __('Georgia', 'earlystart-early-learning');
 
 						$is_new = get_post_meta($location_id, 'location_new', true);
-						$badge_text = $is_new ? __('New Clinic', 'earlystart-early-learning') : __('Now Enrolling', 'earlystart-early-learning');
+						$badge_text = $is_new ? __('New Clinic', 'earlystart-early-learning') : __('Accepting New Families', 'earlystart-early-learning');
 						?>
 						<div class="location-card fade-in-up" data-region="<?php echo esc_attr($region_slug); ?>"
 							data-name="<?php echo esc_attr($location_name . ' ' . $city . ' ' . $zip); ?>">
@@ -203,7 +203,7 @@ $hero_badge_text = sprintf(
 						$region_name = $region_term ? $region_term->name : __('Georgia', 'earlystart-early-learning');
 
 						$is_new = get_post_meta($location_id, 'location_new', true);
-						$badge_text = $is_new ? __('New Clinic', 'earlystart-early-learning') : __('Now Enrolling', 'earlystart-early-learning');
+						$badge_text = $is_new ? __('New Clinic', 'earlystart-early-learning') : __('Accepting New Families', 'earlystart-early-learning');
 						?>
 						<div class="location-card fade-in-up" data-region="<?php echo esc_attr($region_slug); ?>"
 							data-name="<?php echo esc_attr($location_name . ' ' . $city . ' ' . $zip); ?>">

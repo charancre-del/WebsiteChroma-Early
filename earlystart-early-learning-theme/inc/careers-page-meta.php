@@ -120,7 +120,7 @@ function earlystart_careers_culture_meta_box_render( $post ) {
 
 	$benefits = array(
 		1 => 'Benefit 1 (Competitive Pay)',
-		2 => 'Benefit 2 (Paid Tuition)',
+		2 => 'Benefit 2 (Training & Supervision)',
 		3 => 'Benefit 3 (Health & Wellness)',
 	);
 	?>
@@ -223,7 +223,7 @@ function earlystart_careers_openings_meta_box_render( $post ) {
 					<input type="text" id="careers_job<?php echo $num; ?>_title"
 						   name="careers_job<?php echo $num; ?>_title"
 						   value="<?php echo esc_attr( $title ); ?>"
-						   class="large-text" placeholder="e.g., Lead Teacher (Pre-K)" />
+						   class="large-text" placeholder="e.g., BCBA, RBT, Speech Therapist" />
 					<p class="description">Leave blank to hide this job listing</p>
 				</td>
 			</tr>
@@ -418,8 +418,8 @@ function earlystart_seed_careers_page_defaults( $post_id ) {
 		'careers_benefit1_desc'  => 'Above-market salaries, annual performance bonuses, and retirement matching.',
 
 		'careers_benefit2_icon'  => 'fa-solid fa-graduation-cap',
-		'careers_benefit2_title' => 'Paid Tuition & CDA',
-		'careers_benefit2_desc'  => 'We pay for your Child Development Associate (CDA) credential and offer college tuition assistance.',
+		'careers_benefit2_title' => 'Training & Supervision',
+		'careers_benefit2_desc'  => 'We support credentialing, mentorship, supervision, and ongoing clinical development.',
 
 		'careers_benefit3_icon'  => 'fa-solid fa-heart-pulse',
 		'careers_benefit3_title' => 'Health & Wellness',
@@ -427,7 +427,7 @@ function earlystart_seed_careers_page_defaults( $post_id ) {
 
 		'careers_openings_title' => 'Current Opportunities',
 
-		'careers_job1_title'    => 'Lead Teacher (Pre-K)',
+		'careers_job1_title'    => 'BCBA',
 		'careers_job1_location' => 'Lawrenceville Clinic',
 		'careers_job1_type'     => 'Full Time',
 		'careers_job1_url'      => '#apply',

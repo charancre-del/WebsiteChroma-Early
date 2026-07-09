@@ -571,6 +571,10 @@ class earlystart_Schema_Registry
     {
         if (is_array($value)) {
             $is_assoc = self::is_assoc_array($value);
+            if ($is_assoc && self::is_legacy_childcare_schema_node($value)) {
+                return [];
+            }
+
             $out = [];
             foreach ($value as $key => $child) {
                 $clean = self::sanitize_node_recursive($child, $source);
@@ -609,7 +613,11 @@ class earlystart_Schema_Registry
         }
 
         if (is_string($value)) {
-            return trim(wp_strip_all_tags($value));
+            $clean = trim(wp_strip_all_tags($value));
+            if (self::contains_legacy_childcare_schema_text($clean)) {
+                return '';
+            }
+            return $clean;
         }
 
         if (is_bool($value) || is_numeric($value)) {
@@ -867,6 +875,82 @@ class earlystart_Schema_Registry
             return false;
         }
         return array_keys($arr) !== range(0, count($arr) - 1);
+    }
+
+    private static function is_legacy_childcare_schema_node($node)
+    {
+        if (!is_array($node)) {
+            return false;
+        }
+
+        $type = isset($node['@type']) ? $node['@type'] : '';
+        $types = is_array($type) ? $type : [$type];
+        $types = array_map('strval', $types);
+
+        if (in_array('ChildCare', $types, true)) {
+            return true;
+        }
+
+        $node_text = wp_json_encode($node);
+        if (!is_string($node_text)) {
+            return false;
+        }
+
+        if (in_array('EducationalOccupationalCredential', $types, true) && self::contains_legacy_childcare_schema_text($node_text)) {
+            return true;
+        }
+
+        if (isset($node['credentialCategory']) && self::contains_legacy_childcare_schema_text((string) $node['credentialCategory'])) {
+            return true;
+        }
+
+        if (isset($node['name']) && self::contains_legacy_childcare_schema_text((string) $node['name'])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static function contains_legacy_childcare_schema_text($text)
+    {
+        if (!is_string($text) || $text === '') {
+            return false;
+        }
+
+        $normalized = strtolower($text);
+        $legacy_terms = [
+            'chroma early learning',
+            'early learning academy',
+            'early start early learning',
+            'early start preschool',
+            'licensed childcare',
+            'licensed child care',
+            'childcare provider',
+            'child care center',
+            'childcare center',
+            'daycare',
+            'preschool',
+            'pre-k',
+            'ga pre-k',
+            'georgia pre-k',
+            'ga lottery pre-k',
+            'bright from the start',
+            'georgia department of early care and learning',
+            'decal',
+            'quality rated',
+            'now enrolling',
+            'schedule a tour',
+            'book a tour',
+            'tour form',
+        ];
+
+        foreach ($legacy_terms as $term) {
+            if (strpos($normalized, $term) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

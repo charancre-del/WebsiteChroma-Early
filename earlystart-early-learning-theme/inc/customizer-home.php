@@ -276,7 +276,7 @@ function earlystart_home_customize_register(WP_Customize_Manager $wp_customize)
         'earlystart_home_faq_items_json',
         array(
             'label' => __('FAQ JSON (question/answer)', 'earlystart-early-learning'),
-            'description' => __('Example: [{"question":"Do you offer GA Lottery Pre-K?","answer":"Yes..."}]', 'earlystart-early-learning'),
+            'description' => __('Example: [{"question":"Do you offer autism assessment?","answer":"Yes..."}]', 'earlystart-early-learning'),
             'section' => 'earlystart_home_faq_section',
             'type' => 'textarea',
         )

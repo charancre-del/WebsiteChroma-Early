@@ -32,6 +32,7 @@ define('EARLYSTART_INVALID_SCHEMA_TYPES', array(
     'Hostel',
     'BedAndBreakfast',
     'Campground',
+    'ChildCare',
 ));
 
 /**
@@ -483,25 +484,8 @@ class earlystart_Schema_Injector
             $schema['hasMap'] = "https://www.google.com/maps/search/?api=1&query=$addr_string";
         }
 
-        // Feature: License/Credentials
-        $license = get_post_meta($location_id, '_earlystart_license_number', true);
-        if ($license) {
-            $schema['hasCredential'] = [
-                '@type' => 'EducationalOccupationalCredential',
-                'credentialCategory' => 'license',
-                'name' => 'Georgia DECAL License',
-                'identifier' => [
-                    '@type' => 'PropertyValue',
-                    'propertyID' => 'License Number',
-                    'value' => $license
-                ],
-                'recognizedBy' => [
-                    '@type' => 'GovernmentOrganization',
-                    'name' => 'Georgia Department of Early Care and Learning',
-                    'url' => 'https://www.decal.ga.gov/'
-                ]
-            ];
-        }
+        // Childcare-era license credentials are intentionally not emitted.
+        // Location schema should describe the active therapy and assessment clinic.
 
         // Feature: Amenities
         $amenities = get_post_meta($location_id, '_earlystart_amenities', true);
@@ -516,7 +500,7 @@ class earlystart_Schema_Injector
             }
         }
 
-        // Quality Rated
+        // Clinic quality signal
         $quality_rated = get_post_meta($location_id, 'location_quality_rated', true);
         if ($quality_rated) {
             if (!isset($schema['amenityFeature'])) {

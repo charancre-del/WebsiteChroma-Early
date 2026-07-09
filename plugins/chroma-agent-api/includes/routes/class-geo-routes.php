@@ -128,14 +128,14 @@ class Geo_Routes
                 'summary',
                 'feed_hash',
                 'brand',
-                'curriculum',
+                'care_model',
                 'locations',
                 'programs',
                 'events',
             ],
             'field_groups' => [
                 'brand' => ['name', 'description', 'site_url', 'contact'],
-                'curriculum' => ['prismpath', 'chroma_spectrum'],
+                'care_model' => ['chroma_care', 'clinical_framework'],
                 'locations_list' => [
                     'location_id', 'slug', 'campus_name', 'canonical_url', 'url', 'location_url', 'last_updated_gmt',
                     'record_hash', 'verification_status', 'address', 'geo', 'service_radius_miles',
@@ -199,7 +199,7 @@ class Geo_Routes
                 'events' => $events,
             ]),
             'brand' => $base['brand'],
-            'curriculum' => $base['curriculum'],
+            'care_model' => $base['curriculum'],
             'locations' => $location_summaries,
             'programs' => $programs,
             'events' => $events,
@@ -399,17 +399,17 @@ class Geo_Routes
         return [
             'prismpath' => [
                 'name' => 'Prismpath',
-                'category' => 'Proprietary learning model',
+                'category' => 'Proprietary care model',
                 'description' => $brand_context !== ''
                     ? self::limit_text($brand_context, 320)
-                    : 'Chroma proprietary learning model for structured early childhood development.',
+                    : 'Chroma proprietary care model for structured pediatric therapy and assessment support.',
             ],
             'chroma_spectrum' => [
-                'name' => 'Chroma Spectrum Curriculum',
-                'category' => 'Curriculum framework',
+                'name' => 'Chroma Care Framework',
+                'category' => 'Clinical framework',
                 'description' => $brand_voice !== ''
                     ? self::limit_text($brand_voice, 320)
-                    : 'Branded curriculum framework that aligns classroom delivery, developmental goals, and family-facing program positioning.',
+                    : 'Branded clinical framework that aligns therapy delivery, developmental goals, assessment support, and family-facing care coordination.',
             ],
         ];
     }
@@ -438,7 +438,7 @@ class Geo_Routes
             $address = self::build_location_address($post_id);
             $hours = self::normalize_hours_schedule(get_post_meta($post_id, 'location_hours', true));
             $faqs = self::normalize_faq_items($public_meta['earlystart_faq_items'] ?? []);
-            $enrollment_steps = self::normalize_enrollment_steps($public_meta['location_enrollment_steps'] ?? []);
+            $intake_steps = self::normalize_enrollment_steps($public_meta['location_enrollment_steps'] ?? []);
             $program_labels = self::parse_text_list(get_post_meta($post_id, 'location_special_programs', true));
             $amenities = self::parse_text_list($public_meta['_earlystart_amenities'] ?? []);
             $description = self::normalize_text_block(get_post_meta($post_id, 'location_description', true));
@@ -474,7 +474,7 @@ class Geo_Routes
                 ],
                 'hours' => $hours,
                 'short_description' => self::build_short_description($tagline, $description),
-                'policies_summary' => self::build_policies_summary($enrollment_steps, $public_meta, $hours),
+                'policies_summary' => self::build_policies_summary($intake_steps, $public_meta, $hours),
                 'service_area' => [
                     'cities' => self::parse_text_list($public_meta['seo_llm_service_area_cities'] ?? []),
                     'state' => $service_area_state,
@@ -506,7 +506,7 @@ class Geo_Routes
                     'video_duration' => self::nullable_string($public_meta['location_video_duration'] ?? ''),
                 ],
                 'admissions' => [
-                    'enrollment_steps' => $enrollment_steps,
+                    'intake_steps' => $intake_steps,
                 ],
                 'faqs' => $faqs,
                 'events' => self::sanitize_location_events(get_post_meta($post_id, 'location_events', true)),
@@ -851,10 +851,10 @@ class Geo_Routes
     {
         $items = [];
         if (self::normalize_bool($public_meta['_earlystart_caps_accepted'] ?? false)) {
-            $items[] = 'Accepts CAPS';
+            $items[] = 'Public funding support available';
         }
         if (self::normalize_bool($public_meta['_earlystart_ga_pre_k_accepted'] ?? false)) {
-            $items[] = 'Accepts Georgia Pre-K';
+            $items[] = 'Early intervention support available';
         }
         if (self::normalize_bool($public_meta['_earlystart_security_cameras'] ?? false)) {
             $items[] = 'Security cameras on site';
@@ -878,10 +878,10 @@ class Geo_Routes
     {
         $features = $amenities;
         if (self::normalize_bool($public_meta['_earlystart_caps_accepted'] ?? false)) {
-            $features[] = 'CAPS';
+            $features[] = 'PUBLIC FUNDING SUPPORT';
         }
         if (self::normalize_bool($public_meta['_earlystart_ga_pre_k_accepted'] ?? false)) {
-            $features[] = 'GA PRE-K';
+            $features[] = 'EARLY INTERVENTION SUPPORT';
         }
         if (self::normalize_bool($public_meta['_earlystart_security_cameras'] ?? false)) {
             $features[] = 'SECURITY CAMERAS';

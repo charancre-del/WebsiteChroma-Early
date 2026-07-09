@@ -1,9 +1,8 @@
 <?php
 /**
- * Curriculum Radar Chart
- * Template Part: Curriculum Chart
- * Interactive radar chart showing Prismpath™ curriculum focus by age
+ * Care model radar chart.
  *
+ * @package EarlyStart_Early_Start
  * @package EarlyStart_Early_Start
  */
 
@@ -18,12 +17,12 @@ $profile_list = array_values($profiles['profiles']);
 $first = $profile_list[0];
 ?>
 
-<section id="curriculum" class="py-20 bg-brand-cream border-y border-chroma-blue/10" data-section="curriculum">
+<section id="care-model" class="py-20 bg-brand-cream border-y border-chroma-blue/10" data-section="care-model">
         <div class="max-w-6xl mx-auto px-4 lg:px-6 grid lg:grid-cols-2 gap-12 items-center">
                 <div class="space-y-5">
-                        <span class="text-chroma-blue font-bold tracking-[0.2em] text-[11px] uppercase"><?php _e('The Prismpath™ Curriculum', 'earlystart-early-learning'); ?></span>
-                        <h2 class="font-serif text-3xl md:text-4xl font-bold text-brand-ink"><?php _e('A curriculum that shifts as your child grows', 'earlystart-early-learning'); ?></h2>
-                        <p class="text-brand-ink text-sm md:text-base"><?php _e('Our Prismpath™ framework balances five pillars – physical, emotional, social, academic, and creative development. The mix changes at each age so your child gets exactly what they need, when they need it.', 'earlystart-early-learning'); ?></p>
+                        <span class="text-chroma-blue font-bold tracking-[0.2em] text-[11px] uppercase"><?php _e('The Chroma Care Model', 'earlystart-early-learning'); ?></span>
+                        <h2 class="font-serif text-3xl md:text-4xl font-bold text-brand-ink"><?php _e('A care plan that adapts as your child grows', 'earlystart-early-learning'); ?></h2>
+                        <p class="text-brand-ink text-sm md:text-base"><?php _e('Our framework balances assessment, ABA, speech, OT, emotional regulation, social participation, and daily living goals so support matches each child\'s needs.', 'earlystart-early-learning'); ?></p>
                         <div class="flex flex-wrap gap-2 text-xs" data-curriculum-buttons>
                                 <?php foreach ($profiles['profiles'] as $index => $profile):
                                         $label = $profile['label'] ?? ucfirst($profile['key']);
@@ -59,7 +58,7 @@ $first = $profile_list[0];
                 <div>
                         <div class="bg-white rounded-[2.5rem] shadow-soft border border-chroma-blue/10 p-6">
                                 <div class="relative h-[340px] md:h-[380px]">
-                                        <canvas data-curriculum-chart aria-label="Curriculum focus radar chart"
+                                        <canvas data-curriculum-chart aria-label="Care model focus radar chart"
                                                 role="img"></canvas>
                                 </div>
                         </div>

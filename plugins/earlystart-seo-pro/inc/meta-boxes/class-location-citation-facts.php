@@ -82,11 +82,11 @@ class earlystart_Location_Citation_Facts_Meta_Box extends earlystart_Advanced_SE
                         </div>
                         <div style="margin-bottom: 10px;">
                             <label>Value</label>
-                            <input type="text" name="seo_llm_citation_facts[${factIndex}][value]" class="regular-text" placeholder="3-Star Quality Rated" />
+                            <input type="text" name="seo_llm_citation_facts[${factIndex}][value]" class="regular-text" placeholder="Pediatric therapy and assessment services" />
                         </div>
                         <div style="margin-bottom: 10px;">
                             <label>Source (optional)</label>
-                            <input type="text" name="seo_llm_citation_facts[${factIndex}][source]" class="regular-text" placeholder="Georgia DECAL" />
+                            <input type="text" name="seo_llm_citation_facts[${factIndex}][source]" class="regular-text" placeholder="Chroma Early Start clinical records" />
                         </div>
                         <div style="margin-bottom: 10px;">
                             <label>Context (optional)</label>
@@ -126,13 +126,13 @@ class earlystart_Location_Citation_Facts_Meta_Box extends earlystart_Advanced_SE
             <div style="margin-bottom: 10px;">
                 <label><?php _e('Value', 'chroma-excellence'); ?></label>
                 <input type="text" name="seo_llm_citation_facts[<?php echo $index; ?>][value]"
-                    value="<?php echo esc_attr($value); ?>" class="regular-text" placeholder="3-Star Quality Rated" />
+                    value="<?php echo esc_attr($value); ?>" class="regular-text" placeholder="Pediatric therapy and assessment services" />
             </div>
             <div style="margin-bottom: 10px;">
                 <label><?php _e('Source (optional)', 'chroma-excellence'); ?></label>
                 <input type="text" name="seo_llm_citation_facts[<?php echo $index; ?>][source]"
                     value="<?php echo esc_attr($source); ?>" class="regular-text"
-                    placeholder="Georgia DECAL Bright from the Start" />
+                    placeholder="Chroma Early Start clinical records" />
             </div>
             <div style="margin-bottom: 10px;">
                 <label><?php _e('Context (optional)', 'chroma-excellence'); ?></label>

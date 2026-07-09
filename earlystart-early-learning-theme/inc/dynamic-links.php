@@ -61,7 +61,9 @@ function earlystart_normalize_internal_url($url)
         '/for-families' => '/parents/',
         '/privacy-policy' => '/privacy/',
         '/terms-of-service' => '/terms/',
-        '/schedule-a-tour' => '/schedule-tour/',
+        '/schedule-a-tour' => '/consultation/',
+        '/schedule-tour' => '/consultation/',
+        '/curriculum' => '/clinical-approach/',
     );
 
     if (isset($legacy_map[$path_no_slash])) {
@@ -113,7 +115,7 @@ function earlystart_get_link_by_slug($slug, $post_type = 'page')
 /**
  * Get program page link by slug
  * 
- * @param string $slug Program slug (e.g., 'preschool', 'ga-pre-k', 'infant-care')
+ * @param string $slug Program slug (e.g., 'aba', 'speech', 'ot')
  * @return string The program permalink or fallback URL
  */
 function earlystart_get_program_link($slug)
@@ -238,8 +240,9 @@ function earlystart_get_page_link($name)
         'contact' => 'contact',
         'contact-us' => 'contact', // Map legacy to new
         'consultation' => 'consultation',
-        'schedule-a-tour' => 'schedule-tour',
-        'schedule-tour' => 'schedule-tour',
+        'schedule-a-tour' => 'consultation',
+        'schedule-tour' => 'consultation',
+        'request-consultation' => 'consultation',
         'locations' => 'locations',
         'location' => 'locations',
         'services' => 'programs',
@@ -257,14 +260,8 @@ function earlystart_get_page_link($name)
         'terms-of-use' => 'terms',
         'terms-of-service' => 'terms',
         'hipaa' => 'hipaa',
-        'preschool' => 'programs/preschool',
-        'ga-pre-k' => 'programs/ga-pre-k',
-        'infant-care' => 'programs/infant-care',
-        'toddler-care' => 'programs/toddler-care',
-        'pre-k-prep' => 'programs/pre-k-prep',
-        'after-school' => 'programs/after-school',
-        'parents-day-out' => 'programs/parents-day-out',
-        'camp-summer-winter-fall' => 'programs/camp-summer-winter-fall',
+        'clinical-approach' => 'clinical-approach',
+        'curriculum' => 'clinical-approach',
     );
 
     // Check if this is an aliased name
@@ -302,7 +299,9 @@ function earlystart_redirect_legacy_public_slugs()
         '/for-families' => 'parents',
         '/privacy-policy' => 'privacy',
         '/terms-of-service' => 'terms',
-        '/schedule-a-tour' => 'schedule-tour',
+        '/schedule-a-tour' => 'consultation',
+        '/schedule-tour' => 'consultation',
+        '/curriculum' => 'clinical-approach',
         '/locations/ellenwood-campus' => 'locations/ellenwood-2',
         '/locations/pleasanthill-campus' => 'locations/duluth',
         '/locations/tyrone-campus' => 'locations/tyrone',

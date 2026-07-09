@@ -284,9 +284,9 @@ while (have_posts()):
                                     </div>
                                     <div>
                                         <span
-                                            class="font-bold text-stone-800 block"><?php _e('School Readiness', 'earlystart-early-learning'); ?></span>
+                                            class="font-bold text-stone-800 block"><?php _e('Group Participation', 'earlystart-early-learning'); ?></span>
                                         <span
-                                            class="text-stone-700 text-sm"><?php _e('Developing the "learning to learn" behaviors needed for a classroom environment.', 'earlystart-early-learning'); ?></span>
+                                            class="text-stone-700 text-sm"><?php _e('Developing the attention, regulation, and participation skills needed for everyday routines.', 'earlystart-early-learning'); ?></span>
                                     </div>
                                 </li>
                                 <li class="flex items-start">
@@ -327,7 +327,7 @@ while (have_posts()):
                                 <?php _e('Documents Needed for Intake', 'earlystart-early-learning'); ?>
                             </h4>
                             <p class="text-sm text-stone-700 mb-4">
-                                <?php _e('Having these ready can speed up the enrollment process by 1-2 weeks.', 'earlystart-early-learning'); ?>
+                                <?php _e('Having these ready can speed up the intake process by 1-2 weeks.', 'earlystart-early-learning'); ?>
                             </p>
                             <ul class="space-y-3">
                                 <li class="flex items-center text-stone-700 text-sm">

@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Chroma Early Start Bridge Program
- * Focuses on School Readiness and the transition from 1:1 to small group learning.
+ * Focuses on supported transitions from 1:1 therapy to guided peer participation.
  *
  * @package EarlyStart_Early_Start
  */
@@ -24,7 +24,7 @@ while (have_posts()):
                         <div class="inline-flex items-center space-x-2 mb-6">
                             <span class="w-8 h-1 bg-blue-500 rounded-full"></span>
                             <span class="text-blue-600 font-bold tracking-widest text-sm uppercase">
-                                <?php _e('Signature Clinical Pre-K', 'earlystart-early-learning'); ?>
+                                <?php _e('Guided Peer Readiness', 'earlystart-early-learning'); ?>
                             </span>
                         </div>
                         <h1 class="text-5xl md:text-6xl font-bold text-stone-900 mb-6 leading-tight">
@@ -33,7 +33,7 @@ while (have_posts()):
                             </span>
                         </h1>
                         <p class="text-xl text-stone-700 mb-8 leading-relaxed">
-                            <?php _e('Preparing early learners for the transition from 1:1 therapy to a social classroom environment. Our "Bridge" simulates the preschool experience with clinical precision to ensure true school readiness.', 'earlystart-early-learning'); ?>
+                            <?php _e('Helping children move from 1:1 therapy into supported peer participation. Bridge uses clinical goals, small-group practice, and caregiver guidance to build communication, regulation, and confidence.', 'earlystart-early-learning'); ?>
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4">
                             <a href="<?php echo esc_url(earlystart_get_page_link('consultation')); ?>"
@@ -53,10 +53,10 @@ while (have_posts()):
                                     <i data-lucide="graduation-cap" class="w-16 h-16 text-blue-500"></i>
                                 </div>
                                 <h3 class="text-3xl font-bold text-stone-900 mb-2">
-                                    <?php _e('School Ready', 'earlystart-early-learning'); ?>
+                                    <?php _e('Peer Ready', 'earlystart-early-learning'); ?>
                                 </h3>
                                 <p class="text-stone-700">
-                                    <?php _e('The Ultimate Transition Pathway', 'earlystart-early-learning'); ?>
+                                    <?php _e('A Supported Clinical Pathway', 'earlystart-early-learning'); ?>
                                 </p>
                                 <div class="flex justify-center space-x-2 mt-6">
                                     <span class="w-3 h-3 rounded-full bg-blue-300"></span>
@@ -80,13 +80,13 @@ while (have_posts()):
                             <?php _e('Measuring Success Beyond the Clinic.', 'earlystart-early-learning'); ?>
                         </h2>
                         <p class="text-stone-300 text-lg leading-relaxed mb-8">
-                            <?php _e('Our results are measured by your child\'s confidence in the real world. We track 50+ readiness milestones to ensure the transition is seamless.', 'earlystart-early-learning'); ?>
+                            <?php _e('Our results are measured by your child\'s confidence in real routines. We track readiness milestones so transitions are thoughtful, measurable, and clinically supported.', 'earlystart-early-learning'); ?>
                         </p>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
                                 <span class="block text-3xl font-bold text-blue-500 mb-1">92%</span>
                                 <span
-                                    class="text-[10px] font-bold text-stone-200 uppercase tracking-widest"><?php _e('Placement Rate', 'earlystart-early-learning'); ?></span>
+                                    class="text-[10px] font-bold text-stone-200 uppercase tracking-widest"><?php _e('Goal Progress', 'earlystart-early-learning'); ?></span>
                             </div>
                             <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
                                 <span class="block text-3xl font-bold text-blue-400 mb-1">1:3</span>
@@ -102,7 +102,7 @@ while (have_posts()):
                             <h3 class="text-2xl font-bold mb-4"><?php _e('Clinical Guarantee', 'earlystart-early-learning'); ?>
                             </h3>
                             <p class="text-blue-50 leading-relaxed italic">
-                                <?php _e('"We don\'t graduate children based on age; we graduate them based on objective readiness data. This ensures they enter school with the skills to succeed, not just survive."', 'earlystart-early-learning'); ?>
+                                <?php _e('"We do not move children forward based on age alone. We use readiness data, clinical judgment, and family goals so each transition is supported with care."', 'earlystart-early-learning'); ?>
                             </p>
                         </div>
                     </div>
@@ -118,7 +118,7 @@ while (have_posts()):
                         <?php _e('Bridging the Gap', 'earlystart-early-learning'); ?>
                     </h2>
                     <p class="text-stone-700 max-w-2xl mx-auto text-lg italic leading-relaxed">
-                        <?php _e('Moving from a quiet clinic room to a noisy school classroom is a huge leap. Our Bridge Program provides the structured support to navigate that jump successfully.', 'earlystart-early-learning'); ?>
+                        <?php _e('Moving from focused 1:1 work into shared routines can be a big leap. Bridge gives children structured support for peer interaction, flexible transitions, and everyday participation.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
 
@@ -145,10 +145,10 @@ while (have_posts()):
                             <?php _e('Chroma Early Start Bridge', 'earlystart-early-learning'); ?>
                         </div>
                         <h3 class="text-2xl font-bold mb-4 mt-4">
-                            <?php _e('Classroom Skills', 'earlystart-early-learning'); ?>
+                            <?php _e('Group Participation', 'earlystart-early-learning'); ?>
                         </h3>
                         <p class="text-blue-50 text-sm mb-6 leading-relaxed">
-                            <?php _e('Small group dynamics (1:3 ratio). Mock classroom routines. Functional social play with peers.', 'earlystart-early-learning'); ?>
+                            <?php _e('Small group dynamics, supported peer play, flexible transitions, and functional communication practice.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
                     <!-- Graduation -->
@@ -162,7 +162,7 @@ while (have_posts()):
                             <?php _e('Social Integration', 'earlystart-early-learning'); ?>
                         </h3>
                         <p class="text-stone-700 text-sm mb-6 leading-relaxed">
-                            <?php _e('Successful transition to a traditional educational setting with minimal support.', 'earlystart-early-learning'); ?>
+                            <?php _e('Supported participation in community, home, and school routines with the right level of assistance.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
                 </div>
@@ -178,16 +178,16 @@ while (have_posts()):
                             <?php _e('Readiness Metrics', 'earlystart-early-learning'); ?>
                         </span>
                         <h2 class="text-4xl font-bold text-stone-900 mb-10">
-                            <?php _e('Clinical Pre-K Focus', 'earlystart-early-learning'); ?>
+                            <?php _e('Clinical Readiness Focus', 'earlystart-early-learning'); ?>
                         </h2>
 
                         <div class="space-y-8">
                             <?php
                             $focus_areas = array(
-                                array('icon' => 'users', 'title' => 'Circle Time Skills', 'desc' => 'Staying engaged during group instruction, following choral responses, and raising hands.'),
-                                array('icon' => 'clock', 'title' => 'Routine Navigation', 'desc' => 'Moving through the school day (recess, lunch, work) with independence and no distress.'),
-                                array('icon' => 'smile', 'title' => 'Peer Collaboration', 'desc' => 'Sharing classroom materials, initiating joint play, and solving social conflicts.'),
-                                array('icon' => 'check-circle', 'title' => 'Self-Help Agency', 'desc' => 'Mastering personal belongings, independence in hygiene, and following classroom rules.'),
+                                array('icon' => 'users', 'title' => 'Group Engagement', 'desc' => 'Staying connected during shared activities, following directions, and asking for help.'),
+                                array('icon' => 'clock', 'title' => 'Routine Navigation', 'desc' => 'Moving between activities with growing independence and fewer signs of distress.'),
+                                array('icon' => 'smile', 'title' => 'Peer Collaboration', 'desc' => 'Sharing materials, initiating play, and repairing social moments with support.'),
+                                array('icon' => 'check-circle', 'title' => 'Self-Help Agency', 'desc' => 'Building independence with belongings, hygiene routines, and daily expectations.'),
                             );
                             foreach ($focus_areas as $area): ?>
                                 <div class="flex items-start">
@@ -218,8 +218,8 @@ while (have_posts()):
                                 <?php
                                 $schedule = array(
                                     '9:00 AM' => 'Arrival & Unpack (Independence)',
-                                    '9:30 AM' => 'Morning Circle (Group Skills)',
-                                    '10:30 AM' => 'Literacy & Play Centers',
+                                    '9:30 AM' => 'Shared Group Activity',
+                                    '10:30 AM' => 'Communication & Play Practice',
                                     '11:30 AM' => 'Structured Social Recess',
                                     '12:30 PM' => 'Lunch & Departure Skills',
                                 );
@@ -246,7 +246,7 @@ while (have_posts()):
                 <h2 class="text-3xl font-bold mb-8"><?php _e('Is Your Child Ready for Bridge?', 'earlystart-early-learning'); ?>
                 </h2>
                 <p class="text-blue-50 mb-12 max-w-2xl mx-auto">
-                    <?php _e('The Bridge Program is typically for children ages 3-6 who have mastered foundational 1:1 skills and are preparing for a less restrictive environment.', 'earlystart-early-learning'); ?>
+                    <?php _e('The Bridge Program is typically for children ages 3-6 who have mastered foundational 1:1 skills and are ready for more peer-based practice.', 'earlystart-early-learning'); ?>
                 </p>
                 <div class="grid md:grid-cols-2 gap-6 text-left">
                     <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
@@ -280,7 +280,7 @@ while (have_posts()):
                     <?php _e('Is your child ready for the Bridge?', 'earlystart-early-learning'); ?>
                 </h2>
                 <p class="text-blue-50 text-xl mb-12 leading-relaxed max-w-2xl mx-auto">
-                    <?php _e('Our clinical directors offer specialized consultations to assess if the Bridge Program is the right next step for your child\'s educational journey.', 'earlystart-early-learning'); ?>
+                    <?php _e('Our clinical directors offer specialized consultations to assess whether Bridge is the right next step for your child\'s care journey.', 'earlystart-early-learning'); ?>
                 </p>
                 <a href="<?php echo esc_url(earlystart_get_page_link('consultation')); ?>"
                     class="bg-white text-blue-600 px-12 py-5 rounded-full font-bold text-lg hover:bg-blue-50 transition-all shadow-2xl inline-flex items-center gap-3">

@@ -109,7 +109,7 @@ while (have_posts()):
                         <?php _e('What is the Chroma Care Model?', 'earlystart-early-learning'); ?>
                     </h2>
                     <p class="text-xl text-stone-700">
-                        <?php _e('The Chroma Care Model is more than a curriculum; it\'s a philosophy of care that integrates modern ABA with developmental milestones and emotional security.', 'earlystart-early-learning'); ?>
+                        <?php _e('The Chroma Care Model is more than a framework; it is a philosophy of care that integrates modern ABA with developmental milestones and emotional security.', 'earlystart-early-learning'); ?>
                     </p>
                 </div>
 

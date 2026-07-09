@@ -41,24 +41,24 @@ function earlystart_header_customizer_settings($wp_customize)
 		),
 	));
 
-	// Book a Tour Button Text
+	// Consultation Button Text
 	$wp_customize->add_setting('earlystart_header_cta_text', array(
-		'default' => 'Book a Tour',
+		'default' => 'Request a Consultation',
 		'sanitize_callback' => 'sanitize_text_field',
 		'transport' => 'refresh',
 	));
 
 	$wp_customize->add_control('earlystart_header_cta_text', array(
-		'label' => __('Book a Tour Button Text', 'earlystart-early-learning'),
+		'label' => __('Consultation Button Text', 'earlystart-early-learning'),
 		'description' => __('Enter the text for the CTA button in the header.', 'earlystart-early-learning'),
 		'section' => 'earlystart_header_settings',
 		'type' => 'text',
 		'input_attrs' => array(
-			'placeholder' => 'Book a Tour',
+			'placeholder' => 'Request a Consultation',
 		),
 	));
 
-	// Book a Tour Button URL
+	// Consultation Button URL
 	$wp_customize->add_setting('earlystart_book_tour_url', array(
 		'default' => home_url('/contact#tour'),
 		'sanitize_callback' => 'esc_url_raw',
@@ -66,8 +66,8 @@ function earlystart_header_customizer_settings($wp_customize)
 	));
 
 	$wp_customize->add_control('earlystart_book_tour_url', array(
-		'label' => __('Book a Tour Button URL', 'earlystart-early-learning'),
-		'description' => __('Enter the URL for the "Book a Tour" button in the header.', 'earlystart-early-learning'),
+		'label' => __('Consultation Button URL', 'earlystart-early-learning'),
+		'description' => __('Enter the URL for the consultation button in the header.', 'earlystart-early-learning'),
 		'section' => 'earlystart_header_settings',
 		'type' => 'url',
 		'input_attrs' => array(

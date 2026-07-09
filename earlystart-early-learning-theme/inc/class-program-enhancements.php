@@ -305,13 +305,13 @@ class earlystart_Program_Enhancements
             return;
 
         $program_title = get_the_title();
-        $tour_url = earlystart_get_page_link('schedule-a-tour');
+        $tour_url = earlystart_get_page_link('consultation');
         ?>
         <div id="sticky-cta" class="sticky-cta-bar">
             <div class="sticky-cta-content">
-                <span class="sticky-cta-text">Ready to enroll in
+                <span class="sticky-cta-text">Ready to start care for
                     <strong><?php echo esc_html($program_title); ?></strong>?</span>
-                <a href="<?php echo esc_url($tour_url); ?>" class="sticky-cta-button">Schedule a Tour</a>
+                <a href="<?php echo esc_url($tour_url); ?>" class="sticky-cta-button">Request a Consultation</a>
             </div>
         </div>
         <style>
@@ -558,7 +558,7 @@ class earlystart_Program_Enhancements
         $post_id = $post_id ?: get_the_ID();
         $age_range = get_post_meta($post_id, 'program_age_range', true);
         $program_title = get_the_title($post_id);
-        $tour_url = earlystart_get_page_link('schedule-a-tour');
+        $tour_url = earlystart_get_page_link('consultation');
 
         // Parse age range (e.g., "3-4 years" or "12-24 months")
         preg_match('/(\d+)\s*-?\s*(\d+)?\s*(months?|years?)/i', $age_range, $matches);
@@ -597,7 +597,7 @@ class earlystart_Program_Enhancements
                 <p id="age-message" class="font-medium"></p>
                 <a id="age-cta" href="<?php echo esc_url($tour_url); ?>"
                     class="inline-block mt-3 px-6 py-2 bg-chroma-red text-white rounded-full text-sm font-bold hidden">
-                    Schedule a Tour →
+                    Request a Consultation &rarr;
                 </a>
                 <a id="age-alt" href="" class="inline-block mt-3 text-chroma-blue font-medium text-sm hidden">
                     Check another program →

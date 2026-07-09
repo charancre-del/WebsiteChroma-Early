@@ -183,7 +183,7 @@ class earlystart_Facts_Generator
                             </td>
                             <td>
                                 <strong>License:</strong> <?php echo esc_html($row['license_number']); ?><br>
-                                <strong>Quality Rated:</strong> <?php echo esc_html($row['quality_rated_level']); ?>
+                                <strong>Clinic Quality:</strong> <?php echo esc_html($row['quality_rated_level']); ?>
                             </td>
                             <td>
                                 <strong>Core:</strong> <?php echo esc_html($row['core_services']); ?><br>

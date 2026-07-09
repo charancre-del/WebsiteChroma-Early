@@ -100,7 +100,7 @@ while (have_posts()):
                             </li>
                         </ul>
                         <div class="mt-12 p-6 bg-white/5 rounded-2xl border border-white/10 italic text-stone-300 text-sm">
-                            <?php _e('Note: Consultations are for discovery; a full clinical assessment follows enrollment.', 'earlystart-early-learning'); ?>
+                            <?php _e('Note: Consultations are for discovery; a full clinical assessment follows intake when clinically appropriate.', 'earlystart-early-learning'); ?>
                         </div>
                     </div>
 

@@ -386,7 +386,7 @@ class earlystart_Combo_Page_Generator
         } else {
             // Default fallback logic
             $intro_text = sprintf(
-                __('Searching for the best %s near %s? At Chroma %s, we combine the safety you need with the enriching curriculum your child deserves.', 'chroma-excellence'),
+                __('Searching for %s near %s? At Chroma %s, we combine clinical support, family communication, and individualized care planning.', 'chroma-excellence'),
                 strtolower($program->post_title),
                 esc_html($neighborhoods[0] ?? $city_name),
                 esc_html($city_name)
@@ -406,19 +406,19 @@ class earlystart_Combo_Page_Generator
         $t_age_range = (string) $age_range;
         
         // Define translated strings - strictly using variables
-        $str_now_enrolling = sprintf(__('Now Enrolling: %s', 'chroma-excellence'), $t_age_range);
+        $str_now_enrolling = sprintf(__('Accepting New Families: %s', 'chroma-excellence'), $t_age_range);
         $str_premier_title = sprintf(__('Premier %s in', 'chroma-excellence'), $t_prog_title);
-        $str_schedule_visit = __('Schedule Visit', 'chroma-excellence');
+        $str_schedule_visit = __('Request a Consultation', 'chroma-excellence');
         $str_serving_families = sprintf(__('Serving %s Families', 'chroma-excellence'), $t_city_name);
         $str_why_choose = sprintf(__('Why %s Parents Choose Our %s', 'chroma-excellence'), $t_city_name, $t_prog_title);
         $str_understanding = sprintf(__('We understand that choosing care in %s is a big decision. Here is what sets our %s apart.', 'chroma-excellence'), $t_city_name, $t_prog_title);
-        $str_low_ratios = __('Low Ratios', 'chroma-excellence');
+        $str_low_ratios = __('Coordinated Support', 'chroma-excellence');
         $str_ratios_desc = sprintf(__('Our %s clinic keeps care intentionally coordinated so each child gets individualized support.', 'chroma-excellence'), $t_city_name);
         $str_curriculum_title = __('Chroma Care Model', 'chroma-excellence');
         
         // Handle ternary for age label safely
         $t_early_learners = __('early learners', 'chroma-excellence');
-        $str_curriculum_desc = sprintf(__('Specifically designed for %s, our curriculum balances play-based learning with school readiness.', 'chroma-excellence'), $t_age_range ?: $t_early_learners);
+        $str_curriculum_desc = sprintf(__('Specifically designed for %s, our clinical framework balances play-based care with measurable therapy goals.', 'chroma-excellence'), $t_age_range ?: $t_early_learners);
         
         $str_updates_title = __('Real-Time Updates', 'chroma-excellence');
         $str_updates_desc = sprintf(__('Parents in %s love our app. Get photos and updates throughout the workday straight to your phone.', 'chroma-excellence'), $t_city_name);
@@ -430,7 +430,7 @@ class earlystart_Combo_Page_Generator
         $str_locations_serving = sprintf(__('Chroma Locations Serving %s', 'chroma-excellence'), $t_city_name);
         $str_select_campus = __('Select the campus closest to your home or work.', 'chroma-excellence');
         $str_view_campus = __('View Clinic', 'chroma-excellence');
-        $str_visit_classroom = sprintf(__('Visit Our %s Clinic', 'chroma-excellence'), $t_city_name);
+        $str_visit_clinic = sprintf(__('Visit Our %s Clinic', 'chroma-excellence'), $t_city_name);
         $str_see_environment = sprintf(__('See the %s therapy environment in person. Meet our clinical team.', 'chroma-excellence'), $t_prog_title);
         $str_more_options = sprintf(__('More Pediatric Therapy Options in %s', 'chroma-excellence'), $t_city_name);
         
@@ -647,7 +647,7 @@ class earlystart_Combo_Page_Generator
                     <?php else: ?>
                         <!-- Default Form Logic (Fallback) -->
                         <div class="max-w-3xl mx-auto">
-                            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6"><?php echo esc_html($str_visit_classroom); ?></h2>
+                            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6"><?php echo esc_html($str_visit_clinic); ?></h2>
                             <p class="text-white/60 mb-10"><?php echo esc_html($str_see_environment); ?></p>
                             
                             <div class="bg-white p-8 rounded-[2rem] text-left shadow-2xl">
@@ -687,13 +687,13 @@ class earlystart_Combo_Page_Generator
                     <div class="space-y-4">
                         <details class="group bg-brand-cream rounded-2xl p-6 shadow-sm border border-brand-ink/5 cursor-pointer">
                             <summary class="flex items-center justify-between font-bold text-brand-ink list-none">
-                                <span>What are the tuition rates for <?php echo esc_html($program->post_title); ?> in <?php echo esc_html($city_name); ?>?</span>
+                                <span>What are the service costs for <?php echo esc_html($program->post_title); ?> in <?php echo esc_html($city_name); ?>?</span>
                                 <span class="text-chroma-blue group-open:rotate-180 transition-transform">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 </span>
                             </summary>
                             <p class="mt-3 text-sm text-brand-ink/70 leading-relaxed">
-                                Tuition varies based on the specific program and schedule (full-time vs. part-time). Please schedule a tour to receive a detailed tuition sheet for our <?php echo esc_html($city_name); ?> campus.
+                                Service costs vary based on the specific program, clinical recommendations, schedule, insurance coverage, and authorization requirements. Please contact our intake team for next steps near <?php echo esc_html($city_name); ?>.
                             </p>
                         </details>
                         

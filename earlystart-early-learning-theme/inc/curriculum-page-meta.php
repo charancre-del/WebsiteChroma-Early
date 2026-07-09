@@ -343,7 +343,7 @@ function earlystart_curriculum_environment_meta_box_render( $post ) {
 			<td>
 				<input type="text" id="curriculum_env_title" name="curriculum_env_title"
 					   value="<?php echo esc_attr( $env_title ); ?>"
-					   class="large-text" placeholder="e.g., The classroom is the 'Third Teacher.'" />
+					   class="large-text" placeholder="e.g., The environment supports regulation." />
 				<br>
 				<input type="text" id="_earlystart_es_curriculum_env_title" name="_earlystart_es_curriculum_env_title"
 					   value="<?php echo esc_attr( get_post_meta( $post->ID, '_earlystart_es_curriculum_env_title', true ) ); ?>"
@@ -738,16 +738,16 @@ function earlystart_seed_curriculum_page_defaults( $post_id ) {
 	}
 
 	$defaults = array(
-		'curriculum_hero_badge'       => 'The Early Start Difference',
+		'curriculum_hero_badge'       => 'The Chroma Care Model',
 		'curriculum_hero_title'       => 'Scientific rigor. <br><span class="italic text-chroma-green">Joyful delivery.</span>',
-		'curriculum_hero_description' => 'Our proprietary Prismpath™ curriculum isn\'t just about ABCs. It\'s a comprehensive framework designed to build the critical thinking, emotional intelligence, and social skills needed for the 21st century.',
+		'curriculum_hero_description' => 'Our approach blends structured intervention, family partnership, and play-based learning so children can build meaningful skills in a supportive environment.',
 
-		'curriculum_framework_title'       => 'The Prismpath™ Framework',
-		'curriculum_framework_description' => 'Just as a prism refracts light into a spectrum, our curriculum refracts "play" into five distinct pillars of development. Every activity in our classrooms targets one or more of these areas.',
+		'curriculum_framework_title'       => 'The Chroma Framework',
+		'curriculum_framework_description' => 'Every activity is designed to support more than one developmental domain at a time, aligning assessment, therapy goals, and family communication.',
 
 		'curriculum_pillar_physical_icon'  => 'fa-solid fa-person-running',
 		'curriculum_pillar_physical_title' => 'Physical',
-		'curriculum_pillar_physical_desc'  => 'Gross motor coordination, fine motor grip strength, sensory integration, and nutritional health.',
+		'curriculum_pillar_physical_desc'  => 'Gross motor coordination, fine motor grip strength, sensory integration, and functional independence.',
 
 		'curriculum_pillar_emotional_icon' => 'fa-solid fa-face-smile',
 		'curriculum_pillar_emotional_title'=> 'Emotional',
@@ -755,71 +755,70 @@ function earlystart_seed_curriculum_page_defaults( $post_id ) {
 
 		'curriculum_pillar_social_icon'    => 'fa-solid fa-users',
 		'curriculum_pillar_social_title'   => 'Social',
-		'curriculum_pillar_social_desc'    => 'Conflict resolution, collaboration, empathy, communication, and understanding community roles.',
+		'curriculum_pillar_social_desc'    => 'Collaboration, empathy, communication, and understanding shared routines and community roles.',
 
 		'curriculum_pillar_academic_icon'  => 'fa-solid fa-brain',
 		'curriculum_pillar_academic_title' => 'Academic',
-		'curriculum_pillar_academic_desc'  => 'Early literacy, logic & numeracy, scientific inquiry, critical thinking, and language acquisition.',
+		'curriculum_pillar_academic_desc'  => 'Attention, problem solving, early communication foundations, and readiness for daily learning routines.',
 
 		'curriculum_pillar_creative_icon'  => 'fa-solid fa-palette',
 		'curriculum_pillar_creative_title' => 'Creative',
-		'curriculum_pillar_creative_desc'  => 'Divergent thinking, artistic expression, music & movement, and dramatic/imaginative play.',
+		'curriculum_pillar_creative_desc'  => 'Divergent thinking, artistic expression, music and movement, and imaginative play.',
 
-		'curriculum_timeline_badge'       => 'Learning Journey',
-		'curriculum_timeline_title'       => 'How learning evolves.',
-		'curriculum_timeline_description' => 'Our curriculum is not static. It shifts and matures alongside your child, moving from sensory-based discovery to logic-based inquiry.',
+		'curriculum_timeline_badge'       => 'Care Journey',
+		'curriculum_timeline_title'       => 'How development unfolds.',
+		'curriculum_timeline_description' => 'Our support shifts with each stage of development, moving from sensory-based discovery to more complex language, regulation, and collaboration.',
 		'curriculum_timeline_image'       => 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80&fm=webp',
 
 		'curriculum_stage_foundation_title' => 'Foundation (0-18 Months)',
-		'curriculum_stage_foundation_desc'  => 'Focus on security and senses. Learning happens through touch, sound, and responsive caregiving.',
+		'curriculum_stage_foundation_desc'  => 'Focus on safety, connection, and sensory exploration through responsive caregiving.',
 
 		'curriculum_stage_discovery_title'  => 'Discovery (18 Months - 3 Years)',
-		'curriculum_stage_discovery_desc'   => 'Focus on autonomy and language. "I can do it!" is the theme as we support potty training and early speech.',
+		'curriculum_stage_discovery_desc'   => 'Focus on autonomy, language, imitation, and early routines that build confidence.',
 
 		'curriculum_stage_readiness_title'  => 'Readiness (3 Years - 5 Years)',
-		'curriculum_stage_readiness_desc'   => 'Focus on executive function and logic. Multi-step projects, early writing, and complex social play prepare for Kindergarten.',
+		'curriculum_stage_readiness_desc'   => 'Focus on executive function, communication, and group participation that support daily routines.',
 
 		'curriculum_env_badge'             => 'Environment',
-		'curriculum_env_title'             => 'The classroom is the "Third Teacher."',
-		'curriculum_env_description'       => 'We believe the environment itself acts as a teacher, guiding learning alongside our educators. Our classrooms are intentionally designed zones that invite exploration, curiosity, and independence without needing constant adult direction.',
+		'curriculum_env_title'             => 'The environment supports regulation.',
+		'curriculum_env_description'       => 'Our spaces are intentionally designed to support exploration, regulation, and independence without requiring constant adult prompting.',
 
-		'curriculum_zone_construction_emoji' => '🧱',
+		'curriculum_zone_construction_emoji' => 'Blocks',
 		'curriculum_zone_construction_title' => 'Construction Zone',
-		'curriculum_zone_construction_desc'  => 'Blocks and engineering tools to teach balance, gravity, and spatial reasoning.',
+		'curriculum_zone_construction_desc'  => 'Hands-on building tools help children learn balance, planning, and spatial reasoning.',
 
-		'curriculum_zone_atelier_emoji'      => '🎨',
+		'curriculum_zone_atelier_emoji'      => 'Art',
 		'curriculum_zone_atelier_title'      => 'Atelier (Art Studio)',
-		'curriculum_zone_atelier_desc'       => 'Open access to paints, clays, and loose parts for unrestricted creative expression.',
+		'curriculum_zone_atelier_desc'       => 'Open access to creative materials invites experimentation and unrestricted expression.',
 
-		'curriculum_zone_literacy_emoji'     => '📖',
+		'curriculum_zone_literacy_emoji'     => 'Books',
 		'curriculum_zone_literacy_title'     => 'Literacy Nook',
-		'curriculum_zone_literacy_desc'      => 'Cozy, soft spaces with diverse books to foster a lifelong love of reading.',
+		'curriculum_zone_literacy_desc'      => 'Comfortable reading spaces help children build attention, language, and a lifelong relationship with books.',
 
 		'curriculum_milestones_title'           => 'Measuring Milestones',
-		'curriculum_milestones_subtitle'        => 'We don\'t just watch them grow; we measure it to ensure no child falls behind.',
+		'curriculum_milestones_subtitle'        => 'We track progress consistently so treatment and teaching decisions stay grounded in real progress.',
 
 		'curriculum_milestone_tracking_icon'    => 'fa-solid fa-chart-line',
 		'curriculum_milestone_tracking_title'   => 'Daily Progress Tracking',
-		'curriculum_milestone_tracking_desc'    => 'We use a digital portfolio system to capture daily moments of learning. From an infant\'s first roll to a preschooler\'s first written letter, these micro-wins are documented and shared with you in real-time.',
-		'curriculum_milestone_tracking_bullet1' => 'Photo/Video Evidence',
-		'curriculum_milestone_tracking_bullet2' => 'Daily Activity Reports',
+		'curriculum_milestone_tracking_desc'    => 'We document meaningful moments of learning and use those observations to guide instruction and family communication.',
+		'curriculum_milestone_tracking_bullet1' => 'Progress snapshots',
+		'curriculum_milestone_tracking_bullet2' => 'Daily family updates',
 
 		'curriculum_milestone_screenings_icon'    => 'fa-solid fa-magnifying-glass-chart',
 		'curriculum_milestone_screenings_title'   => 'Developmental Screenings',
-		'curriculum_milestone_screenings_desc'    => 'We utilize the <strong>ASQ-3 (Ages & Stages Questionnaires)</strong> standard to conduct formal screenings at key age intervals. This helps us identify strengths and potential areas for early intervention support proactively.',
-		'curriculum_milestone_screenings_bullet1' => 'Conducted at 4, 8, 12, 18, 24 Months',
-		'curriculum_milestone_screenings_bullet2' => 'Partnership with Specialists',
+		'curriculum_milestone_screenings_desc'    => 'Regular screenings help identify strengths early and highlight where extra support may be needed.',
+		'curriculum_milestone_screenings_bullet1' => 'Routine checkpoints',
+		'curriculum_milestone_screenings_bullet2' => 'Specialist referrals when needed',
 
 		'curriculum_milestone_assessments_icon'    => 'fa-solid fa-file-signature',
 		'curriculum_milestone_assessments_title'   => 'Formal Assessments',
-		'curriculum_milestone_assessments_desc'    => 'Twice a year (Fall and Spring), teachers conduct comprehensive assessments aligning with Georgia Early Learning and Development Standards (GELDS). These form the basis for our detailed Parent-Teacher Conferences.',
-		'curriculum_milestone_assessments_bullet1' => 'Biannual Conferences',
-		'curriculum_milestone_assessments_bullet2' => 'Individualized Lesson Planning',
+		'curriculum_milestone_assessments_desc'    => 'Structured assessments support individualized planning and informed parent conversations throughout the year.',
+		'curriculum_milestone_assessments_bullet1' => 'Scheduled reviews',
+		'curriculum_milestone_assessments_bullet2' => 'Individualized planning',
 
-		'curriculum_cta_title'       => 'See the curriculum in action.',
-		'curriculum_cta_description' => 'Schedule a tour to see our "Third Teacher" classrooms and meet the educators bringing Prismpath™ to life.',
+		'curriculum_cta_title'       => 'See the care model in action.',
+		'curriculum_cta_description' => 'Request a consultation to see how our spaces, routines, and team bring the Chroma care model to life.',
 	);
-
 	foreach ( $defaults as $meta_key => $default_value ) {
 		update_post_meta( $post_id, $meta_key, $default_value );
 	}

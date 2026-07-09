@@ -188,7 +188,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                     class="group bg-stone-50 rounded-2xl p-6 border border-stone-100 open:bg-white open:shadow-xl transition-all">
                     <summary
                         class="flex items-center justify-between font-bold text-stone-900 list-none cursor-pointer">
-                        <span><?php printf(__('Do you offer GA Pre-K in %s?', 'earlystart-early-learning'), esc_html($city)); ?></span>
+                        <span><?php printf(__('Which therapy and assessment services are available near %s?', 'earlystart-early-learning'), esc_html($city)); ?></span>
                         <i data-lucide="chevron-down"
                             class="w-5 h-5 text-stone-300 group-open:rotate-180 transition-transform"></i>
                     </summary>

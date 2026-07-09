@@ -34,7 +34,7 @@ $locations_clinic_heading = $locations_meta('locations_clinic_heading', __('Clin
 $locations_clinic_text = $locations_meta('locations_clinic_text', __('Our flagship centers for intensive therapy and early intervention.', 'earlystart-early-learning'));
 $locations_partner_eyebrow = $locations_meta('locations_partner_eyebrow', __('Integrated Therapy', 'earlystart-early-learning'));
 $locations_partner_heading = $locations_meta('locations_partner_zone_heading', __('Partner Locations', 'earlystart-early-learning'));
-$locations_partner_text = $locations_meta('locations_partner_zone_text', __('We partner with elite schools to provide on-site therapy. No more driving between school and clinic—we come to the classroom.', 'earlystart-early-learning'));
+$locations_partner_text = $locations_meta('locations_partner_zone_text', __('We partner with schools and community settings to provide on-site therapy. No more driving between every appointment; our clinical team can support care where children already spend time.', 'earlystart-early-learning'));
 $locations_inhome_heading = $locations_meta('locations_inhome_heading', __('In-Home Therapy Zones', 'earlystart-early-learning'));
 $locations_inhome_text = $locations_meta('locations_inhome_text', __('For families who prefer therapy in their natural environment, we deploy clinical teams to homes across Metro Atlanta.', 'earlystart-early-learning'));
 $locations_zip_heading = $locations_meta('locations_zip_heading', __('Check Your Address', 'earlystart-early-learning'));
@@ -193,7 +193,7 @@ $partner_query = new WP_Query(array(
 									</div>
 									<a href="<?php echo esc_url($clinic_tour_url); ?>"
 										class="block w-full text-center bg-stone-900 text-white py-4 rounded-xl font-bold hover:bg-rose-600 transition-colors">
-										<?php _e('Schedule a Tour', 'earlystart-early-learning'); ?>
+										<?php _e('Request a Consultation', 'earlystart-early-learning'); ?>
 									</a>
 								</div>
 							</div>

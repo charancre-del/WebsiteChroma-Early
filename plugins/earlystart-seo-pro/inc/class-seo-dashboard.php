@@ -4687,7 +4687,7 @@ class earlystart_SEO_Dashboard
                         <td>
                             <label>
                                 <input type="checkbox" name="earlystart_seo_show_credential_badges" value="1" <?php checked(get_option('earlystart_seo_show_credential_badges', 1)); ?>>
-                                Display DECAL and Quality Rated badges on location pages.
+                                Display clinic service and assessment badges on location pages.
                             </label>
                         </td>
                     </tr>

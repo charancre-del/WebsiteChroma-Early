@@ -57,17 +57,17 @@ class earlystart_Location_Advanced_Schema
             </label>
             <input type="text" id="earlystart_license_number" name="earlystart_license_number" 
                    value="<?php echo esc_attr($license); ?>" class="widefat"
-                   placeholder="e.g., DECAL-123456">
-            <p class="description">Georgia DECAL license number.</p>
+                   placeholder="Internal credential ID">
+            <p class="description">Internal reference only. This is not emitted in public schema.</p>
         </div>
         
         <div style="margin-bottom: 15px;">
             <label for="location_quality_rated" style="display: block; margin-bottom: 5px; font-weight: bold;">
-                ⭐ Quality Rated Level
+                Clinic Quality Status
             </label>
             <input type="text" id="location_quality_rated" name="location_quality_rated" 
                    value="<?php echo esc_attr($quality); ?>" class="widefat"
-                   placeholder="e.g., Licensed, Accredited, Quality Rated">
+                   placeholder="e.g., Verified, Accredited, Internal Review Complete">
             <p class="description">Optional clinic credential or quality status.</p>
         </div>
 

@@ -136,15 +136,9 @@ class earlystart_Fallback_Resolver
         // Build from existing data
         $name = get_post_field('post_title', $location_id);
         $city = get_post_meta($location_id, 'location_city', true);
-        $quality = get_post_meta($location_id, 'location_quality_rated', true);
         $ages = get_post_meta($location_id, 'location_ages_served', true);
 
         $parts = [$name, 'is'];
-
-        if ($quality) {
-            $stars = is_numeric($quality) ? $quality . '-Star' : '';
-            $parts[] = $stars . ' Quality Rated';
-        }
 
         $parts[] = 'pediatric therapy center';
 
@@ -326,11 +320,6 @@ class earlystart_Fallback_Resolver
             $best_for[] = "Families needing consistent therapy scheduling";
         }
 
-        $quality = get_post_meta($location_id, 'location_quality_rated', true);
-        if ($quality) {
-            $best_for[] = "Families seeking a licensed pediatric care setting";
-        }
-
         if (!empty($best_for)) {
             $factors['bestFor'] = $best_for;
         }
@@ -348,24 +337,13 @@ class earlystart_Fallback_Resolver
     {
         $facts = [];
 
-        // Quality rating fact
-        $quality = get_post_meta($location_id, 'location_quality_rated', true);
-        if ($quality) {
-            $facts[] = [
-                'label' => 'State Quality Rating',
-                'value' => 'Quality Rated',
-                'source' => "Georgia DECAL Bright from the Start",
-                'verifiedDate' => date('Y-m-d'),
-            ];
-        }
-
         // Capacity fact
         $capacity = get_post_meta($location_id, 'location_capacity', true);
         if ($capacity) {
             $facts[] = [
-                'label' => 'Licensed Capacity',
+                'label' => 'Care Capacity',
                 'value' => $capacity . ' children',
-                'context' => 'Maximum enrollment capacity',
+                'context' => 'Maximum supported clinical capacity',
             ];
         }
 

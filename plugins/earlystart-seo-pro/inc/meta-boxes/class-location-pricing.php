@@ -1,7 +1,7 @@
 <?php
 /**
  * Offers & Pricing Meta Box
- * Handles tuition ranges and special offers
+ * Handles service cost ranges and special offers
  *
  * @package earlystart_Excellence
  * @since 1.0.0

@@ -309,9 +309,9 @@ class earlystart_AMP_Blog
         </div>
         
         <div class="amp-cta">
-            <h3>Schedule a Tour Today</h3>
-            <p>See our programs in action and meet our clinical team.</p>
-            <a href="<?php echo esc_url(earlystart_get_page_link('schedule-a-tour')); ?>">Book Your Visit</a>
+            <h3>Request a Consultation Today</h3>
+            <p>Talk with our intake team about assessment, ABA, speech, OT, and next steps.</p>
+            <a href="<?php echo esc_url(earlystart_get_page_link('consultation')); ?>">Start Intake</a>
         </div>
     </article>
     

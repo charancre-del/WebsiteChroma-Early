@@ -38,7 +38,6 @@ class earlystart_Schema_Types
             'JobPosting' => self::get_job_posting_schema(),
             'HowTo' => self::get_howto_schema(),
             'VideoObject' => self::get_video_object_schema(),
-            'ChildCare' => self::get_childcare_schema(),
             'Course' => self::get_course_schema(),
             'Menu' => self::get_menu_schema(),
             'ImageGallery' => self::get_image_gallery_schema(),
@@ -47,16 +46,6 @@ class earlystart_Schema_Types
             'CollectionPage' => self::get_collection_page_schema(),
             'Speakable' => self::get_speakable_schema(),
         ];
-    }
-
-    /**
-     * ChildCare (legacy compatibility, inherits from LocalBusiness)
-     */
-    private static function get_childcare_schema()
-    {
-        $schema = self::get_local_business_schema();
-        $schema['label'] = 'Deprecated Legacy Business Type';
-        return $schema;
     }
 
     /**
@@ -961,12 +950,12 @@ class earlystart_Schema_Types
     {
         return [
             'label' => 'Image Gallery',
-            'description' => 'Collection of images (classrooms, facilities)',
+            'description' => 'Collection of images (clinics, therapy spaces, facilities)',
             'fields' => [
                 'name' => [
                     'type' => 'text',
                     'label' => 'Gallery Name',
-                    'description' => 'e.g., Our Classrooms'
+                    'description' => 'e.g., Our Therapy Spaces'
                 ],
                 'description' => [
                     'type' => 'textarea',

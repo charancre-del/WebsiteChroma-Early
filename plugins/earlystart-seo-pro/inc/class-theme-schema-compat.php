@@ -319,12 +319,12 @@ if (!function_exists('earlystart_location_schema_pro')) {
         // Amenities & Credentials
         $schema['amenityFeature'] = array();
 
-        $license_num = get_post_meta($location_id, '_earlystart_license_number', true);
+        $license_num = '';
         if ($license_num) {
             $schema['hasCredential'] = array(
                 '@type' => 'EducationalOccupationalCredential',
                 'credentialCategory' => 'license',
-                'name' => (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) ? 'Licencia Georgia DECAL' : 'Georgia DECAL License',
+                'name' => (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) ? 'Credencial interna de clinica' : 'Internal Clinic Credential',
                 'identifier' => array(
                     '@type' => 'PropertyValue',
                     'propertyID' => (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) ? 'Número de Licencia' : 'License Number',
@@ -344,10 +344,10 @@ if (!function_exists('earlystart_location_schema_pro')) {
             }
         }
 
-        if ($quality_rated) {
+        if (false && $quality_rated) {
             $schema['amenityFeature'][] = array(
                 '@type' => 'LocationFeatureSpecification',
-                'name' => (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) ? 'Calificación de Calidad' : 'Quality Rated',
+                'name' => (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) ? 'Calificación de Calidad' : 'Clinic Quality Reviewed',
                 'value' => true
             );
         }
@@ -612,40 +612,19 @@ if (!function_exists('earlystart_city_faq_schema_output')) {
                 'answer' => "Yes. Families in $city can access ABA therapy through nearby Chroma Early Start clinics when it is clinically appropriate."
             ),
             array(
-                'question' => "Do you provide transportation from $city schools?",
-                'answer' => "We provide safe bus transportation from most major elementary schools in the $county School District. Check the specific campus page for a full list."
+                'question' => "Can families in $city access nearby therapy services?",
+                'answer' => "Our intake team can help families in $city identify nearby clinics, service availability, and next steps."
             ),
             array(
                 'question' => "What ages do you accept at your $city centers?",
                 'answer' => "We serve children through pediatric therapy programs based on age, developmental needs, goals, and service availability."
             ),
             array(
-                'question' => "How do I enroll my child in $city?",
-                'answer' => "The best way to start is by scheduling a tour at your preferred location. You can book online or call us directly. We'll walk you through the enrollment process and answer all your questions."
+                'question' => "How do I start care for my child in $city?",
+                'answer' => "The best way to start is to contact our intake team. We will review your needs, scheduling preferences, and nearby clinic options."
             ),
         );
-
-        // Switch to Spanish if active
-        if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) {
-            $faq_items = array(
-                array(
-                    'question' => "¿Ofrecen GA Lottery Pre-K en $city?",
-                    'answer' => "¡Sí! Nuestras ubicaciones que sirven a $city participan en el programa Georgia Lottery Pre-K. Es gratuito para todos los niños de 4 años que viven en Georgia."
-                ),
-                array(
-                    'question' => "¿Proporcionan transporte desde las escuelas de $city?",
-                    'answer' => "Proporcionamos transporte seguro en autobús desde la mayoría de las principales escuelas primarias en el Distrito Escolar de $county. Consulte la página del campus específico para obtener una lista completa."
-                ),
-                array(
-                    'question' => "¿Qué edades aceptan en sus centros de $city?",
-                    'answer' => "Servimos a niños desde 6 semanas de edad (Cuidado de Bebés) hasta 12 años (Después de la Escuela). También ofrecemos una opción de Preparación para Pre-K en ubicaciones seleccionadas."
-                ),
-                array(
-                    'question' => "¿Cómo inscribo a mi hijo en $city?",
-                    'answer' => "La mejor manera de comenzar es programando un recorrido en su ubicación preferida. Puede reservar en línea o llamarnos directamente. Lo guiaremos a través del proceso de inscripción y responderemos todas sus preguntas."
-                ),
-            );
-        }
+        // Spanish output is handled by the multilingual manager sanitizer.
 
         $faq_items = array(
             array(

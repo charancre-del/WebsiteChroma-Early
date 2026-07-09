@@ -146,10 +146,10 @@ function earlystart_parents_resources_meta_box_render($post)
 
     $resources = array(
         'procare' => 'Family App (Procare)',
-        'tuition' => 'Pay Tuition',
+        'tuition' => 'Billing Support',
         'handbook' => 'Parent Handbook',
-        'enrollment' => 'Enrollment Forms',
-        'prekga' => 'Pre-K GA',
+        'enrollment' => 'Intake Forms',
+        'prekga' => 'Assessment Support',
         'waitlist' => 'Join Waitlist',
     );
     ?>
@@ -686,7 +686,7 @@ function earlystart_save_parents_page_meta($post_id)
             'parents_resource_procare_desc' => 'sanitize_textarea_field',
             '_earlystart_es_parents_resource_procare_desc' => 'sanitize_textarea_field',
             'parents_resource_procare_url' => 'esc_url_raw',
-            // Tuition
+            // Billing Support
             'parents_resource_tuition_icon' => 'sanitize_text_field',
             'parents_resource_tuition_title' => 'sanitize_text_field',
             '_earlystart_es_parents_resource_tuition_title' => 'sanitize_text_field',
@@ -700,14 +700,14 @@ function earlystart_save_parents_page_meta($post_id)
             'parents_resource_handbook_desc' => 'sanitize_textarea_field',
             '_earlystart_es_parents_resource_handbook_desc' => 'sanitize_textarea_field',
             'parents_resource_handbook_url' => 'esc_url_raw',
-            // Enrollment
+            // Intake
             'parents_resource_enrollment_icon' => 'sanitize_text_field',
             'parents_resource_enrollment_title' => 'sanitize_text_field',
             '_earlystart_es_parents_resource_enrollment_title' => 'sanitize_text_field',
             'parents_resource_enrollment_desc' => 'sanitize_textarea_field',
             '_earlystart_es_parents_resource_enrollment_desc' => 'sanitize_textarea_field',
             'parents_resource_enrollment_url' => 'esc_url_raw',
-            // Pre-K GA
+            // Assessment Support
             'parents_resource_prekga_icon' => 'sanitize_text_field',
             'parents_resource_prekga_title' => 'sanitize_text_field',
             '_earlystart_es_parents_resource_prekga_title' => 'sanitize_text_field',
@@ -884,8 +884,8 @@ function earlystart_seed_parents_page_defaults($post_id)
         'parents_event1_desc' => 'Every season brings a reason to gather. From our Fall Festival and Winter "Cookies & Cocoa" to our Spring Art Show and Summer Splash Days, we create memories for the whole family.',
 
         'parents_event2_icon' => 'fa-solid fa-star',
-        'parents_event2_title' => 'Pre-K Graduation',
-        'parents_event2_desc' => 'A cap-and-gown ceremony celebrating our 4 and 5-year-olds as they transition to Kindergarten. It\'s the highlight of our academic year!',
+        'parents_event2_title' => 'Milestone Celebration',
+        'parents_event2_desc' => 'A family celebration recognizing meaningful communication, regulation, independence, and participation progress.',
 
         'parents_event3_icon' => 'fa-solid fa-handshake',
         'parents_event3_title' => 'Parent-Teacher Conferences',
@@ -943,7 +943,7 @@ function earlystart_seed_parents_page_defaults($post_id)
 
         // Referral Banner
         'parents_referral_title' => 'Love the Early Start family?',
-        'parents_referral_description' => 'Refer a friend and receive a <strong>$100 tuition credit</strong> when they enroll.',
+        'parents_referral_description' => 'Refer a family and help them connect with intake, assessment, and therapy support.',
         'parents_referral_button_text' => 'Refer a Friend',
         'parents_referral_button_url' => 'mailto:director@chromaearlystart.com?subject=Parent%20Referral',
     );

@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 function earlystart_normalize_launch_content_value($value)
 {
     if (is_string($value)) {
-        return earlystart_normalize_legacy_branding_text($value);
+        return earlystart_normalize_childcare_era_content_text(earlystart_normalize_legacy_branding_text($value));
     }
 
     if (is_array($value)) {
@@ -28,6 +28,186 @@ function earlystart_normalize_launch_content_value($value)
     }
 
     return $value;
+}
+
+/**
+ * Normalize stale childcare-era public wording.
+ *
+ * This is intentionally conservative and phrase-based. It removes the old
+ * childcare/preschool/tour identity while preserving valid pediatric therapy
+ * language such as children, families, early intervention, and school support.
+ *
+ * @param string $text Stored text.
+ * @return string
+ */
+function earlystart_normalize_childcare_era_content_text($text)
+{
+    if (!is_string($text) || $text === '') {
+        return $text;
+    }
+
+    $replacements = array(
+        'Austim Diagnosis' => 'Autism Assessment',
+        'Austim diagnosis' => 'autism assessment',
+        'Austim' => 'Autism',
+        'autism diagnosis' => 'autism assessment',
+        'Autism Diagnosis' => 'Autism Assessment',
+        'behavioral diagnosis' => 'behavioral assessment',
+        'Behavioral Diagnosis' => 'Behavioral Assessment',
+        'behavioral health' => 'behavioral assessment',
+        'Behavioral Health' => 'Behavioral Assessment',
+        'adhd diagnosis' => 'ADHD assessment',
+        'ADHD diagnosis' => 'ADHD assessment',
+        'ADHD Diagnosis' => 'ADHD Assessment',
+        'Chroma Early Learning Academy' => 'Chroma Early Start',
+        'Chroma Early Learning' => 'Chroma Early Start',
+        'Early Learning Academy' => 'Chroma Early Start',
+        'Early Start Early Learning' => 'Chroma Early Start',
+        'Early Start Preschool' => 'Chroma Early Start',
+        'Licensed Childcare Provider' => 'Pediatric Therapy Provider',
+        'Licensed Childcare Center' => 'Pediatric Therapy Clinic',
+        'Licensed Childcare' => 'Pediatric Therapy',
+        'Licensed Child Care Center' => 'Pediatric Therapy Clinic',
+        'Licensed Child Care' => 'Pediatric Therapy',
+        'Childcare Centers' => 'Pediatric Therapy Clinics',
+        'Childcare Center' => 'Pediatric Therapy Clinic',
+        'childcare centers' => 'pediatric therapy clinics',
+        'childcare center' => 'pediatric therapy clinic',
+        'childcare provider' => 'pediatric therapy provider',
+        'childcare' => 'pediatric therapy',
+        'Childcare' => 'Pediatric Therapy',
+        'child care center' => 'pediatric therapy clinic',
+        'Child Care Center' => 'Pediatric Therapy Clinic',
+        'child care' => 'pediatric care',
+        'Child Care' => 'Pediatric Care',
+        'daycare' => 'pediatric therapy',
+        'Daycare' => 'Pediatric Therapy',
+        'preschoolers' => 'young children',
+        'Preschoolers' => 'Young Children',
+        'preschooler' => 'young child',
+        'Preschooler' => 'Young Child',
+        'preschool' => 'early childhood therapy',
+        'Preschool' => 'Early Childhood Therapy',
+        'pre k' => 'readiness support',
+        'Pre K' => 'Readiness Support',
+        'Clinical Pre-K' => 'Clinical Readiness',
+        'GA Lottery Pre-K' => 'early intervention support',
+        'GA Pre-K' => 'early intervention support',
+        'Pre-K Prep' => 'Readiness Support',
+        'Pre-K' => 'Readiness Support',
+        'Quality Rated' => 'Clinic Quality Reviewed',
+        'Bright from the Start: Georgia Department of Early Care and Learning' => 'Chroma Early Start Clinical Quality Team',
+        'Bright from the Start' => 'Chroma Early Start',
+        'Georgia Department of Early Care and Learning' => 'Chroma Early Start Clinical Quality Team',
+        'Georgia DECAL' => 'Chroma Early Start',
+        'DECAL' => 'Chroma Early Start',
+        'Now Enrolling' => 'Accepting New Families',
+        'now enrolling' => 'accepting new families',
+        'Schedule a Tour' => 'Request a Consultation',
+        'Schedule a tour' => 'Request a consultation',
+        'schedule a tour' => 'request a consultation',
+        'Book a Tour' => 'Request a Consultation',
+        'book a tour' => 'request a consultation',
+        'Tour Form' => 'Inquiry Form',
+        'tour form' => 'inquiry form',
+        'Clinic Tours' => 'Clinical Consultations',
+        'clinic tours' => 'clinical consultations',
+        'enrollment process' => 'intake process',
+        'Enrollment process' => 'Intake process',
+        'Enrollment Process' => 'Intake Process',
+        'enrollment team' => 'intake team',
+        'Enrollment team' => 'Intake team',
+        'enrollment specialist' => 'intake specialist',
+        'Enrollment specialist' => 'Intake specialist',
+        'speak to an enrollment specialist' => 'speak to an intake specialist',
+        'Speak to an enrollment specialist' => 'Speak to an intake specialist',
+        'tuition contribution' => 'care navigation',
+        'tuition' => 'service cost',
+        'Tuition' => 'Service Cost',
+        'school readiness' => 'daily participation readiness',
+        'School readiness' => 'Daily participation readiness',
+        'classroom readiness' => 'group participation readiness',
+        'Classroom readiness' => 'Group participation readiness',
+        'classroom environment' => 'therapy setting',
+        'Classroom environment' => 'Therapy setting',
+        'classroom routines' => 'group routines',
+        'Classroom routines' => 'Group routines',
+        'mock classroom' => 'supported group',
+        'Mock classroom' => 'Supported group',
+        'classroom' => 'group setting',
+        'Classroom' => 'Group setting',
+        'curriculum' => 'clinical framework',
+        'Curriculum' => 'Clinical Framework',
+        'teachers' => 'clinicians',
+        'Teachers' => 'Clinicians',
+        'teacher' => 'clinician',
+        'Teacher' => 'Clinician',
+        'educators' => 'clinicians',
+        'Educators' => 'Clinicians',
+        'early learners' => 'young clients',
+        'Early learners' => 'Young clients',
+        'early learning' => 'pediatric therapy',
+        'Early learning' => 'Pediatric therapy',
+        'Chroma Chroma Early Start' => 'Chroma Early Start',
+    );
+
+    return str_replace(array_keys($replacements), array_values($replacements), $text);
+}
+
+/**
+ * Determine whether a stored string still contains stale childcare-era language.
+ *
+ * @param mixed $value Stored value.
+ * @return bool
+ */
+function earlystart_value_contains_childcare_era_language($value): bool
+{
+    if (is_array($value)) {
+        foreach ($value as $item) {
+            if (earlystart_value_contains_childcare_era_language($item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    if (!is_string($value) || $value === '') {
+        return false;
+    }
+
+    $normalized = strtolower($value);
+    foreach (array(
+        'chroma early learning',
+        'early learning academy',
+        'early start preschool',
+        'licensed childcare',
+        'licensed child care',
+        'childcare provider',
+        'child care center',
+        'childcare center',
+        'daycare',
+        'preschool',
+        'pre-k',
+        'ga pre-k',
+        'ga lottery pre-k',
+        'bright from the start',
+        'georgia department of early care and learning',
+        'decal',
+        'quality rated',
+        'now enrolling',
+        'schedule a tour',
+        'book a tour',
+        'tour form',
+        'enrollment',
+        'tuition',
+        'clinical pre-k',
+    ) as $term) {
+        if (strpos($normalized, $term) !== false) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -261,8 +441,8 @@ function earlystart_apply_service_expansion_migration(): void
         'Integrating diagnosis, behavioral health, speech, OT, and ABA for holistic outcomes.' => 'Integrating assessment, speech, OT, and ABA for holistic outcomes.',
         'Our team includes licensed and board-certified professionals across ABA, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, ABA, speech, and occupational therapy disciplines.',
         'Our team includes licensed and board-certified professionals across autism diagnosis, ABA, behavioral health, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, ABA, speech, and occupational therapy disciplines.',
-        'Find a clinic near you and schedule a tour for ABA, Speech, or OT.' => 'Find a clinic near you and schedule a tour for autism assessment, behavioral assessment, ADHD assessment, ABA, speech, or OT.',
-        'Find a clinic near you and schedule a tour for autism diagnosis, ABA, behavioral health, speech, or OT.' => 'Find a clinic near you and schedule a tour for autism assessment, behavioral assessment, ADHD assessment, ABA, speech, or OT.',
+        'Find a clinic near you and schedule a tour for ABA, Speech, or OT.' => 'Find a clinic near you and request a consultation for autism assessment, behavioral assessment, ADHD assessment, ABA, speech, or OT.',
+        'Find a clinic near you and schedule a tour for autism diagnosis, ABA, behavioral health, speech, or OT.' => 'Find a clinic near you and request a consultation for autism assessment, behavioral assessment, ADHD assessment, ABA, speech, or OT.',
         'ABA, Speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.' => 'Assessment, ABA, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.',
         'Diagnosis, ABA, behavioral health, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.' => 'Assessment, ABA, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.',
         'Navigating early intervention can be overwhelming. We help families understand insurance, intake, diagnosis, and next steps with clarity and compassion.' => 'Navigating early intervention can be overwhelming. We help families understand insurance, intake, assessment, and next steps with clarity and compassion.',
@@ -299,19 +479,14 @@ function earlystart_apply_service_expansion_migration(): void
 }
 
 /**
- * Normalize saved legacy content when an administrator opens wp-admin.
+ * Normalize saved legacy content.
  *
- * This intentionally runs in wp-admin only. Front-end requests should not be
- * responsible for database cleanup, and public output is already normalized by
- * the SEO head orchestrator as a last-resort display guard.
+ * This helper is safe to call from wp-admin or WP-CLI. Public output is also
+ * normalized by the SEO head orchestrator as a last-resort display guard.
  */
-function earlystart_run_launch_content_cleanup(): void
+function earlystart_apply_launch_content_cleanup(): void
 {
-    if (!is_admin() || wp_doing_ajax() || !current_user_can('manage_options')) {
-        return;
-    }
-
-    $version = '2026-07-08.8';
+    $version = '2026-07-09.5';
     if (get_option('earlystart_launch_content_cleanup_version') === $version) {
         return;
     }
@@ -322,7 +497,7 @@ function earlystart_run_launch_content_cleanup(): void
 
     global $wpdb;
 
-    $post_types = array('page', 'post', 'location', 'program', 'city', 'team_member', 'career');
+    $post_types = array('page', 'post', 'attachment', 'location', 'program', 'city', 'team_member', 'career');
     $post_ids = $wpdb->get_col(
         "SELECT ID FROM {$wpdb->posts} WHERE post_type IN ('" . implode("','", array_map('esc_sql', $post_types)) . "')"
     );
@@ -337,10 +512,17 @@ function earlystart_run_launch_content_cleanup(): void
         $updates = array('ID' => $post_id);
         foreach (array('post_title', 'post_content', 'post_excerpt') as $field) {
             $before = (string) $post->{$field};
-            $after = earlystart_normalize_legacy_branding_text($before);
+            $after = earlystart_normalize_childcare_era_content_text(earlystart_normalize_legacy_branding_text($before));
             if ($after !== $before) {
                 $updates[$field] = $after;
             }
+        }
+
+        $slug_text = str_replace(array('-', '_'), ' ', (string) $post->post_name);
+        $slug_after_text = earlystart_normalize_childcare_era_content_text(earlystart_normalize_legacy_branding_text($slug_text));
+        $slug_after = sanitize_title($slug_after_text);
+        if ($slug_after && $slug_after !== $post->post_name) {
+            $updates['post_name'] = wp_unique_post_slug($slug_after, $post_id, $post->post_status, $post->post_type, (int) $post->post_parent);
         }
 
         if (count($updates) > 1) {
@@ -351,19 +533,32 @@ function earlystart_run_launch_content_cleanup(): void
     $meta_keys = array(
         '_yoast_wpseo_title',
         '_yoast_wpseo_metadesc',
+        '_wp_attachment_image_alt',
         'seo_llm_title',
         'seo_llm_description',
+        'seo_llm_target_queries',
+        'seo_llm_key_differentiators',
+        'meta_keywords',
         'program_meta_title',
         'program_seo_heading',
+        'program_hero_title',
+        'program_hero_description',
         'location_tagline',
         'location_description',
         'location_hero_subtitle',
         'location_seo_content_title',
         'location_seo_content_text',
+        'location_special_programs',
         'contact_hero_title',
+        'contact_hero_description',
         'careers_hero_title',
         'locations_hero_heading',
         'parents_hero_heading',
+        'parents_hero_description',
+        'families_hero_desc',
+        '_earlystart_es_title',
+        '_earlystart_es_excerpt',
+        '_earlystart_es_content',
     );
 
     $placeholders = implode(',', array_fill(0, count($meta_keys), '%s'));
@@ -380,9 +575,66 @@ function earlystart_run_launch_content_cleanup(): void
             continue;
         }
 
-        $after = earlystart_normalize_legacy_branding_text($before);
+        $after = earlystart_normalize_childcare_era_content_text(earlystart_normalize_legacy_branding_text($before));
         if ($after !== $before) {
             update_metadata_by_mid('post', (int) $row->meta_id, wp_slash($after));
+        }
+    }
+
+    $prefix_meta_rows = $wpdb->get_results(
+        "SELECT meta_id, meta_value FROM {$wpdb->postmeta}
+        WHERE meta_key LIKE 'about\\_%'
+        OR meta_key LIKE 'bridge\\_%'
+        OR meta_key LIKE 'contact\\_%'
+        OR meta_key LIKE 'curriculum\\_%'
+        OR meta_key LIKE 'employers\\_%'
+        OR meta_key LIKE 'families\\_%'
+        OR meta_key LIKE 'home\\_%'
+        OR meta_key LIKE 'locations\\_%'
+        OR meta_key LIKE 'parents\\_%'
+        OR meta_key LIKE 'schedule\\_%'
+        OR meta_key LIKE 'stories\\_%'"
+    );
+
+    foreach ((array) $prefix_meta_rows as $row) {
+        $before = maybe_unserialize($row->meta_value);
+        if (!is_string($before) || $before === '') {
+            continue;
+        }
+
+        $after = earlystart_normalize_childcare_era_content_text(earlystart_normalize_legacy_branding_text($before));
+        if ($after !== $before) {
+            update_metadata_by_mid('post', (int) $row->meta_id, wp_slash($after));
+        }
+    }
+
+    $generated_meta_keys = array(
+        '_earlystart_post_schemas',
+        '_earlystart_ai_fallback_cache',
+        '_earlystart_es_content',
+        '_metasync_otto_image_alt_data',
+        '_metasync_otto_structured_data',
+        '_metasync_otto_keywords',
+        '_metasync_otto_description',
+        '_metasync_otto_title',
+        '_metasync_otto_og_description',
+        '_metasync_otto_headings_data',
+        '_metasync_otto_og_title',
+        'metasync_schema_markup',
+    );
+
+    $generated_placeholders = implode(',', array_fill(0, count($generated_meta_keys), '%s'));
+    $generated_rows = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT meta_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key IN ($generated_placeholders)",
+            $generated_meta_keys
+        )
+    );
+
+    foreach ((array) $generated_rows as $row) {
+        $before = maybe_unserialize($row->meta_value);
+        if (earlystart_value_contains_childcare_era_language($before)) {
+            delete_metadata_by_mid('post', (int) $row->meta_id);
         }
     }
 
@@ -404,6 +656,51 @@ function earlystart_run_launch_content_cleanup(): void
 
     earlystart_apply_service_expansion_migration();
 
+    $curriculum_page = get_page_by_path('curriculum', OBJECT, 'page');
+    if ($curriculum_page) {
+        wp_update_post(array(
+            'ID' => (int) $curriculum_page->ID,
+            'post_title' => 'Clinical Approach',
+            'post_name' => 'clinical-approach',
+        ));
+    }
+
+    $schedule_page = get_page_by_path('schedule-tour', OBJECT, 'page');
+    if ($schedule_page) {
+        wp_update_post(array(
+            'ID' => (int) $schedule_page->ID,
+            'post_title' => 'Request a Consultation',
+            'post_name' => 'request-consultation',
+            'post_status' => 'draft',
+        ));
+    }
+
+    foreach (array(
+        '_transient_earlystart_llms_txt_content_%',
+        '_transient_timeout_earlystart_llms_txt_content_%',
+        '_transient_otto_%',
+        '_transient_timeout_otto_%',
+    ) as $like) {
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                $like
+            )
+        );
+    }
+
     update_option('earlystart_launch_content_cleanup_version', $version, false);
+}
+
+/**
+ * Normalize saved legacy content when an administrator opens wp-admin.
+ */
+function earlystart_run_launch_content_cleanup(): void
+{
+    if (!is_admin() || wp_doing_ajax() || !current_user_can('manage_options')) {
+        return;
+    }
+
+    earlystart_apply_launch_content_cleanup();
 }
 add_action('admin_init', 'earlystart_run_launch_content_cleanup', 30);

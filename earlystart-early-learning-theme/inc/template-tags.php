@@ -81,26 +81,23 @@ function earlystart_get_program_fields($post_id = null)
     if (empty($icon)) {
         $slug = get_post_field('post_name', $post_id);
 
-        // Map slugs to emojis
-        if (strpos($slug, 'infant') !== false) {
-            $icon = '👶';
-        } elseif (strpos($slug, 'toddler') !== false) {
-            $icon = '🚀';
-        } elseif (strpos($slug, 'preschool') !== false) {
-            $icon = '🎨';
-        } elseif (strpos($slug, 'pre-k') !== false || strpos($slug, 'prek') !== false) {
-            $icon = '🖍️'; // Pre-K Prep
-            if (strpos($slug, 'ga') !== false) {
-                $icon = '🎓'; // GA Pre-K
-            }
-        } elseif (strpos($slug, 'school') !== false) {
-            $icon = '🚌'; // After School / Schoolagers
-        } elseif (strpos($slug, 'camp') !== false) {
-            $icon = '☀️';
+        // Map service slugs to compact icon labels.
+        if (strpos($slug, 'autism') !== false) {
+            $icon = 'A';
+        } elseif (strpos($slug, 'behavior') !== false) {
+            $icon = 'B';
+        } elseif (strpos($slug, 'adhd') !== false) {
+            $icon = 'ADHD';
+        } elseif (strpos($slug, 'aba') !== false) {
+            $icon = 'ABA';
+        } elseif (strpos($slug, 'speech') !== false) {
+            $icon = 'S';
+        } elseif (strpos($slug, 'occupational') !== false || strpos($slug, 'ot') !== false) {
+            $icon = 'OT';
         } elseif (strpos($slug, 'parent') !== false) {
-            $icon = '🎉';
+            $icon = 'PC';
         } else {
-            $icon = 'fas fa-child'; // Fallback
+            $icon = 'fas fa-child';
         }
     }
 

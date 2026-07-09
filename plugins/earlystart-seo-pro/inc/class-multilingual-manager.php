@@ -1332,7 +1332,69 @@ class earlystart_Multilingual_Manager
 
         }
 
-        return $mapping[$text] ?? $translated;
+        return self::sanitize_legacy_public_translation($mapping[$text] ?? $translated);
+    }
+
+    /**
+     * Remove childcare-era Spanish/English wording from translated public text.
+     *
+     * The translation table still contains legacy keys so old gettext calls
+     * continue to match, but the value shown to families should reflect the
+     * current therapy and assessment business.
+     */
+    private static function sanitize_legacy_public_translation($text)
+    {
+        if (!is_string($text) || $text === '') {
+            return $text;
+        }
+
+        if (function_exists('earlystart_normalize_childcare_era_content_text')) {
+            $text = earlystart_normalize_childcare_era_content_text($text);
+        }
+
+        $replacements = [
+            'Agenda un Recorrido' => 'Solicita una Consulta',
+            'Agendar Recorrido' => 'Solicitar Consulta',
+            'Programar un Recorrido' => 'Solicitar una Consulta',
+            'Reservar Recorrido' => 'Solicitar Consulta',
+            'Reserva un Recorrido' => 'Solicita una Consulta',
+            'Reserve un Recorrido Ahora' => 'Solicite una Consulta Ahora',
+            'Solicitar un Recorrido' => 'Solicitar una Consulta',
+            'Inscripciones Abiertas' => 'Aceptando Nuevas Familias',
+            'inscripciones' => 'admisiones',
+            'Inscripciones' => 'Admisiones',
+            'inscripcion' => 'intake',
+            'Inscripcion' => 'Intake',
+            'inscripciÃ³n' => 'intake',
+            'InscripciÃ³n' => 'Intake',
+            'matrÃ­cula' => 'costo del servicio',
+            'MatrÃ­cula' => 'Costo del Servicio',
+            'recorrido' => 'consulta',
+            'Recorrido' => 'Consulta',
+            'recorridos' => 'consultas',
+            'Recorridos' => 'Consultas',
+            'aula' => 'entorno terapeutico',
+            'Aula' => 'Entorno terapeutico',
+            'aulas' => 'entornos terapeuticos',
+            'Aulas' => 'Entornos terapeuticos',
+            'maestros' => 'clinicos',
+            'Maestros' => 'Clinicos',
+            'educadores' => 'clinicos',
+            'Educadores' => 'Clinicos',
+            'Cuidado Infantil' => 'Terapia Pediatrica',
+            'cuidado infantil' => 'terapia pediatrica',
+            'Pre-K' => 'apoyo de preparacion',
+            'currÃ­culo' => 'marco clinico',
+            'CurrÃ­culo' => 'Marco Clinico',
+            'curriculo' => 'marco clinico',
+            'Curriculo' => 'Marco Clinico',
+            'campus' => 'clinica',
+            'Campus' => 'Clinica',
+            'escuela' => 'clinica',
+            'Escuela' => 'Clinica',
+        ];
+
+        return str_replace(array_keys($replacements), array_values($replacements), $text);
     }
 }
 

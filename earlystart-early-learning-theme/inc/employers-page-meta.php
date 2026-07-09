@@ -99,7 +99,7 @@ function earlystart_employers_solutions_meta_box_render( $post ) {
 
 	$solutions = array(
 		1 => 'Solution 1 (Priority Access)',
-		2 => 'Solution 2 (Tuition Subsidies)',
+		2 => 'Solution 2 (Care Navigation)',
 		3 => 'Solution 3 (Back-Up Care)',
 	);
 	?>
@@ -427,10 +427,10 @@ function earlystart_seed_employers_page_defaults( $post_id ) {
 		'employers_hero_description' => 'Retain top talent and reduce absenteeism by helping employees access trusted pediatric therapy and developmental support. Chroma Early Start partners with Metro Atlanta employers to support working families.',
 
 		'employers_solution1_title' => 'Priority Access',
-		'employers_solution1_desc'  => 'Skip the waitlist. Reserve dedicated spots at our 19+ locations exclusively for your employees\' children.',
+		'employers_solution1_desc'  => 'Help employees connect with the right clinic, service line, and intake path for their children.',
 
-		'employers_solution2_title' => 'Tuition Subsidies',
-		'employers_solution2_desc'  => 'We manage employer-sponsored tuition matching programs, making quality care affordable for your team.',
+		'employers_solution2_title' => 'Care Navigation',
+		'employers_solution2_desc'  => 'We support employer-sponsored care navigation resources for working parents.',
 
 		'employers_solution3_title' => 'Back-Up Care',
 		'employers_solution3_desc'  => 'Flexible drop-in options for when schools close or regular caregivers fall through, keeping your team at work.',

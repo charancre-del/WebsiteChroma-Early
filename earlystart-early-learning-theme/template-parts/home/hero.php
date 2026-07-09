@@ -25,7 +25,7 @@ $hero_image = get_theme_mod('earlystart_home_hero_image', 'https://images.unspla
                     class="inline-flex items-center space-x-2 bg-rose-50 border border-rose-100 px-4 py-2 rounded-full">
                     <span class="flex h-2 w-2 rounded-full bg-rose-600 animate-pulse"></span>
                     <span
-                        class="text-rose-700 text-xs font-bold uppercase tracking-wider"><?php _e('Now Enrolling for 2026', 'earlystart-early-learning'); ?></span>
+                        class="text-rose-700 text-xs font-bold uppercase tracking-wider"><?php _e('Accepting New Families for 2026', 'earlystart-early-learning'); ?></span>
                 </div>
 
                 <h1 class="text-5xl lg:text-7xl font-bold text-stone-900 leading-normal tracking-tight">
