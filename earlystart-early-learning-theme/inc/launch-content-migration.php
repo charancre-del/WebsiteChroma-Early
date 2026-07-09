@@ -229,6 +229,24 @@ function earlystart_apply_service_expansion_migration(): void
                 }
             }
 
+            $preferred_order = array(
+                'autism-assessment' => 10,
+                'behavioral-assessment' => 20,
+                'adhd-assessment' => 30,
+                'aba' => 40,
+                'speech' => 50,
+                'ot' => 60,
+                'readiness' => 70,
+            );
+            usort($services, static function ($left, $right) use ($preferred_order) {
+                $left_id = is_array($left) && !empty($left['id']) ? (string) $left['id'] : '';
+                $right_id = is_array($right) && !empty($right['id']) ? (string) $right['id'] : '';
+
+                return ($preferred_order[$left_id] ?? 999) <=> ($preferred_order[$right_id] ?? 999);
+            });
+
+            $changed = true;
+
             if ($changed) {
                 update_post_meta($home_id, 'home_services_json', wp_json_encode($services));
             }
@@ -238,6 +256,7 @@ function earlystart_apply_service_expansion_migration(): void
     $copy_updates = array(
         'Specialized ABA, Speech, and Occupational Therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
         'Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
+        'Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\\\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
         'Integrating speech, OT, and ABA for holistic outcomes.' => 'Integrating assessment, speech, OT, and ABA for holistic outcomes.',
         'Integrating diagnosis, behavioral health, speech, OT, and ABA for holistic outcomes.' => 'Integrating assessment, speech, OT, and ABA for holistic outcomes.',
         'Our team includes licensed and board-certified professionals across ABA, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, ABA, speech, and occupational therapy disciplines.',
@@ -292,7 +311,7 @@ function earlystart_run_launch_content_cleanup(): void
         return;
     }
 
-    $version = '2026-07-08.7';
+    $version = '2026-07-08.8';
     if (get_option('earlystart_launch_content_cleanup_version') === $version) {
         return;
     }
