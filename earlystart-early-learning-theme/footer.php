@@ -193,10 +193,12 @@
 							?>
 							<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_program_link('aba'))); ?>"
 								class="hover:text-rose-400 transition-colors">ABA Therapy</a>
-							<a href="<?php echo esc_url(home_url('/programs/autism-diagnosis/')); ?>"
-								class="hover:text-rose-400 transition-colors">Autism Diagnosis</a>
-							<a href="<?php echo esc_url(home_url('/programs/behavioral-health/')); ?>"
-								class="hover:text-rose-400 transition-colors">Behavioral Health</a>
+							<a href="<?php echo esc_url(home_url('/programs/autism-assessment/')); ?>"
+								class="hover:text-rose-400 transition-colors">Autism Assessment</a>
+							<a href="<?php echo esc_url(home_url('/programs/behavioral-assessment/')); ?>"
+								class="hover:text-rose-400 transition-colors">Behavioral Assessment</a>
+							<a href="<?php echo esc_url(home_url('/programs/adhd-assessment/')); ?>"
+								class="hover:text-rose-400 transition-colors">ADHD Assessment</a>
 							<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_program_link('speech'))); ?>"
 								class="hover:text-rose-400 transition-colors">Speech Therapy</a>
 							<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_program_link('ot'))); ?>"

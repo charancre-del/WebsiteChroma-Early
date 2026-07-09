@@ -13,7 +13,7 @@ while (have_posts()):
     // Hero Data
     $hero_badge = get_post_meta($page_id, 'families_hero_badge', true) ?: (get_post_meta($page_id, 'parents_hero_badge', true) ?: 'Parent Resources');
     $hero_title = get_post_meta($page_id, 'families_hero_title', true) ?: (get_post_meta($page_id, 'parents_hero_title', true) ?: 'You Are Not Alone<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">On This Journey.</span>');
-    $hero_desc = get_post_meta($page_id, 'families_hero_desc', true) ?: (get_post_meta($page_id, 'parents_hero_description', true) ?: 'Navigating early intervention can be overwhelming. We are here to guide you through insurance, diagnosis, and the first steps of therapy with clarity and compassion. We partner with you to unlock your child\'s potential.');
+    $hero_desc = get_post_meta($page_id, 'families_hero_desc', true) ?: (get_post_meta($page_id, 'parents_hero_description', true) ?: 'Navigating early intervention can be overwhelming. We are here to guide you through insurance, assessment, and the first steps of therapy with clarity and compassion. We partner with you to unlock your child\'s potential.');
     $parents_essentials_title = get_post_meta($page_id, 'parents_essentials_title', true) ?: 'Parent Essentials';
     $parents_events_badge = get_post_meta($page_id, 'parents_events_badge', true) ?: 'Community';
     $parents_events_title = get_post_meta($page_id, 'parents_events_title', true) ?: 'Events & Celebrations';
@@ -378,7 +378,7 @@ while (have_posts()):
                                     <?php _e('Private Pay Options', 'earlystart-early-learning'); ?>
                                 </h4>
                                 <p class="text-stone-300 text-sm mb-4 leading-relaxed">
-                                    <?php _e('Prefer not to use insurance? We offer competitive private pay rates for families who want to skip authorization wait times or do not have a formal ASD diagnosis. This allows for immediate access to care.', 'earlystart-early-learning'); ?>
+                                    <?php _e('Prefer not to use insurance? We offer competitive private pay rates for families who want to skip authorization wait times or do not have a formal ASD assessment. This allows for immediate access to care.', 'earlystart-early-learning'); ?>
                                 </p>
                                 <div class="grid grid-cols-2 gap-2 text-sm text-stone-300">
                                     <span class="flex items-center"><i data-lucide="check"
@@ -392,7 +392,7 @@ while (have_posts()):
                                         <?php _e('Flexible Hours', 'earlystart-early-learning'); ?></span>
                                     <span class="flex items-center"><i data-lucide="check"
                                             class="w-4 h-4 text-green-400 mr-2"></i>
-                                        <?php _e('No Diagnosis Req.', 'earlystart-early-learning'); ?></span>
+                                        <?php _e('No Assessment Req.', 'earlystart-early-learning'); ?></span>
                                 </div>
                             </div>
                         </div>

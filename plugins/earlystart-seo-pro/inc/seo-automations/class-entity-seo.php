@@ -99,9 +99,9 @@ class earlystart_Entity_SEO
     public static function get_topic_clusters() {
         // Define topic clusters
         $clusters = [
-            'autism-diagnosis' => [
-                'name' => 'Autism Diagnosis',
-                'keywords' => ['autism diagnosis', 'autism evaluation', 'diagnostic evaluation'],
+            'autism-assessment' => [
+                'name' => 'Autism Assessment',
+                'keywords' => ['autism assessment', 'autism evaluation', 'developmental assessment'],
                 'hub_page' => null
             ],
             'aba' => [
@@ -109,9 +109,14 @@ class earlystart_Entity_SEO
                 'keywords' => ['aba therapy', 'applied behavior analysis', 'behavior therapy'],
                 'hub_page' => null
             ],
-            'behavioral-health' => [
-                'name' => 'Behavioral Health',
-                'keywords' => ['behavioral health', 'emotional regulation', 'coping skills'],
+            'behavioral-assessment' => [
+                'name' => 'Behavioral Assessment',
+                'keywords' => ['behavioral assessment', 'emotional regulation', 'coping skills'],
+                'hub_page' => null
+            ],
+            'adhd-assessment' => [
+                'name' => 'ADHD Assessment',
+                'keywords' => ['adhd assessment', 'attention assessment', 'executive function assessment'],
                 'hub_page' => null
             ],
             'speech' => [

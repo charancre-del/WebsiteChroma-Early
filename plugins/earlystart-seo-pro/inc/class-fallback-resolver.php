@@ -229,7 +229,7 @@ class earlystart_Fallback_Resolver
         // Get programs from Program CPT relationship + manual text
         $programs = self::get_location_programs($location_id);
         if (!empty($programs) && count($programs) > 1) {
-            $diff[] = "Coordinated autism diagnosis, ABA, behavioral health, speech, and occupational therapy options";
+            $diff[] = "Coordinated autism assessment, behavioral assessment, ADHD assessment, ABA, speech, and occupational therapy options";
         }
 
         $capacity = get_post_meta($location_id, 'location_capacity', true);

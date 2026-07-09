@@ -439,9 +439,10 @@ while (have_posts()):
 							<?php else: ?>
 								<?php
 								$default_services = array(
-									array('title' => __('Autism Diagnosis', 'earlystart-early-learning'), 'desc' => __('Diagnostic evaluation', 'earlystart-early-learning'), 'icon' => 'clipboard-check', 'bg' => 'bg-rose-50', 'text' => 'text-rose-600', 'hover' => 'group-hover:bg-rose-500'),
+									array('title' => __('Autism Assessment', 'earlystart-early-learning'), 'desc' => __('Developmental assessment', 'earlystart-early-learning'), 'icon' => 'clipboard-check', 'bg' => 'bg-rose-50', 'text' => 'text-rose-600', 'hover' => 'group-hover:bg-rose-500'),
 									array('title' => __('ABA Therapy', 'earlystart-early-learning'), 'desc' => __('1:1 Assent-based therapy', 'earlystart-early-learning'), 'icon' => 'puzzle', 'bg' => 'bg-rose-50', 'text' => 'text-rose-600', 'hover' => 'group-hover:bg-rose-500'),
-									array('title' => __('Behavioral Health', 'earlystart-early-learning'), 'desc' => __('Emotional regulation support', 'earlystart-early-learning'), 'icon' => 'heart-pulse', 'bg' => 'bg-orange-50', 'text' => 'text-orange-600', 'hover' => 'group-hover:bg-orange-500'),
+									array('title' => __('Behavioral Assessment', 'earlystart-early-learning'), 'desc' => __('Behavior support review', 'earlystart-early-learning'), 'icon' => 'heart-pulse', 'bg' => 'bg-orange-50', 'text' => 'text-orange-600', 'hover' => 'group-hover:bg-orange-500'),
+									array('title' => __('ADHD Assessment', 'earlystart-early-learning'), 'desc' => __('Attention & regulation', 'earlystart-early-learning'), 'icon' => 'activity', 'bg' => 'bg-blue-50', 'text' => 'text-blue-600', 'hover' => 'group-hover:bg-blue-500'),
 									array('title' => __('Speech Therapy', 'earlystart-early-learning'), 'desc' => __('Articulation & language', 'earlystart-early-learning'), 'icon' => 'message-circle', 'bg' => 'bg-orange-50', 'text' => 'text-orange-600', 'hover' => 'group-hover:bg-orange-500'),
 									array('title' => __('Occupational Therapy', 'earlystart-early-learning'), 'desc' => __('Motor skills & sensory', 'earlystart-early-learning'), 'icon' => 'hand-metal', 'bg' => 'bg-amber-50', 'text' => 'text-amber-600', 'hover' => 'group-hover:bg-amber-500'),
 									array('title' => __('Bridge Program', 'earlystart-early-learning'), 'desc' => __('School readiness prep', 'earlystart-early-learning'), 'icon' => 'school', 'bg' => 'bg-blue-50', 'text' => 'text-blue-600', 'hover' => 'group-hover:bg-blue-500'),

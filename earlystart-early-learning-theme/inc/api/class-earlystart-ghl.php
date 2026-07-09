@@ -95,8 +95,8 @@ class EarlyStart_GHL_API
 
         $required_fields = array(
             array('name' => 'Child Date of Birth', 'dataType' => 'DATE'),
-            array('name' => 'Primary Diagnosis', 'dataType' => 'TEXT'),
-            array('name' => 'Current Therapies', 'dataType' => 'MULTIPLE_OPTIONS', 'options' => array('Autism Diagnosis', 'ABA', 'Behavioral Health', 'Speech', 'Occupational Therapy', 'None')),
+            array('name' => 'Primary Assessment Need', 'dataType' => 'TEXT'),
+            array('name' => 'Current Therapies', 'dataType' => 'MULTIPLE_OPTIONS', 'options' => array('Autism Assessment', 'Behavioral Assessment', 'ADHD Assessment', 'ABA', 'Speech', 'Occupational Therapy', 'None')),
             array('name' => 'Insurance Provider', 'dataType' => 'TEXT')
         );
 

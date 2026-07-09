@@ -180,7 +180,7 @@ $local_fallback = 'https://images.unsplash.com/photo-1543269865-cbf427effbad?aut
                             class="w-5 h-5 text-stone-300 group-open:rotate-180 transition-transform"></i>
                     </summary>
                     <div class="mt-4 text-stone-700 leading-relaxed text-sm">
-                        <?php printf(__('Yes, our locations serving %s are currently accepting new families for autism diagnosis, ABA therapy, behavioral health, occupational therapy, and speech therapy. Contact our intake team to start the assessment process.', 'earlystart-early-learning'), esc_html($city)); ?>
+                        <?php printf(__('Yes, our locations serving %s are currently accepting new families for autism assessment, behavioral assessment, ADHD assessment, ABA therapy, occupational therapy, and speech therapy. Contact our intake team to start the assessment process.', 'earlystart-early-learning'), esc_html($city)); ?>
                     </div>
                 </details>
 

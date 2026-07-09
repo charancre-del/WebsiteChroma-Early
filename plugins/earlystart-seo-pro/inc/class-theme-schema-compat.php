@@ -231,8 +231,9 @@ if (!function_exists('earlystart_location_schema_pro')) {
                 'addressCountry' => 'US'
             ),
             'medicalSpecialty' => array(
-                'Autism diagnostic evaluation',
-                'Behavioral health',
+                'Autism assessment',
+                'Behavioral assessment',
+                'ADHD assessment',
                 'https://schema.org/SpeechPathology',
                 'Occupational Therapy',
                 'Applied Behavior Analysis (ABA) therapy',
@@ -434,7 +435,7 @@ if (!function_exists('earlystart_city_schema_pro')) {
         $en_name = get_the_title();
         $city_name = earlystart_get_schema_val($post_id, '_earlystart_es_title', $en_name);
 
-        $en_desc = get_the_excerpt() ?: "Evidence-based pediatric therapy services in $en_name, GA, including autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy.";
+        $en_desc = get_the_excerpt() ?: "Evidence-based pediatric therapy services in $en_name, GA, including autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy.";
         $desc = earlystart_get_schema_val($post_id, '_earlystart_es_excerpt', $en_desc);
 
         // Localize English Fallback if needed
@@ -467,7 +468,7 @@ if (!function_exists('earlystart_city_schema_pro')) {
             'url' => get_permalink(),
             'hasOfferCatalog' => array(
                 '@type' => 'OfferCatalog',
-                'name' => "Autism diagnosis, ABA, behavioral health, speech, and OT services in $city_name",
+                'name' => "Autism assessment, behavioral assessment, ADHD assessment, ABA, speech, and OT services in $city_name",
                 'itemListElement' => function_exists('earlystart_seo_all_service_schemas') ? earlystart_seo_all_service_schemas() : array(),
             ),
         );

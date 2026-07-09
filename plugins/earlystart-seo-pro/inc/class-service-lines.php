@@ -18,17 +18,17 @@ if (!function_exists('earlystart_seo_service_lines')) {
     function earlystart_seo_service_lines()
     {
         return [
-            'autism_diagnosis' => [
-                'key' => 'autism_diagnosis',
-                'label' => 'Autism Diagnosis',
-                'spanish_label' => 'Diagnostico de autismo',
-                'slug' => 'autism-diagnosis',
-                'service_type' => 'Autism diagnostic evaluation',
-                'category' => 'Developmental diagnostic services',
+            'autism_assessment' => [
+                'key' => 'autism_assessment',
+                'label' => 'Autism Assessment',
+                'spanish_label' => 'Evaluacion de autismo',
+                'slug' => 'autism-assessment',
+                'service_type' => 'Autism assessment',
+                'category' => 'Developmental assessment services',
                 'schema_type' => 'Service',
                 'medical_specialty' => 'Developmental and behavioral pediatrics',
-                'keywords' => ['autism diagnosis', 'autism evaluation', 'diagnostic evaluation', 'developmental assessment'],
-                'description' => 'Comprehensive autism diagnostic evaluations for children and families.',
+                'keywords' => ['autism assessment', 'autism evaluation', 'developmental assessment'],
+                'description' => 'Comprehensive autism assessments for children and families.',
             ],
             'aba' => [
                 'key' => 'aba',
@@ -64,17 +64,29 @@ if (!function_exists('earlystart_seo_service_lines')) {
                 'keywords' => ['ot', 'occupational', 'occupational therapy', 'sensory therapy'],
                 'description' => 'Pediatric occupational therapy for sensory, motor, and daily living skills.',
             ],
-            'behavioral_health' => [
-                'key' => 'behavioral_health',
-                'label' => 'Behavioral Health',
-                'spanish_label' => 'Salud conductual',
-                'slug' => 'behavioral-health',
-                'service_type' => 'Pediatric behavioral health services',
-                'category' => 'Behavioral health',
+            'behavioral_assessment' => [
+                'key' => 'behavioral_assessment',
+                'label' => 'Behavioral Assessment',
+                'spanish_label' => 'Evaluacion conductual',
+                'slug' => 'behavioral-assessment',
+                'service_type' => 'Pediatric behavioral assessment',
+                'category' => 'Behavioral assessment',
                 'schema_type' => 'Service',
-                'medical_specialty' => 'Behavioral health',
-                'keywords' => ['behavioral health', 'behavioral healthcare', 'emotional regulation', 'coping skills'],
-                'description' => 'Behavioral health support for emotional regulation, coping skills, and family-centered care.',
+                'medical_specialty' => 'Behavioral assessment',
+                'keywords' => ['behavioral assessment', 'behavior assessment', 'emotional regulation', 'coping skills'],
+                'description' => 'Behavioral assessments for regulation, behavior patterns, and family-centered next steps.',
+            ],
+            'adhd_assessment' => [
+                'key' => 'adhd_assessment',
+                'label' => 'ADHD Assessment',
+                'spanish_label' => 'Evaluacion de ADHD',
+                'slug' => 'adhd-assessment',
+                'service_type' => 'ADHD assessment',
+                'category' => 'Attention and executive function assessment',
+                'schema_type' => 'Service',
+                'medical_specialty' => 'Behavioral assessment',
+                'keywords' => ['adhd assessment', 'adhd evaluation', 'attention assessment', 'executive function assessment'],
+                'description' => 'ADHD assessments for attention, executive function, impulsivity, and regulation needs.',
             ],
         ];
     }
@@ -124,16 +136,20 @@ if (!function_exists('earlystart_seo_detect_service_line')) {
             return '';
         }
 
-        if (preg_match('/\b(autism diagnosis|autism diagnostic|autism evaluation|diagnostic evaluation|developmental assessment)\b/', $haystack)) {
-            return 'autism_diagnosis';
+        if (preg_match('/\b(autism assessment|autism evaluation|developmental assessment)\b/', $haystack)) {
+            return 'autism_assessment';
         }
 
         if (preg_match('/\b(aba|applied behavior analysis|behavior therapy)\b/', $haystack)) {
             return 'aba';
         }
 
-        if (preg_match('/\b(behavioral health|behavioral healthcare|emotional regulation|coping skills)\b/', $haystack)) {
-            return 'behavioral_health';
+        if (preg_match('/\b(behavioral assessment|behavior assessment|emotional regulation|coping skills)\b/', $haystack)) {
+            return 'behavioral_assessment';
+        }
+
+        if (preg_match('/\b(adhd assessment|adhd evaluation|attention assessment|executive function assessment)\b/', $haystack)) {
+            return 'adhd_assessment';
         }
 
         if (preg_match('/\b(speech|speech-language|language therapy)\b/', $haystack)) {

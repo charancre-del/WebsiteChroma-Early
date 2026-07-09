@@ -176,7 +176,7 @@ function earlystart_get_meta_description_value()
         if (empty($description)) {
             $description = $is_spanish
                 ? 'Chroma Early Start ofrece terapia pediátrica, apoyo familiar y servicios de intervención temprana en el área metropolitana de Atlanta.'
-                : get_bloginfo('name') . ' provides pediatric therapy services across Metro Atlanta, including autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy.';
+                : get_bloginfo('name') . ' provides pediatric therapy services across Metro Atlanta, including autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy.';
         }
 
         return earlystart_normalize_meta_description_value($description);
@@ -194,7 +194,7 @@ function earlystart_get_meta_description_value()
         return earlystart_normalize_meta_description_value($blog_desc);
     }
 
-    return 'Chroma Early Start provides pediatric therapy services across Metro Atlanta, including autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy.';
+    return 'Chroma Early Start provides pediatric therapy services across Metro Atlanta, including autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy.';
 }
 
 /**

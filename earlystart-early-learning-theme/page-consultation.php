@@ -100,7 +100,7 @@ while (have_posts()):
                             </li>
                         </ul>
                         <div class="mt-12 p-6 bg-white/5 rounded-2xl border border-white/10 italic text-stone-300 text-sm">
-                            <?php _e('Note: Consultations are for discovery; a full diagnostic assessment follows enrollment.', 'earlystart-early-learning'); ?>
+                            <?php _e('Note: Consultations are for discovery; a full clinical assessment follows enrollment.', 'earlystart-early-learning'); ?>
                         </div>
                     </div>
 
@@ -136,9 +136,9 @@ while (have_posts()):
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-stone-300 uppercase tracking-widest">
-                                        <?php _e('Child\'s Age & Current Diagnosis (if any)', 'earlystart-early-learning'); ?>
+                                        <?php _e('Child\'s Age & Current Assessment Need (if any)', 'earlystart-early-learning'); ?>
                                     </label>
-                                    <input type="text" placeholder="e.g. 4 years old, ASD diagnosis"
+                                    <input type="text" placeholder="e.g. 4 years old, autism assessment"
                                         class="w-full bg-stone-50 border border-stone-200 p-4 rounded-xl focus:border-rose-300 outline-none transition-all">
                                 </div>
                                 <div class="space-y-2">

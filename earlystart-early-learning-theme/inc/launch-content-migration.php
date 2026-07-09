@@ -38,25 +38,35 @@ function earlystart_normalize_launch_content_value($value)
 function earlystart_launch_service_expansion_cards(): array
 {
     return array(
-        'autism-diagnosis' => array(
-            'id' => 'autism-diagnosis',
-            'title' => 'Autism Diagnosis',
-            'subtitle' => 'Diagnostic Evaluation',
+        'autism-assessment' => array(
+            'id' => 'autism-assessment',
+            'title' => 'Autism Assessment',
+            'subtitle' => 'Developmental Assessment',
             'icon' => 'clipboard-check',
             'heading' => 'Clear Answers for Next Steps',
-            'description' => 'Comprehensive autism diagnostic evaluations help families understand developmental needs and plan the right care pathway.',
+            'description' => 'Comprehensive autism assessments help families understand developmental needs and plan the right care pathway.',
             'image' => 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=800&q=80&fm=webp',
-            'bullets' => array('Developmental history review', 'Standardized diagnostic tools', 'Care planning guidance'),
+            'bullets' => array('Developmental history review', 'Standardized assessment tools', 'Care planning guidance'),
         ),
-        'behavioral-health' => array(
-            'id' => 'behavioral-health',
-            'title' => 'Behavioral Health',
-            'subtitle' => 'Mental & Emotional Support',
+        'behavioral-assessment' => array(
+            'id' => 'behavioral-assessment',
+            'title' => 'Behavioral Assessment',
+            'subtitle' => 'Behavior Support Review',
             'icon' => 'heart-pulse',
-            'heading' => 'Whole-Child Behavioral Support',
-            'description' => 'Behavioral health services support emotional regulation, coping skills, family routines, and coordinated care for children and caregivers.',
+            'heading' => 'Whole-Child Behavioral Assessment',
+            'description' => 'Behavioral assessments help identify strengths, barriers, regulation needs, family routines, and the right support plan for children and caregivers.',
             'image' => 'https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?auto=format&fit=crop&w=800&q=80&fm=webp',
-            'bullets' => array('Emotional regulation support', 'Family-centered care plans', 'Coordinated clinical guidance'),
+            'bullets' => array('Behavior pattern review', 'Family-centered recommendations', 'Coordinated next steps'),
+        ),
+        'adhd-assessment' => array(
+            'id' => 'adhd-assessment',
+            'title' => 'ADHD Assessment',
+            'subtitle' => 'Attention & Executive Function',
+            'icon' => 'activity',
+            'heading' => 'Clarity Around Attention and Regulation',
+            'description' => 'ADHD assessments help families understand attention, executive function, impulsivity, and regulation needs so care planning can be more precise.',
+            'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80&fm=webp',
+            'bullets' => array('Attention and regulation review', 'Executive function profile', 'Practical care recommendations'),
         ),
     );
 }
@@ -69,16 +79,16 @@ function earlystart_launch_service_expansion_cards(): array
 function earlystart_launch_service_expansion_programs(): array
 {
     return array(
-        'autism-diagnosis' => array(
-            'title' => 'Autism Diagnosis',
-            'excerpt' => 'Comprehensive autism diagnostic evaluations that help families understand needs and next steps.',
+        'autism-assessment' => array(
+            'title' => 'Autism Assessment',
+            'excerpt' => 'Comprehensive autism assessments that help families understand needs and next steps.',
             'meta' => array(
                 'program_icon' => 'clipboard-check',
                 'program_age_range' => '18mo - 12y',
                 'program_color_scheme' => 'rose',
                 'program_hero_title' => 'Clear Answers for Next Steps.',
-                'program_hero_description' => 'Our diagnostic evaluation pathway helps families understand developmental needs, document clinical findings, and plan the right support.',
-                'program_prism_title' => 'Diagnostic Core',
+                'program_hero_description' => 'Our assessment pathway helps families understand developmental needs, document clinical findings, and plan the right support.',
+                'program_prism_title' => 'Assessment Core',
                 'program_prism_physical' => 20,
                 'program_prism_emotional' => 80,
                 'program_prism_social' => 75,
@@ -86,21 +96,38 @@ function earlystart_launch_service_expansion_programs(): array
                 'program_prism_creative' => 40,
             ),
         ),
-        'behavioral-health' => array(
-            'title' => 'Behavioral Health',
-            'excerpt' => 'Behavioral health support for emotional regulation, coping skills, and family-centered care.',
+        'behavioral-assessment' => array(
+            'title' => 'Behavioral Assessment',
+            'excerpt' => 'Behavioral assessments for regulation, behavior patterns, and family-centered next steps.',
             'meta' => array(
                 'program_icon' => 'heart-pulse',
                 'program_age_range' => '2y - 12y',
                 'program_color_scheme' => 'orange',
-                'program_hero_title' => 'Whole-Child Behavioral Support.',
-                'program_hero_description' => 'Our behavioral health services support emotional regulation, coping skills, caregiver guidance, and coordinated care for children and families.',
-                'program_prism_title' => 'Behavioral Health Core',
+                'program_hero_title' => 'Whole-Child Behavioral Assessment.',
+                'program_hero_description' => 'Our behavioral assessment services review regulation, coping skills, caregiver concerns, and coordinated next steps for children and families.',
+                'program_prism_title' => 'Behavioral Assessment Core',
                 'program_prism_physical' => 25,
                 'program_prism_emotional' => 95,
                 'program_prism_social' => 80,
                 'program_prism_academic' => 45,
                 'program_prism_creative' => 55,
+            ),
+        ),
+        'adhd-assessment' => array(
+            'title' => 'ADHD Assessment',
+            'excerpt' => 'ADHD assessments for attention, executive function, impulsivity, and regulation needs.',
+            'meta' => array(
+                'program_icon' => 'activity',
+                'program_age_range' => '4y - 12y',
+                'program_color_scheme' => 'blue',
+                'program_hero_title' => 'Clarity Around Attention and Regulation.',
+                'program_hero_description' => 'Our ADHD assessment pathway helps families understand attention, executive function, impulsivity, and regulation needs so care planning can be more precise.',
+                'program_prism_title' => 'ADHD Assessment Core',
+                'program_prism_physical' => 25,
+                'program_prism_emotional' => 85,
+                'program_prism_social' => 70,
+                'program_prism_academic' => 80,
+                'program_prism_creative' => 45,
             ),
         ),
     );
@@ -112,6 +139,30 @@ function earlystart_launch_service_expansion_programs(): array
 function earlystart_apply_service_expansion_migration(): void
 {
     global $wpdb;
+
+    $legacy_program_slugs = array(
+        'autism-diagnosis' => array(
+            'new_slug' => 'autism-assessment',
+            'new_title' => 'Autism Assessment',
+        ),
+        'behavioral-health' => array(
+            'new_slug' => 'behavioral-assessment',
+            'new_title' => 'Behavioral Assessment',
+        ),
+    );
+
+    foreach ($legacy_program_slugs as $old_slug => $rename) {
+        $old_post = get_page_by_path($old_slug, OBJECT, 'program');
+        $new_post = get_page_by_path($rename['new_slug'], OBJECT, 'program');
+
+        if ($old_post && !$new_post) {
+            wp_update_post(array(
+                'ID' => (int) $old_post->ID,
+                'post_title' => $rename['new_title'],
+                'post_name' => $rename['new_slug'],
+            ));
+        }
+    }
 
     foreach (earlystart_launch_service_expansion_programs() as $slug => $data) {
         $post = get_page_by_path($slug, OBJECT, 'program');
@@ -131,10 +182,14 @@ function earlystart_apply_service_expansion_migration(): void
             continue;
         }
 
+        wp_update_post(array(
+            'ID' => $post_id,
+            'post_title' => $data['title'],
+            'post_excerpt' => $data['excerpt'],
+        ));
+
         foreach ($data['meta'] as $meta_key => $meta_value) {
-            if (get_post_meta($post_id, $meta_key, true) === '') {
-                update_post_meta($post_id, $meta_key, $meta_value);
-            }
+            update_post_meta($post_id, $meta_key, $meta_value);
         }
     }
 
@@ -144,6 +199,21 @@ function earlystart_apply_service_expansion_migration(): void
         $services = is_string($raw) && $raw !== '' ? json_decode($raw, true) : array();
 
         if (is_array($services)) {
+            $service_cards = earlystart_launch_service_expansion_cards();
+            foreach ($services as $index => $service) {
+                if (!is_array($service) || empty($service['id'])) {
+                    continue;
+                }
+
+                if ((string) $service['id'] === 'autism-diagnosis') {
+                    $services[$index] = $service_cards['autism-assessment'];
+                }
+
+                if ((string) $service['id'] === 'behavioral-health') {
+                    $services[$index] = $service_cards['behavioral-assessment'];
+                }
+            }
+
             $seen = array();
             foreach ($services as $service) {
                 if (is_array($service) && !empty($service['id'])) {
@@ -152,7 +222,7 @@ function earlystart_apply_service_expansion_migration(): void
             }
 
             $changed = false;
-            foreach (earlystart_launch_service_expansion_cards() as $service_id => $card) {
+            foreach ($service_cards as $service_id => $card) {
                 if (empty($seen[$service_id])) {
                     $services[] = $card;
                     $changed = true;
@@ -166,11 +236,18 @@ function earlystart_apply_service_expansion_migration(): void
     }
 
     $copy_updates = array(
-        'Specialized ABA, Speech, and Occupational Therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
-        'Integrating speech, OT, and ABA for holistic outcomes.' => 'Integrating diagnosis, behavioral health, speech, OT, and ABA for holistic outcomes.',
-        'Our team includes licensed and board-certified professionals across ABA, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism diagnosis, ABA, behavioral health, speech, and occupational therapy disciplines.',
-        'Find a clinic near you and schedule a tour for ABA, Speech, or OT.' => 'Find a clinic near you and schedule a tour for autism diagnosis, ABA, behavioral health, speech, or OT.',
-        'ABA, Speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.' => 'Diagnosis, ABA, behavioral health, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.',
+        'Specialized ABA, Speech, and Occupational Therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
+        'Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
+        'Integrating speech, OT, and ABA for holistic outcomes.' => 'Integrating assessment, speech, OT, and ABA for holistic outcomes.',
+        'Integrating diagnosis, behavioral health, speech, OT, and ABA for holistic outcomes.' => 'Integrating assessment, speech, OT, and ABA for holistic outcomes.',
+        'Our team includes licensed and board-certified professionals across ABA, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, ABA, speech, and occupational therapy disciplines.',
+        'Our team includes licensed and board-certified professionals across autism diagnosis, ABA, behavioral health, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, ABA, speech, and occupational therapy disciplines.',
+        'Find a clinic near you and schedule a tour for ABA, Speech, or OT.' => 'Find a clinic near you and schedule a tour for autism assessment, behavioral assessment, ADHD assessment, ABA, speech, or OT.',
+        'Find a clinic near you and schedule a tour for autism diagnosis, ABA, behavioral health, speech, or OT.' => 'Find a clinic near you and schedule a tour for autism assessment, behavioral assessment, ADHD assessment, ABA, speech, or OT.',
+        'ABA, Speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.' => 'Assessment, ABA, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.',
+        'Diagnosis, ABA, behavioral health, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.' => 'Assessment, ABA, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.',
+        'Navigating early intervention can be overwhelming. We help families understand insurance, intake, diagnosis, and next steps with clarity and compassion.' => 'Navigating early intervention can be overwhelming. We help families understand insurance, intake, assessment, and next steps with clarity and compassion.',
+        'Navigating early intervention can be overwhelming. We are here to guide you through insurance, diagnosis, and the first steps of therapy with clarity and compassion. We partner with you to unlock your child\'s potential.' => 'Navigating early intervention can be overwhelming. We are here to guide you through insurance, assessment, and the first steps of therapy with clarity and compassion. We partner with you to unlock your child\'s potential.',
     );
 
     foreach ($copy_updates as $before => $after) {
@@ -187,7 +264,7 @@ function earlystart_apply_service_expansion_migration(): void
     }
 
     $old_special_programs = "ABA Therapy\nSpeech Therapy\nOccupational Therapy\nParent Coaching";
-    $new_special_programs = "Autism Diagnosis\nABA Therapy\nBehavioral Health\nSpeech Therapy\nOccupational Therapy\nParent Coaching";
+    $new_special_programs = "Autism Assessment\nBehavioral Assessment\nADHD Assessment\nABA Therapy\nSpeech Therapy\nOccupational Therapy\nParent Coaching";
     $location_ids = get_posts(array(
         'post_type' => 'location',
         'posts_per_page' => -1,
@@ -215,7 +292,7 @@ function earlystart_run_launch_content_cleanup(): void
         return;
     }
 
-    $version = '2026-07-08.6';
+    $version = '2026-07-08.7';
     if (get_option('earlystart_launch_content_cleanup_version') === $version) {
         return;
     }

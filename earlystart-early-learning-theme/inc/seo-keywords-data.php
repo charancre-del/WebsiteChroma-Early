@@ -4,7 +4,7 @@
  * Curated keyword mapping aligned to Chroma Early Start's pediatric therapy positioning.
  *
  * This keeps the historical page keys intact while replacing the old childcare-era terms
- * with therapy-focused keywords for autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy.
+ * with therapy-focused keywords for autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy.
  */
 
 $brand_keywords = array(

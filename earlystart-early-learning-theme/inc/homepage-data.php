@@ -23,7 +23,7 @@ function earlystart_home_default_hero()
 {
         return array(
                 'heading' => __('Compassionate <span class="bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-600 italic">Therapy</span> for Growing Minds', 'earlystart-early-learning'),
-                'subheading' => __('Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.', 'earlystart-early-learning'),
+                'subheading' => __('Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.', 'earlystart-early-learning'),
                 'cta_label' => __('Start Your Journey', 'earlystart-early-learning'),
                 'cta_url' => '#contact',
                 'secondary_label' => __('Explore Services', 'earlystart-early-learning'),
@@ -45,16 +45,16 @@ function earlystart_home_default_services()
 {
         return array(
                 array(
-                        'id' => 'autism-diagnosis',
-                        'title' => __('Autism Diagnosis', 'earlystart-early-learning'),
-                        'subtitle' => __('Diagnostic Evaluation', 'earlystart-early-learning'),
+                        'id' => 'autism-assessment',
+                        'title' => __('Autism Assessment', 'earlystart-early-learning'),
+                        'subtitle' => __('Developmental Assessment', 'earlystart-early-learning'),
                         'icon' => 'clipboard-check',
                         'heading' => __('Clear Answers for Next Steps', 'earlystart-early-learning'),
-                        'description' => __('Comprehensive autism diagnostic evaluations help families understand developmental needs and plan the right care pathway.', 'earlystart-early-learning'),
+                        'description' => __('Comprehensive autism assessments help families understand developmental needs and plan the right care pathway.', 'earlystart-early-learning'),
                         'image' => 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'bullets' => array(
                                 __('Developmental history review', 'earlystart-early-learning'),
-                                __('Standardized diagnostic tools', 'earlystart-early-learning'),
+                                __('Standardized assessment tools', 'earlystart-early-learning'),
                                 __('Care planning guidance', 'earlystart-early-learning')
                         )
                 ),
@@ -73,17 +73,31 @@ function earlystart_home_default_services()
                         )
                 ),
                 array(
-                        'id' => 'behavioral-health',
-                        'title' => __('Behavioral Health', 'earlystart-early-learning'),
-                        'subtitle' => __('Mental & Emotional Support', 'earlystart-early-learning'),
+                        'id' => 'behavioral-assessment',
+                        'title' => __('Behavioral Assessment', 'earlystart-early-learning'),
+                        'subtitle' => __('Behavior Support Review', 'earlystart-early-learning'),
                         'icon' => 'heart-pulse',
-                        'heading' => __('Whole-Child Behavioral Support', 'earlystart-early-learning'),
-                        'description' => __('Behavioral health services support emotional regulation, coping skills, family routines, and coordinated care for children and caregivers.', 'earlystart-early-learning'),
+                        'heading' => __('Whole-Child Behavioral Assessment', 'earlystart-early-learning'),
+                        'description' => __('Behavioral assessments help identify strengths, barriers, regulation needs, family routines, and the right support plan for children and caregivers.', 'earlystart-early-learning'),
                         'image' => 'https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?auto=format&fit=crop&w=800&q=80&fm=webp',
                         'bullets' => array(
-                                __('Emotional regulation support', 'earlystart-early-learning'),
-                                __('Family-centered care plans', 'earlystart-early-learning'),
-                                __('Coordinated clinical guidance', 'earlystart-early-learning')
+                                __('Behavior pattern review', 'earlystart-early-learning'),
+                                __('Family-centered recommendations', 'earlystart-early-learning'),
+                                __('Coordinated next steps', 'earlystart-early-learning')
+                        )
+                ),
+                array(
+                        'id' => 'adhd-assessment',
+                        'title' => __('ADHD Assessment', 'earlystart-early-learning'),
+                        'subtitle' => __('Attention & Executive Function', 'earlystart-early-learning'),
+                        'icon' => 'activity',
+                        'heading' => __('Clarity Around Attention and Regulation', 'earlystart-early-learning'),
+                        'description' => __('ADHD assessments help families understand attention, executive function, impulsivity, and regulation needs so care planning can be more precise.', 'earlystart-early-learning'),
+                        'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80&fm=webp',
+                        'bullets' => array(
+                                __('Attention and regulation review', 'earlystart-early-learning'),
+                                __('Executive function profile', 'earlystart-early-learning'),
+                                __('Practical care recommendations', 'earlystart-early-learning')
                         )
                 ),
                 array(

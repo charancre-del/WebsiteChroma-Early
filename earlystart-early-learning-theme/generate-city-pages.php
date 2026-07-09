@@ -244,7 +244,7 @@ foreach ($city_map as $city_name => $schools) {
 
     // SEO Meta
     update_post_meta($post_id, '_yoast_wpseo_title', $page_title);
-    update_post_meta($post_id, '_yoast_wpseo_metadesc', "Looking for pediatric therapy in $city_name? Chroma Early Start offers autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy through convenient regional clinics.");
+    update_post_meta($post_id, '_yoast_wpseo_metadesc', "Looking for pediatric therapy in $city_name? Chroma Early Start offers autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy through convenient regional clinics.");
 
     // Keywords
     $keywords = array("pediatric therapy $city_name", "aba therapy $city_name", "speech therapy $city_name", "occupational therapy $city_name");
