@@ -32,6 +32,16 @@ function earlystart_contact_default_form_id()
     return 'M3WZTpTW5KHrkzf5XfYG';
 }
 
+function earlystart_contact_default_intake_form_id()
+{
+    return earlystart_contact_default_form_id();
+}
+
+function earlystart_contact_default_verification_form_id()
+{
+    return '';
+}
+
 function earlystart_contact_previous_form_ids()
 {
     return array(
@@ -56,6 +66,21 @@ function earlystart_contact_maybe_migrate_form_options()
     if ($current_lazy === null || $current_lazy === '') {
         update_option('earlystart_contact_lazy_load', false);
     }
+
+    $current_intake_form_id = trim((string) get_option('earlystart_intake_form_id', ''));
+    if ($current_intake_form_id === '') {
+        update_option('earlystart_intake_form_id', earlystart_contact_default_intake_form_id());
+    }
+
+    $current_intake_height = (int) get_option('earlystart_intake_form_height', 0);
+    if ($current_intake_height <= 1200) {
+        update_option('earlystart_intake_form_height', 1800);
+    }
+
+    $current_verification_height = (int) get_option('earlystart_verification_form_height', 0);
+    if ($current_verification_height <= 1000) {
+        update_option('earlystart_verification_form_height', 1500);
+    }
 }
 add_action('init', 'earlystart_contact_maybe_migrate_form_options', 5);
 
@@ -70,6 +95,12 @@ function earlystart_contact_register_settings()
     register_setting('earlystart_contact_options', 'earlystart_contact_form_id', array('type' => 'string', 'default' => earlystart_contact_default_form_id(), 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_contact_options', 'earlystart_contact_form_height', array('type' => 'integer', 'default' => 1600, 'sanitize_callback' => 'absint'));
     register_setting('earlystart_contact_options', 'earlystart_contact_form_name', array('type' => 'string', 'default' => 'Chroma Early Start - A2P Inquiry Form', 'sanitize_callback' => 'sanitize_text_field'));
+    register_setting('earlystart_contact_options', 'earlystart_intake_form_id', array('type' => 'string', 'default' => earlystart_contact_default_intake_form_id(), 'sanitize_callback' => 'sanitize_text_field'));
+    register_setting('earlystart_contact_options', 'earlystart_intake_form_height', array('type' => 'integer', 'default' => 1800, 'sanitize_callback' => 'absint'));
+    register_setting('earlystart_contact_options', 'earlystart_intake_form_name', array('type' => 'string', 'default' => 'Chroma Early Start - Intake Form', 'sanitize_callback' => 'sanitize_text_field'));
+    register_setting('earlystart_contact_options', 'earlystart_verification_form_id', array('type' => 'string', 'default' => earlystart_contact_default_verification_form_id(), 'sanitize_callback' => 'sanitize_text_field'));
+    register_setting('earlystart_contact_options', 'earlystart_verification_form_height', array('type' => 'integer', 'default' => 1500, 'sanitize_callback' => 'absint'));
+    register_setting('earlystart_contact_options', 'earlystart_verification_form_name', array('type' => 'string', 'default' => 'Chroma Early Start - Benefits Verification Form', 'sanitize_callback' => 'sanitize_text_field'));
     register_setting('earlystart_contact_options', 'earlystart_contact_sms_disclosure', array('type' => 'string', 'default' => earlystart_contact_default_sms_disclosure(), 'sanitize_callback' => 'wp_kses_post'));
     register_setting('earlystart_contact_options', 'earlystart_contact_lazy_load', array('type' => 'boolean', 'default' => false, 'sanitize_callback' => 'rest_sanitize_boolean'));
     register_setting('earlystart_contact_options', 'earlystart_contact_lazy_delay', array('type' => 'integer', 'default' => 2000, 'sanitize_callback' => 'absint'));
@@ -125,10 +156,10 @@ function earlystart_contact_tracking_keys()
     );
 }
 
-function earlystart_contact_build_tracked_form_url($form_id)
+function earlystart_contact_build_tracked_form_url($form_id, $source = 'website_contact_form')
 {
     $form_url = 'https://api.leadconnectorhq.com/widget/form/' . rawurlencode((string) $form_id);
-    $tracking = array('source' => 'website_contact_form');
+    $tracking = array('source' => sanitize_key((string) $source) ?: 'website_contact_form');
 
     if (!empty($_SERVER['REQUEST_URI'])) {
         $request_uri = esc_url_raw(wp_unslash($_SERVER['REQUEST_URI']));
@@ -185,6 +216,12 @@ function earlystart_contact_settings_page_html()
             $form_height = get_option('earlystart_contact_form_height', 1600);
             $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start - A2P Inquiry Form');
             $sms_disclosure = get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure());
+            $intake_form_id = get_option('earlystart_intake_form_id', earlystart_contact_default_intake_form_id());
+            $intake_form_height = get_option('earlystart_intake_form_height', 1800);
+            $intake_form_name = get_option('earlystart_intake_form_name', 'Chroma Early Start - Intake Form');
+            $verification_form_id = get_option('earlystart_verification_form_id', earlystart_contact_default_verification_form_id());
+            $verification_form_height = get_option('earlystart_verification_form_height', 1500);
+            $verification_form_name = get_option('earlystart_verification_form_name', 'Chroma Early Start - Benefits Verification Form');
             ?>
             <table class="form-table">
                 <tr>
@@ -211,6 +248,42 @@ function earlystart_contact_settings_page_html()
                             value="<?php echo esc_attr($form_height); ?>" class="small-text" min="300" step="1" /> px</td>
                 </tr>
                 <tr>
+                    <th scope="row">GHL Intake Form ID</th>
+                    <td>
+                        <input type="text" name="earlystart_intake_form_id"
+                            value="<?php echo esc_attr($intake_form_id); ?>" class="regular-text" />
+                        <p class="description">Used by <code>[earlystart_intake_form]</code> and the consultation page intake section.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">GHL Intake Form Name</th>
+                    <td><input type="text" name="earlystart_intake_form_name"
+                            value="<?php echo esc_attr($intake_form_name); ?>" class="regular-text" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">GHL Intake Form Height</th>
+                    <td><input type="number" name="earlystart_intake_form_height"
+                            value="<?php echo esc_attr($intake_form_height); ?>" class="small-text" min="300" step="1" /> px</td>
+                </tr>
+                <tr>
+                    <th scope="row">GHL Verification Form ID</th>
+                    <td>
+                        <input type="text" name="earlystart_verification_form_id"
+                            value="<?php echo esc_attr($verification_form_id); ?>" class="regular-text" />
+                        <p class="description">Used by <code>[earlystart_verification_form]</code> for insurance/benefits verification.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">GHL Verification Form Name</th>
+                    <td><input type="text" name="earlystart_verification_form_name"
+                            value="<?php echo esc_attr($verification_form_name); ?>" class="regular-text" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">GHL Verification Form Height</th>
+                    <td><input type="number" name="earlystart_verification_form_height"
+                            value="<?php echo esc_attr($verification_form_height); ?>" class="small-text" min="300" step="1" /> px</td>
+                </tr>
+                <tr>
                     <th scope="row">SMS Compliance Disclosure</th>
                     <td>
                         <textarea name="earlystart_contact_sms_disclosure" rows="5" class="large-text"><?php echo esc_textarea($sms_disclosure); ?></textarea>
@@ -223,23 +296,104 @@ function earlystart_contact_settings_page_html()
         <hr>
         <h2>Usage</h2>
         <p>Use this shortcode: <code>[earlystart_contact_form]</code></p>
+        <p>Intake form shortcode: <code>[earlystart_intake_form]</code></p>
+        <p>Verification form shortcode: <code>[earlystart_verification_form]</code></p>
     </div>
     <?php
+}
+
+function earlystart_contact_form_config($type)
+{
+    $type = sanitize_key((string) $type);
+    if ($type === 'intake') {
+        return array(
+            'id' => get_option('earlystart_intake_form_id', earlystart_contact_default_intake_form_id()),
+            'height' => (int) get_option('earlystart_intake_form_height', 1800),
+            'name' => get_option('earlystart_intake_form_name', 'Chroma Early Start - Intake Form'),
+            'source' => 'website_intake_form',
+            'disclosure' => get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure()),
+            'missing_message' => 'The Chroma Early Start intake form is being connected. Please use the inquiry form or call our intake team for immediate support.',
+        );
+    }
+
+    if ($type === 'verification') {
+        return array(
+            'id' => get_option('earlystart_verification_form_id', earlystart_contact_default_verification_form_id()),
+            'height' => (int) get_option('earlystart_verification_form_height', 1500),
+            'name' => get_option('earlystart_verification_form_name', 'Chroma Early Start - Benefits Verification Form'),
+            'source' => 'website_verification_form',
+            'disclosure' => '',
+            'missing_message' => 'The Chroma Early Start benefits verification form is being connected. Our intake team can still help verify benefits after your inquiry is submitted.',
+        );
+    }
+
+    return array(
+        'id' => get_option('earlystart_contact_form_id', earlystart_contact_default_form_id()),
+        'height' => (int) get_option('earlystart_contact_form_height', 1600),
+        'name' => get_option('earlystart_contact_form_name', 'Chroma Early Start - A2P Inquiry Form'),
+        'source' => 'website_contact_form',
+        'disclosure' => get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure()),
+        'missing_message' => 'The Chroma Early Start inquiry form is being connected. Please call or email our intake team for immediate support.',
+    );
+}
+
+function earlystart_contact_missing_form_notice($message)
+{
+    $phone = function_exists('earlystart_global_phone') ? earlystart_global_phone() : '';
+    $email = function_exists('earlystart_global_email') ? earlystart_global_email() : get_option('admin_email');
+    $tel = preg_replace('/[^0-9+]/', '', (string) $phone);
+
+    ob_start();
+    ?>
+    <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-relaxed text-stone-800">
+        <p><?php echo esc_html($message); ?></p>
+        <div class="mt-4 flex flex-wrap gap-3">
+            <?php if ($phone && $tel): ?>
+                <a class="font-bold text-rose-700 hover:text-rose-800" href="tel:<?php echo esc_attr($tel); ?>"><?php echo esc_html($phone); ?></a>
+            <?php endif; ?>
+            <?php if ($email): ?>
+                <a class="font-bold text-rose-700 hover:text-rose-800" href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php
+    return ob_get_clean();
 }
 
 /**
  * Contact Form Shortcode
  */
-function earlystart_contact_form_shortcode()
+function earlystart_contact_form_shortcode($atts = array())
 {
-    $form_id = get_option('earlystart_contact_form_id', earlystart_contact_default_form_id());
-    $form_height = get_option('earlystart_contact_form_height', 1600);
-    $form_name = get_option('earlystart_contact_form_name', 'Chroma Early Start - A2P Inquiry Form');
-    $sms_disclosure = get_option('earlystart_contact_sms_disclosure', earlystart_contact_default_sms_disclosure());
+    $atts = shortcode_atts(array(
+        'type' => 'contact',
+        'id' => '',
+        'height' => '',
+        'name' => '',
+        'source' => '',
+        'show_disclosure' => '',
+    ), (array) $atts, 'earlystart_contact_form');
+
+    $config = earlystart_contact_form_config($atts['type']);
+    $form_id = trim((string) ($atts['id'] ?: $config['id']));
+    if ($form_id === '') {
+        return earlystart_contact_missing_form_notice($config['missing_message']);
+    }
+
+    $form_height = (int) ($atts['height'] !== '' ? $atts['height'] : $config['height']);
+    if ($form_height < 300) {
+        $form_height = 300;
+    }
+    $form_name = (string) ($atts['name'] ?: $config['name']);
+    $source = (string) ($atts['source'] ?: $config['source']);
+    $sms_disclosure = (string) $config['disclosure'];
+    if ($atts['show_disclosure'] !== '') {
+        $sms_disclosure = rest_sanitize_boolean($atts['show_disclosure']) ? $sms_disclosure : '';
+    }
     $lazy_load = get_option('earlystart_contact_lazy_load', false);
     $lazy_delay = get_option('earlystart_contact_lazy_delay', 2000);
 
-    $form_url = earlystart_contact_build_tracked_form_url($form_id);
+    $form_url = earlystart_contact_build_tracked_form_url($form_id, $source);
     $loading_attr = $lazy_load ? 'lazy' : 'eager';
     $wrapper_id = 'earlystart-contact-form-' . sanitize_html_class($form_id);
     $iframe_id = 'inline-' . sanitize_html_class($form_id);
@@ -315,7 +469,7 @@ function earlystart_contact_form_shortcode()
                                 trackedUrl.searchParams.set(key, value);
                             }
                         });
-                        trackedUrl.searchParams.set('source', trackedUrl.searchParams.get('source') || 'website_contact_form');
+                        trackedUrl.searchParams.set('source', trackedUrl.searchParams.get('source') || <?php echo wp_json_encode($source); ?>);
                         trackedUrl.searchParams.set('page_url', window.location.href);
                         if (document.referrer) {
                             trackedUrl.searchParams.set('referrer', document.referrer);
@@ -367,7 +521,7 @@ function earlystart_contact_form_shortcode()
                                 trackedUrl.searchParams.set(key, value);
                             }
                         });
-                        trackedUrl.searchParams.set('source', trackedUrl.searchParams.get('source') || 'website_contact_form');
+                        trackedUrl.searchParams.set('source', trackedUrl.searchParams.get('source') || <?php echo wp_json_encode($source); ?>);
                         trackedUrl.searchParams.set('page_url', window.location.href);
                         if (document.referrer) {
                             trackedUrl.searchParams.set('referrer', document.referrer);
@@ -395,3 +549,17 @@ function earlystart_contact_form_shortcode()
     return ob_get_clean();
 }
 add_shortcode('earlystart_contact_form', 'earlystart_contact_form_shortcode');
+
+function earlystart_intake_form_shortcode($atts = array())
+{
+    $atts = array_merge((array) $atts, array('type' => 'intake'));
+    return earlystart_contact_form_shortcode($atts);
+}
+add_shortcode('earlystart_intake_form', 'earlystart_intake_form_shortcode');
+
+function earlystart_verification_form_shortcode($atts = array())
+{
+    $atts = array_merge((array) $atts, array('type' => 'verification'));
+    return earlystart_contact_form_shortcode($atts);
+}
+add_shortcode('earlystart_verification_form', 'earlystart_verification_form_shortcode');

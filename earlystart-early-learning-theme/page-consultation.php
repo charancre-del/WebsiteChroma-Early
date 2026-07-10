@@ -106,69 +106,44 @@ while (have_posts()):
 
                     <!-- Form Side -->
                     <div class="lg:w-3/5 p-12">
-                        <!-- This is where the real form or TidyCal embed would go -->
-                        <div id="consultation-form-placeholder">
-                            <div class="mb-8">
-                                <h4 class="text-xl font-bold text-stone-900 mb-4">
-                                    <?php _e('Clinical Intake Form', 'earlystart-early-learning'); ?>
-                                </h4>
-                                <p class="text-stone-700 text-sm">
-                                    <?php _e('Please provide a few details to get started. Our clinical directors use this to maximize the value of your call.', 'earlystart-early-learning'); ?>
-                                </p>
-                            </div>
+                        <div id="consultation-form-placeholder" class="space-y-10">
+                            <section id="intake-form" class="scroll-mt-24">
+                                <div class="mb-8">
+                                    <span class="text-xs font-bold uppercase tracking-widest text-rose-700"><?php _e('Step 1', 'earlystart-early-learning'); ?></span>
+                                    <h4 class="text-xl font-bold text-stone-900 mt-2 mb-4">
+                                        <?php _e('Clinical Intake Form', 'earlystart-early-learning'); ?>
+                                    </h4>
+                                    <p class="text-stone-700 text-sm leading-relaxed">
+                                        <?php _e('Share the details our intake team needs to understand your child, services requested, preferred location, and next steps.', 'earlystart-early-learning'); ?>
+                                    </p>
+                                </div>
+                                <?php
+                                if (shortcode_exists('earlystart_intake_form')) {
+                                    echo do_shortcode('[earlystart_intake_form]');
+                                } elseif (shortcode_exists('earlystart_contact_form')) {
+                                    echo do_shortcode('[earlystart_contact_form type="intake"]');
+                                }
+                                ?>
+                            </section>
 
-                            <div class="space-y-6">
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="space-y-2">
-                                        <label class="text-xs font-bold text-stone-300 uppercase tracking-widest">
-                                            <?php _e('Parent Name', 'earlystart-early-learning'); ?>
-                                        </label>
-                                        <input type="text"
-                                            class="w-full bg-stone-50 border border-stone-200 p-4 rounded-xl focus:border-rose-300 outline-none transition-all">
-                                    </div>
-                                    <div class="space-y-2">
-                                        <label class="text-xs font-bold text-stone-300 uppercase tracking-widest">
-                                            <?php _e('Phone Number', 'earlystart-early-learning'); ?>
-                                        </label>
-                                        <input type="tel"
-                                            class="w-full bg-stone-50 border border-stone-200 p-4 rounded-xl focus:border-rose-300 outline-none transition-all">
-                                    </div>
+                            <section id="verification-form" class="scroll-mt-24 border-t border-stone-100 pt-10">
+                                <div class="mb-8">
+                                    <span class="text-xs font-bold uppercase tracking-widest text-rose-700"><?php _e('Step 2', 'earlystart-early-learning'); ?></span>
+                                    <h4 class="text-xl font-bold text-stone-900 mt-2 mb-4">
+                                        <?php _e('Benefits Verification Form', 'earlystart-early-learning'); ?>
+                                    </h4>
+                                    <p class="text-stone-700 text-sm leading-relaxed">
+                                        <?php _e('Submit insurance or payer details so our team can begin verification and explain available coverage paths.', 'earlystart-early-learning'); ?>
+                                    </p>
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-stone-300 uppercase tracking-widest">
-                                        <?php _e('Child\'s Age & Current Assessment Need (if any)', 'earlystart-early-learning'); ?>
-                                    </label>
-                                    <input type="text" placeholder="e.g. 4 years old, autism assessment"
-                                        class="w-full bg-stone-50 border border-stone-200 p-4 rounded-xl focus:border-rose-300 outline-none transition-all">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-stone-300 uppercase tracking-widest">
-                                        <?php _e('Preferred Clinical Hub', 'earlystart-early-learning'); ?>
-                                    </label>
-                                    <select
-                                        class="w-full bg-stone-50 border border-stone-200 p-4 rounded-xl focus:border-rose-300 outline-none transition-all">
-                                        <option>
-                                            <?php _e('Select a location...', 'earlystart-early-learning'); ?>
-                                        </option>
-                                        <option>
-                                            <?php _e('Alpharetta - Flagship', 'earlystart-early-learning'); ?>
-                                        </option>
-                                        <option>
-                                            <?php _e('Marietta', 'earlystart-early-learning'); ?>
-                                        </option>
-                                        <option>
-                                            <?php _e('Midtown Atlanta', 'earlystart-early-learning'); ?>
-                                        </option>
-                                        <option>
-                                            <?php _e('In-Home Therapy', 'earlystart-early-learning'); ?>
-                                        </option>
-                                    </select>
-                                </div>
-                                <button
-                                    class="w-full bg-rose-600 text-white font-bold py-5 rounded-2xl hover:bg-rose-500 transition-all shadow-xl shadow-rose-900/10">
-                                    <?php _e('Next: Schedule Your Call', 'earlystart-early-learning'); ?>
-                                </button>
-                            </div>
+                                <?php
+                                if (shortcode_exists('earlystart_verification_form')) {
+                                    echo do_shortcode('[earlystart_verification_form]');
+                                } elseif (shortcode_exists('earlystart_contact_form')) {
+                                    echo do_shortcode('[earlystart_contact_form type="verification"]');
+                                }
+                                ?>
+                            </section>
                         </div>
                     </div>
                 </div>
