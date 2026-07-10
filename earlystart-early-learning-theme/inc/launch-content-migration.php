@@ -10,6 +10,21 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Default hero images for assessment program pages.
+ *
+ * @return array<string,string>
+ */
+function earlystart_launch_assessment_program_images(): array
+{
+    return array(
+        'autism-assessment' => 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1200&q=80&fm=webp',
+        'behavioral-assessment' => 'https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?auto=format&fit=crop&w=1200&q=80&fm=webp',
+        'adhd-assessment' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80&fm=webp',
+        'ot-assessment' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80&fm=webp',
+    );
+}
+
+/**
  * Recursively normalize legacy strings inside option arrays.
  *
  * @param mixed $value Stored option value.
@@ -273,6 +288,7 @@ function earlystart_launch_service_expansion_programs(): array
             'title' => 'Autism Assessment',
             'excerpt' => 'Comprehensive autism assessments that help families understand needs and next steps.',
             'meta' => array(
+                'program_hero_image' => 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1200&q=80&fm=webp',
                 'program_icon' => 'clipboard-check',
                 'program_age_range' => '18mo - 12y',
                 'program_color_scheme' => 'rose',
@@ -290,6 +306,7 @@ function earlystart_launch_service_expansion_programs(): array
             'title' => 'Behavioral Assessment',
             'excerpt' => 'Behavioral assessments for regulation, behavior patterns, and family-centered next steps.',
             'meta' => array(
+                'program_hero_image' => 'https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?auto=format&fit=crop&w=1200&q=80&fm=webp',
                 'program_icon' => 'heart-pulse',
                 'program_age_range' => '2y - 12y',
                 'program_color_scheme' => 'orange',
@@ -307,6 +324,7 @@ function earlystart_launch_service_expansion_programs(): array
             'title' => 'ADHD Assessment',
             'excerpt' => 'ADHD assessments for attention, executive function, impulsivity, and regulation needs.',
             'meta' => array(
+                'program_hero_image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80&fm=webp',
                 'program_icon' => 'activity',
                 'program_age_range' => '18mo - 12y',
                 'program_color_scheme' => 'blue',
@@ -324,6 +342,7 @@ function earlystart_launch_service_expansion_programs(): array
             'title' => 'OT Assessment',
             'excerpt' => 'Occupational therapy assessments for sensory, motor, daily living, and participation needs.',
             'meta' => array(
+                'program_hero_image' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80&fm=webp',
                 'program_icon' => 'clipboard-list',
                 'program_age_range' => 'Infants - 12y',
                 'program_color_scheme' => 'yellow',
@@ -554,6 +573,14 @@ function earlystart_apply_service_expansion_migration(): void
             update_post_meta((int) $program->ID, 'program_age_range', $age_range);
         }
     }
+
+    foreach (earlystart_launch_assessment_program_images() as $slug => $image_url) {
+        $program = get_page_by_path($slug, OBJECT, 'program');
+        if ($program) {
+            update_post_meta((int) $program->ID, 'program_hero_image', $image_url);
+            delete_post_meta((int) $program->ID, '_earlystart_program_hero_image_error');
+        }
+    }
 }
 
 /**
@@ -564,7 +591,7 @@ function earlystart_apply_service_expansion_migration(): void
  */
 function earlystart_apply_launch_content_cleanup(): void
 {
-    $version = '2026-07-10.1';
+    $version = '2026-07-10.3';
     if (get_option('earlystart_launch_content_cleanup_version') === $version) {
         return;
     }

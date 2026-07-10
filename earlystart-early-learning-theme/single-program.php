@@ -46,6 +46,7 @@ while (have_posts()):
 	$chart_color = $hex_colors[$theme_color] ?? '#f43f5e';
 
 	// Hero section
+	$hero_image = get_post_meta($program_id, 'program_hero_image', true);
 	$hero_title = get_post_meta($program_id, 'program_hero_title', true) ?: ($program_meta_title ?: get_the_title());
 	$hero_description = get_post_meta($program_id, 'program_hero_description', true) ?: ($program_meta_description ?: get_the_excerpt());
 
@@ -117,6 +118,8 @@ while (have_posts()):
 							class="aspect-[4/3] rounded-[3rem] bg-stone-50 overflow-hidden shadow-2xl border-8 border-white">
 							<?php if (has_post_thumbnail()): ?>
 								<?php the_post_thumbnail('large', ['class' => 'w-full h-full object-cover']); ?>
+							<?php elseif ($hero_image): ?>
+								<img src="<?php echo esc_url($hero_image); ?>" alt="<?php echo esc_attr($hero_title); ?>" class="w-full h-full object-cover">
 							<?php else: ?>
 								<div class="w-full h-full bg-<?php echo esc_attr($theme_color); ?>-50 flex items-center justify-center text-<?php echo esc_attr($theme_color); ?>-300">
 									<i data-lucide="image" class="w-16 h-16"></i>
