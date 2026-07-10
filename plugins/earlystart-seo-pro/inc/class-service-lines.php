@@ -64,6 +64,18 @@ if (!function_exists('earlystart_seo_service_lines')) {
                 'keywords' => ['ot', 'occupational', 'occupational therapy', 'sensory therapy'],
                 'description' => 'Pediatric occupational therapy for sensory, motor, and daily living skills.',
             ],
+            'ot_assessment' => [
+                'key' => 'ot_assessment',
+                'label' => 'OT Assessment',
+                'spanish_label' => 'Evaluacion de terapia ocupacional',
+                'slug' => 'ot-assessment',
+                'service_type' => 'Occupational therapy assessment',
+                'category' => 'Occupational therapy assessment',
+                'schema_type' => 'OccupationalTherapy',
+                'medical_specialty' => 'Occupational therapy',
+                'keywords' => ['ot assessment', 'occupational therapy assessment', 'sensory assessment', 'motor skills assessment'],
+                'description' => 'Occupational therapy assessments for sensory processing, fine motor, daily living, and participation needs.',
+            ],
             'behavioral_assessment' => [
                 'key' => 'behavioral_assessment',
                 'label' => 'Behavioral Assessment',
@@ -154,6 +166,10 @@ if (!function_exists('earlystart_seo_detect_service_line')) {
 
         if (preg_match('/\b(speech|speech-language|language therapy)\b/', $haystack)) {
             return 'speech';
+        }
+
+        if (preg_match('/\b(ot assessment|ot-assessment|occupational therapy assessment|sensory assessment|motor skills assessment)\b/', $haystack)) {
+            return 'ot_assessment';
         }
 
         if (preg_match('/\b(occupational|occupational therapy|sensory therapy|ot)\b/', $haystack)) {

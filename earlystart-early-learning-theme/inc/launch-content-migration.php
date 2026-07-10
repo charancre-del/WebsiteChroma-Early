@@ -248,6 +248,16 @@ function earlystart_launch_service_expansion_cards(): array
             'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80&fm=webp',
             'bullets' => array('Attention and regulation review', 'Executive function profile', 'Practical care recommendations'),
         ),
+        'ot-assessment' => array(
+            'id' => 'ot-assessment',
+            'title' => 'OT Assessment',
+            'subtitle' => 'Sensory & Motor Review',
+            'icon' => 'clipboard-list',
+            'heading' => 'Understanding Daily Participation',
+            'description' => 'OT assessments help families understand sensory processing, fine motor, self-care, regulation, and daily living needs.',
+            'image' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80&fm=webp',
+            'bullets' => array('Sensory profile review', 'Fine motor and daily living skills', 'Care planning recommendations'),
+        ),
     );
 }
 
@@ -308,6 +318,23 @@ function earlystart_launch_service_expansion_programs(): array
                 'program_prism_social' => 70,
                 'program_prism_academic' => 80,
                 'program_prism_creative' => 45,
+            ),
+        ),
+        'ot-assessment' => array(
+            'title' => 'OT Assessment',
+            'excerpt' => 'Occupational therapy assessments for sensory, motor, daily living, and participation needs.',
+            'meta' => array(
+                'program_icon' => 'clipboard-list',
+                'program_age_range' => '6mo - 12y',
+                'program_color_scheme' => 'yellow',
+                'program_hero_title' => 'Understanding Daily Participation.',
+                'program_hero_description' => 'Our OT assessment pathway reviews sensory processing, fine motor skills, self-care, regulation, and daily living needs so families can plan the right support.',
+                'program_prism_title' => 'OT Assessment Core',
+                'program_prism_physical' => 85,
+                'program_prism_emotional' => 70,
+                'program_prism_social' => 55,
+                'program_prism_academic' => 55,
+                'program_prism_creative' => 65,
             ),
         ),
     );
@@ -413,10 +440,11 @@ function earlystart_apply_service_expansion_migration(): void
                 'autism-assessment' => 10,
                 'behavioral-assessment' => 20,
                 'adhd-assessment' => 30,
-                'aba' => 40,
-                'speech' => 50,
-                'ot' => 60,
-                'readiness' => 70,
+                'ot-assessment' => 40,
+                'aba' => 50,
+                'speech' => 60,
+                'ot' => 70,
+                'readiness' => 80,
             );
             usort($services, static function ($left, $right) use ($preferred_order) {
                 $left_id = is_array($left) && !empty($left['id']) ? (string) $left['id'] : '';
@@ -434,17 +462,19 @@ function earlystart_apply_service_expansion_migration(): void
     }
 
     $copy_updates = array(
-        'Specialized ABA, Speech, and Occupational Therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
-        'Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
-        'Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\\\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
-        'Integrating speech, OT, and ABA for holistic outcomes.' => 'Integrating assessment, speech, OT, and ABA for holistic outcomes.',
-        'Integrating diagnosis, behavioral health, speech, OT, and ABA for holistic outcomes.' => 'Integrating assessment, speech, OT, and ABA for holistic outcomes.',
-        'Our team includes licensed and board-certified professionals across ABA, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, ABA, speech, and occupational therapy disciplines.',
-        'Our team includes licensed and board-certified professionals across autism diagnosis, ABA, behavioral health, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, ABA, speech, and occupational therapy disciplines.',
-        'Find a clinic near you and schedule a tour for ABA, Speech, or OT.' => 'Find a clinic near you and request a consultation for autism assessment, behavioral assessment, ADHD assessment, ABA, speech, or OT.',
-        'Find a clinic near you and schedule a tour for autism diagnosis, ABA, behavioral health, speech, or OT.' => 'Find a clinic near you and request a consultation for autism assessment, behavioral assessment, ADHD assessment, ABA, speech, or OT.',
-        'ABA, Speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.' => 'Assessment, ABA, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.',
-        'Diagnosis, ABA, behavioral health, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.' => 'Assessment, ABA, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.',
+        'Specialized ABA, Speech, and Occupational Therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
+        'Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
+        'Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
+        'Specialized autism diagnosis, ABA therapy, behavioral health, speech therapy, and occupational therapy tailored to your child\\\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.' => 'Specialized autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.',
+        'Integrating speech, OT, and ABA for holistic outcomes.' => 'Integrating assessment, OT assessment, speech, OT, and ABA for holistic outcomes.',
+        'Integrating diagnosis, behavioral health, speech, OT, and ABA for holistic outcomes.' => 'Integrating assessment, OT assessment, speech, OT, and ABA for holistic outcomes.',
+        'Integrating assessment, speech, OT, and ABA for holistic outcomes.' => 'Integrating assessment, OT assessment, speech, OT, and ABA for holistic outcomes.',
+        'Our team includes licensed and board-certified professionals across ABA, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA, speech, and occupational therapy disciplines.',
+        'Our team includes licensed and board-certified professionals across autism diagnosis, ABA, behavioral health, speech, and occupational therapy disciplines.' => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA, speech, and occupational therapy disciplines.',
+        'Find a clinic near you and schedule a tour for ABA, Speech, or OT.' => 'Find a clinic near you and request a consultation for autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA, speech, or OT.',
+        'Find a clinic near you and schedule a tour for autism diagnosis, ABA, behavioral health, speech, or OT.' => 'Find a clinic near you and request a consultation for autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA, speech, or OT.',
+        'ABA, Speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.' => 'Assessment, OT assessment, ABA, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.',
+        'Diagnosis, ABA, behavioral health, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.' => 'Assessment, OT assessment, ABA, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.',
         'Navigating early intervention can be overwhelming. We help families understand insurance, intake, diagnosis, and next steps with clarity and compassion.' => 'Navigating early intervention can be overwhelming. We help families understand insurance, intake, assessment, and next steps with clarity and compassion.',
         'Navigating early intervention can be overwhelming. We are here to guide you through insurance, diagnosis, and the first steps of therapy with clarity and compassion. We partner with you to unlock your child\'s potential.' => 'Navigating early intervention can be overwhelming. We are here to guide you through insurance, assessment, and the first steps of therapy with clarity and compassion. We partner with you to unlock your child\'s potential.',
     );
@@ -463,7 +493,7 @@ function earlystart_apply_service_expansion_migration(): void
     }
 
     $old_special_programs = "ABA Therapy\nSpeech Therapy\nOccupational Therapy\nParent Coaching";
-    $new_special_programs = "Autism Assessment\nBehavioral Assessment\nADHD Assessment\nABA Therapy\nSpeech Therapy\nOccupational Therapy\nParent Coaching";
+    $new_special_programs = "Autism Assessment\nBehavioral Assessment\nADHD Assessment\nOT Assessment\nABA Therapy\nSpeech Therapy\nOccupational Therapy\nParent Coaching";
     $location_ids = get_posts(array(
         'post_type' => 'location',
         'posts_per_page' => -1,
@@ -476,6 +506,42 @@ function earlystart_apply_service_expansion_migration(): void
     foreach ((array) $location_ids as $location_id) {
         update_post_meta((int) $location_id, 'location_special_programs', $new_special_programs);
     }
+
+    $location_ids = get_posts(array(
+        'post_type' => 'location',
+        'posts_per_page' => -1,
+        'fields' => 'ids',
+        'post_status' => 'any',
+    ));
+
+    foreach ((array) $location_ids as $location_id) {
+        $programs = (string) get_post_meta((int) $location_id, 'location_special_programs', true);
+        if (strpos($programs, 'OT Assessment') !== false) {
+            continue;
+        }
+
+        if (trim($programs) === '') {
+            update_post_meta((int) $location_id, 'location_special_programs', $new_special_programs);
+            continue;
+        }
+
+        $updated_programs = $programs;
+        if (stripos($programs, 'ADHD Assessment') !== false) {
+            $updated_programs = preg_replace('/ADHD Assessment\\s*/i', "ADHD Assessment\nOT Assessment\n", $programs, 1);
+        } elseif (stripos($programs, 'Behavioral Assessment') !== false) {
+            $updated_programs = preg_replace('/Behavioral Assessment\\s*/i', "Behavioral Assessment\nOT Assessment\n", $programs, 1);
+        } elseif (stripos($programs, 'Autism Assessment') !== false) {
+            $updated_programs = preg_replace('/Autism Assessment\\s*/i', "Autism Assessment\nOT Assessment\n", $programs, 1);
+        } elseif (stripos($programs, 'ABA Therapy') !== false) {
+            $updated_programs = preg_replace('/ABA Therapy\\s*/i', "OT Assessment\nABA Therapy\n", $programs, 1);
+        } else {
+            $updated_programs = rtrim($programs) . "\nOT Assessment";
+        }
+
+        if ($updated_programs !== $programs) {
+            update_post_meta((int) $location_id, 'location_special_programs', $updated_programs);
+        }
+    }
 }
 
 /**
@@ -486,7 +552,7 @@ function earlystart_apply_service_expansion_migration(): void
  */
 function earlystart_apply_launch_content_cleanup(): void
 {
-    $version = '2026-07-09.5';
+    $version = '2026-07-09.7';
     if (get_option('earlystart_launch_content_cleanup_version') === $version) {
         return;
     }

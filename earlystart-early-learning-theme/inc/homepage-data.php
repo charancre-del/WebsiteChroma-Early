@@ -23,7 +23,7 @@ function earlystart_home_default_hero()
 {
         return array(
                 'heading' => __('Compassionate <span class="bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-600 italic">Therapy</span> for Growing Minds', 'earlystart-early-learning'),
-                'subheading' => __('Specialized autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.', 'earlystart-early-learning'),
+                'subheading' => __('Specialized autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA therapy, speech therapy, and occupational therapy tailored to your child\'s unique journey. Our integrated clinical approach helps children thrive in a supportive, play-based environment.', 'earlystart-early-learning'),
                 'cta_label' => __('Start Your Journey', 'earlystart-early-learning'),
                 'cta_url' => '#contact',
                 'secondary_label' => __('Explore Services', 'earlystart-early-learning'),
@@ -112,6 +112,20 @@ function earlystart_home_default_services()
                                 __('Articulation support', 'earlystart-early-learning'),
                                 __('Social language skills', 'earlystart-early-learning'),
                                 __('Early intervention focus', 'earlystart-early-learning')
+                        )
+                ),
+                array(
+                        'id' => 'ot-assessment',
+                        'title' => __('OT Assessment', 'earlystart-early-learning'),
+                        'subtitle' => __('Sensory & Motor Review', 'earlystart-early-learning'),
+                        'icon' => 'clipboard-list',
+                        'heading' => __('Understanding Daily Participation', 'earlystart-early-learning'),
+                        'description' => __('OT assessments help families understand sensory processing, fine motor, self-care, regulation, and daily living needs.', 'earlystart-early-learning'),
+                        'image' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80&fm=webp',
+                        'bullets' => array(
+                                __('Sensory profile review', 'earlystart-early-learning'),
+                                __('Fine motor and daily living skills', 'earlystart-early-learning'),
+                                __('Care planning recommendations', 'earlystart-early-learning')
                         )
                 ),
                 array(
@@ -435,6 +449,13 @@ function earlystart_home_default_program_wizard_options()
                         'link' => $program_url . '#adhd-assessment',
                 ),
                 array(
+                        'key' => 'ot-assessment',
+                        'emoji' => 'OTA',
+                        'label' => __("OT\nAssessment", 'earlystart-early-learning'),
+                        'description' => __('Occupational therapy assessment for sensory, motor, daily living, and participation needs.', 'earlystart-early-learning'),
+                        'link' => $program_url . '#ot-assessment',
+                ),
+                array(
                         'key' => 'aba',
                         'emoji' => 'ABA',
                         'label' => __("ABA\nTherapy", 'earlystart-early-learning'),
@@ -498,7 +519,7 @@ function earlystart_home_default_curriculum_profiles()
                                 'key' => 'care-coordination',
                                 'label' => 'Care Coordination',
                                 'title' => 'Integrated Care Phase',
-                                'description' => 'Our team aligns goals across assessment, ABA, speech, OT, and family communication so care stays coordinated.',
+                                'description' => 'Our team aligns goals across assessment, OT assessment, ABA, speech, OT, and family communication so care stays coordinated.',
                                 'color' => '#4A6C7C',
                                 'data' => array(55, 85, 85, 65, 60),
                         ),

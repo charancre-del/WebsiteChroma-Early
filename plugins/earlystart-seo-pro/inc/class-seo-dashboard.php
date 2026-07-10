@@ -881,7 +881,7 @@ class earlystart_SEO_Dashboard
                 // Add differentiator row
                 $(document).on('click', '#add-llm-diff', function (e) {
                     e.preventDefault();
-                    appendLLMRow('#llm-diffs-container', 'chroma-llm-diff-input', '', 'e.g., coordinated ABA, speech, and OT care');
+                    appendLLMRow('#llm-diffs-container', 'chroma-llm-diff-input', '', 'e.g., coordinated OT assessment, ABA, speech, and OT care');
                 });
 
                 // Remove row

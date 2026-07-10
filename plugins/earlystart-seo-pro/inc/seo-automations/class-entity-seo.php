@@ -119,6 +119,11 @@ class earlystart_Entity_SEO
                 'keywords' => ['adhd assessment', 'attention assessment', 'executive function assessment'],
                 'hub_page' => null
             ],
+            'ot-assessment' => [
+                'name' => 'OT Assessment',
+                'keywords' => ['ot assessment', 'occupational therapy assessment', 'sensory assessment', 'motor skills assessment'],
+                'hub_page' => null
+            ],
             'speech' => [
                 'name' => 'Speech Therapy',
                 'keywords' => ['speech therapy', 'speech-language therapy', 'communication support'],

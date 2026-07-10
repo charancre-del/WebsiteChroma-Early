@@ -532,7 +532,7 @@ class earlystart_LLM_Client
 
         $prompt .= "=== BUSINESS CONTEXT ===\n";
         $prompt .= "- Industry: Licensed Pediatric Therapy\n";
-        $prompt .= "- Service Type: Autism Assessment, Behavioral Assessment, ADHD Assessment, ABA Therapy, Speech Therapy, Occupational Therapy, Early Intervention\n";
+        $prompt .= "- Service Type: Autism Assessment, Behavioral Assessment, ADHD Assessment, OT Assessment, ABA Therapy, Speech Therapy, Occupational Therapy, Early Intervention\n";
         $prompt .= "- Location Type: Physical Business Locations in Georgia\n";
         $prompt .= "- Brand: Chroma Early Start\n\n";
 

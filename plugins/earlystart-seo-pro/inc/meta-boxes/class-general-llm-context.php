@@ -95,7 +95,7 @@ class earlystart_General_LLM_Context extends earlystart_Advanced_SEO_Meta_Box_Ba
             'id' => 'seo_llm_key_differentiators',
             'label' => '',
             'values' => $key_differentiators,
-            'placeholder' => 'e.g., "Coordinated ABA, speech, and OT care"',
+            'placeholder' => 'e.g., "Coordinated OT assessment, ABA, speech, and OT care"',
             'button_text' => 'Add Differentiator',
         ]);
     }

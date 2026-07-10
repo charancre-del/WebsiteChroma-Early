@@ -20,6 +20,7 @@ function earlystart_get_wizard_color_classes($key)
         'autism-assessment' => 'bg-chroma-redLight border-chroma-red/30 text-brand-ink hover:border-chroma-red hover:text-chroma-red',
         'behavioral-assessment' => 'bg-white border-chroma-yellow/20 text-brand-ink hover:border-chroma-yellow hover:text-chroma-yellow',
         'adhd-assessment' => 'bg-white border-chroma-blue/20 text-brand-ink hover:border-chroma-blue hover:text-chroma-blue',
+        'ot-assessment' => 'bg-white border-chroma-yellow/20 text-brand-ink hover:border-chroma-yellow hover:text-chroma-yellow',
         'aba' => 'bg-white border-chroma-red/20 text-brand-ink hover:border-chroma-red hover:text-chroma-red',
         'speech' => 'bg-white border-chroma-teal/20 text-brand-ink hover:border-chroma-teal hover:text-chroma-teal',
         'ot' => 'bg-white border-chroma-green/20 text-brand-ink hover:border-chroma-green hover:text-chroma-green',

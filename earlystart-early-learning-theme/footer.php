@@ -199,6 +199,8 @@
 								class="hover:text-rose-400 transition-colors">Behavioral Assessment</a>
 							<a href="<?php echo esc_url(home_url('/programs/adhd-assessment/')); ?>"
 								class="hover:text-rose-400 transition-colors">ADHD Assessment</a>
+							<a href="<?php echo esc_url(home_url('/programs/ot-assessment/')); ?>"
+								class="hover:text-rose-400 transition-colors">OT Assessment</a>
 							<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_program_link('speech'))); ?>"
 								class="hover:text-rose-400 transition-colors">Speech Therapy</a>
 							<a href="<?php echo esc_url($normalize_internal_url(earlystart_get_program_link('ot'))); ?>"

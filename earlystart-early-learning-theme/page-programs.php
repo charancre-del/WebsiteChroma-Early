@@ -12,7 +12,7 @@ $page_id = get_queried_object_id();
 $programs_shell_defaults = array(
     'hero_eyebrow' => __('What We Do', 'earlystart-early-learning'),
     'hero_heading' => __('Holistic Therapy,<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Integrated Care.</span>', 'earlystart-early-learning'),
-    'hero_subheading' => __('We offer a full spectrum of pediatric services. Whether you need focused behavioral support, assessment, ABA, speech, or OT, we have a pathway for you.', 'earlystart-early-learning'),
+    'hero_subheading' => __('We offer a full spectrum of pediatric services. Whether you need focused behavioral support, assessment, OT assessment, ABA, speech, or OT, we have a pathway for you.', 'earlystart-early-learning'),
     'settings_heading' => __('Flexible Service Settings', 'earlystart-early-learning'),
     'settings_text' => __('We offer therapy in three distinct environments to best suit your family\'s needs and your child\'s goals.', 'earlystart-early-learning'),
     'settings_cards' => array(

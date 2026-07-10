@@ -155,7 +155,7 @@ while (have_posts()):
                             <?php _e('Holistic Sync', 'earlystart-early-learning'); ?>
                         </h3>
                         <p class="text-stone-700 leading-relaxed">
-                            <?php _e('Assessment, ABA, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.', 'earlystart-early-learning'); ?>
+                            <?php _e('Assessment, OT assessment, ABA, speech, and OT goals are synchronized in one clinical roadmap. No conflicting adviceâ€”just one unified team.', 'earlystart-early-learning'); ?>
                         </p>
                     </div>
                 </div>

@@ -80,7 +80,7 @@ while (have_posts()):
 		array('label' => __('Media:', 'earlystart-early-learning'), 'email' => function_exists('earlystart_global_media_email') ? earlystart_global_media_email() : earlystart_global_email()),
 	);
 	$default_routes = array(
-		array('icon' => 'baby', 'title' => 'For Families', 'desc' => 'Find a clinic near you and request a consultation for autism assessment, behavioral assessment, ADHD assessment, ABA, speech, or OT.', 'link' => earlystart_get_page_link('locations'), 'label' => 'Find a Clinic', 'color' => 'rose'),
+		array('icon' => 'baby', 'title' => 'For Families', 'desc' => 'Find a clinic near you and request a consultation for autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA, speech, or OT.', 'link' => earlystart_get_page_link('locations'), 'label' => 'Find a Clinic', 'color' => 'rose'),
 		array('icon' => 'briefcase', 'title' => 'For Clinicians', 'desc' => 'View our open positions and learn about our culture of burnout prevention.', 'link' => earlystart_get_page_link('careers'), 'label' => 'View Careers', 'color' => 'orange'),
 		array('icon' => 'heart-pulse', 'title' => 'For Providers', 'desc' => 'Easily refer a client to our clinical team for a comprehensive assessment.', 'link' => earlystart_get_page_link('contact') . '#general-form', 'label' => 'Refer a Client', 'color' => 'amber'),
 	);

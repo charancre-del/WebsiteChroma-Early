@@ -523,7 +523,7 @@ function earlystart_render_location_custom_fields_meta_box($post)
 		<div class="chroma-meta-field">
 			<label for="location_special_programs"><?php _e('Special Programs (Badges)', 'earlystart-early-learning'); ?></label>
 			<textarea id="location_special_programs" name="location_special_programs" rows="2"
-				placeholder="e.g., Autism Assessment, ABA Therapy, Speech Therapy"><?php echo esc_textarea(get_post_meta($post->ID, 'location_special_programs', true)); ?></textarea>
+				placeholder="e.g., Autism Assessment, OT Assessment, ABA Therapy, Speech Therapy"><?php echo esc_textarea(get_post_meta($post->ID, 'location_special_programs', true)); ?></textarea>
 			<small><?php _e('Enter programs separated by commas. These appear as badges on the location card.', 'earlystart-early-learning'); ?></small>
 		</div>
 

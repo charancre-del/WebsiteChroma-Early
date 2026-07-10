@@ -212,7 +212,7 @@ function earlystart_get_location_faq_items($post_id = null)
         ),
         array(
             'question' => __('Which services are available?', 'earlystart-early-learning'),
-            'answer' => __('Most locations offer autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, occupational therapy, and caregiver guidance, though exact services vary by clinic.', 'earlystart-early-learning'),
+            'answer' => __('Most locations offer autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA therapy, speech therapy, occupational therapy, and caregiver guidance, though exact services vary by clinic.', 'earlystart-early-learning'),
         ),
         array(
             'question' => __('Do you accept insurance?', 'earlystart-early-learning'),

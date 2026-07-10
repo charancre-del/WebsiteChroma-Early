@@ -446,6 +446,7 @@ class earlystart_Schema_Injector
                 'Autism assessment',
                 'Behavioral assessment',
                 'ADHD assessment',
+                'OT assessment',
                 'https://schema.org/SpeechPathology',
                 'Occupational Therapy',
                 'Applied Behavior Analysis (ABA) therapy',

@@ -529,6 +529,7 @@ function earlystart_program_details_meta_box_render($post)
 					'A' => 'Autism Assessment',
 					'B' => 'Behavioral Assessment',
 					'ADHD' => 'ADHD Assessment',
+					'OTA' => 'OT Assessment',
 					'ABA' => 'ABA Therapy',
 					'S' => 'Speech Therapy',
 					'OT' => 'Occupational Therapy',

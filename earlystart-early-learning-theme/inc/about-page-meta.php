@@ -1113,7 +1113,7 @@ function earlystart_seed_about_page_defaults( $post_id ) {
 		'about_educators_description'      => 'We build around clinicians and care teams who combine technical skill, warmth, and accountability in every interaction.',
 		'about_educator1_icon'             => 'fa-solid fa-certificate',
 		'about_educator1_title'            => 'Certified & Credentialed',
-		'about_educator1_desc'             => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, ABA, speech, and occupational therapy disciplines.',
+		'about_educator1_desc'             => 'Our team includes licensed and board-certified professionals across autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA, speech, and occupational therapy disciplines.',
 		'about_educator2_icon'             => 'fa-solid fa-user-shield',
 		'about_educator2_title'            => 'Safety First',
 		'about_educator2_desc'             => 'Every team member undergoes rigorous federal and state background checks. All staff are certified in CPR and First Aid, with regular refresher courses.',

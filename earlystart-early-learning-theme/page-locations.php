@@ -233,7 +233,7 @@ $partner_query = new WP_Query(array(
 						$address = get_post_meta($location_id, 'location_address', true);
 						$regions = wp_get_post_terms($location_id, 'location_region');
 						$region_name = !empty($regions) ? $regions[0]->name : 'Metro Atlanta';
-						$services = get_post_meta($location_id, 'location_special_programs', true) ?: 'ABA & Speech Available';
+						$services = get_post_meta($location_id, 'location_special_programs', true) ?: 'Assessment, OT Assessment, ABA, Speech & OT Available';
 						$partner_url = get_permalink($location_id);
 						?>
 						<div

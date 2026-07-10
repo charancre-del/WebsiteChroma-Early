@@ -579,7 +579,7 @@ function earlystart_city_schema()
                         '@type' => 'City',
                         'name' => $city_name
                 ),
-                'description' => get_the_excerpt() ?: "Evidence-based pediatric therapy services in $city_name, GA, including autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy.",
+                'description' => get_the_excerpt() ?: "Evidence-based pediatric therapy services in $city_name, GA, including autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA therapy, speech therapy, and occupational therapy.",
                 'url' => get_permalink()
         );
 
@@ -928,7 +928,7 @@ function earlystart_shared_meta_description()
                         $description = get_bloginfo('description');
                 }
                 if (empty($description)) {
-                        $description = get_bloginfo('name') . ' provides pediatric therapy services across Metro Atlanta, including autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy.';
+                        $description = get_bloginfo('name') . ' provides pediatric therapy services across Metro Atlanta, including autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA therapy, speech therapy, and occupational therapy.';
                         
                         if (class_exists('earlystart_Multilingual_Manager') && earlystart_Multilingual_Manager::is_spanish()) {
                             $description = 'Chroma Early Start ofrece terapia pediátrica, apoyo familiar y servicios de intervención temprana en el área metropolitana de Atlanta.';
@@ -1318,7 +1318,7 @@ function earlystart_city_faq_schema_output()
         // Questions and Answers from single-city.php
         // Q1
         $q1 = "Do you offer pediatric therapy in $city?";
-        $a1 = "Yes. Families in $city can access pediatric therapy through nearby Chroma Early Start clinics, including autism assessment, behavioral assessment, ADHD assessment, ABA therapy, speech therapy, and occupational therapy based on clinical fit.";
+        $a1 = "Yes. Families in $city can access pediatric therapy through nearby Chroma Early Start clinics, including autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA therapy, speech therapy, and occupational therapy based on clinical fit.";
 
         // Q2
         $q2 = "How do we find the right clinic near $city?";

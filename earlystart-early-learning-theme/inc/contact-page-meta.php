@@ -622,7 +622,7 @@ function earlystart_seed_contact_page_defaults( $post_id ) {
 				array(
 					'icon'  => 'baby',
 					'title' => 'For Families',
-					'desc'  => 'Find a clinic near you and request a consultation for autism assessment, behavioral assessment, ADHD assessment, ABA, speech, or OT.',
+					'desc'  => 'Find a clinic near you and request a consultation for autism assessment, behavioral assessment, ADHD assessment, OT assessment, ABA, speech, or OT.',
 					'link'  => '/locations',
 					'label' => 'Find a Clinic',
 					'color' => 'rose',
