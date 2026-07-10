@@ -550,7 +550,7 @@ function earlystart_home_default_faq_items()
                 ),
                 array(
                         'question' => __('What ages do you serve?', 'earlystart-early-learning'),
-                        'answer' => __('We specialize in early intervention and support for children typically ranging from 18 months to 12 years old.', 'earlystart-early-learning'),
+                        'answer' => __('OT assessments can start with infants. Autism and ADHD assessments begin at 18 months, and many therapy programs support children through 12 years old.', 'earlystart-early-learning'),
                 ),
                 array(
                         'question' => __('Where do you provide services?', 'earlystart-early-learning'),

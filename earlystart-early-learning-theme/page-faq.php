@@ -60,7 +60,7 @@ $global_phone_href = preg_replace('/[^0-9+]/', '', $global_phone);
                     'title' => 'Enrollment & Insurance',
                     'questions' => array(
                         array('q' => 'Do you accept insurance?', 'a' => 'We accept most major commercial insurance providers. Our admissions team handles all benefit verifications and authorizations so you can focus on your child.'),
-                        array('q' => 'What is the typical age range for your programs?', 'a' => 'We specialize in early intervention, typically serving children from 18 months through 12 years of age.'),
+                        array('q' => 'What is the typical age range for your programs?', 'a' => 'OT assessments can start with infants. Autism and ADHD assessments begin at 18 months, and many therapy programs support children through 12 years of age.'),
                         array('q' => 'Is there a waitlist?', 'a' => 'We strive to provide immediate access to care. While some specific time slots may be full, we usually have openings at our various clinic locations across the region.'),
                     )
                 ),

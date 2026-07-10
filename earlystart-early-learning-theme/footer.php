@@ -82,7 +82,7 @@
 					</div>
 				</div>
 				<p class="text-sm leading-relaxed mb-8 text-stone-300 max-w-xs">
-					<?php _e('Empowering neurodivergent children through play-led, evidence-based therapy. Ages 18mo - 12yrs.', 'earlystart-early-learning'); ?>
+					<?php _e('Empowering neurodivergent children through play-led, evidence-based therapy and assessments from infancy through 12 years.', 'earlystart-early-learning'); ?>
 				</p>
 				<div class="flex space-x-4">
 					<?php if ($footer_facebook_url): ?>

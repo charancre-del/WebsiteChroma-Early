@@ -308,7 +308,7 @@ function earlystart_launch_service_expansion_programs(): array
             'excerpt' => 'ADHD assessments for attention, executive function, impulsivity, and regulation needs.',
             'meta' => array(
                 'program_icon' => 'activity',
-                'program_age_range' => '4y - 12y',
+                'program_age_range' => '18mo - 12y',
                 'program_color_scheme' => 'blue',
                 'program_hero_title' => 'Clarity Around Attention and Regulation.',
                 'program_hero_description' => 'Our ADHD assessment pathway helps families understand attention, executive function, impulsivity, and regulation needs so care planning can be more precise.',
@@ -325,7 +325,7 @@ function earlystart_launch_service_expansion_programs(): array
             'excerpt' => 'Occupational therapy assessments for sensory, motor, daily living, and participation needs.',
             'meta' => array(
                 'program_icon' => 'clipboard-list',
-                'program_age_range' => '6mo - 12y',
+                'program_age_range' => 'Infants - 12y',
                 'program_color_scheme' => 'yellow',
                 'program_hero_title' => 'Understanding Daily Participation.',
                 'program_hero_description' => 'Our OT assessment pathway reviews sensory processing, fine motor skills, self-care, regulation, and daily living needs so families can plan the right support.',
@@ -542,6 +542,18 @@ function earlystart_apply_service_expansion_migration(): void
             update_post_meta((int) $location_id, 'location_special_programs', $updated_programs);
         }
     }
+
+    $program_age_updates = array(
+        'autism-assessment' => '18mo - 12y',
+        'adhd-assessment' => '18mo - 12y',
+        'ot-assessment' => 'Infants - 12y',
+    );
+    foreach ($program_age_updates as $slug => $age_range) {
+        $program = get_page_by_path($slug, OBJECT, 'program');
+        if ($program) {
+            update_post_meta((int) $program->ID, 'program_age_range', $age_range);
+        }
+    }
 }
 
 /**
@@ -552,7 +564,7 @@ function earlystart_apply_service_expansion_migration(): void
  */
 function earlystart_apply_launch_content_cleanup(): void
 {
-    $version = '2026-07-09.7';
+    $version = '2026-07-10.1';
     if (get_option('earlystart_launch_content_cleanup_version') === $version) {
         return;
     }

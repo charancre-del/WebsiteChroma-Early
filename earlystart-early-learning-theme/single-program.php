@@ -255,7 +255,7 @@ while (have_posts()):
 
 							// Fallback FAQs if not seeded
 							if (!$faq_raw) {
-								$faq_raw = "How early can we start therapy?|We offer early intervention services starting as early as 18 months, depending on the specific program and your child's needs.\nDo you accept insurance?|Yes, we are in-network with most major insurance providers including Medicaid. Our admissions team will verify your benefits during the intake process.\nHow involved are parents in the therapy process?|Parent training is a core component of the Chroma Care Model. We require regular caregiver participation to ensure skills transfer to the home environment.\nHow long are the therapy sessions?|Session length varies by program and clinical recommendation, typically ranging from 2 to 4 hours for our early intervention models.";
+								$faq_raw = "How early can we start therapy?|OT assessments can start with infants. Autism and ADHD assessments begin at 18 months, with therapy timing based on each program and your child's needs.\nDo you accept insurance?|Yes, we are in-network with most major insurance providers including Medicaid. Our admissions team will verify your benefits during the intake process.\nHow involved are parents in the therapy process?|Parent training is a core component of the Chroma Care Model. We require regular caregiver participation to ensure skills transfer to the home environment.\nHow long are the therapy sessions?|Session length varies by program and clinical recommendation, typically ranging from 2 to 4 hours for our early intervention models.";
 							}
 
 							if ($faq_raw):
